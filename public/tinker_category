@@ -1,0 +1,9 @@
+$category = new App\Models\Category();
+$category->name = 'Lip mate';
+$category->save();
+
+---------------------------------------
+
+$category = new App\Models\Category();
+$category->name = 'Lip glos';
+$category->save();
