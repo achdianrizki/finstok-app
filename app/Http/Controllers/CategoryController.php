@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreCategoryRequest;
+use App\Http\Requests\UpdateCategoryRequest;
 use App\Models\Category;
 use Illuminate\Http\Request;
 
@@ -12,7 +14,9 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        return view('manager.categories.index');
+        $categories = Category::orderBy('nama_kategori')->paginate(10);
+
+        return view('manager.categories.index', compact('categories'));
     }
 
     /**
@@ -20,15 +24,19 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        //
+        return view('manager.categories.create');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreCategoryRequest $request)
     {
-        //
+        $validatedData = $request->validated();
+
+        Category::create($validatedData);
+
+        return redirect()->route('manager.categories.index')->with('success','Category added successfully');
     }
 
     /**
@@ -50,9 +58,12 @@ class CategoryController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Category $category)
+    public function update(UpdateCategoryRequest $request, Category $category)
     {
-        //
+        $validatedData = $request->validated();
+        $category->update($validatedData);
+
+        return redirect()->route('manager.categories.index')->with('success','Category updated successfully');
     }
 
     /**
@@ -60,6 +71,8 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
-        //
+        $category->delete();
+
+        return redirect()->route('manager.categories.index')->with('success','Category added successfully');
     }
 }
