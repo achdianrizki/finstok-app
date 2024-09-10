@@ -30,6 +30,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::get('/categories/search', [CategoryController::class, 'search'])->name('categories.search');
+    Route::post('/categories/storeinput', [CategoryController::class, 'storeinput'])->name('categories.storeinput');
 
     Route::prefix('manager')->name('manager.')->group(function () {
         Route::resource('categories', CategoryController::class)->middleware('role:manager|admin');

@@ -21,7 +21,7 @@
             <div class="grip gap-6">
                 <div class="space-y-2">
                     <x-form.label for="Nama Kategori" :value="__('Nama Kategori')" />
-                    <x-form.input id="nama_kategori" class="block w-full" type="text" name="nama_kategori" :value="old('nama_kategori')"
+                    <x-form.input id="name" class="block w-full" type="text" name="name" :value="old('name')"
                         placeholder="{{ __('Nama Kategori') }}" required autofocus />
                 </div>
                 <div class="mt-3">

@@ -32,7 +32,7 @@
                             <form action="{{ route('manager.categories.update', $category->id) }}" method="POST" class="inline-flex">
                                 @csrf
                                 @method('PUT')
-                                <input type="text" name="nama_kategori" value="{{ $category->nama_kategori }}" 
+                                <input type="text" name="name" value="{{ $category->name }}" 
                                        class="border rounded px-2 py-1" />
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap">

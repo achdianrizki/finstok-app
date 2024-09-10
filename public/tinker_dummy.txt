@@ -4,6 +4,6 @@ $category->save();
 
 ---------------------------------------
 
-$category = new App\Models\Category();
-$category->name = 'Lip glos';
-$category->save();
+$warehouse = new App\Models\Warehouse();
+$warehouse->name = 'Utama';
+$warehouse->save();

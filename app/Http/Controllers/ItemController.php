@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Category;
 use App\Models\Item;
+use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use App\Http\Requests\StoreItemRequest;
+use App\Models\Warehouse;
 
 class ItemController extends Controller
 {
@@ -21,16 +24,24 @@ class ItemController extends Controller
      */
     public function create()
     {   
-        $categories = Category::all();
-        return view('manager.items.create', compact('categories'));
+        $warehouses = Warehouse::all();
+        return view('manager.items.create', compact('warehouses'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreItemRequest $request, Item $items)
     {
-        //
+        // DB::transaction(function () use ($request, $items) {
+        //     $validated =  $request->validated();
+
+        //     Item::create($validated);
+        // });
+
+        // return redirect()->route('manager.categories.index');
+
+        dd($request);
     }
 
     /**

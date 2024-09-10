@@ -14,7 +14,7 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $categories = Category::orderBy('nama_kategori')->paginate(10);
+        $categories = Category::orderBy('name')->paginate(10);
 
         return view('manager.categories.index', compact('categories'));
     }
@@ -36,7 +36,7 @@ class CategoryController extends Controller
 
         Category::create($validatedData);
 
-        return redirect()->route('manager.categories.index')->with('success','Category added successfully');
+        return redirect()->route('manager.categories.index')->with('success', 'Category added successfully');
     }
 
     /**
@@ -63,7 +63,7 @@ class CategoryController extends Controller
         $validatedData = $request->validated();
         $category->update($validatedData);
 
-        return redirect()->route('manager.categories.index')->with('success','Category updated successfully');
+        return redirect()->route('manager.categories.index')->with('success', 'Category updated successfully');
     }
 
     /**
@@ -73,6 +73,24 @@ class CategoryController extends Controller
     {
         $category->delete();
 
-        return redirect()->route('manager.categories.index')->with('success','Category added successfully');
+        return redirect()->route('manager.categories.index')->with('success', 'Category added successfully');
+    }
+
+    public function search(Request $request)
+    {
+        $search = $request->get('name');
+        $categories = Category::where('name', 'LIKE', "%$search%")->get(['id', 'name']);
+
+        return response()->json($categories);
+    }
+
+    public function storeinput(Request $request)
+    {
+        $name = $request->input('name');
+
+        $category = Category::create([
+            'name' => $name,
+        ]);
+        return response()->json($category);
     }
 }

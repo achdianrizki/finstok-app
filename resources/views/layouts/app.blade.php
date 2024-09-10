@@ -15,6 +15,7 @@
         rel="stylesheet" />
 
     <!-- Styles -->
+    @stack('styles')
     <style>
         [x-cloak] {
             display: none;
@@ -70,6 +71,10 @@
             </div>
         </div>
     </div>
+
+    <!-- Script Tambhan -->
+    <script src="{{ asset('assets/js/jquery.js') }}"></script>
+    @stack('scripts')
 </body>
 
 </html>

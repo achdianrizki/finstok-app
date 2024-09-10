@@ -15,6 +15,15 @@ class Item extends Model
         'code',
         'price',
         'stok',
-        'category_id'
+        'category_id',
+        'warehouse_id'
     ];
+
+    public function category(){
+        return $this->belongsTo(Category::class);
+    }
+
+    public function warehouse(){
+        return $this->belongsTo(Category::class);
+    }
 }
