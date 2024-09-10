@@ -1,11 +1,12 @@
 <?php
 
-use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\DistributorController;
-use App\Http\Controllers\ItemController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ItemController;
+use App\Http\Controllers\ModalController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\WarehouseController;
+use App\Http\Controllers\DistributorController;
 
 /*
 |--------------------------------------------------------------------------
@@ -38,7 +39,14 @@ Route::middleware('auth')->group(function () {
         Route::resource('items', ItemController::class)->middleware('role:manager|admin');
         Route::resource('distributors', DistributorController::class)->middleware('role:manager|admin');
         Route::resource('warehouse', WarehouseController::class)->middleware('role:manager|admin');
+        //Modal
+        Route::resource('modal', ModalController::class)->middleware('role:manager|finance');
+        //Modal update status (is_confirm)
+        Route::put('updateStatus/{modal}', [ModalController::class, 'updateStatus'])->name('modal.updateStatus')->middleware('role:manager');
     });
+
+    //Testing total modal
+    Route::get('/manager/finance/primaryModal', [ModalController::class, 'primaryModal'])->name('manager.finance.modal.primaryModal');
 });
 
 // useless routes
