@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreWarehouseRequest;
+use App\Http\Requests\UpdateWarehouseRequest;
 use App\Models\Warehouse;
 use Illuminate\Http\Request;
 
@@ -12,7 +14,8 @@ class WarehouseController extends Controller
      */
     public function index()
     {
-        return view('manager.warehouse.index');
+        $warehouses = Warehouse::orderBy('name')->paginate(10);
+        return view('manager.warehouse.index', compact('warehouses'));
     }
 
     /**
@@ -20,15 +23,19 @@ class WarehouseController extends Controller
      */
     public function create()
     {
-        //
+        return view('manager.warehouse.create');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreWarehouseRequest $request)
     {
-        //
+        $validatedData = $request->validated();
+
+        Warehouse::create($validatedData);
+
+        return redirect()->route('manager.warehouse.index')->with('success','Warehouse added successfully');
     }
 
     /**
@@ -50,9 +57,13 @@ class WarehouseController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Warehouse $warehouse)
+    public function update(UpdateWarehouseRequest $request, Warehouse $warehouse)
     {
-        //
+        $validatedData = $request->validated();
+        
+        $warehouse->update($validatedData);
+
+        return redirect()->route('manager.warehouse.index')->with('success','Warehouse updated successfully');
     }
 
     /**
@@ -60,6 +71,8 @@ class WarehouseController extends Controller
      */
     public function destroy(Warehouse $warehouse)
     {
-        //
+        $warehouse->delete();
+
+        return redirect()->route('manager.warehouse.index')->with('success','Warehouse deleted successfully');
     }
 }

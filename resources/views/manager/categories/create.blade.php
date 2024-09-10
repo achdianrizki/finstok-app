@@ -1,16 +1,15 @@
 <x-app-layout>
+
     <x-slot name="header">
-        <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+        <div class="flex items-center gap-4">
+            <x-button target="" href="{{ route('manager.categories.index') }}" variant="primary" size="sm" class="justify-center gap-2">
+                <x-heroicon-o-arrow-left class="w-4 h-4" aria-hidden="true" />
+            </x-button>
             <h2 class="text-xl font-semibold leading-tight">
                 {{ __('Tambah kategori') }}
             </h2>
-            <x-button target="" href="#" variant="success" class="justify-center max-w-xl gap-2">
-                <x-heroicon-o-plus class="w-6 h-6" aria-hidden="true" />
-                <span>Tambah Kategori</span>
-            </x-button>
         </div>
-    </x-slot>
-
+    </x-slot> 
 
 
 
@@ -19,17 +18,18 @@
             @csrf
 
             <div class="grip gap-6">
-                <div class="space-y-2">
+                <div class="mb-5 space-y-2">
                     <x-form.label for="Nama Kategori" :value="__('Nama Kategori')" />
                     <x-form.input id="name" class="block w-full" type="text" name="name" :value="old('name')"
                         placeholder="{{ __('Nama Kategori') }}" required autofocus />
                 </div>
-                <div class="mt-3">
-                    <x-button type="submit" variant="success" class="justify-center max-w-xl gap-2">
-                        <x-heroicon-o-paper-airplane class="w-6 h-6" aria-hidden="true" />
-                        <span>Submit</span>
+
+                <div class="grid justify-items-end">
+                    <x-button class="gap-2">
+                        <span>{{ __('Submit') }}</span>
                     </x-button>
                 </div>
+
             </div>
         </form>
     </div>
