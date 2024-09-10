@@ -67,33 +67,10 @@
             }
         });
 
-        // Sembunyikan dropdown jika klik di luar
         $(document).on('click', function(e) {
             if (!$(e.target).closest('.custom-select').length) {
                 $('#selectOptions').hide();
-                $('#selectInput').val(''); // Reset input jika diperlukan
             }
         });
-
-        // $(document).ready(function() {
-        //     $(document).on('click', '#buttonSubmit', function(e) {
-        //         // Kosongkan daftar error sebelumnya
-        //         $('#input-error-category').empty();
-
-        //         // Validasi sederhana menggunakan jQuery
-        //         if ($('#selectInput').val() === '') {
-        //             e.preventDefault(); // Cegah pengiriman form
-        //             $('#input-error-category').append('<li>Kategori tidak boleh kosong</li>');
-        //         } else if ($('#category_id').val() === '') {
-        //             e.preventDefault(); // Cegah pengiriman form
-        //             $('#input-error-category').append('<li>Kategori belum dipilih</li>');
-        //         }
-
-        //         // Biarkan form tetap terkirim jika tidak ada error
-        //     });
-        // });
-
-
-
     });
 </script>

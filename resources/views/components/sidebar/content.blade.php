@@ -40,21 +40,34 @@
         <x-slot name="icon">
             <x-icons.category class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
         </x-slot>
-    </x-sidebar.link> 
+    </x-sidebar.link>
 
+    <div x-transition x-show="isSidebarOpen || isSidebarHovered" class="text-sm text-gray-500">
+        finance
+    </div>
+    
     <x-sidebar.dropdown title="Kelola Keuangan" :active="Str::startsWith(request()->route()->uri(), 'buttons')">
         <x-slot name="icon">
             <x-heroicon-o-document-currency-dollar class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
         </x-slot>
 
         <x-sidebar.sublink title="Modal Utama" href="{{ route('buttons.text-icon') }}" :active="request()->routeIs('buttons.text-icon')" />
-        <x-sidebar.sublink title="Penjualan" href="{{ route('buttons.text') }}" :active="request()->routeIs('buttons.text')" />
-        <x-sidebar.sublink title="Pembelian" href="{{ route('buttons.icon') }}" :active="request()->routeIs('buttons.icon')" />
+        <x-sidebar.sublink title="Pembelian" href="{{ route('manager.finance.purchase') }}" :active="request()->routeIs('manager.finance*')" />
+        <x-sidebar.sublink title="Penjualan" href="{{ route('manager.finance.sales') }}" :active="request()->routeIs('manager.finance*')" />
     </x-sidebar.dropdown>
 
-    <div x-transition x-show="isSidebarOpen || isSidebarHovered" class="text-sm text-gray-500">
-        finance
-    </div>
+    <x-sidebar.link title="Data Pembelian" href="{{ route('manager.finance.purchase') }}" :isActive="request()->routeIs('manager.finance*')"> 
+        <x-slot name="icon">
+            <x-icons.money-send-rounded class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
+        </x-slot>
+    </x-sidebar.link>
+
+    <x-sidebar.link title="Data Penjual" href="{{ route('manager.finance.sales') }}" :isActive="request()->routeIs('manager.finance*')"> 
+        <x-slot name="icon">
+            <x-icons.money-receive-rounded class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
+        </x-slot>
+    </x-sidebar.link>
+
 
     {{-- @php
         $links = array_fill(0, 20, '');
