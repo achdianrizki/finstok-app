@@ -1,3 +1,5 @@
+@props(['warehouses'])
+
 <x-perfect-scrollbar as="nav" aria-label="main" class="flex flex-col flex-1 gap-4 px-3">
 
     <x-sidebar.link title="Dashboard" href="{{ route('dashboard') }}" :isActive="request()->routeIs('dashboard')">
@@ -30,11 +32,30 @@
         </x-slot>
     </x-sidebar.link>
 
-    <x-sidebar.link title="Gudang" href="{{ route('manager.warehouse.index') }}" :isActive="request()->routeIs('manager.warehouse*')">
-        <x-slot name="icon">
-            <x-icons.warehouse class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
-        </x-slot>
-    </x-sidebar.link>
+    {{-- Warehouse Start --}}
+    <div x-data="{ open: false }">
+        <div class="flex items-center">
+            <x-sidebar.link title="Gudang" href="{{ route('manager.warehouse.index') }}" :isActive="request()->routeIs('manager.warehouse*')"
+                class="pe-24">
+                <x-slot name="icon">
+                    <x-icons.warehouse class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
+                </x-slot>
+            </x-sidebar.link>
+            <button @click="open = !open" class="p-2 text-gray-400 rounded hover:bg-gray-700 hover:text-white">
+                <x-heroicon-o-chevron-down class="w-5 h-5" x-bind:class="{ 'transform rotate-180': open }" />
+            </button>
+        </div>
+
+        <div x-show="open && (isSidebarOpen || isSidebarHovered)" x-collapse class="relative px-0 pt-2 pb-0 ml-5 before:w-0 before:block before:absolute before:inset-y-0 before:left-0 before:border-l-2 before:border-l-gray-200 dark:before:border-l-gray-600 list-none">
+            @foreach ($warehouses as $warehouse)
+                <x-sidebar.sublink title="{{ $warehouse->name }}" href="{{ route('manager.warehouse.show', $warehouse->id) }}"
+                    :active="request()->routeIs('manager.warehouse.show') && request()->route('warehouse') == $warehouse->id" 
+                    class="relative">
+                </x-sidebar.sublink>
+            @endforeach
+        </div>
+    </div>
+    {{-- Warehouse End --}}
 
     <x-sidebar.link title="Kategori" href="{{ route('manager.categories.index') }}" :isActive="request()->routeIs('manager.categories*')">
         <x-slot name="icon">
@@ -42,37 +63,35 @@
         </x-slot>
     </x-sidebar.link>
 
-    <div x-transition x-show="isSidebarOpen || isSidebarHovered" class="text-sm text-gray-500">
-        Finance
-    </div>
-
-    <x-sidebar.dropdown title="Kelola Keuangan" :active="Str::startsWith(request()->route()->uri(), 'manager')">
+    <x-sidebar.dropdown title="Kelola Keuangan" :active="request()->routeIs('manager.finance*')">
         <x-slot name="icon">
             <x-heroicon-o-document-currency-dollar class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
         </x-slot>
 
-        <x-sidebar.sublink title="Modal Utama" href="{{ route('manager.finance.modal.primaryModal') }}" :active="request()->routeIs('manager.finance.modal.primaryModal')" />
+        <x-sidebar.sublink title="Modal Utama" href="{{ route('manager.finance.modal.primaryModal') }}"
+            :isActive="request()->routeIs('manager.finance.modal.primaryModal')" />
         <x-sidebar.sublink title="Penjualan" href="{{ route('buttons.text') }}" :active="request()->routeIs('buttons.text')" />
         <x-sidebar.sublink title="Pembelian" href="{{ route('buttons.icon') }}" :active="request()->routeIs('buttons.icon')" />
     </x-sidebar.dropdown>
 
-    <x-sidebar.dropdown title="Finance" :active="Str::startsWith(request()->route()->uri(), 'manager')">
-        <x-slot name="icon">
-            <x-heroicon-o-banknotes class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
-        </x-slot>
+    @role('manager')
+        <x-sidebar.dropdown title="Finance" :active="request()->routeIs('manager.modal*')">
+            <x-slot name="icon">
+                <x-heroicon-o-banknotes class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
+            </x-slot>
+
+            <x-sidebar.sublink title="Kelola Modal" href="{{ route('manager.modal.index') }}" :isActive="request()->routeIs('manager.modal*')" />
+        </x-sidebar.dropdown>
+    @endrole
+
+    @role('manager')
+        <x-sidebar.dropdown title="Finance" :active="request()->routeIs('manager.modal*')">
+            <x-slot name="icon">
+                <x-heroicon-o-banknotes class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
+            </x-slot>
 
         <x-sidebar.sublink title="Kelola Modal" href="{{ route('manager.modal.index') }}" :active="request()->routeIs('manager.modal.index')" />
     </x-sidebar.dropdown>
-
-    <x-sidebar.dropdown title="Finance" :active="Str::startsWith(request()->route()->uri(), 'manager')">
-        <x-slot name="icon">
-            <x-heroicon-o-banknotes class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
-        </x-slot>
-
-        <x-sidebar.sublink title="Data pembelian barang" href="{{ route('manager.finance.item-purchase') }}" :active="request()->routeIs('manager.finance.item-purchase')" />
-        <x-sidebar.sublink title="Data pembelian Asset dll" href="{{ route('manager.finance.item-purchase') }}" :active="request()->routeIs('manager.finance.item-purchase')" />
-    </x-sidebar.dropdown>
-    
 
     {{-- @php
         $links = array_fill(0, 20, '');

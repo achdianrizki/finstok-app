@@ -9,7 +9,7 @@
     x-on:mouseleave="handleSidebarHover(false)">
     <x-sidebar.header />
 
-    <x-sidebar.content />
+    <x-sidebar.content :warehouses="$warehouses"/>
 
     <x-sidebar.footer />
 </aside>
