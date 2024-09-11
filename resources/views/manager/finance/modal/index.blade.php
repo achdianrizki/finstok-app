@@ -1,17 +1,8 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-            <h2 class="text-xl font-semibold leading-tight">
-                {{ __('Modal') }}
-            </h2>
-            <div>
-                <x-button href="{{ route('manager.modal.create') }}" variant="success"
-                    class="justify-center max-w-xl gap-2">
-                    <x-heroicon-o-plus class="w-6 h-6" aria-hidden="true" />
-                    <span>Tambah Modal</span>
-                </x-button>
-            </div>
-        </div>
+        <h2 class="text-xl font-semibold leading-tight">
+            {{ __('Modal') }}
+        </h2>
     </x-slot>
 
     <div class="p-6 overflow-hidden bg-white rounded-md shadow-md dark:bg-dark-eval-1">
@@ -31,12 +22,11 @@
                 <x-table.td>
                     @if (!$modal->is_confirm)
                         <form id="update-form-{{ $modal->id }}"
-                            action="{{ route('manager.modal.update', $modal->id) }}" method="POST"
-                            class="inline-flex">
+                            action="{{ route('manager.modal.update', $modal->id) }}" method="POST" class="inline-flex">
                             @csrf
                             @method('PUT')
-                            <x-form.input id="amount" class="block w-full" type="number" name="amount"
-                                :value="old('amount', $modal->amount)" placeholder="{{ __('Jumlah') }}" required autofocus />
+                            <x-form.input id="amount" class="block w-full min-w-[200px] p-2" type="number"
+                                name="amount" :value="old('amount', $modal->amount)" placeholder="{{ __('Jumlah') }}" required autofocus />
                         </form>
                     @else
                         <span class="text-gray-500">{{ $modal->amount }}</span>

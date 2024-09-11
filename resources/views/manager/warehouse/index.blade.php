@@ -33,12 +33,12 @@
                         @csrf
                         @method('PUT')
 
-                        <x-form.input id="name" class="block w-full" type="text" name="name"
+                        <x-form.input id="name" class="block w-full min-w-[200px] p-2" type="text" name="name"
                             :value="old('name', $warehouse->name)" placeholder="{{ __('Nama gudang') }}" required autofocus />
                 </x-table.td>
                 <x-table.td class="px-6 py-4 whitespace-nowrap">
                     <x-form.input type="text" name="address" value="{{ $warehouse->address }}"
-                        class="block w-full" />
+                        class="block w-full min-w-[200px] p-2" />
                 </x-table.td>
                 </form>
 

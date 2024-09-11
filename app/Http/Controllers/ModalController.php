@@ -24,7 +24,7 @@ class ModalController extends Controller
      */
     public function create()
     {
-        return view('manager.finance.modal.create');
+        //
     }
 
     /**
@@ -33,10 +33,11 @@ class ModalController extends Controller
     public function store(StoreModalRequest $request)
     {
         $validatedData = $request->validated();
+        $cleanAmount = str_replace('.', '', $validatedData);
 
-        Modal::create($validatedData);
+        Modal::create($cleanAmount);
 
-        return redirect()->route('manager.modal.index')->with('success', 'Modal added successfully');
+        return redirect()->route('manager.finance.modal.primaryModal')->with('success', 'Modal berhasil diajukan! Menunggu persetujuan');
     }
 
     /**

@@ -22,7 +22,7 @@ class StoreModalRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'amount' => 'max:99999999999999',
+            'amount' => 'required|string',
         ];
     }
 }

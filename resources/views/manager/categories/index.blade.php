@@ -30,8 +30,8 @@
                     <form id="update-form-{{ $category->id }}" action="{{ route('manager.categories.update', $category->id) }}" method="POST" class="inline-flex">
                         @csrf
                         @method('PUT')
-                        <x-form.input id="nama_kategori" class="block w-full" type="text"
-                            name="nama_kategori" :value="old('nama_kategori', $category->nama_kategori)" placeholder="{{ __('Nama Kategori') }}"
+                        <x-form.input id="name" class="block w-full min-w-[200px] p-2" type="text"
+                            name="name" :value="old('name', $category->name)" placeholder="{{ __('Nama Kategori') }}"
                             required autofocus />
                     </form>
                 </x-table.td>
