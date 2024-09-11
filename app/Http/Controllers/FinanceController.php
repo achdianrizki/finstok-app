@@ -10,17 +10,9 @@ class FinanceController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function purchase()
+    public function index()
     {
-        return view('manager.finance.purchase.index');
-    }
-
-    /**
-     * Display a listing of the resource.
-     */
-    public function sales()
-    {
-        return view('manager.finance.sales.index');
+        //
     }
 
     /**

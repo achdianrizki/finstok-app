@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('finances', function (Blueprint $table) {
             $table->id();
-            $table->decimal('income', 15, 2)->default(0); // Pendapatan
-            $table->decimal('expense', 15, 2)->default(0); // Pengeluaran
-            $table->decimal('profit_loss', 15, 2)->nullable(); // Laba atau Rugi
+            $table->unsignedBigInteger('income'); // Pendapatan
+            $table->unsignedBigInteger('expense'); // Pengeluaran
+            $table->unsignedBigInteger('profit_loss')->nullable(); // Laba atau Rugi
             $table->foreignId('sale_id')->nullable()->constrained()->onDelete('cascade'); // ID Penjualan
             $table->foreignId('purchase_id')->nullable()->constrained()->onDelete('cascade'); // ID Pembelian
             $table->softDeletes();

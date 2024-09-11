@@ -42,12 +42,16 @@
         </x-slot>
     </x-sidebar.link>
 
+    <div x-transition x-show="isSidebarOpen || isSidebarHovered" class="text-sm text-gray-500">
+        Finance
+    </div>
+
     <x-sidebar.dropdown title="Kelola Keuangan" :active="Str::startsWith(request()->route()->uri(), 'manager')">
         <x-slot name="icon">
             <x-heroicon-o-document-currency-dollar class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
         </x-slot>
 
-        <x-sidebar.sublink title="Modal Utama" href="{{ route('buttons.text-icon') }}" :active="request()->routeIs('buttons.text-icon')" />
+        <x-sidebar.sublink title="Modal Utama" href="{{ route('manager.finance.modal.primaryModal') }}" :active="request()->routeIs('manager.finance.modal.primaryModal')" />
         <x-sidebar.sublink title="Penjualan" href="{{ route('buttons.text') }}" :active="request()->routeIs('buttons.text')" />
         <x-sidebar.sublink title="Pembelian" href="{{ route('buttons.icon') }}" :active="request()->routeIs('buttons.icon')" />
     </x-sidebar.dropdown>
@@ -59,6 +63,16 @@
 
         <x-sidebar.sublink title="Kelola Modal" href="{{ route('manager.modal.index') }}" :active="request()->routeIs('manager.modal.index')" />
     </x-sidebar.dropdown>
+
+    <x-sidebar.dropdown title="Finance" :active="Str::startsWith(request()->route()->uri(), 'manager')">
+        <x-slot name="icon">
+            <x-heroicon-o-banknotes class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
+        </x-slot>
+
+        <x-sidebar.sublink title="Data pembelian barang" href="{{ route('manager.finance.item-purchase') }}" :active="request()->routeIs('manager.finance.item-purchase')" />
+        <x-sidebar.sublink title="Data pembelian Asset dll" href="{{ route('manager.finance.item-purchase') }}" :active="request()->routeIs('manager.finance.item-purchase')" />
+    </x-sidebar.dropdown>
+    
 
     {{-- @php
         $links = array_fill(0, 20, '');

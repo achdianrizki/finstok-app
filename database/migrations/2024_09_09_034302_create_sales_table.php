@@ -13,17 +13,20 @@ return new class extends Migration
     {
         Schema::create('sales', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->enum('payment_method', ['cash', 'tempo']);
-            $table->string('buyer');
-            $table->foreignId('item_id')->constrained()->onDelete('cascade');
-            $table->foreignId('distributor_id')->nullable()->constrained()->onDelete('cascade'); // Nullable jika pembeli bukan distributor
-            $table->decimal('diskon');
-            $table->unsignedBigInteger('amount');
-            $table->decimal('total_price', 15, 2); // Harga total setelah diskon
+            $table->string('buyer_name');
+            $table->foreignId('item_id')->constrained('items')->onDelete('cascade');
+            $table->integer('qty_sold');
+            $table->enum('payment_method', ['cash', 'credit']);
+            $table->enum('payment_status', ['paid', 'unpaid']);
+            $table->unsignedBigInteger('discount');
+            $table->unsignedBigInteger('down_payment');
+            $table->unsignedBigInteger('remaining_payment');
+            $table->unsignedBigInteger('total_price');
+            $table->foreignId('distributor_id')->nullable()->constrained('distributors')->onDelete('cascade');
             $table->softDeletes();
             $table->timestamps();
         });
+        
     }
 
     /**

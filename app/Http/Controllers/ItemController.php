@@ -7,6 +7,7 @@ use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\StoreItemRequest;
+use App\Models\Purchase;
 use App\Models\Warehouse;
 
 class ItemController extends Controller
@@ -39,7 +40,16 @@ class ItemController extends Controller
         DB::transaction(function () use ($request, $items) {
             $validated =  $request->validated();
 
-            Item::create($validated);
+            $items = Item::create($validated);
+
+            Purchase::create([
+                'name' => $validated['name'],
+                'item_id' => $items->id,
+                'price' => $validated['price'],
+                'total_price' => $validated['price'] * $validated['stok'],
+                'purchase_type' => 'stock',
+                'supplier_name' => "pak asep",
+            ]);
         });
 
         return redirect()->route('manager.items.index');

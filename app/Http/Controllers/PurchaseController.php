@@ -10,9 +10,19 @@ class PurchaseController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function item_purchase()
     {
-        //
+        $purchase_items = Purchase::with('item')->get();
+
+        return view('manager.finance.purchase.item-purchase', compact('purchase_items'));
+    }
+
+    /**
+     * Display a listing of the resource.
+     */
+    public function other_purchase()
+    {
+        return view('manager.finance.purchase.other-purchase');
     }
 
     /**

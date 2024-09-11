@@ -13,9 +13,8 @@ class Purchase extends Model
     protected $fillable = [
         'name', 
         'item_id', 
-        'category_id', 
         'price', 
-        'amount', 
+        'total_price', 
         'purchase_type', 
         'supplier_name'
     ];
@@ -27,11 +26,6 @@ class Purchase extends Model
     public function item()
     {
         return $this->belongsTo(Item::class, 'item_id');
-    }
-
-    public function category()
-    {
-        return $this->belongsTo(Category::class, 'category_id');
     }
 
     public function finance()

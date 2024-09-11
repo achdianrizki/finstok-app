@@ -1,12 +1,14 @@
 <?php
 
-use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\DistributorController;
-use App\Http\Controllers\FinanceController;
-use App\Http\Controllers\ItemController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ItemController;
+use App\Http\Controllers\ModalController;
+use App\Http\Controllers\FinanceController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\WarehouseController;
+use App\Http\Controllers\DistributorController;
+use App\Http\Controllers\PurchaseController;
 
 /*
 |--------------------------------------------------------------------------
@@ -42,9 +44,20 @@ Route::middleware('auth')->group(function () {
         Route::resource('warehouse', WarehouseController::class)->middleware('role:manager|admin');
 
 
-        Route::get('/finance/purchase', [FinanceController::class, 'purchase'])->name('finance.purchase');
+        Route::get('/purchase/item', [PurchaseController::class, 'item_purchase'])->name('finance.item-purchase');
+        Route::get('/purchase/other', [PurchaseController::class, 'other_purchase'])->name('finance.other-purchase');
+
+
         Route::get('/finance/sales', [FinanceController::class, 'sales'])->name('finance.sales');
+
+        //Modal
+        Route::resource('modal', ModalController::class)->middleware('role:manager|finance');
+        //Modal update status (is_confirm)
+        Route::put('updateStatus/{modal}', [ModalController::class, 'updateStatus'])->name('modal.updateStatus')->middleware('role:manager');
     });
+
+    //Testing total modal
+    Route::get('/manager/finance/primaryModal', [ModalController::class, 'primaryModal'])->name('manager.finance.modal.primaryModal');
 });
 
 // useless routes
