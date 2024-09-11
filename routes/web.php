@@ -1,12 +1,12 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\ItemController;
-use App\Http\Controllers\ModalController;
-use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\WarehouseController;
 use App\Http\Controllers\DistributorController;
+use App\Http\Controllers\FinanceController;
+use App\Http\Controllers\ItemController;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\WarehouseController;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,6 +32,7 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::get('/categories/search', [CategoryController::class, 'search'])->name('categories.search');
+    Route::get('/categories/search', [CategoryController::class, 'search'])->name('categories.search');
     Route::post('/categories/storeinput', [CategoryController::class, 'storeinput'])->name('categories.storeinput');
 
     Route::prefix('manager')->name('manager.')->group(function () {
@@ -39,14 +40,11 @@ Route::middleware('auth')->group(function () {
         Route::resource('items', ItemController::class)->middleware('role:manager|admin');
         Route::resource('distributors', DistributorController::class)->middleware('role:manager|admin');
         Route::resource('warehouse', WarehouseController::class)->middleware('role:manager|admin');
-        //Modal
-        Route::resource('modal', ModalController::class)->middleware('role:manager|finance');
-        //Modal update status (is_confirm)
-        Route::put('updateStatus/{modal}', [ModalController::class, 'updateStatus'])->name('modal.updateStatus')->middleware('role:manager');
-    });
 
-    //Testing total modal
-    Route::get('/manager/finance/primaryModal', [ModalController::class, 'primaryModal'])->name('manager.finance.modal.primaryModal');
+
+        Route::get('/finance/purchase', [FinanceController::class, 'purchase'])->name('finance.purchase');
+        Route::get('/finance/sales', [FinanceController::class, 'sales'])->name('finance.sales');
+    });
 });
 
 // useless routes

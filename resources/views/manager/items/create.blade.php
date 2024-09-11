@@ -62,7 +62,7 @@
                 </div>
 
                 <div class="mb-5 space-y-2">
-                    <x-form.label for="Category" :value="__('Gudang')" />
+                    <x-form.label for="warehouse" :value="__('Gudang')" />
                     <x-form.select id="warehouse" class="block w-full" type="text" name="warehouse_id"
                         :value="old('warehouse_id')">
                         @forelse ($warehouses as $warehouse)

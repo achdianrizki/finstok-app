@@ -15,8 +15,11 @@ class ItemController extends Controller
      * Display a listing of the resource.
      */
     public function index()
-    {
-        return view('manager.items.index');
+    {   
+        $items = Item::with(['category', 'warehouse'])->get();
+
+        // dd($items);
+        return view('manager.items.index', compact('items'));
     }
 
     /**
@@ -33,15 +36,15 @@ class ItemController extends Controller
      */
     public function store(StoreItemRequest $request, Item $items)
     {
-        // DB::transaction(function () use ($request, $items) {
-        //     $validated =  $request->validated();
+        DB::transaction(function () use ($request, $items) {
+            $validated =  $request->validated();
 
-        //     Item::create($validated);
-        // });
+            Item::create($validated);
+        });
 
-        // return redirect()->route('manager.categories.index');
+        return redirect()->route('manager.items.index');
 
-        dd($request);
+        // dd($request);
     }
 
     /**
