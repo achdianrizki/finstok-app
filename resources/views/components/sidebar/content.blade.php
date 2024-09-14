@@ -70,8 +70,6 @@
 
         <x-sidebar.sublink title="Modal Utama" href="{{ route('manager.finance.modal.primaryModal') }}"
             :isActive="request()->routeIs('manager.finance.modal.primaryModal')" />
-        <x-sidebar.sublink title="Penjualan" href="{{ route('buttons.text') }}" :active="request()->routeIs('buttons.text')" />
-        <x-sidebar.sublink title="Pembelian" href="{{ route('buttons.icon') }}" :active="request()->routeIs('buttons.icon')" />
     </x-sidebar.dropdown>
 
     @role('manager')
@@ -82,23 +80,15 @@
 
             <x-sidebar.sublink title="Kelola Modal" href="{{ route('manager.modal.index') }}" :isActive="request()->routeIs('manager.modal*')" />
         </x-sidebar.dropdown>
-    @endrole
-
-    @role('manager')
-        <x-sidebar.dropdown title="Finance" :active="request()->routeIs('manager.modal*')">
+        @endrole
+        
+        <x-sidebar.dropdown title="Data Pembelian" :active="request()->routeIs('manager.finance*')">
             <x-slot name="icon">
                 <x-heroicon-o-banknotes class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
             </x-slot>
 
-        <x-sidebar.sublink title="Kelola Modal" href="{{ route('manager.modal.index') }}" :active="request()->routeIs('manager.modal.index')" />
-    </x-sidebar.dropdown>
+            <x-sidebar.sublink title="Stok" href="{{ route('manager.finance.item-purchase') }}" :isActive="request()->routeIs('manager.modal*')" />
+        </x-sidebar.dropdown>
 
-    {{-- @php
-        $links = array_fill(0, 20, '');
-    @endphp
-
-    @foreach ($links as $index => $link)
-        <x-sidebar.link title="Dummy link {{ $index + 1 }}" href="#" />
-    @endforeach --}}
 
 </x-perfect-scrollbar>

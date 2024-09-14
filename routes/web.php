@@ -54,24 +54,17 @@ Route::middleware('auth')->group(function () {
         Route::resource('modal', ModalController::class)->middleware('role:manager|finance');
         //Modal update status (is_confirm)
         Route::put('updateStatus/{modal}', [ModalController::class, 'updateStatus'])->name('modal.updateStatus')->middleware('role:manager');
+
     });
+    //printPdf & ExportExcel
+    Route::get('/items/export/pdf', [ItemController::class, 'exportPDF'])->name('items.export.pdf');
+    Route::get('/items/export/excel', [ItemController::class, 'exportExcel'])->name('items.export.excel');
 
     //Testing total modal
     Route::get('/manager/finance/primaryModal', [ModalController::class, 'primaryModal'])->name('manager.finance.modal.primaryModal');
 });
 
-// useless routes
-// Just to demo sidebar dropdown links active states.
-Route::get('/buttons/text', function () {
-    return view('buttons-showcase.text');
-})->middleware(['auth'])->name('buttons.text');
-
-Route::get('/buttons/icon', function () {
-    return view('buttons-showcase.icon');
-})->middleware(['auth'])->name('buttons.icon');
-
-Route::get('/buttons/text-icon', function () {
-    return view('buttons-showcase.text-icon');
-})->middleware(['auth'])->name('buttons.text-icon');
+//Fungsi get data ajaxx
+Route::get('/items-data', [ItemController::class, 'getItems']);
 
 require __DIR__ . '/auth.php';

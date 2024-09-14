@@ -12,63 +12,85 @@
         </div>
     </x-slot>
 
-
     <div class="p-6 overflow-hidden bg-white rounded-md shadow-md dark:bg-dark-eval-1">
-        {{ __("You're in page Barang!")  }}
+        <div class="flex flex-col md:flex-row md:justify-between gap-4 my-3">
+            <x-dropdown.dropdown>
+                <x-slot name="slot">
+                    <x-heroicon-o-download class="w-6 h-6 dark:text-white" aria-hidden="true" />
+                </x-slot>
+
+                <x-slot name="menu">
+                    <a href="{{ route('items.export.pdf') }}"
+                        class="flex items-center gap-2 px-4 py-2 mb-2 text-sm text-white bg-red-500 hover:bg-red-600"
+                        role="menuitem" tabindex="-1" id="menu-item-0">
+                        <x-icons.pdf class="w-5 h-5" aria-hidden="true" />
+                        <span>Download PDF</span>
+                    </a>
+                    <a href="{{ route('items.export.excel') }}"
+                        class="flex items-center gap-2 px-4 py-2 text-sm text-white bg-green-600 hover:bg-green-700"
+                        role="menuitem" tabindex="-1" id="menu-item-1">
+                        <x-icons.excel class="w-5 h-5" aria-hidden="true" />
+                        <span>Download Excel</span>
+                    </a>
+                </x-slot>
+            </x-dropdown.dropdown>
+
+            <!-- Search Input-->
+            <div class="w-full md:w-auto">
+                <input type="text" id="search" placeholder="Search items..."
+                    class=" rounded w-full md:w-auto px-4 py-2 dark:bg-dark-eval-1">
+            </div>
+        </div>
+
+        <div class="overflow-x-auto">
+            <table id="export-table" class="min-w-full rounded-md">
+                <thead>
+                    <tr class="bg-gray-200 text-gray-600 dark:bg-slate-900 dark:text-white text-sm leading-normal">
+                        <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Nama barang</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider hidden sm:table-cell">Kode</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider hidden sm:table-cell">Stok</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider hidden md:table-cell">Harga/pcs</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider hidden lg:table-cell">Kategori</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider hidden lg:table-cell">Gudang</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody id="itemTable" class="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-dark-eval-1">
+
+                </tbody>
+            </table>
+        </div>
+        
+
+
+        <!-- Pagination Controls -->
+        <div class="mt-4 flex items-center justify-center">
+            <x-button id="prevPage" class="bg-blue-500 text-white p-2 rounded" variant="primary">
+                <x-heroicon-o-chevron-double-left class="w-4 h-4" aria-hidden="true" />
+            </x-button>
+
+            <span id="currentPage"
+                class="mx-4 p-2 border min-w-[40px] text-center rounded bg-gray-100 dark:bg-dark-eval-1 dark:border-dark-eval-1 ">1</span>
+
+            <x-button id="nextPage" variant="primary" class="">
+                <x-heroicon-o-chevron-double-right class="w-4 h-4" aria-hidden="true" />
+            </x-button>
+        </div>
+
     </div>
 
-    <x-table.table>
-        <x-slot name="header">
-            <x-table.th class="px-28">Nama</x-table.th>
-            <x-table.th>Kode barang</x-table.th>
-            <x-table.th>Tanggal Masuk Barang</x-table.th>
-            <x-table.th>Stok/pcs</x-table.th>
-            <x-table.th>Harga/pcs</x-table.th>
-            <x-table.th>Kategori</x-table.th>
-            <x-table.th>Gudang</x-table.th>
-            <x-table.th class="px-16">Aksi</x-table.th>
-        </x-slot>
-
-        @foreach ($items as $item)
-            <x-table.tr>
-                <x-table.td>
-                    <form id="update-form-{{ $item->id }}" action="{{ route('manager.categories.update', $item->id) }}" method="POST" class="inline-flex">
-                        @csrf
-                        @method('PUT')
-                        <x-form.input id="nama_kategori" class="block w-full" type="text"
-                            name="nama_kategori" :value="old('nama_kategori', $item->name)" placeholder="{{ __('Nama Kategori') }}"
-                            required autofocus />
-                    </form>
-                </x-table.td>
-                <x-table.td class="px-10 md:px-16">
-                    {{ $item->code }}
-                </x-table.td>
-                <x-table.td>
-                    {{ $item->created_at->format('d M Y') }}
-                </x-table.td>
-                <x-table.td class="px-10 md:px-16">
-                    {{ $item->stok }}
-                </x-table.td>
-                <x-table.td class="px-10 md:px-16">
-                    {{ number_format($item->price, 0,',','.') }}
-                </x-table.td>
-                <x-table.td class="px-10 md:px-16">
-                    {{ $item->category->name }}
-                </x-table.td>
-                <x-table.td class="px-10 md:px-16">
-                    {{ $item->warehouse->name }}
-                </x-table.td>
-                <x-table.td>
-                    <button type="submit" form="update-form-{{ $item->id }}" class="text-indigo-600 hover:text-indigo-900">Update</button>
-                    <form action="{{ route('manager.categories.destroy', $item->id) }}" method="POST"
-                        class="inline-block ml-4">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="text-red-600 hover:text-red-900">Delete</button>
-                    </form>
-                </x-table.td>
-            </x-table.tr>
-        @endforeach
-    </x-table.table>
+    @push('scripts')
+        <script>
+            function toggleDetails(index) {
+                const detailRow = document.getElementById(`details-${index}`);
+                if (detailRow.classList.contains('hidden')) {
+                    detailRow.classList.remove('hidden');
+                } else {
+                    detailRow.classList.add('hidden');
+                }
+            }
+        </script>
+        @include('components.js.dtItems')
+    @endpush
 
 </x-app-layout>

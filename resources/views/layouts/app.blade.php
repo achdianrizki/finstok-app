@@ -4,6 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     {{-- <title>{{ config('app.name', 'K UI') }}</title> --}}
@@ -41,7 +42,7 @@
     <div x-data="mainState" :class="{ dark: isDarkMode }" x-on:resize.window="handleWindowResize" x-cloak>
         <div class="min-h-screen text-gray-900 bg-gray-100 dark:bg-dark-eval-0 dark:text-gray-200">
             <!-- Sidebar -->
-            <x-sidebar.sidebar :warehouses="$warehouses"/>
+            <x-sidebar.sidebar :warehouses="$warehouses" />
 
             <!-- Page Wrapper -->
             <div class="flex flex-col min-h-screen"

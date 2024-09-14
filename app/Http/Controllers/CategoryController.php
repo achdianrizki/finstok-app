@@ -16,8 +16,6 @@ class CategoryController extends Controller
     {
         $categories = Category::orderBy('name')->paginate(10);
 
-        // dd($categories->name);
-
         return view('manager.categories.index', compact('categories'));
     }
 
