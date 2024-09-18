@@ -9,6 +9,8 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\WarehouseController;
 use App\Http\Controllers\DistributorController;
 use App\Http\Controllers\PurchaseController;
+use App\Http\Controllers\SaleController;
+use App\Models\Purchase;
 
 /*
 |--------------------------------------------------------------------------
@@ -42,10 +44,8 @@ Route::middleware('auth')->group(function () {
         Route::resource('items', ItemController::class)->middleware('role:manager|admin');
         Route::resource('distributors', DistributorController::class)->middleware('role:manager|admin');
         Route::resource('warehouse', WarehouseController::class)->middleware('role:manager|admin');
-
-
-        Route::get('/purchase/item', [PurchaseController::class, 'item_purchase'])->name('finance.item-purchase');
-        Route::get('/purchase/other', [PurchaseController::class, 'other_purchase'])->name('finance.other-purchase');
+        Route::resource('purchase', PurchaseController::class)->middleware('role:manager|admin');
+        Route::resource('sale', SaleController::class)->middleware('role:manager|admin');
 
 
         Route::get('/finance/sales', [FinanceController::class, 'sales'])->name('finance.sales');
@@ -66,5 +66,6 @@ Route::middleware('auth')->group(function () {
 
 //Fungsi get data ajaxx
 Route::get('/items-data', [ItemController::class, 'getItems']);
+Route::get('/items-purchase-data', [PurchaseController::class, 'getPurchaseItem']);
 
 require __DIR__ . '/auth.php';

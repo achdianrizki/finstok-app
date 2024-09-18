@@ -35,6 +35,8 @@
     </style>
 
     <!-- Scripts -->
+    
+
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
@@ -73,6 +75,7 @@
         </div>
     </div>
 
+    @include('sweetalert::alert')
     <!-- Script Tambhan -->
     <script src="{{ asset('assets/js/jquery.js') }}"></script>
     @stack('scripts')

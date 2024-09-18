@@ -2,18 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use App\Exports\ItemsExport;
 use App\Models\Item;
+use App\Models\Modal;
 use App\Models\Category;
 use App\Models\Purchase;
 use App\Models\Warehouse;
+use App\Exports\ItemsExport;
+use App\Imports\ItemsImport;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Http\Requests\StoreItemRequest;
 use App\Http\Requests\UpdateItemRequest;
-use App\Imports\ItemsImport;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class ItemController extends Controller
 {
@@ -64,23 +67,38 @@ class ItemController extends Controller
      */
     public function store(StoreItemRequest $request, Item $items)
     {
-        DB::transaction(function () use ($request, $items) {
-            $validated =  $request->validated();
+        $modal_awal = Modal::value('amount');
 
-            $items = Item::create($validated);
+        DB::transaction(function () use ($request, $items, $modal_awal) {
+            $validated = $request->validated();
 
-            Purchase::create([
-                'name' => $validated['name'],
-                'item_id' => $items->id,
-                'price' => $validated['price'],
-                'total_price' => $validated['price'] * $validated['stok'],
-                'purchase_type' => 'stock',
-                'supplier_name' => "pak asep",
-            ]);
+            $total_amount_item = $validated['price'] * $validated['stok'];
+
+            if ($modal_awal < $total_amount_item) {
+
+                alert()->error('ErrorAlert', 'Modal tidak mencukupi untuk melakukan pembelian.');
+                return redirect()->route('manager.items.index');
+            } else {
+                $items = Item::create($validated);
+
+                Purchase::create([
+                    'name' => $validated['name'],
+                    'item_id' => $items->id,
+                    'price' => $validated['price'],
+                    'qty' => $validated['stok'],
+                    'total_price' => $total_amount_item,
+                    'purchase_type' => 'stock',
+                    'supplier_name' => "pak asep",
+                ]);
+
+                Modal::where('amount', $modal_awal)->decrement('amount', $total_amount_item);
+            }
         });
 
+        toast('Success Toast', 'success');
         return redirect()->route('manager.items.index');
     }
+
 
     /**
      * Display the specified resource.
@@ -94,7 +112,7 @@ class ItemController extends Controller
      * Show the form for editing the specified resource.
      */
     public function edit(Item $item)
-    {   
+    {
         $warehouses = Warehouse::all();
         $selectedWarehouse = $item->warehouse_id;
         return view('manager.items.edit', compact('item', 'warehouses', 'selectedWarehouse'));
@@ -120,6 +138,7 @@ class ItemController extends Controller
             ]);
         });
 
+        toast('Success Toast', 'success');
         return redirect()->route('manager.items.index');
     }
 
@@ -128,8 +147,13 @@ class ItemController extends Controller
      */
     public function destroy(Item $item)
     {
-        //
+           
+        $item->with('purchase')->where('item_id', $item)->delete();   
+        return redirect()->back();
     }
+
+
+
 
     public function exportPDF()
     {

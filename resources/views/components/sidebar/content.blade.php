@@ -46,11 +46,12 @@
             </button>
         </div>
 
-        <div x-show="open && (isSidebarOpen || isSidebarHovered)" x-collapse class="relative px-0 pt-2 pb-0 ml-5 before:w-0 before:block before:absolute before:inset-y-0 before:left-0 before:border-l-2 before:border-l-gray-200 dark:before:border-l-gray-600 list-none">
+        <div x-show="open && (isSidebarOpen || isSidebarHovered)" x-collapse
+            class="relative px-0 pt-2 pb-0 ml-5 before:w-0 before:block before:absolute before:inset-y-0 before:left-0 before:border-l-2 before:border-l-gray-200 dark:before:border-l-gray-600 list-none">
             @foreach ($warehouses as $warehouse)
-                <x-sidebar.sublink title="{{ $warehouse->name }}" href="{{ route('manager.warehouse.show', $warehouse->id) }}"
-                    :active="request()->routeIs('manager.warehouse.show') && request()->route('warehouse') == $warehouse->id" 
-                    class="relative">
+                <x-sidebar.sublink title="{{ $warehouse->name }}"
+                    href="{{ route('manager.warehouse.show', $warehouse->id) }}" :active="request()->routeIs('manager.warehouse.show') &&
+                        request()->route('warehouse') == $warehouse->id" class="relative">
                 </x-sidebar.sublink>
             @endforeach
         </div>
@@ -69,7 +70,7 @@
         </x-slot>
 
         <x-sidebar.sublink title="Modal Utama" href="{{ route('manager.finance.modal.primaryModal') }}"
-            :isActive="request()->routeIs('manager.finance.modal.primaryModal')" />
+            :active="request()->routeIs('manager.finance.modal.primaryModal')" />
     </x-sidebar.dropdown>
 
     @role('manager')
@@ -78,17 +79,14 @@
                 <x-heroicon-o-banknotes class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
             </x-slot>
 
-            <x-sidebar.sublink title="Kelola Modal" href="{{ route('manager.modal.index') }}" :isActive="request()->routeIs('manager.modal*')" />
+            <x-sidebar.sublink title="Kelola Modal" href="{{ route('manager.modal.index') }}" :active="request()->routeIs('manager.modal*')" />
         </x-sidebar.dropdown>
-        @endrole
-        
-        <x-sidebar.dropdown title="Data Pembelian" :active="request()->routeIs('manager.finance*')">
-            <x-slot name="icon">
-                <x-heroicon-o-banknotes class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
-            </x-slot>
+    @endrole
 
-            <x-sidebar.sublink title="Stok" href="{{ route('manager.finance.item-purchase') }}" :isActive="request()->routeIs('manager.modal*')" />
-        </x-sidebar.dropdown>
-
+    <x-sidebar.link title="Data Pembelian" href="{{ route('manager.purchase.index') }}" :isActive="request()->routeIs('manager.purchase*')">
+        <x-slot name="icon">
+            <x-heroicon-o-banknotes class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
+        </x-slot>
+    </x-sidebar.link>
 
 </x-perfect-scrollbar>

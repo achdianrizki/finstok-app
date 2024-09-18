@@ -2,24 +2,26 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StorePurchaseRequest;
 use App\Models\Purchase;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class PurchaseController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function item_purchase()
+    public function index()
     {
         $purchase_items = Purchase::with('item')->get();
 
-        return view('manager.finance.purchase.item-purchase', compact('purchase_items'));
+        return view('manager.finance.purchase.index', compact('purchase_items'));
     }
     
     public function getPurchaseItem(Request $request)
     {
-        $query = Purchase::with(['category', 'warehouse']);
+        $query = Purchase::with('items');
 
         if ($request->has('search') && !empty($request->search)) {
             $search = $request->search;
@@ -27,12 +29,6 @@ class PurchaseController extends Controller
             $query->where(function ($q) use ($search) {
                 $q->where('name', 'like', '%' . $search . '%')
                     ->orWhere('code', 'like', '%' . $search . '%');
-                $q->orWhereHas('category', function ($query) use ($search) {
-                    $query->where('name', 'like', '%' . $search . '%');
-                });
-                $q->orWhereHas('warehouse', function ($query) use ($search) {
-                    $query->where('name', 'like', '%' . $search . '%');
-                });
             });
         }
         $products = $query->paginate(5);
@@ -41,27 +37,30 @@ class PurchaseController extends Controller
     }
 
     /**
-     * Display a listing of the resource.
-     */
-    public function other_purchase()
-    {
-        return view('manager.finance.purchase.other-purchase');
-    }
-
-    /**
      * Show the form for creating a new resource.
      */
     public function create()
     {
-        //
+        return view('manager.finance.purchase.create');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StorePurchaseRequest $request, Purchase $purchases)
     {
-        //
+        DB::transaction(function () use ($request){
+            $validated = $request->validated();
+            
+            $validated['purchase_type'] = 'asset';
+            $validated['total_price'] = str_replace('.', '', $request->total_price);
+            
+            // dd($validated);
+
+            Purchase::create($validated);
+        });        
+
+        return redirect()->route('manager.purchase.index');
     }
 
     /**

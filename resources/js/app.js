@@ -3,8 +3,11 @@ import './bootstrap'
 import Alpine from 'alpinejs'
 import collapse from '@alpinejs/collapse'
 import PerfectScrollbar from 'perfect-scrollbar'
+import Swal from 'sweetalert2'
 
 window.PerfectScrollbar = PerfectScrollbar
+
+window.Swal = Swal
 
 document.addEventListener('alpine:init', () => {
     Alpine.data('mainState', () => {

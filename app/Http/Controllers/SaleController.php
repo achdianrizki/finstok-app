@@ -12,7 +12,7 @@ class SaleController extends Controller
      */
     public function index()
     {
-        //
+        return view('manager.finance.salse.index');
     }
 
     /**

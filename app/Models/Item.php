@@ -26,4 +26,8 @@ class Item extends Model
     public function warehouse(){
         return $this->belongsTo(Warehouse::class);
     }
+    
+    public function purchase(){
+        return $this->hasMany(Purchase::class);
+    }
 }

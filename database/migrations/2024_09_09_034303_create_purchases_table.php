@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->foreignId('item_id')->nullable()->constrained('items')->onDelete('cascade');
             $table->unsignedBigInteger('price');
+            $table->integer('qty');
             $table->unsignedBigInteger('total_price');
             $table->enum('purchase_type', ['stock', 'asset']);
             $table->string('supplier_name');

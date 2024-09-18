@@ -73,6 +73,7 @@
                             </option>
                         @endforelse
                     </x-form.select>
+                    <x-input-error :messages="$errors->get('warehouse_id')" class="mt-2" />
                 </div>
 
 
@@ -88,23 +89,6 @@
 
     @push('scripts')
         @include('components.js.selectOrCreate')
-
-        <script>
-            const itemQuantity = newItem.querySelector('[name="itemQuantity[]"]');
-            const itemPrice = newItem.querySelector('[name="itemPrice[]"]');
-            const itemTotal = newItem.querySelector('[name="itemTotal[]"]');
-
-            itemQuantity.addEventListener('input', calculateTotal);
-            itemPrice.addEventListener('input', calculateTotal);
-
-            function calculateTotal() {
-                const quantity = parseFloat(itemQuantity.value) || 0;
-                const price = parseFloat(itemPrice.value) || 0;
-                const total = quantity * price;
-
-                itemTotal.value = formatRupiah(total.toFixed(2));
-            }
-        </script>
     @endpush
 
     @push('styles')

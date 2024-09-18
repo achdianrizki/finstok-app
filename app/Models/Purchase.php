@@ -15,6 +15,7 @@ class Purchase extends Model
         'item_id', 
         'price', 
         'total_price', 
+        'qty',
         'purchase_type', 
         'supplier_name'
     ];
