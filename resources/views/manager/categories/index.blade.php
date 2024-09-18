@@ -12,43 +12,41 @@
         </div>
     </x-slot>
 
-    <div class="p-6 bg-white rounded-md shadow-md dark:bg-dark-eval-1">
-        {{ __("You're in page Category!") }}
+    <div class="p-6 overflow-hidden bg-white rounded-md shadow-md dark:bg-dark-eval-1">
+        <div class="overflow-x-auto">
+            <table id="export-table" class="min-w-full rounded-md">
+                <thead>
+                    <tr class="bg-gray-200 text-gray-600 dark:bg-slate-900 dark:text-white text-sm leading-normal">
+                        <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Nama kategori</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody id="itemTable"
+                    class="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-dark-eval-1">
+
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Pagination Controls -->
+        <div class="mt-4 flex items-center justify-center">
+            <x-button id="prevPage" class="bg-blue-500 text-white p-2 rounded" variant="primary">
+                <x-heroicon-o-chevron-double-left class="w-4 h-4" aria-hidden="true" />
+            </x-button>
+
+            <span id="currentPage"
+                class="mx-4 p-2 border min-w-[40px] text-center rounded bg-gray-100 dark:bg-dark-eval-1 dark:border-dark-eval-1 ">1</span>
+
+            <x-button id="nextPage" variant="primary" class="">
+                <x-heroicon-o-chevron-double-right class="w-4 h-4" aria-hidden="true" />
+            </x-button>
+        </div>
+
     </div>
 
-    <x-table.table>
-        <x-slot name="header">
-            <x-table.th class="px-28">Nama</x-table.th>
-            <x-table.th class="px-16">Aksi</x-table.th>
-        </x-slot>
 
-        @foreach ($categories as $category)
-            <x-table.tr>
-                <x-table.td>
-                    <form id="update-form-{{ $category->id }}"
-                        action="{{ route('manager.categories.update', $category->id) }}" method="POST"
-                        class="inline-flex">
-                        @csrf
-                        @method('PUT')
-                        <x-form.input id="name" class="block w-full min-w-[200px] p-2" type="text"
-                            name="name" :value="old('name', $category->name)" placeholder="{{ __('Nama Kategori') }}" required
-                            autofocus />
-                    </form>
-                </x-table.td>
-                <x-table.td>
-                    <button type="submit" form="update-form-{{ $category->id }}"
-                        class="text-indigo-600 hover:text-indigo-900">Update</button>
+    @push('scripts')
+        @include('components.js.dtCategories')
+    @endpush
 
-                    <form action="{{ route('manager.categories.destroy', $category->id) }}" method="POST"
-                        class="inline-block ml-4">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="text-red-600 hover:text-red-900">Delete</button>
-                    </form>
-                </x-table.td>
-            </x-table.tr>
-        @endforeach
-    </x-table.table>
-
-    {{ $categories->links() }}
 </x-app-layout>

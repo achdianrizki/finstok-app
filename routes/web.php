@@ -41,7 +41,7 @@ Route::middleware('auth')->group(function () {
         Route::resource('categories', CategoryController::class)->middleware('role:manager|admin');
         Route::resource('items', ItemController::class)->middleware('role:manager|admin');
         Route::resource('distributors', DistributorController::class)->middleware('role:manager|admin');
-        Route::resource('warehouse', WarehouseController::class)->middleware('role:manager|admin');
+        Route::resource('warehouses', WarehouseController::class)->middleware('role:manager|admin');
 
 
         Route::get('/purchase/item', [PurchaseController::class, 'item_purchase'])->name('finance.item-purchase');
@@ -66,5 +66,8 @@ Route::middleware('auth')->group(function () {
 
 //Fungsi get data ajaxx
 Route::get('/items-data', [ItemController::class, 'getItems']);
+Route::get('/categories-data', [CategoryController::class, 'getCategories']);
+Route::get('/warehouses-data', [WarehouseController::class, 'getWarehouses']);
+Route::get('/distributors-data', [DistributorController::class, 'getDistributors']);
 
 require __DIR__ . '/auth.php';

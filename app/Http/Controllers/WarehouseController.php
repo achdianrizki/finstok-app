@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreWarehouseRequest;
-use App\Http\Requests\UpdateWarehouseRequest;
 use App\Models\Warehouse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use App\Http\Requests\StoreWarehouseRequest;
+use App\Http\Requests\UpdateWarehouseRequest;
 
 class WarehouseController extends Controller
 {
@@ -16,6 +17,19 @@ class WarehouseController extends Controller
     {
         $warehouses = Warehouse::orderBy('name')->paginate(5);
         return view('manager.warehouse.index', compact('warehouses'));
+    }
+
+    public function getWarehouses(Request $request)
+    {
+        $query = Warehouse::query();
+
+        if ($request->has('search')) {
+            $query->where('name', 'like', '%' . $request->search . '%');
+        }
+
+        $warehouses = $query->paginate(5);
+
+        return response()->json($warehouses);
     }
 
     /**
@@ -35,7 +49,7 @@ class WarehouseController extends Controller
 
         Warehouse::create($validatedData);
 
-        return redirect()->route('manager.warehouse.index')->with('success','Warehouse added successfully');
+        return redirect()->route('manager.warehouses.index')->with('success','Warehouse added successfully');
     }
 
     /**
@@ -51,7 +65,7 @@ class WarehouseController extends Controller
      */
     public function edit(Warehouse $warehouse)
     {
-        //
+        return view('manager.warehouse.edit', compact('warehouse'));
     }
 
     /**
@@ -63,7 +77,7 @@ class WarehouseController extends Controller
         
         $warehouse->update($validatedData);
 
-        return redirect()->route('manager.warehouse.index')->with('success','Warehouse updated successfully');
+        return redirect()->route('manager.warehouses.index')->with('success','Warehouse updated successfully');
     }
 
     /**
@@ -73,6 +87,6 @@ class WarehouseController extends Controller
     {
         $warehouse->delete();
 
-        return redirect()->route('manager.warehouse.index')->with('success','Warehouse deleted successfully');
+        return redirect()->route('manager.warehouses.index')->with('success','Warehouse deleted successfully');
     }
 }
