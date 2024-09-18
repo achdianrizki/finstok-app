@@ -14,10 +14,24 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $categories = Category::orderBy('name')->paginate(10);
+        $categories = Category::orderBy('name')->paginate(5);
 
         return view('manager.categories.index', compact('categories'));
     }
+
+    public function getCategories(Request $request)
+    {
+        $query = Category::query();
+
+        if ($request->has('search')) {
+            $query->where('name', 'like', '%' . $request->search . '%');
+        }
+
+        $categories = $query->paginate(5);
+
+        return response()->json($categories);
+    }
+
 
     /**
      * Show the form for creating a new resource.

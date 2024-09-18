@@ -14,7 +14,8 @@ class ModalController extends Controller
      */
     public function index()
     {
-        $modals = Modal::orderBy("id", "desc")->paginate(10);
+        $modals = Modal::orderBy("id", "desc")->paginate(5);
+        // $modals = 'Rp. ' . number_format($modals, 2);
 
         return view('manager.finance.modal.index', compact('modals'));
     }

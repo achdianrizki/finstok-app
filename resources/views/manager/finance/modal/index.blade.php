@@ -20,17 +20,7 @@
         @foreach ($modals as $modal)
             <x-table.tr>
                 <x-table.td>
-                    @if (!$modal->is_confirm)
-                        <form id="update-form-{{ $modal->id }}"
-                            action="{{ route('manager.modal.update', $modal->id) }}" method="POST" class="inline-flex">
-                            @csrf
-                            @method('PUT')
-                            <x-form.input id="amount" class="block w-full min-w-[200px] p-2" type="number"
-                                name="amount" :value="old('amount', $modal->amount)" placeholder="{{ __('Jumlah') }}" required autofocus />
-                        </form>
-                    @else
-                        <span class="text-gray-500">{{ $modal->amount }}</span>
-                    @endif
+                    <span>{{ 'Rp. ' . number_format($modal->amount, 2) }}</span>
                 </x-table.td>
 
                 <x-table.td class="px-16">
@@ -40,22 +30,15 @@
                             <span>Approved</span>
                         </x-button>
                     @else
-                        @role('manager')
-                            <form action="{{ route('manager.modal.updateStatus', $modal->id) }}" method="POST"
-                                class="inline-block">
-                                @csrf
-                                @method('PUT')
-                                <x-button type="submit" variant="warning" class="justify-center max-w-xl gap-2">
-                                    <x-heroicon-o-check class="w-6 h-6" aria-hidden="true" />
-                                    <span>Approve</span>
-                                </x-button>
-                            </form>
-                        @else
-                            <x-button variant="warning" class="justify-center max-w-xl gap-2" disabled>
-                                <x-heroicon-o-clock class="w-6 h-6" aria-hidden="true" />
-                                <span>Pending</span>
+                        <form action="{{ route('manager.modal.updateStatus', $modal->id) }}" method="POST"
+                            class="inline-block">
+                            @csrf
+                            @method('PUT')
+                            <x-button type="submit" variant="warning" class="justify-center max-w-xl gap-2">
+                                <x-heroicon-o-check class="w-6 h-6" aria-hidden="true" />
+                                <span>Approve</span>
                             </x-button>
-                        @endrole
+                        </form>
                     @endif
                 </x-table.td>
 
@@ -64,12 +47,6 @@
                 </x-table.td>
 
                 <x-table.td>
-                    @if (!$modal->is_confirm)
-                        <button type="submit" form="update-form-{{ $modal->id }}"
-                            class="text-indigo-600 hover:text-indigo-900">
-                            Update
-                        </button>
-                    @endif
                     <form action="{{ route('manager.modal.destroy', $modal->id) }}" method="POST"
                         class="inline-block ml-4">
                         @csrf

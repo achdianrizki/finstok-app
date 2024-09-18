@@ -4,7 +4,7 @@
             <h2 class="font-semibold text-xl leading-tight">
                 {{ __('Gudang') }}
             </h2>
-            <x-button target="" href="{{ route('manager.warehouse.create') }}" variant="success"
+            <x-button target="" href="{{ route('manager.warehouses.create') }}" variant="success"
                 class="justify-center max-w-xl gap-2">
                 <x-heroicon-o-plus class="w-6 h-6" aria-hidden="true" />
                 <span>Tambah Gudang</span>
@@ -13,53 +13,53 @@
     </x-slot>
 
     <div class="p-6 overflow-hidden bg-white rounded-md shadow-md dark:bg-dark-eval-1">
-        {{ __("You're in page Warehouse!") }}
+        <div class="overflow-x-auto">
+            <table id="export-table" class="min-w-full rounded-md">
+                <thead>
+                    <tr class="bg-gray-200 text-gray-600 dark:bg-slate-900 dark:text-white text-sm leading-normal">
+                        <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Nama gudang</th>
+                        <th
+                            class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider hidden sm:table-cell">
+                            Alamat</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody id="itemTable"
+                    class="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-dark-eval-1">
+
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Pagination Controls -->
+        <div class="mt-4 flex items-center justify-center">
+            <x-button id="prevPage" class="bg-blue-500 text-white p-2 rounded" variant="primary">
+                <x-heroicon-o-chevron-double-left class="w-4 h-4" aria-hidden="true" />
+            </x-button>
+
+            <span id="currentPage"
+                class="mx-4 p-2 border min-w-[40px] text-center rounded bg-gray-100 dark:bg-dark-eval-1 dark:border-dark-eval-1 ">1</span>
+
+            <x-button id="nextPage" variant="primary" class="">
+                <x-heroicon-o-chevron-double-right class="w-4 h-4" aria-hidden="true" />
+            </x-button>
+        </div>
+
     </div>
 
-    <x-table.table class="min-w-full bg-white dark:bg-dark-eval-1 rounded-md">
-        <x-slot name="header">
-            <x-table.th class="px-28">Nama</x-table.th>
-            <x-table.th class="px-24">Alamat</x-table.th>
-            <x-table.th>Dibuat Pada</x-table.th>
-            <x-table.th class="px-16">Aksi</x-table.th>
-        </x-slot>
 
-        @foreach ($warehouses as $warehouse)
-            <x-table.tr>
-                <x-table.td class="px-6 py-4 whitespace-nowrap">
-                    <form id="update-form-{{ $warehouse->id }}"
-                        action="{{ route('manager.warehouse.update', $warehouse->id) }}" method="POST"
-                        class="inline-flex">
-                        @csrf
-                        @method('PUT')
+    @push('scripts')
+        <script>
+            function toggleDetails(index) {
+                const detailRow = document.getElementById(`details-${index}`);
+                if (detailRow.classList.contains('hidden')) {
+                    detailRow.classList.remove('hidden');
+                } else {
+                    detailRow.classList.add('hidden');
+                }
+            }
+        </script>
+        @include('components.js.dtWarehouses')
+    @endpush
 
-                        <x-form.input id="name" class="block w-full min-w-[200px] p-2" type="text" name="name"
-                            :value="old('name', $warehouse->name)" placeholder="{{ __('Nama gudang') }}" required autofocus />
-                </x-table.td>
-                <x-table.td class="px-6 py-4 whitespace-nowrap">
-                    <x-form.input type="text" name="address" value="{{ $warehouse->address }}"
-                        class="block w-full min-w-[200px] p-2" />
-                </x-table.td>
-                </form>
-
-                <x-table.td class="px-6 py-4 whitespace-nowrap">
-                    {{ $warehouse->created_at->format('d M Y') }}
-                </x-table.td>
-
-                <x-table.td class="px-6 py-4 whitespace-nowrap">
-                    <button type="submit" form="update-form-{{ $warehouse->id }}"
-                        class="text-indigo-600 hover:text-indigo-900">Update</button>
-                    <form action="{{ route('manager.warehouse.destroy', $warehouse->id) }}" method="POST"
-                        class="inline-block ml-4">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="text-red-600 hover:text-red-900">Delete</button>
-                    </form>
-                </x-table.td>
-                
-            </x-table.tr>
-        @endforeach
-    </x-table.table>
-
-    {{ $warehouses->links() }}
 </x-app-layout>

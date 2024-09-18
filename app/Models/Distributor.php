@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Sale;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Distributor extends Model
 {
@@ -14,4 +15,9 @@ class Distributor extends Model
         'address',
         'phone'
     ];
+
+    public function sales()
+    {
+        return $this->hasMany(Sale::class);
+    }
 }
