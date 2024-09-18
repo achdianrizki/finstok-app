@@ -19,30 +19,26 @@
     <x-table.table>
         <x-slot name="header">
             <x-table.th class="px-28">Nama</x-table.th>
-            <x-table.th>Jumlah Barang</x-table.th>
-            <x-table.th>Dibuat Pada</x-table.th>
             <x-table.th class="px-16">Aksi</x-table.th>
         </x-slot>
 
         @foreach ($categories as $category)
             <x-table.tr>
                 <x-table.td>
-                    <form id="update-form-{{ $category->id }}" action="{{ route('manager.categories.update', $category->id) }}" method="POST" class="inline-flex">
+                    <form id="update-form-{{ $category->id }}"
+                        action="{{ route('manager.categories.update', $category->id) }}" method="POST"
+                        class="inline-flex">
                         @csrf
                         @method('PUT')
                         <x-form.input id="name" class="block w-full min-w-[200px] p-2" type="text"
-                            name="name" :value="old('name', $category->name)" placeholder="{{ __('Nama Kategori') }}"
-                            required autofocus />
+                            name="name" :value="old('name', $category->name)" placeholder="{{ __('Nama Kategori') }}" required
+                            autofocus />
                     </form>
                 </x-table.td>
-                <x-table.td class="px-10 md:px-16">
-                    15
-                </x-table.td>
                 <x-table.td>
-                    {{ $category->created_at->format('d M Y') }}
-                </x-table.td>
-                <x-table.td>
-                    <button type="submit" form="update-form-{{ $category->id }}" class="text-indigo-600 hover:text-indigo-900">Update</button>
+                    <button type="submit" form="update-form-{{ $category->id }}"
+                        class="text-indigo-600 hover:text-indigo-900">Update</button>
+
                     <form action="{{ route('manager.categories.destroy', $category->id) }}" method="POST"
                         class="inline-block ml-4">
                         @csrf
