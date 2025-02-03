@@ -22,14 +22,14 @@ class StoreSaleRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name',
-            'payment_method',
-            'buyer',
-            'item_id',
-            'distributor_id',
-            'diskon',
-            'amount',
-            'total_price'
+            'name' => ['required', 'string', 'max:255'],
+            'payment_method' => ['required'],
+            'buyer' => ['required', 'string'],
+            'item_id' => ['required'],
+            'distributor_id' => ['required'],
+            'diskon' => ['required'],
+            'amount' => ['required', 'integer'],
+            'total_price' => ['required', 'integer'],
         ];
     }
 }

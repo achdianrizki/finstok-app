@@ -7,14 +7,14 @@
     <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    {{-- <title>{{ config('app.name', 'K UI') }}</title> --}}
-    <title>halo</title>
+    <title>@yield('title', 'Dashboard')</title>
 
     <!-- Fonts -->
     <link
         href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,200;0,300;0,400;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,600;1,700;1,800;1,900&display=swap"
         rel="stylesheet" />
 
+        <link rel="stylesheet" href="/vendor/select2/css/select2.min.css">
     <!-- Styles -->
     @stack('styles')
     <style>
@@ -78,6 +78,7 @@
     @include('sweetalert::alert')
     <!-- Script Tambhan -->
     <script src="{{ asset('assets/js/jquery.js') }}"></script>
+    <script src="/vendor/select2/js/select2.min.js"></script>
     @stack('scripts')
 </body>
 

@@ -13,17 +13,18 @@ return new class extends Migration
     {
         Schema::create('purchases', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
             $table->foreignId('item_id')->nullable()->constrained('items')->onDelete('cascade');
-            $table->unsignedBigInteger('price');
-            $table->integer('qty');
             $table->unsignedBigInteger('total_price');
-            $table->enum('purchase_type', ['stock', 'asset']);
+            $table->unsignedBigInteger('just_paid');
+            $table->enum('status', ['paid', 'unpaid']);
             $table->string('supplier_name');
+            $table->integer('stock');
+            $table->integer('discount');
+            $table->string('invoice number');
+            $table->foreignId('warehouse_id')->constrained()->onDelete('cascade');
             $table->softDeletes();
             $table->timestamps();
         });
-        
     }
 
     /**

@@ -16,9 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('code')->unique();
             $table->unsignedBigInteger('price');
-            $table->integer('stok');
             $table->foreignId('category_id')->constrained()->onDelete('cascade');
-            $table->foreignId('warehouse_id')->constrained()->onDelete('cascade');
             $table->softDeletes();
             $table->timestamps();
         });

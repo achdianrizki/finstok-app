@@ -37,7 +37,6 @@
                         :value="old('price')" placeholder="{{ __('Harga') }}" />
                     <x-input-error :messages="$errors->get('price')" class="mt-2" />
                 </div>
-
                 <div class="mb-5 space-y-2">
                     <x-form.label for="category" :value="__('Kategori')" />
                     <div class="custom-select">
@@ -51,31 +50,6 @@
                         <x-input-error :messages="$errors->get('category_id')" class="mt-2" />
                     </div>
                 </div>
-
-
-
-                <div class="mb-5 space-y-2">
-                    <x-form.label for="stok" :value="__('Stok awal')" />
-                    <x-form.input id="stok" class="block w-full" type="text" name="stok" :value="old('stok')"
-                        placeholder="{{ __('Stok awal') }}" />
-                    <x-input-error :messages="$errors->get('stok')" class="mt-2" />
-                </div>
-
-                <div class="mb-5 space-y-2">
-                    <x-form.label for="warehouse" :value="__('Gudang')" />
-                    <x-form.select id="warehouse" class="block w-full" type="text" name="warehouse_id"
-                        :value="old('warehouse_id')">
-                        @forelse ($warehouses as $warehouse)
-                            <option value="" selected disabled hidden>{{ __('Pilih Gudang') }}
-                            <option value="{{ $warehouse->id }}">{{ $warehouse->name }}</option>
-                        @empty
-                            <option value="" selected disabled hidden>{{ __('Pilih Gudang') }}
-                            </option>
-                        @endforelse
-                    </x-form.select>
-                    <x-input-error :messages="$errors->get('warehouse_id')" class="mt-2" />
-                </div>
-
 
                 <div class="grid justify-items-end">
                     <x-button class="gap-2" id="buttonSubmit">
