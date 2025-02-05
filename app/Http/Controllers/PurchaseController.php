@@ -14,21 +14,24 @@ class PurchaseController extends Controller
      */
     public function index()
     {
-        $purchase_items = Purchase::with('item')->get();
+        $purchase_items = Purchase::with(['item'])->get();
 
         return view('manager.finance.purchase.index', compact('purchase_items'));
     }
-    
+
     public function getPurchaseItem(Request $request)
     {
-        $query = Purchase::with('items');
+        $query = Purchase::with('item');
 
         if ($request->has('search') && !empty($request->search)) {
             $search = $request->search;
 
             $query->where(function ($q) use ($search) {
                 $q->where('name', 'like', '%' . $search . '%')
-                    ->orWhere('code', 'like', '%' . $search . '%');
+                    ->orWhere('supplier_name', 'like', '%' . $search . '%');
+                $q->orWhereHas('item', function ($query) use ($search) {
+                    $query->where('name', 'like', '%' . $search . '%');
+                });
             });
         }
         $products = $query->paginate(5);
@@ -49,16 +52,16 @@ class PurchaseController extends Controller
      */
     public function store(StorePurchaseRequest $request, Purchase $purchases)
     {
-        DB::transaction(function () use ($request){
+        DB::transaction(function () use ($request) {
             $validated = $request->validated();
-            
+
             $validated['purchase_type'] = 'asset';
             $validated['total_price'] = str_replace('.', '', $request->total_price);
-            
+
             // dd($validated);
 
             Purchase::create($validated);
-        });        
+        });
 
         return redirect()->route('manager.purchase.index');
     }

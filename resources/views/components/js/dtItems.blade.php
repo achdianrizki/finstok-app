@@ -31,25 +31,18 @@
                             <tr class="border dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-slate-900">
                                 <td class="px-6 py-4 whitespace-nowrap">${item.name}</td>
                                 <td class="px-6 py-4 whitespace-nowrap hidden sm:table-cell">${item.code}</td>
-                                <td class="px-6 py-4 whitespace-nowrap hidden sm:table-cell">${item.stok}</td>
                                 <td class="px-6 py-4 whitespace-nowrap hidden md:table-cell">${formatRupiah(item.price)}</td>
-                                <td class="px-6 py-4 whitespace-nowrap hidden lg:table-cell">${item.category ? item.category.name : 'No Category'}</td>
-                                <td class="px-6 py-4 whitespace-nowrap hidden lg:table-cell">${item.warehouse ? item.warehouse.name : 'No Warehouse'}</td>
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <x-button target="" href="/manager/items/${item.id}/edit" variant="warning" class="justify-center max-w-sm gap-2">
                                         <x-heroicon-o-pencil class="w-3 h-3" aria-hidden="true" />
                                     </x-button>
-
-                                    <form action="/manager/items/${item.id}" method="POST"
-                                        class="inline-block ml-4">
+                                    <form method="POST" action="/manager/items/${item.id}" style="display:inline;">
                                         @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="text-red-600 hover:text-red-900">Delete</button>
+                                        <input type="hidden" name="_method" value="DELETE">
+                                        <x-button type="submit" class="bg-red-500 text-white py-1 px-3 rounded hover:bg-red-600">
+                                            <x-heroicon-o-trash class="w-3 h-3" aria-hidden="true" />
+                                        </x-button>
                                     </form>
-
-                                    <x-button onclick="confirmDelete(${item.id})" variant="danger" class="justify-center max-w-sm gap-2">
-                                        <x-heroicon-o-trash class="w-3 h-3" aria-hidden="true" />
-                                    </x-button>
 
                                     <button onclick="toggleDetails(${index})" class="bg-green-800 text-white  p-2 rounded sm:hidden">
                                         <x-heroicon-o-chevron-down class="w-2 h-2" aria-hidden="true" />    
@@ -60,10 +53,7 @@
                                 <td colspan="6" class="px-6 py-4">
                                     <div>
                                         <p><strong>Kode:</strong> ${item.code}</p>
-                                        <p><strong>Stok:</strong> ${item.stok}</p>
                                         <p><strong>Harga/pcs:</strong> ${formatRupiah(item.price)}</p>
-                                        <p><strong>Kategori:</strong> ${item.category ? item.category.name : 'No Category'}</p>
-                                        <p><strong>Gudang:</strong> ${item.warehouse ? item.warehouse.name : 'No Warehouse'}</p>
                                     </div>
                                 </td>
                             </tr>
@@ -105,55 +95,5 @@
         });
     });
 
-    // function confirmDelete(itemId) {
-    //     const swalWithBootstrapButtons = Swal.mixin({
-    //         customClass: {
-    //             confirmButton: "bg-green-800 text-white p-1 mx-1 rounded",
-    //             cancelButton: "bg-red-500 text-white  p-1 rounded"
-    //         },
-    //         buttonsStyling: false
-    //     });
-
-    //     swalWithBootstrapButtons.fire({
-    //         title: "Are you sure?",
-    //         text: "You won't be able to revert this!",
-    //         icon: "warning",
-    //         showCancelButton: true,
-    //         confirmButtonText: "Yes, delete it!",
-    //         cancelButtonText: "No, cancel!",
-    //         reverseButtons: true
-    //     }).then((result) => {
-    //         if (result.isConfirmed) {
-    //             $.ajax({
-    //                 url: `/manager/items/${itemId}`,
-    //                 method: 'DELETE',
-    //                 data: {
-    //                     _token: '{{ csrf_token() }}',
-    //                 },
-
-    //                 success: function(response) {
-    //                     swalWithBootstrapButtons.fire({
-    //                         title: "Deleted!",
-    //                         text: "The item has been deleted.",
-    //                         icon: "success"
-    //                     });
-    //                     fetchitems(page, searchQuery);
-    //                 },
-    //                 error: function(xhr) {
-    //                     swalWithBootstrapButtons.fire({
-    //                         title: "Error",
-    //                         text: "There was an error deleting the item.",
-    //                         icon: "error"
-    //                     });
-    //                 }
-    //             });
-    //         } else if (result.dismiss === Swal.DismissReason.cancel) {
-    //             swalWithBootstrapButtons.fire({
-    //                 title: "Cancelled",
-    //                 text: "Your item is safe :)",
-    //                 icon: "error"
-    //             });
-    //         }
-    //     });
-    // }
+    
 </script>

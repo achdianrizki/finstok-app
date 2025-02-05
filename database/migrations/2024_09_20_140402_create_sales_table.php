@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('sales', function (Blueprint $table) {
             $table->id();
-            $table->string('buyer_name');
+            $table->foreignId('buyer_id')->constrained('buyers')->onDelete('cascade');
             $table->foreignId('item_id')->constrained('items')->onDelete('cascade');
             $table->integer('qty_sold');
             $table->enum('payment_method', ['cash', 'credit']);
@@ -22,7 +22,6 @@ return new class extends Migration
             $table->unsignedBigInteger('down_payment');
             $table->unsignedBigInteger('remaining_payment');
             $table->unsignedBigInteger('total_price');
-            $table->foreignId('distributor_id')->nullable()->constrained('distributors')->onDelete('cascade');
             $table->softDeletes();
             $table->timestamps();
         });

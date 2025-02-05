@@ -4,7 +4,7 @@
             <h2 class="font-semibold text-xl leading-tight">
                 {{ __('Category') }}
             </h2>
-            <x-button href="{{ route('manager.categories.create') }}" variant="success"
+            <x-button href="{{ route('manager.other.categories.create') }}" variant="success"
                 class="justify-center max-w-xl gap-2">
                 <x-heroicon-o-plus class="w-6 h-6" aria-hidden="true" />
                 <span>Tambah Kategori</span>

@@ -76,7 +76,7 @@ class ItemController extends Controller
 
             if ($modal_awal < $total_amount_item) {
 
-                alert()->error('ErrorAlert', 'Modal tidak mencukupi untuk melakukan pembelian.');
+                // alert()->error('ErrorAlert', 'Modal tidak mencukupi untuk melakukan pembelian.');
                 return redirect()->route('manager.items.index');
             } else {
                 $items = Item::create($validated);
@@ -95,7 +95,7 @@ class ItemController extends Controller
             }
         });
 
-        toast('Success Toast', 'success');
+        // toast('Success Toast', 'success');
         return redirect()->route('manager.items.index');
     }
 

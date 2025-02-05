@@ -14,7 +14,7 @@
 
 
     <div class="p-6 overflow-hidden bg-white rounded-md shadow-md dark:bg-dark-eval-1">
-        <form action="{{ route('manager.categories.store') }}" method="POST">
+        <form action="{{ route('manager.other.categories.store') }}" method="POST">
             @csrf
 
             <div class="grip gap-6">

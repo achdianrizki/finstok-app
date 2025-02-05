@@ -10,7 +10,6 @@ use App\Http\Controllers\WarehouseController;
 use App\Http\Controllers\DistributorController;
 use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\SaleController;
-use App\Models\Purchase;
 
 /*
 |--------------------------------------------------------------------------
@@ -36,16 +35,14 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::get('/categories/search', [CategoryController::class, 'search'])->name('categories.search');
-    Route::get('/categories/search', [CategoryController::class, 'search'])->name('categories.search');
     Route::post('/categories/storeinput', [CategoryController::class, 'storeinput'])->name('categories.storeinput');
 
     Route::prefix('manager')->name('manager.')->group(function () {
-        Route::resource('categories', CategoryController::class)->middleware('role:manager|admin');
         Route::resource('items', ItemController::class)->middleware('role:manager|admin');
-        Route::resource('distributors', DistributorController::class)->middleware('role:manager|admin');
         Route::resource('warehouses', WarehouseController::class)->middleware('role:manager|admin');
         Route::resource('purchase', PurchaseController::class)->middleware('role:manager|admin');
-        Route::resource('sale', SaleController::class)->middleware('role:manager|admin');
+        Route::resource('sales', SaleController::class)->middleware('role:manager|admin');
+
 
 
         Route::get('/finance/sales', [FinanceController::class, 'sales'])->name('finance.sales');
@@ -54,6 +51,11 @@ Route::middleware('auth')->group(function () {
         Route::resource('modal', ModalController::class)->middleware('role:manager|finance');
         //Modal update status (is_confirm)
         Route::put('updateStatus/{modal}', [ModalController::class, 'updateStatus'])->name('modal.updateStatus')->middleware('role:manager');
+
+        Route::prefix('other')->name('other.')->group(function (){
+            Route::resource('categories', CategoryController::class)->middleware('role:manager|admin');
+            Route::resource('distributors', DistributorController::class)->middleware('role:manager|admin');
+        });
 
     });
     //printPdf & ExportExcel
@@ -69,6 +71,8 @@ Route::get('/items-data', [ItemController::class, 'getItems']);
 Route::get('/categories-data', [CategoryController::class, 'getCategories']);
 Route::get('/warehouses-data', [WarehouseController::class, 'getWarehouses']);
 Route::get('/distributors-data', [DistributorController::class, 'getDistributors']);
-Route::get('/items-purchase-data', [PurchaseController::class, 'getPurchaseItem']);
+Route::get('/purchases-data', [PurchaseController::class, 'getPurchaseItem']);
+Route::get('/sales-data', [SaleController::class, 'getSaleItem']);
+Route::get('/items-data-sale', [SaleController::class, 'searchItem']);
 
 require __DIR__ . '/auth.php';
