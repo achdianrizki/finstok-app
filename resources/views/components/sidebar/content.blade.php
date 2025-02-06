@@ -26,18 +26,19 @@
         </x-slot>
     </x-sidebar.link>
 
-
-    <x-sidebar.link title="Distributor" href="{{ route('manager.other.distributors.index') }}" :isActive="request()->routeIs('manager.distributors*')">
+    <x-sidebar.link title="Distributor" href="{{ route('manager.distributors.index') }}" :isActive="request()->routeIs('manager.distributors*')">
         <x-slot name="icon">
             <x-heroicon-o-user-group class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
         </x-slot>
     </x-sidebar.link>
 
-    <x-sidebar.link title="Pengguna" href="{{ route('manager.other.distributors.index') }}" :isActive="request()->routeIs('manager.distributors*')">
+    @role('manager')
+    <x-sidebar.link title="Pengguna" href="{{ route('manager.users.index') }}" :isActive="request()->routeIs('manager.users*')">
         <x-slot name="icon">
             <x-heroicon-o-user class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
         </x-slot>
     </x-sidebar.link>
+    @endrole
 
     <x-sidebar.dropdown title="Kelola Keuangan" :active="request()->routeIs('manager.finance*')">
         <x-slot name="icon">
@@ -98,7 +99,6 @@
         </x-slot>
 
         <x-sidebar.sublink title="Kategori" href="{{ route('manager.other.categories.index') }}" :active="request()->routeIs('manager.other.categories*')" />
-        <x-sidebar.sublink title="Pengguna" href="{{ route('manager.other.categories.index') }}" :active="request()->routeIs('manager.other.categories*')" />
     </x-sidebar.dropdown>
 
 </x-perfect-scrollbar>

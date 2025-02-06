@@ -2,7 +2,7 @@
 
     <x-slot name="header">
         <div class="flex items-center gap-4">
-            <x-button target="" href="{{ route('manager.categories.index') }}" variant="primary" size="sm" class="justify-center gap-2">
+            <x-button target="" href="{{ route('manager.other.categories.index') }}" variant="primary" size="sm" class="justify-center gap-2">
                 <x-heroicon-o-arrow-left class="w-4 h-4" aria-hidden="true" />
             </x-button>
             <h2 class="text-xl font-semibold leading-tight">
