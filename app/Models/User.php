@@ -3,10 +3,11 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Traits\HasRoles;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
-use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
@@ -46,15 +47,18 @@ class User extends Authenticatable
         ];
     }
 
-    public function sale(){
+    public function sale()
+    {
         return $this->hasOne(Sale::class);
     }
 
-    public function purchase(){
+    public function purchase()
+    {
         return $this->hasOne(Purchase::class);
     }
 
-    public function finance(){
+    public function finance()
+    {
         return $this->hasOne(Finance::class);
     }
 }

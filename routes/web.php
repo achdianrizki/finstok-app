@@ -10,6 +10,8 @@ use App\Http\Controllers\WarehouseController;
 use App\Http\Controllers\DistributorController;
 use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\SaleController;
+use App\Http\Controllers\UserController;
+use App\Models\User;
 
 /*
 |--------------------------------------------------------------------------
@@ -45,6 +47,8 @@ Route::middleware('auth')->group(function () {
         ])->middleware('role:manager|admin');
         Route::resource('purchase', PurchaseController::class)->middleware('role:manager|admin');
         Route::resource('sales', SaleController::class)->middleware('role:manager|admin');
+        Route::resource('distributors', DistributorController::class)->middleware('role:manager|admin');
+        Route::resource('users', UserController::class)->middleware('role:manager');
 
 
 
@@ -77,5 +81,6 @@ Route::get('/distributors-data', [DistributorController::class, 'getDistributors
 Route::get('/purchases-data', [PurchaseController::class, 'getPurchaseItem']);
 Route::get('/sales-data', [SaleController::class, 'getSaleItem']);
 Route::get('/items-data-sale', [SaleController::class, 'searchItem']);
+Route::get('/users-data', [UserController::class, 'getUsers'])->name('manager.users.data');;
 
 require __DIR__ . '/auth.php';

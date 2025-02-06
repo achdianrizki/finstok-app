@@ -23,11 +23,11 @@
                             rows += `
                           <tr class="border dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-slate-900">
                             <td class="px-6 py-4 whitespace-nowrap">
-                                <form id="update-form-${category.id}" action="/manager/categories/${category.id}" method="POST" class="inline-flex">
+                                <form id="update-form-${category.id}" action="/manager/other/categories/${category.id}" method="POST" class="inline-flex">
                                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                     <input type="hidden" name="_method" value="PUT">
                                     <input id="name" class="rounded block w-full p-2 dark:bg-dark-eval-1" type="text" name="name" value="${category.name}" required autofocus>
-                            </td>
+                            </td>   
 
                               <td class="px-6 py-4 whitespace-nowrap">
                                     <x-button type="submit" form="update-form-${category.id}" variant="warning" class="justify-center max-w-sm gap-2">
@@ -35,7 +35,7 @@
                                     </x-button>
                                     </form>
 
-                                    <form method="POST" action="/manager/categories/${category.id}" style="display:inline;">
+                                    <form method="POST" action="/manager/other/categories/${category.id}" style="display:inline;">
                                         @csrf
                                         <input type="hidden" name="_method" value="DELETE">
                                         <x-button type="submit" class="bg-red-500 text-white py-1 px-3 rounded hover:bg-red-600">

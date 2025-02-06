@@ -29,21 +29,18 @@ class RoleSeeder extends Seeder
 
         $userOwner = User::create([
             'name' => 'manager',
-            'avatar' => 'images/default-avatar.png',
             'email' => 'manager@manager.com',
             'password' => bcrypt('password')
         ]);
 
         $userFinance = User::create([
             'name' => 'finance',
-            'avatar' => 'images/default-avatar.png',
             'email' => 'finance@finance.com',
             'password' => bcrypt('password')
         ]);
 
         $userAdmin = User::create([
             'name' => 'admin',
-            'avatar' => 'images/default-avatar.png',
             'email' => 'admin@admin.com',
             'password' => bcrypt('password')
         ]);

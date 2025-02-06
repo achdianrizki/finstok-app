@@ -50,7 +50,7 @@ class CategoryController extends Controller
 
         Category::create($validatedData);
 
-        return redirect()->route('manager.categories.index')->with('success', 'Category added successfully');
+        return redirect()->route('manager.other.categories.index')->with('success', 'Category added successfully');
     }
 
     /**
@@ -77,7 +77,7 @@ class CategoryController extends Controller
         $validatedData = $request->validated();
         $category->update($validatedData);
 
-        return redirect()->route('manager.categories.index')->with('success', 'Category updated successfully');
+        return redirect()->route('manager.other.categories.index')->with('success', 'Category updated successfully');
     }
 
     /**
@@ -87,7 +87,7 @@ class CategoryController extends Controller
     {
         $category->delete();
 
-        return redirect()->route('manager.categories.index')->with('success', 'Category added successfully');
+        return redirect()->route('manager.other.categories.index')->with('success', 'Category added successfully');
     }
 
     public function search(Request $request)
