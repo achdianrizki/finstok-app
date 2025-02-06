@@ -40,6 +40,8 @@
                 <input type="text" id="search" placeholder="Search items..."
                     class=" rounded w-full md:w-auto px-4 py-2 dark:bg-dark-eval-1" name="search">
             </div>
+
+            <input type="hidden" id="warehouseId" value="{{ $warehouse->id }}">
         </div>
 
         <div class="overflow-x-auto">
@@ -55,13 +57,11 @@
                         <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Aksi</th>
                     </tr>
                 </thead>
-                <tbody id="itemTable" class="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-dark-eval-1">
+                <tbody id="itemsByWarehouse" class="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-dark-eval-1">
 
                 </tbody>
             </table>
         </div>
-        
-
 
         <!-- Pagination Controls -->
         <div class="mt-4 flex items-center justify-center">
@@ -90,7 +90,7 @@
                 }
             }
         </script>
-        @include('components.js.dtItems')
+        @include('components.js.dtItemsByWarehouse')
     @endpush
 
 </x-app-layout>

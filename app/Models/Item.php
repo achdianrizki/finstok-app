@@ -14,7 +14,9 @@ class Item extends Model
         'name',
         'code',
         'price',
-        'category_id'
+        'stock',
+        'category_id',
+        'warehouse_id'
     ];
 
     public function category(){

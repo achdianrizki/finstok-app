@@ -56,10 +56,10 @@
 
 
                 <div class="mb-5 space-y-2">
-                    <x-form.label for="stok" :value="__('Stok awal')" />
-                    <x-form.input id="stok" class="block w-full" type="text" name="stok" :value="$item->stok"
-                        placeholder="{{ __('Stok awal') }}" />
-                    <x-input-error :messages="$errors->get('stok')" class="mt-2" />
+                    <x-form.label for="stock" :value="__('stock awal')" />
+                    <x-form.input id="stock" class="block w-full" type="text" name="stock" :value="$item->stock"
+                        placeholder="{{ __('stock awal') }}" />
+                    <x-input-error :messages="$errors->get('stock')" class="mt-2" />
                 </div>
 
                 <div class="mb-5 space-y-2">

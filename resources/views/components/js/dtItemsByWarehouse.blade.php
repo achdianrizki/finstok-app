@@ -3,6 +3,8 @@
         let page = 1;
         let lastPage = 1;
         let searchQuery = '';
+        let warehouseId = $('#warehouseId').val();
+
 
         function fetchitems(page, searchQuery = '') {
 
@@ -14,7 +16,7 @@
             }
 
             $.ajax({
-                url: '/items-data?page=' + page + '&search=' + searchQuery,
+                url: `/manager/warehouses/${warehouseId}/items?page=${page}&search=${searchQuery}`,
                 method: 'GET',
                 success: function(response) {
                     let rows = '';
@@ -64,7 +66,7 @@
                         });
                     }
 
-                    $('#itemTable').html(rows);
+                    $('#itemsByWarehouse').html(rows);
 
                     lastPage = response.last_page;
                     $('#currentPage').text(page);
@@ -97,6 +99,4 @@
             fetchitems(page, searchQuery);
         });
     });
-
-    
 </script>

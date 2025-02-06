@@ -16,6 +16,7 @@ class WarehouseSeeder extends Seeder
         Warehouse::create([
             'name' => 'Gudang Utama',
             'address' => 'Jl. Palangkaraya',
+            'slug' => 'Gudang Utama',
         ]);
     }
 }

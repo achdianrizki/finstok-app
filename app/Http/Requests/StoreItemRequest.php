@@ -25,8 +25,10 @@ class StoreItemRequest extends FormRequest
             'name' => ['required', 'string', 'max:255'],
             'code' => ['required', 'string', 'max:10'],
             'price' => ['required', 'integer'],
-            'stok' => ['required', 'integer'],  
-            'category_id' => ['required']
+            'stock' => ['required', 'integer'],
+            'category_id' => ['required'],
+            'warehouse_id' => ['required'],
+            
         ];
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Item;
 use App\Models\Warehouse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -49,7 +50,7 @@ class WarehouseController extends Controller
 
         Warehouse::create($validatedData);
 
-        return redirect()->route('manager.warehouses.index')->with('success','Warehouse added successfully');
+        return redirect()->route('manager.warehouses.index')->with('success', 'Warehouse added successfully');
     }
 
     /**
@@ -57,8 +58,28 @@ class WarehouseController extends Controller
      */
     public function show(Warehouse $warehouse)
     {
-        //
+        return view('manager.warehouse.warehouse', compact('warehouse'));
     }
+
+    public function getItemsByWarehouse(Request $request, Warehouse $warehouse)
+    {
+        $query = Item::with(['category', 'warehouse'])
+            ->where('warehouse_id', $warehouse->id);
+
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                    ->orWhere('code', 'like', "%{$search}%")
+                    ->orWhereHas('category', function ($query) use ($search) {
+                        $query->where('name', 'like', "%{$search}%");
+                    });
+            });
+        }
+
+        return response()->json($query->paginate(10));
+    }
+
 
     /**
      * Show the form for editing the specified resource.
@@ -74,10 +95,10 @@ class WarehouseController extends Controller
     public function update(UpdateWarehouseRequest $request, Warehouse $warehouse)
     {
         $validatedData = $request->validated();
-        
+
         $warehouse->update($validatedData);
 
-        return redirect()->route('manager.warehouses.index')->with('success','Warehouse updated successfully');
+        return redirect()->route('manager.warehouses.index')->with('success', 'Warehouse updated successfully');
     }
 
     /**
@@ -87,6 +108,6 @@ class WarehouseController extends Controller
     {
         $warehouse->delete();
 
-        return redirect()->route('manager.warehouses.index')->with('success','Warehouse deleted successfully');
+        return redirect()->route('manager.warehouses.index')->with('success', 'Warehouse deleted successfully');
     }
 }

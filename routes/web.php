@@ -40,6 +40,9 @@ Route::middleware('auth')->group(function () {
     Route::prefix('manager')->name('manager.')->group(function () {
         Route::resource('items', ItemController::class)->middleware('role:manager|admin');
         Route::resource('warehouses', WarehouseController::class)->middleware('role:manager|admin');
+        Route::resource('warehouses', WarehouseController::class)->parameters([
+            'warehouses' => 'warehouse:slug'
+        ])->middleware('role:manager|admin');
         Route::resource('purchase', PurchaseController::class)->middleware('role:manager|admin');
         Route::resource('sales', SaleController::class)->middleware('role:manager|admin');
 
@@ -52,11 +55,10 @@ Route::middleware('auth')->group(function () {
         //Modal update status (is_confirm)
         Route::put('updateStatus/{modal}', [ModalController::class, 'updateStatus'])->name('modal.updateStatus')->middleware('role:manager');
 
-        Route::prefix('other')->name('other.')->group(function (){
+        Route::prefix('other')->name('other.')->group(function () {
             Route::resource('categories', CategoryController::class)->middleware('role:manager|admin');
             Route::resource('distributors', DistributorController::class)->middleware('role:manager|admin');
         });
-
     });
     //printPdf & ExportExcel
     Route::get('/items/export/pdf', [ItemController::class, 'exportPDF'])->name('items.export.pdf');
@@ -70,6 +72,7 @@ Route::middleware('auth')->group(function () {
 Route::get('/items-data', [ItemController::class, 'getItems']);
 Route::get('/categories-data', [CategoryController::class, 'getCategories']);
 Route::get('/warehouses-data', [WarehouseController::class, 'getWarehouses']);
+Route::get('/manager/warehouses/{warehouse:id}/items', [WarehouseController::class, 'getItemsByWarehouse']);
 Route::get('/distributors-data', [DistributorController::class, 'getDistributors']);
 Route::get('/purchases-data', [PurchaseController::class, 'getPurchaseItem']);
 Route::get('/sales-data', [SaleController::class, 'getSaleItem']);

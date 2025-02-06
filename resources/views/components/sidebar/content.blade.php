@@ -59,30 +59,31 @@
     @endrole
 
     @role('manager')
-    {{-- Warehouse Start --}}
-    <div x-data="{ open: false }">
-        <div class="flex items-center">
-            <x-sidebar.linkToggle title="Gudang" href="{{ route('manager.warehouses.index') }}" :isActive="request()->routeIs('manager.warehouses*')" :collapsible="true">
-                <x-slot name="icon">
-                    <x-icons.warehouse class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
-                </x-slot>
-            </x-sidebar.linkToggle>
-        </div>
+        {{-- Warehouse Start --}}
+        <div x-data="{ open: false }">
+            <div class="flex items-center">
+                <x-sidebar.linkToggle title="Gudang" href="{{ route('manager.warehouses.index') }}" :isActive="request()->routeIs('manager.warehouses*')"
+                    :collapsible="true">
+                    <x-slot name="icon">
+                        <x-icons.warehouse class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
+                    </x-slot>
+                </x-sidebar.linkToggle>
+            </div>
 
-        <div x-show="open && (isSidebarOpen || isSidebarHovered)" x-collapse
-            class="relative px-0 pt-2 pb-0 ml-5 before:w-0 before:block before:absolute before:inset-y-0 before:left-0 before:border-l-2 before:border-l-gray-200 dark:before:border-l-gray-600 list-none">
-            @foreach ($warehouses as $warehouse)
-                <x-sidebar.sublink title="{{ $warehouse->name }}"
-                    href="{{ route('manager.warehouses.show', $warehouse->id) }}" :active="request()->routeIs('manager.warehouses.show') &&
-                        request()->route('warehouses') == $warehouse->id" class="relative">
-                </x-sidebar.sublink>
-            @endforeach
+            <div x-show="open && (isSidebarOpen || isSidebarHovered)" x-collapse
+                class="relative px-0 pt-2 pb-0 ml-5 before:w-0 before:block before:absolute before:inset-y-0 before:left-0 before:border-l-2 before:border-l-gray-200 dark:before:border-l-gray-600 list-none">
+                @foreach ($warehouses as $warehouse)
+                    <x-sidebar.sublink title="{{ $warehouse->name }}"
+                        href="{{ route('manager.warehouses.show', $warehouse->slug) }}" :active="request()->routeIs('manager.warehouses.show') &&
+                            request()->route('warehouse') == $warehouse->slug" class="relative">
+                    </x-sidebar.sublink>
+                @endforeach
+            </div>
         </div>
-    </div>
-    {{-- Warehouse End --}}
+        {{-- Warehouse End --}}
     @endrole
 
-    
+
     <x-sidebar.dropdown title="Penjualan" :active="request()->routeIs('manager.sales*')">
         <x-slot name="icon">
             <x-icons.sale-tag class="flex-shrink-0 w-6 h-6" aria-hidden="true" />

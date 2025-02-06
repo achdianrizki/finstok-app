@@ -29,27 +29,28 @@ class ItemController extends Controller
 
         return view('manager.items.index', compact('items'));
     }
+
     public function getItems(Request $request)
     {
+        // dd($request->all);
         $query = Item::with(['category', 'warehouse']);
 
-        if ($request->has('search') && !empty($request->search)) {
+        if ($request->filled('search')) {
             $search = $request->search;
 
             $query->where(function ($q) use ($search) {
-                $q->where('name', 'like', '%' . $search . '%')
-                    ->orWhere('code', 'like', '%' . $search . '%');
-                $q->orWhereHas('category', function ($query) use ($search) {
-                    $query->where('name', 'like', '%' . $search . '%');
-                });
-                $q->orWhereHas('warehouse', function ($query) use ($search) {
-                    $query->where('name', 'like', '%' . $search . '%');
-                });
+                $q->where('name', 'like', "%{$search}%")
+                    ->orWhere('code', 'like', "%{$search}%")
+                    ->orWhereHas('category', function ($query) use ($search) {
+                        $query->where('name', 'like', "%{$search}%");
+                    })
+                    ->orWhereHas('warehouse', function ($query) use ($search) {
+                        $query->where('name', 'like', "%{$search}%");
+                    });
             });
         }
-        $products = $query->paginate(5);
 
-        return response()->json($products);
+        return response()->json($query->paginate(10));
     }
 
 
@@ -69,33 +70,35 @@ class ItemController extends Controller
     {
         $modal_awal = Modal::value('amount');
 
-        DB::transaction(function () use ($request, $items, $modal_awal) {
-            $validated = $request->validated();
+        // DB::transaction(function () use ($request, $items, $modal_awal) {
+        $validated = $request->validated();
+        // dd($validated);
 
-            $total_amount_item = $validated['price'] * $validated['stok'];
+        // $total_amount_item = $validated['price'] * $validated['stock'];
 
-            if ($modal_awal < $total_amount_item) {
+        // if ($modal_awal < $total_amount_item) {
 
-                // alert()->error('ErrorAlert', 'Modal tidak mencukupi untuk melakukan pembelian.');
-                return redirect()->route('manager.items.index');
-            } else {
-                $items = Item::create($validated);
+        //     alert()->error('ErrorAlert', 'Modal tidak mencukupi untuk melakukan pembelian.');
+        //     return redirect()->route('manager.items.index');
+        // } else {
+        $items = Item::create($validated);
 
-                Purchase::create([
-                    'name' => $validated['name'],
-                    'item_id' => $items->id,
-                    'price' => $validated['price'],
-                    'qty' => $validated['stok'],
-                    'total_price' => $total_amount_item,
-                    'purchase_type' => 'stock',
-                    'supplier_name' => "pak asep",
-                ]);
+        // dd($items);
+        // Purchase::create([
+        //     'name' => $validated['name'],
+        //     'item_id' => $items->id,
+        //     'price' => $validated['price'],
+        //     'qty' => $validated['stock'],
+        //     'total_price' => $total_amount_item,
+        //     'purchase_type' => 'stock',
+        //     'supplier_name' => "pak asep",
+        // ]);
 
-                Modal::where('amount', $modal_awal)->decrement('amount', $total_amount_item);
-            }
-        });
+        // Modal::where('amount', $modal_awal)->decrement('amount', $total_amount_item);
+        // }    
+        // });
 
-        // toast('Success Toast', 'success');
+        toast('Success Toast', 'success');
         return redirect()->route('manager.items.index');
     }
 
@@ -123,20 +126,22 @@ class ItemController extends Controller
      */
     public function update(UpdateItemRequest $request, Item $item)
     {
-        DB::transaction(function () use ($request, $item) {
-            $validated =  $request->validated();
+        // DB::transaction(function () use ($request, $item) {
+        // dd($request);
+        $validated =  $request->validated();
 
-            $item->update($validated);
+        $item->update($validated);
 
-            Purchase::where('id', $item->id)->update([
-                'name' => $validated['name'],
-                'item_id' => $item->id,
-                'price' => $validated['price'],
-                'total_price' => $validated['price'] * $validated['stok'],
-                'purchase_type' => 'stock',
-                'supplier_name' => "pak asep",
-            ]);
-        });
+
+        // Purchase::where('id', $item->id)->update([
+        //     'name' => $validated['name'],
+        //     'item_id' => $item->id,
+        //     'price' => $validated['price'],
+        //     'total_price' => $validated['price'] * $validated['stock'],
+        //     'purchase_type' => 'stock',
+        //     'supplier_name' => "pak asep",
+        // ]);
+        // });
 
         toast('Success Toast', 'success');
         return redirect()->route('manager.items.index');
@@ -147,8 +152,8 @@ class ItemController extends Controller
      */
     public function destroy(Item $item)
     {
-           
-        $item->with('purchase')->where('item_id', $item)->delete();   
+
+        $item->with('purchase')->where('item_id', $item)->delete();
         return redirect()->back();
     }
 
