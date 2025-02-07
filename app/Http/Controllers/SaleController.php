@@ -95,19 +95,25 @@ class SaleController extends Controller
         // Hapus format mata uang dari total_price dan down_payment sebelum perhitungan
         $validatedData['total_price'] = (float) preg_replace('/[^0-9]/', '', $validatedData['total_price']);
         $validatedData['total_price'] = floor($validatedData['total_price'] / 100);
-        
+
         $validatedData['down_payment'] = (float) preg_replace('/[^0-9]/', '', $validatedData['down_payment']);
 
 
         // Hitung remaining_payment setelah nilai yang benar diperoleh
         $validatedData['remaining_payment'] = $validatedData['total_price'] - $validatedData['down_payment'];
 
-        Sale::create($validatedData);
-
         $item = Item::find($validatedData['item_id']);
-        if ($item) {
-            $item->decrement('stock', $validatedData['qty_sold']); // Mengurangi stok sebesar qty_sold
+
+        if ($item->stock < $validatedData['qty_sold']) {
+            toast('Jumlah stok barang lebih sedikit dari jumlah penjualan barang!', 'error');
+        } else {
+            Sale::create($validatedData);
+
+            if ($item) {
+                $item->decrement('stock', $validatedData['qty_sold']); // Mengurangi stok sebesar qty_sold
+            }
         }
+
 
         return redirect()->route('manager.sales.index')->with('success', 'Sale added successfully');
     }

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AssetController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\ModalController;
@@ -59,6 +60,8 @@ Route::middleware('auth')->group(function () {
         //Modal update status (is_confirm)
         Route::put('updateStatus/{modal}', [ModalController::class, 'updateStatus'])->name('modal.updateStatus')->middleware('role:manager');
 
+        Route::resource('asset', AssetController::class)->middleware('role:manager|finance');
+
         Route::prefix('other')->name('other.')->group(function () {
             Route::resource('categories', CategoryController::class)->middleware('role:manager|admin');
             Route::resource('distributors', DistributorController::class)->middleware('role:manager|admin');
@@ -84,5 +87,6 @@ Route::get('/sales-data', [SaleController::class, 'getSaleItem']);
 Route::get('/items-data-sale', [SaleController::class, 'searchItem']);
 Route::get('/users-data', [UserController::class, 'getUsers'])->name('manager.users.data');
 Route::get('/sales-data', [SaleController::class, 'getSales']);
+Route::get('/assets-data', [AssetController::class, 'getAssets']);
 
 require __DIR__ . '/auth.php';

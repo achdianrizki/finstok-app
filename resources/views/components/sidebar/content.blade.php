@@ -33,11 +33,11 @@
     </x-sidebar.link>
 
     @role('manager')
-    <x-sidebar.link title="Pengguna" href="{{ route('manager.users.index') }}" :isActive="request()->routeIs('manager.users*')">
-        <x-slot name="icon">
-            <x-heroicon-o-user class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
-        </x-slot>
-    </x-sidebar.link>
+        <x-sidebar.link title="Pengguna" href="{{ route('manager.users.index') }}" :isActive="request()->routeIs('manager.users*')">
+            <x-slot name="icon">
+                <x-heroicon-o-user class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
+            </x-slot>
+        </x-sidebar.link>
     @endrole
 
     <x-sidebar.dropdown title="Kelola Keuangan" :active="request()->routeIs('manager.finance*')">
@@ -49,13 +49,15 @@
             :active="request()->routeIs('manager.finance.modal.primaryModal')" />
     </x-sidebar.dropdown>
 
-    @role('manager')
-        <x-sidebar.dropdown title="Finance" :active="request()->routeIs('manager.modal*')">
+    @role('manager|finance')
+        <x-sidebar.dropdown title="Finance" :active="request()->routeIs('manager.modal*') || request()->routeIs('manager.asset*')">
             <x-slot name="icon">
                 <x-heroicon-o-banknotes class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
             </x-slot>
 
             <x-sidebar.sublink title="Kelola Modal" href="{{ route('manager.modal.index') }}" :active="request()->routeIs('manager.modal*')" />
+
+            <x-sidebar.sublink title="Rincian Aset" href="{{ route('manager.asset.index') }}" :active="request()->routeIs('manager.asset*')" />
         </x-sidebar.dropdown>
     @endrole
 
@@ -76,7 +78,8 @@
                 @foreach ($warehouses as $warehouse)
                     <x-sidebar.sublink title="{{ $warehouse->name }}"
                         href="{{ route('manager.warehouses.show', $warehouse->slug) }}" :active="request()->routeIs('manager.warehouses.show') &&
-                            request()->route('warehouse') == $warehouse->slug" class="relative">
+                            request()->route('warehouse') == $warehouse->slug"
+                        class="relative">
                     </x-sidebar.sublink>
                 @endforeach
             </div>
