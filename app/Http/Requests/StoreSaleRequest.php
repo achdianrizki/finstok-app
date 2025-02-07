@@ -24,13 +24,13 @@ class StoreSaleRequest extends FormRequest
         return [
             'distributor_id' => ['required', 'integer', 'exists:distributors,id'],
             'item_id' => ['required', 'integer', 'exists:items,id'], 
-            'qty_sold' => ['required', 'integer', 'min:1'],
+            'qty_sold' => ['required', 'integer'],
             'payment_method' => ['required', 'string', 'in:cash,credit'], 
             'payment_status' => ['required', 'string', 'in:lunas,belum lunas'], 
             'discount' => ['nullable', 'numeric', 'min:0'], 
             'down_payment' => ['nullable', 'numeric', 'min:0'],
             'remaining_payment' => ['nullable', 'numeric', 'min:0'], 
-            'total_price' => ['required', 'numeric', 'min:0'],
+            'total_price' => ['required'],
         ];
     }
 }

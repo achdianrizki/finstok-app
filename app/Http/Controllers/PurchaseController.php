@@ -23,7 +23,7 @@ class PurchaseController extends Controller
 
     public function getItemsPurchase()
     {
-        return response()->json(Item::select('id', 'name')->get());
+        return response()->json(Item::select('id', 'name', 'price')->get());
     }
 
     public function getPurchaseItem(Request $request)
@@ -64,7 +64,7 @@ class PurchaseController extends Controller
     {
 
         // dd($request->all());
-        // DB::transaction(function () use ($request) {
+        DB::transaction(function () use ($request) {
         $validated = $request->validated();
         $validated['status'] = 'lunas';
         $validated['invoice_number'] = 'INV-' . now()->format('Y') . '/' . str_pad(mt_rand(1, 999), 3, '0', STR_PAD_LEFT);
@@ -76,7 +76,7 @@ class PurchaseController extends Controller
             $item->stock += $request->qty;
             $item->save();
         }
-        // });
+        });
         toast('Data berhasil disimpan', 'success');
         return redirect()->route('manager.purchase.index');
     }

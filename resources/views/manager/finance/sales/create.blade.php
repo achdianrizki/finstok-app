@@ -41,34 +41,41 @@
                 <div class="mb-5 space-y-2">
                     <x-form.label for="buyer_address" :value="__('Alamat')" />
                     <x-form.input id="buyer_address" class="block w-full" type="text" name="buyer_address"
-                        :value="old('buyer_address')" placeholder="{{ __('Alamat Pembeli') }}"  autofocus />
+                        :value="old('buyer_address')" placeholder="{{ __('Alamat Pembeli') }}" autofocus />
                 </div>
 
                 <!-- Buyer Phone -->
                 <div class="mb-5 space-y-2">
                     <x-form.label for="buyer_phone" :value="__('Nomor Telepon')" />
                     <x-form.input id="buyer_phone" class="block w-full" type="text" name="buyer_phone"
-                        :value="old('buyer_phone')" placeholder="{{ __('Nomor Telepon Pembeli') }}"  autofocus />
+                        :value="old('buyer_phone')" placeholder="{{ __('Nomor Telepon Pembeli') }}" autofocus />
                 </div>
 
                 <!-- Item -->
                 <div class="mb-5 space-y-2">
                     <x-form.label for="item_id" :value="__('Barang')" />
-                    <x-form.select id="item_id" class="block w-full" name="item_id" required>
-                        <option value="" disabled selected>{{ __('Pilih Barang') }}</option>
-                        @foreach ($items as $item)
+                    <select id="item_id" class="block w-full" name="item_id" required>
+                        <option value=""></option>
+                        {{-- @foreach ($items as $item)
                             <option value="{{ $item->id }}" data-price="{{ $item->price }}">{{ $item->name }}
                             </option>
-                        @endforeach
-                    </x-form.select>
-                    <x-input-error :messages="$errors->get('item_id')" class="mt-2" />
+                        @endforeach --}}
+                    </select>
+                </div>
+
+                <!-- Harga Barang -->
+                <div class="mb-5 space-y-2">
+                    <x-form.label for="price" :value="__('Harga per PCS')" />
+                    <x-form.input id="price" class="block w-full" type="text" name="price"
+                        placeholder="Harga Barang" readonly />
+
                 </div>
 
                 <!-- Quantity Sold -->
                 <div class="mb-5 space-y-2">
                     <x-form.label for="qty_sold" :value="__('Jumlah Terjual')" />
-                    <x-form.input id="qty_sold" class="block w-full" type="number" name="qty_sold" :value="old('qty_sold')"
-                        placeholder="{{ __('Jumlah Terjual') }}" required />
+                    <x-form.input id="qty_sold" class="block w-full" type="number" inputmode="numeric" name="qty_sold"
+                        :value="old('qty_sold')" placeholder="{{ __('Jumlah Terjual') }}" required />
                 </div>
 
                 <!-- Payment Method -->
@@ -105,15 +112,15 @@
                     <x-form.label for="down_payment" :value="__('Uang Muka')" />
                     <x-form.input id="down_payment" class="block w-full" type="number" name="down_payment"
                         :value="old('down_payment')" placeholder="{{ __('Uang Muka') }}" required />
-                        <span id="formatted_down_payment" class="text-gray-500"></span>
+                    <span id="formatted_down_payment" class="text-gray-500"></span>
                 </div>
 
                 <!-- Total Price -->
                 <div class="mb-5 space-y-2">
                     <x-form.label for="total_price" :value="__('Total Harga')" />
-                    <x-form.input id="total_price" class="block w-full" type="text" name="total_price"
-                        :value="old('total_price')" placeholder="{{ __('Total Harga') }}" required />
-                        <span id="formatted_total_price" class="text-gray-500"></span>
+                    <x-form.input id="total_price_dsp" class="block w-full" type="text" name="total_price"
+                        :value="old('total_price')" placeholder="{{ __('Total Harga') }}" readonly />
+                    <span id="formatted_total_price" class="text-gray-500"></span>
                 </div>
 
                 <!-- Submit Button -->
@@ -126,26 +133,78 @@
         </form>
     </div>
 
+    @php
+        $button =
+            "<p class='text-xs'>Barang tidak ditemukan </p>";
+    @endphp
+
     @push('scripts')
         <script>
+            $(document).ready(function() {
+                let select = $('#item_id');
+
+                select.select2({
+                    placeholder: "Cari Nama Barang...",
+                    allowClear: true,
+                    width: '100%',
+                    language: {
+                        noResults: function() {
+                            return ` {!! $button !!}`;
+                        }
+                    },
+                    escapeMarkup: function(markup) {
+                        return markup;
+                    }
+                });
+
+                $.get('/get-items', function(data) {
+                    if (Array.isArray(data)) {
+                        data.forEach(item => {
+                            select.append(
+                                `<option value="${item.id}" data-price="${item.price}">${item.name}</option>`
+                            );
+                        });
+                    }
+                });
+
+                select.on('change', function() {
+                    let selectedOption = $(this).find(':selected');
+                    let price = selectedOption.data('price') || 0;
+
+                    $('#price').val(price);
+                    calculateTotal();
+                });
+
+                $('#qty_sold, #discount').on('input', function() {
+                    calculateTotal();
+                });
+
+                function calculateTotal() {
+                    let price = parseFloat($('#price').val()) || 0;
+                    let qty = parseFloat($('#qty_sold').val()) || 0;
+                    let discount = parseFloat($('#discount').val()) || 0;
+
+                    let subtotal = price * qty;
+                    let discountAmount = (discount / 100) * subtotal;
+                    let total = subtotal - discountAmount;
+
+                    if (total < 0) total = 0; // Hindari total negatif
+
+                    $('#total_price_dsp').val(total.toLocaleString('id-ID', {
+                        style: 'currency',
+                        currency: 'IDR'
+                    }));
+
+                    $('#total_price').val(total.toFixed(0));
+                }
+            });
+
+            // MINE
+
             document.addEventListener("DOMContentLoaded", function() {
                 const distributorSelect = document.getElementById("distributor_id");
                 const buyerAddress = document.getElementById("buyer_address");
                 const buyerPhone = document.getElementById("buyer_phone");
-
-                const itemSelect = document.getElementById("item_id");
-                const qtySold = document.getElementById("qty_sold");
-                const discountInput = document.getElementById("discount");
-                const downPayment = document.getElementById("down_payment");
-                const totalPrice = document.getElementById("total_price");
-
-                // Fungsi untuk mengonversi angka ke format Rupiah
-                function formatRupiah(angka) {
-                    return new Intl.NumberFormat('id-ID', {
-                        style: 'currency',
-                        currency: 'IDR'
-                    }).format(angka);
-                }
 
                 // Mengisi alamat dan nomor telepon berdasarkan distributor yang dipilih
                 distributorSelect.addEventListener("change", function() {
@@ -157,33 +216,6 @@
                     buyerAddress.value = address;
                     buyerPhone.value = phone;
                 });
-
-                function calculateTotalPrice() {
-                    const selectedItem = itemSelect.options[itemSelect.selectedIndex];
-                    const price = parseFloat(selectedItem.getAttribute("data-price")) || 0;
-                    const qty = parseInt(qtySold.value) || 0;
-                    const discount = parseFloat(discountInput.value) || 0;
-
-                    let total = price * qty;
-
-                    if (discount > 0) {
-                        total -= (total * (discount / 100));
-                    }
-
-                    totalPrice.value = total;
-                    totalPrice.nextElementSibling.textContent = formatRupiah(total);
-                }
-
-                function formatDownPayment() {
-                    const value = parseFloat(downPayment.value) || 0;
-                    downPayment.nextElementSibling.textContent = formatRupiah(value);
-                }
-
-                // Event listeners
-                itemSelect.addEventListener("change", calculateTotalPrice);
-                qtySold.addEventListener("input", calculateTotalPrice);
-                discountInput.addEventListener("input", calculateTotalPrice);
-                downPayment.addEventListener("input", formatDownPayment);
             });
         </script>
     @endpush
