@@ -94,6 +94,8 @@ class SaleController extends Controller
 
         // Hapus format mata uang dari total_price dan down_payment sebelum perhitungan
         $validatedData['total_price'] = (float) preg_replace('/[^0-9]/', '', $validatedData['total_price']);
+        $validatedData['total_price'] = floor($validatedData['total_price'] / 100);
+        
         $validatedData['down_payment'] = (float) preg_replace('/[^0-9]/', '', $validatedData['down_payment']);
 
 
