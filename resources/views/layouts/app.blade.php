@@ -75,7 +75,7 @@
         </div>
     </div>
 
-    {{-- @include('sweetalert::alert') --}}
+    @include('sweetalert::alert')
     <!-- Script Tambhan -->
     <script src="{{ asset('assets/js/jquery.js') }}"></script>
     <script src="/vendor/select2/js/select2.min.js"></script>

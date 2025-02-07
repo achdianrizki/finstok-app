@@ -143,7 +143,7 @@ class ItemController extends Controller
         // ]);
         // });
 
-        toast('Success Toast', 'success');
+        // toast('Success Toast', 'success');
         return redirect()->route('manager.items.index');
     }
 

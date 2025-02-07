@@ -15,6 +15,7 @@
         <form action="{{ route('manager.items.update', $item->id) }}" method="POST">
             @csrf
             @method('PUT')
+            
             <div class="grid gap-2">
                 <div class="flex flex-col md:flex-row ">
                     <div class="w-full md:w-1/2 mb-5 space-y-2">

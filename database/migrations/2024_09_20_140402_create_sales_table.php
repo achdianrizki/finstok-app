@@ -13,11 +13,11 @@ return new class extends Migration
     {
         Schema::create('sales', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('buyer_id')->constrained('buyers')->onDelete('cascade');
+            $table->foreignId('distributor_id')->constrained('distributors')->onDelete('cascade');
             $table->foreignId('item_id')->constrained('items')->onDelete('cascade');
             $table->integer('qty_sold');
             $table->enum('payment_method', ['cash', 'credit']);
-            $table->enum('payment_status', ['paid', 'unpaid']);
+            $table->enum('payment_status', ['lunas', 'belum lunas']);
             $table->unsignedBigInteger('discount');
             $table->unsignedBigInteger('down_payment');
             $table->unsignedBigInteger('remaining_payment');

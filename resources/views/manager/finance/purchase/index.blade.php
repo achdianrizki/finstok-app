@@ -4,7 +4,7 @@
             <h2 class="text-xl font-semibold leading-tight">
                 {{ __('Barang') }}
             </h2>
-            <x-button target="" href="{{ route('manager.items.create') }}" variant="success"
+            <x-button target="" href="{{ route('manager.purchase.create') }}" variant="success"
                 class="justify-center max-w-xl gap-2">
                 <x-heroicon-o-plus class="w-6 h-6" aria-hidden="true" />
                 <span>Tambah Barang</span>

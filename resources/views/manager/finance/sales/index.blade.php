@@ -2,12 +2,12 @@
     <x-slot name="header">
         <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
             <h2 class="text-xl font-semibold leading-tight">
-                {{ __('Barang') }}
+                {{ __('Penjualan') }}
             </h2>
-            <x-button target="" href="{{ route('manager.items.create') }}" variant="success"
+            <x-button target="" href="{{ route('manager.sales.create') }}" variant="success"
                 class="justify-center max-w-xl gap-2">
                 <x-heroicon-o-plus class="w-6 h-6" aria-hidden="true" />
-                <span>Tambah Barang</span>
+                <span>Tambah Penjualan</span>
             </x-button>
         </div>
     </x-slot>
@@ -36,27 +36,30 @@
                 <table id="export-table" class="min-w-full rounded-md">
                     <thead>
                         <tr class="bg-gray-200 text-gray-600 dark:bg-slate-900 dark:text-white text-sm leading-normal">
+                            <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Distributor</th>
                             <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Nama barang</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider hidden sm:table-cell">Kode</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider hidden sm:table-cell">Kuantitas</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider hidden md:table-cell">Harga/pcs</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider hidden sm:table-cell">Terjual</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider hidden sm:table-cell">Pembayaran</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider hidden md:table-cell">Status</th>
                             <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider hidden md:table-cell">Diskon</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider hidden md:table-cell">Masuk</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider hidden md:table-cell">Sisa</th>
                             <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider hidden md:table-cell">Total harga</th>
                             <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Aksi</th>
                         </tr>
                     </thead>
-                    <tbody id="itemSaleTable"
+                    <tbody id="itemTable"
                         class="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-dark-eval-1">
                         <!-- Dynamic rows will be added here -->
                     </tbody>
                 </table>
             </div>
 
-            <div class="mt-4 flex items-center justify-center">
+            {{-- <div class="mt-4 flex items-center justify-center">
                 <x-button type="submit" variant="primary">
                     Simpan
                 </x-button>
-            </div>
+            </div> --}}
         </form>
 
         <!-- Modal -->
@@ -114,6 +117,10 @@
     </div>
 
     @push('scripts')
+        @include('components.js.dtSales')
+    @endpush
+
+    {{-- @push('scripts')
         @include('components.js.select-picker')
     @endpush
 
@@ -149,5 +156,5 @@
                 background-color: #f1f1f1;
             }
         </style>
-    @endpush
+    @endpush --}}
 </x-app-layout>

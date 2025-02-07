@@ -45,7 +45,7 @@ class UserController extends Controller
         $user = User::create([
             'name' => $validatedData['name'],
             'email' => $validatedData['email'],
-            'password' => $validatedData['password'],
+            'password' => bcrypt($validatedData['password']),
         ]);
 
         $role = Role::find($validatedData['role_id']);

@@ -4,11 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\Item;
 use App\Models\Sale;
+use App\Models\Buyer;
 use App\Models\Distributor;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\StoreSaleRequest;
-use App\Models\Buyer;
+use App\Http\Requests\UpdateSaleRequest;
 
 class SaleController extends Controller
 {
@@ -24,18 +25,23 @@ class SaleController extends Controller
      * Show the form for creating a new resource.
      */
     public function create(Request $request)
-    {   
-        $buyers = Buyer::create([
-            'name' => $request->buyer_name,
-            'address' => $request->address,
-            'phone' => $request->phone
-        ]);
+    {
+        // $buyers = Buyer::create([
+        //     'name' => $request->buyer_name,
+        //     'address' => $request->address,
+        //     'phone' => $request->phone
+        // ]);
 
 
-        $sales = Sale::create([
+        // $sales = Sale::create([
 
-        ]);
-        
+        // ]);
+
+        // SELECT ITEM
+        $items = Item::all();
+        $distributors = Distributor::all();
+
+
         return view('manager.finance.sales.create', compact('items', 'distributors'));
     }
 
@@ -56,13 +62,24 @@ class SaleController extends Controller
     }
 
 
-    public function getSaleItem(Request $request)
+    public function getSales(Request $request)
     {
-        $items = Item::where('id', $request->item_id)->get();
-        echo "
-            <td>'$items->id'</td>
-            <td>'$items->name'</td>
-        ";
+        // $items = Item::where('id', $request->item_id)->get();
+        // echo "
+        //     <td>'$items->id'</td>
+        //     <td>'$items->name'</td>
+        // ";
+
+        // $query = Sale::query();
+
+        // if ($request->has('search')) {
+        //     $query->where('name', 'like', '%' . $request->search . '%');
+        // }
+
+        $sales = Sale::with(['item', 'distributor'])
+            ->paginate(10);
+
+        return response()->json($sales);
     }
 
     /**
@@ -70,7 +87,21 @@ class SaleController extends Controller
      */
     public function store(StoreSaleRequest $request)
     {
-        DB::transaction(function () use ($request) {});
+        // DB::transaction(function () use ($request) {
+
+        // });
+        $validatedData = $request->validated();
+
+        $validatedData['remaining_payment'] = $validatedData['total_price'] - $validatedData['down_payment'];
+
+        Sale::create($validatedData);
+
+        $item = Item::find($validatedData['item_id']);
+        if ($item) {
+            $item->decrement('stock', $validatedData['qty_sold']); // Mengurangi stok sebesar 1
+        }
+
+        return redirect()->route('manager.sales.index')->with('success', 'Sale added successfully');
     }
 
     /**
@@ -86,16 +117,35 @@ class SaleController extends Controller
      */
     public function edit(Sale $sale)
     {
-        //
+        // return view('manager.finance.sales', compact('sale'));
+        return view('manager.finance.sales.edit', compact('sale'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Sale $sale)
+    public function update(UpdateSaleRequest $request, Sale $sale)
     {
-        //
+        $validatedData = $request->validated();
+
+        $additionalPayment = $validatedData['update_payment'];
+
+        $newDownPayment = $sale->down_payment + $additionalPayment;
+
+        $newRemainingPayment = max($sale->remaining_payment - $additionalPayment, 0);
+
+        $paymentStatus = ($newDownPayment >= $sale->total_price) ? 'lunas' : $sale->payment_status;
+
+        $sale->update([
+            'down_payment' => $newDownPayment,
+            'remaining_payment' => $newRemainingPayment,
+            'payment_status' => $paymentStatus,
+        ]);
+
+        // Redirect instead of returning a view directly
+        return redirect()->route('manager.sales.index')->with('success', 'Sale updated successfully.');
     }
+
 
     /**
      * Remove the specified resource from storage.

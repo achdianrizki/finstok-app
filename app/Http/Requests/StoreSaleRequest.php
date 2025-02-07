@@ -11,7 +11,7 @@ class StoreSaleRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,14 +22,15 @@ class StoreSaleRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'string', 'max:255'],
-            'payment_method' => ['required'],
-            'buyer' => ['required', 'string'],
-            'item_id' => ['required'],
-            'distributor_id' => ['required'],
-            'diskon' => ['required'],
-            'amount' => ['required', 'integer'],
-            'total_price' => ['required', 'integer'],
+            'distributor_id' => ['required', 'integer', 'exists:distributors,id'],
+            'item_id' => ['required', 'integer', 'exists:items,id'], 
+            'qty_sold' => ['required', 'integer', 'min:1'],
+            'payment_method' => ['required', 'string', 'in:cash,credit'], 
+            'payment_status' => ['required', 'string', 'in:lunas,belum lunas'], 
+            'discount' => ['nullable', 'numeric', 'min:0'], 
+            'down_payment' => ['nullable', 'numeric', 'min:0'],
+            'remaining_payment' => ['nullable', 'numeric', 'min:0'], 
+            'total_price' => ['required', 'numeric', 'min:0'],
         ];
     }
 }

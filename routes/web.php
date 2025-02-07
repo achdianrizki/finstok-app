@@ -81,6 +81,7 @@ Route::get('/distributors-data', [DistributorController::class, 'getDistributors
 Route::get('/purchases-data', [PurchaseController::class, 'getPurchaseItem']);
 Route::get('/sales-data', [SaleController::class, 'getSaleItem']);
 Route::get('/items-data-sale', [SaleController::class, 'searchItem']);
-Route::get('/users-data', [UserController::class, 'getUsers'])->name('manager.users.data');;
+Route::get('/users-data', [UserController::class, 'getUsers'])->name('manager.users.data');
+Route::get('/sales-data', [SaleController::class, 'getSales']);
 
 require __DIR__ . '/auth.php';
