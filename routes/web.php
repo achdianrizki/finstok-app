@@ -6,6 +6,7 @@ use App\Http\Controllers\ModalController;
 use App\Http\Controllers\FinanceController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ChartController;
 use App\Http\Controllers\WarehouseController;
 use App\Http\Controllers\DistributorController;
 use App\Http\Controllers\PurchaseController;
@@ -84,5 +85,8 @@ Route::get('/sales-data', [SaleController::class, 'getSaleItem']);
 Route::get('/items-data-sale', [SaleController::class, 'searchItem']);
 Route::get('/users-data', [UserController::class, 'getUsers'])->name('manager.users.data');
 Route::get('/sales-data', [SaleController::class, 'getSales']);
+
+Route::get('/laporan/laba-rugi', [ChartController::class, 'getLabaRugi']);
+
 
 require __DIR__ . '/auth.php';

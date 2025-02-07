@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Item;
+use App\Models\Modal;
 use App\Models\Purchase;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
@@ -64,19 +65,36 @@ class PurchaseController extends Controller
     {
 
         // dd($request->all());
-        DB::transaction(function () use ($request) {
+        // DB::transaction(function () use ($request) {
         $validated = $request->validated();
         $validated['status'] = 'lunas';
         $validated['invoice_number'] = 'INV-' . now()->format('Y') . '/' . str_pad(mt_rand(1, 999), 3, '0', STR_PAD_LEFT);
 
         $purchase =  Purchase::create($validated);
 
+        $modal = Modal::where('is_confirm', true)->sum('amount');
+
+        $modal = Modal::first(); // Pastikan modal sudah diambil dari database
+
+        if ($modal->amount < $request->total_price) {
+            alert()->error('Modal tidak cukup');
+            return redirect()->back();
+        }
+
         if ($purchase) {
             $item = Item::find($request->item_id);
-            $item->stock += $request->qty;
-            $item->save();
+            if ($item) {
+                $item->stock += $request->qty;
+                $item->save();
+            }
+
+            $modal->amount -= $request->total_price; // Perbaikan pengurangan modal
+            $modal->save();
         }
-        });
+
+        // });
+
+        // dd($purchase);
         toast('Data berhasil disimpan', 'success');
         return redirect()->route('manager.purchase.index');
     }

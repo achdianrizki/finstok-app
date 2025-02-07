@@ -104,14 +104,14 @@
                 <div class="mb-5 space-y-2">
                     <x-form.label for="discount" :value="__('Diskon (dalam angka)')" />
                     <x-form.input id="discount" class="block w-full" type="number" name="discount" :value="old('discount')"
-                        placeholder="{{ __('Diskon (dalam angka)') }}" required />
+                        placeholder="{{ __('Diskon (dalam angka)') }}"  />
                 </div>
 
                 <!-- Down Payment -->
                 <div class="mb-5 space-y-2">
                     <x-form.label for="down_payment" :value="__('Uang Muka')" />
                     <x-form.input id="down_payment" class="block w-full" type="number" name="down_payment"
-                        :value="old('down_payment')" placeholder="{{ __('Uang Muka') }}" required />
+                        :value="old('down_payment')" placeholder="{{ __('Uang Muka') }}"  />
                     <span id="formatted_down_payment" class="text-gray-500"></span>
                 </div>
 

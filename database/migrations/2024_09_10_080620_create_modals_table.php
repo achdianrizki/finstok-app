@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('modals', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('amount');
+            $table->unsignedBigInteger('initial_amount');
             $table->boolean('is_confirm')->default(false);
             $table->timestamps();
             $table->softDeletes();

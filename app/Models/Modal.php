@@ -13,6 +13,7 @@ class Modal extends Model
     protected $fillable = [
         'amount',
         'is_confirm',
+        'initial_amount',
     ];
 
 }

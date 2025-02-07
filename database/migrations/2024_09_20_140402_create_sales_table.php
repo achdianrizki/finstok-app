@@ -18,8 +18,8 @@ return new class extends Migration
             $table->integer('qty_sold');
             $table->enum('payment_method', ['cash', 'credit']);
             $table->enum('payment_status', ['lunas', 'belum lunas']);
-            $table->unsignedBigInteger('discount');
-            $table->unsignedBigInteger('down_payment');
+            $table->unsignedBigInteger('discount')->nullable();
+            $table->unsignedBigInteger('down_payment')->nullable();
             $table->unsignedBigInteger('remaining_payment');
             $table->unsignedBigInteger('total_price');
             $table->softDeletes();
