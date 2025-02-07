@@ -22,11 +22,13 @@ class StorePurchaseRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'string', 'max:255'],
-            'price' => ['required', 'integer'],
+            'item_id' => ['required'],
             'total_price' => ['required'],
-            'qty' => ['required'],
-            'supplier_name' => ['required', 'string', 'max:255'],
+            'price' => ['required', 'integer'],
+            'status' => ['string'],
+            'supplier_name' => ['required', 'string'],
+            'qty' => ['required', 'integer'],
+            'invoice_number' => ['string']
         ];
     }
     

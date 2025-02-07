@@ -74,6 +74,7 @@ Route::middleware('auth')->group(function () {
 
 //Fungsi get data ajaxx
 Route::get('/items-data', [ItemController::class, 'getItems']);
+Route::get('/get-items', [PurchaseController::class, 'getItemsPurchase']);
 Route::get('/categories-data', [CategoryController::class, 'getCategories']);
 Route::get('/warehouses-data', [WarehouseController::class, 'getWarehouses']);
 Route::get('/manager/warehouses/{warehouse:id}/items', [WarehouseController::class, 'getItemsByWarehouse']);
