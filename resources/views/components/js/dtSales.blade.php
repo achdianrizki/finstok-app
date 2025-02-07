@@ -34,7 +34,7 @@
                               <td class="px-6 py-4 whitespace-nowrap hidden md:table-cell">${sale.qty_sold}</td>
                               <td class="px-6 py-4 whitespace-nowrap hidden md:table-cell">${sale.payment_method}</td>
                               <td class="px-6 py-4 whitespace-nowrap hidden md:table-cell">${sale.payment_status}</td>
-                              <td class="px-6 py-4 whitespace-nowrap hidden md:table-cell">${sale.discount + '% '}</td>
+                              <td class="px-6 py-4 whitespace-nowrap hidden md:table-cell">${sale.discount !== null ? sale.discount + '%' : '0%'}</td>
                               <td class="px-6 py-4 whitespace-nowrap hidden md:table-cell">${formatRupiah(sale.down_payment)}</td>
                               <td class="px-6 py-4 whitespace-nowrap hidden md:table-cell">${formatRupiah(sale.remaining_payment)}</td>
                               <td class="px-6 py-4 whitespace-nowrap hidden md:table-cell">${formatRupiah(sale.total_price)}</td>
