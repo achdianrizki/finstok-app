@@ -22,7 +22,8 @@ class StoreModalRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'amount' => 'required|string',
+            'amount' => 'string',
+            'initial_amount' => 'integer',
         ];
     }
 }

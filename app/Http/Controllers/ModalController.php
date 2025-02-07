@@ -36,7 +36,10 @@ class ModalController extends Controller
         $validatedData = $request->validated();
         $cleanAmount = str_replace('.', '', $validatedData);
 
-        Modal::create($cleanAmount);
+        $validatedData['amount'] = $cleanAmount['amount'];
+        $validatedData['initial_amount'] = $cleanAmount['amount'];
+
+        Modal::create($validatedData);
 
         return redirect()->route('manager.finance.modal.primaryModal')->with('success', 'Modal berhasil diajukan! Menunggu persetujuan');
     }

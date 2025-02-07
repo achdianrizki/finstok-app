@@ -17,9 +17,20 @@
         </div>
     </div>
 
+    @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
     <div class="p-6 overflow-hidden bg-white rounded-md shadow-md dark:bg-dark-eval-1">
         @if (session('success'))
-            <div class="p-4 mb-4 text-sm text-green-700 bg-green-100 rounded-lg dark:bg-green-200 dark:text-green-800" role="alert">
+            <div class="p-4 mb-4 text-sm text-green-700 bg-green-100 rounded-lg dark:bg-green-200 dark:text-green-800"
+                role="alert">
                 {{ session('success') }}
             </div>
         @endif
@@ -43,25 +54,25 @@
     </div>
 
     <script>
-        document.getElementById('modal-amount').addEventListener('input', function (e) {
+        document.getElementById('modal-amount').addEventListener('input', function(e) {
             // Hapus semua karakter selain angka
             let value = e.target.value.replace(/[^,\d]/g, '').toString();
-            
+
             // Pisahkan nilai sebelum dan sesudah koma (jika ada)
             let split = value.split(',');
             let sisa = split[0].length % 3;
             let rupiah = split[0].substr(0, sisa);
             let ribuan = split[0].substr(sisa).match(/\d{3}/g);
-            
+
             // Tambahkan titik sebagai pemisah ribuan
             if (ribuan) {
                 let separator = sisa ? '.' : '';
                 rupiah += separator + ribuan.join('.');
             }
-            
+
             // Jika ada nilai desimal, tambahkan koma
             rupiah = split[1] !== undefined ? rupiah + ',' + split[1] : rupiah;
-            
+
             // Setel nilai yang diformat ke input field
             e.target.value = rupiah;
         });
