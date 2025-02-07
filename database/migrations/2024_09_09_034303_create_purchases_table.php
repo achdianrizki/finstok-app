@@ -15,13 +15,11 @@ return new class extends Migration
             $table->id();
             $table->foreignId('item_id')->nullable()->constrained('items')->onDelete('cascade');
             $table->unsignedBigInteger('total_price');
-            $table->unsignedBigInteger('just_paid');
-            $table->enum('status', ['paid', 'unpaid']);
+            $table->unsignedBigInteger('price');
+            $table->enum('status', ['lunas', 'belum_lunas']);
             $table->string('supplier_name');
-            $table->integer('stock');
-            $table->integer('discount');
-            $table->string('invoice number');
-            $table->foreignId('warehouse_id')->constrained()->onDelete('cascade');
+            $table->integer('qty');
+            $table->string('invoice_number');
             $table->softDeletes();
             $table->timestamps();
         });

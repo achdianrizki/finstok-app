@@ -52,8 +52,8 @@
                         <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider hidden sm:table-cell">Kode</th>
                         <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider hidden sm:table-cell">Kategori</th>
                         <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider hidden md:table-cell">Harga/pcs</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider hidden md:table-cell">Gudang</th>
                         <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider hidden md:table-cell">Stock</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider hidden md:table-cell">Gudang</th>
                         <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Aksi</th>
                     </tr>
                 </thead>

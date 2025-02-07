@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StorePurchaseRequest;
+use App\Models\Item;
 use App\Models\Purchase;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Http\Requests\StorePurchaseRequest;
 
 class PurchaseController extends Controller
 {
@@ -19,25 +21,33 @@ class PurchaseController extends Controller
         return view('manager.finance.purchase.index', compact('purchase_items'));
     }
 
+    public function getItemsPurchase()
+    {
+        return response()->json(Item::select('id', 'name')->get());
+    }
+
     public function getPurchaseItem(Request $request)
     {
         $query = Purchase::with('item');
 
-        if ($request->has('search') && !empty($request->search)) {
+        if ($request->filled('search')) {
             $search = $request->search;
 
             $query->where(function ($q) use ($search) {
-                $q->where('name', 'like', '%' . $search . '%')
-                    ->orWhere('supplier_name', 'like', '%' . $search . '%');
-                $q->orWhereHas('item', function ($query) use ($search) {
-                    $query->where('name', 'like', '%' . $search . '%');
-                });
+                $q->where('invoice_number', 'like', '%' . $search . '%')
+                    ->orWhere('supplier_name', 'like', '%' . $search . '%')
+                    ->orWhereHas('item', function ($query) use ($search) {
+                        $query->where('name', 'like', '%' . $search . '%');
+                    });
             });
         }
+
         $products = $query->paginate(5);
 
         return response()->json($products);
     }
+
+
 
     /**
      * Show the form for creating a new resource.
@@ -52,17 +62,22 @@ class PurchaseController extends Controller
      */
     public function store(StorePurchaseRequest $request, Purchase $purchases)
     {
-        DB::transaction(function () use ($request) {
-            $validated = $request->validated();
 
-            $validated['purchase_type'] = 'asset';
-            $validated['total_price'] = str_replace('.', '', $request->total_price);
+        // dd($request->all());
+        // DB::transaction(function () use ($request) {
+        $validated = $request->validated();
+        $validated['status'] = 'lunas';
+        $validated['invoice_number'] = 'INV-' . now()->format('Y') . '/' . str_pad(mt_rand(1, 999), 3, '0', STR_PAD_LEFT);
 
-            // dd($validated);
+        $purchase =  Purchase::create($validated);
 
-            Purchase::create($validated);
-        });
-
+        if ($purchase) {
+            $item = Item::find($request->item_id);
+            $item->stock += $request->qty;
+            $item->save();
+        }
+        // });
+        toast('Data berhasil disimpan', 'success');
         return redirect()->route('manager.purchase.index');
     }
 

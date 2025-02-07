@@ -50,7 +50,7 @@ class ItemController extends Controller
             });
         }
 
-        return response()->json($query->paginate(10));
+        return response()->json($query->paginate(5));
     }
 
 
@@ -98,7 +98,7 @@ class ItemController extends Controller
         // }    
         // });
 
-        toast('Success Toast', 'success');
+        toast('Success Added', 'success');
         return redirect()->route('manager.items.index');
     }
 
@@ -143,7 +143,7 @@ class ItemController extends Controller
         // ]);
         // });
 
-        // toast('Success Toast', 'success');
+        toast('Success Updated', 'success');
         return redirect()->route('manager.items.index');
     }
 
