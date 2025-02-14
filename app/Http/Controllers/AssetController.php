@@ -37,7 +37,8 @@ class AssetController extends Controller
 
         Asset::create($validatedData);
 
-        return redirect()->route('manager.asset.index')->with('success', 'Asset added successfully');
+        toast('Aset berhasil ditambahkan', 'success');
+        return redirect()->route('manager.asset.index')->with('success', 'Aset berhasil ditambahkan');
     }
 
     public function edit(Asset $asset)
@@ -51,13 +52,15 @@ class AssetController extends Controller
         
         $asset->update($validatedData);
 
-        return redirect()->route('manager.asset.index')->with('success','Asset updated successfully');
+        toast('Aset berhasil diupdate', 'success');
+        return redirect()->route('manager.asset.index')->with('success','Aset berhasil diupdate');
     }
 
     public function destroy(Asset $asset)
     {
         $asset->delete();
 
-        return redirect()->route('manager.asset.index')->with('success', 'Asset deleted successfully');
+        toast('Aset berhasil dihapus', 'success');
+        return redirect()->route('manager.asset.index')->with('success', 'Aset berhasil dihapus');
     }
 }

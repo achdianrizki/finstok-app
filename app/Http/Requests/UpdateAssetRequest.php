@@ -23,8 +23,21 @@ class UpdateAssetRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:255',
-            'qty' => 'required|integer|min:1',
+            'qty' => 'required|integer|max:99999',
             'total_price' => 'required|numeric|min:1',
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'name.required' => 'Nama wajib diisi.',
+            'name.string' => 'Nama harus berupa string.',
+            'name.max' => 'Nama tidak boleh lebih dari 255 karakter.',
+
+            'qty.required' => 'Kuantitas wajib diisi.',
+            'qty.integer' => 'Kuantitas harus berupa numerik.',
+            'qty.max' => 'Kuantitas tidak boleh lebih dari 99999.',
         ];
     }
 }

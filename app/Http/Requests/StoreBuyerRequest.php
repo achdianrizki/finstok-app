@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreAssetRequest extends FormRequest
+class StoreBuyerRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,9 +23,9 @@ class StoreAssetRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:255',
-            'price' => 'required|numeric|max:99999999999',
-            'qty' => 'required|integer|max:99999',
-            'total_price' => 'required|numeric|min:1',
+            'phone' => 'required|string|max:255',
+            'address' => 'required|string|max:255',
+            'type' => 'required|string|max:255',
         ];
     }
 
@@ -36,13 +36,17 @@ class StoreAssetRequest extends FormRequest
             'name.string' => 'Nama harus berupa string.',
             'name.max' => 'Nama tidak boleh lebih dari 255 karakter.',
 
-            'price.required' => 'Harga wajib diisi.',
-            'price.numeric' => 'Harga harus berupa numerik.',
-            'price.max' => 'Harga tidak boleh lebih dari 99999999999.',
+            'phone.required' => 'Nomor telepon wajib diisi.',
+            'phone.string' => 'Nomor telepon harus berupa string.',
+            'phone.max' => 'Nomor telepon tidak boleh lebih dari 255 karakter.',
 
-            'qty.required' => 'Kuantitas wajib diisi.',
-            'qty.integer' => 'Kuantitas harus berupa numerik.',
-            'qty.max' => 'Kuantitas tidak boleh lebih dari 99999.',
+            'address.required' => 'Alamat wajib diisi.',
+            'address.string' => 'Alamat harus berupa string.',
+            'address.max' => 'Alamat tidak boleh lebih dari 255 karakter.',
+
+            'type.required' => 'Tipe wajib diisi.',
+            'type.string' => 'Tipe harus berupa string.',
+            'type.max' => 'Tipe tidak boleh lebih dari 255 karakter.',
         ];
     }
 }

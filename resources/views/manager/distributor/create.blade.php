@@ -17,18 +17,27 @@
 
             <div class="grid gap-2">
                 <div class="mb-5 space-y-2">
+                    @error('name')
+                        <p class="text-red-500 text-sm">{{ $message }}</p>
+                    @enderror
                     <x-form.label for="name" :value="__('Nama distributor')" />
                     <x-form.input id="name" class="block w-full" type="text" name="name" :value="old('name')"
                         placeholder="{{ __('Nama distributor') }}" required />
                 </div>
 
                 <div class="mb-5 space-y-2">
+                    @error('address')
+                        <p class="text-red-500 text-sm">{{ $message }}</p>
+                    @enderror
                     <x-form.label for="address" :value="__('Alamat')" />
                     <x-form.input id="address" class="block w-full" type="text" name="address" :value="old('address')"
                         placeholder="{{ __('Alamat') }}" required />
                 </div>
 
                 <div class="mb-5 space-y-2">
+                    @error('phone')
+                        <p class="text-red-500 text-sm">{{ $message }}</p>
+                    @enderror
                     <x-form.label for="phone" :value="__('Nomor telepon')" />
                     <x-form.input id="phone" class="block w-full" type="number" name="phone" :value="old('phone')"
                         placeholder="{{ __('086751324897') }}" required />

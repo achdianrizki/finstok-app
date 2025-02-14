@@ -4,7 +4,7 @@
         let lastPage = 1;
         let searchQuery = '';
 
-        function fetchdistributors(page, searchQuery = '') {
+        function fetchassets(page, searchQuery = '') {
 
             function formatRupiah(number) {
                 return new Intl.NumberFormat('id-ID', {
@@ -84,26 +84,26 @@
             });
         }
 
-        fetchdistributors(page);
+        fetchassets(page);
 
         $('#nextPage').on('click', function() {
             if (page < lastPage) {
                 page++;
-                fetchdistributors(page, searchQuery);
+                fetchassets(page, searchQuery);
             }
         });
 
         $('#prevPage').on('click', function() {
             if (page > 1) {
                 page--;
-                fetchdistributors(page, searchQuery);
+                fetchassets(page, searchQuery);
             }
         });
 
         $('#search').on('keyup', function() {
             searchQuery = $(this).val();
             page = 1;
-            fetchdistributors(page, searchQuery);
+            fetchassets(page, searchQuery);
         });
     });
 </script>

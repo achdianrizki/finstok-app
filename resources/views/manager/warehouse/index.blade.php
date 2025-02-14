@@ -13,7 +13,23 @@
     </x-slot>
 
     <div class="p-6 overflow-hidden bg-white rounded-md shadow-md dark:bg-dark-eval-1">
+
+        <div class="flex flex-col md:flex-row md:justify-end gap-4 my-3">
+
+            <!-- Search Input-->
+            <div class="w-full md:w-auto">
+                <input type="text" id="search" placeholder="Cari sales..."
+                    class=" rounded w-full md:w-auto px-4 py-2 dark:bg-dark-eval-1" name="search">
+            </div>
+        </div>
+
         <div class="overflow-x-auto">
+            @if (session('success'))
+                <div class="p-4 mb-4 text-sm text-green-700 bg-green-100 rounded-lg dark:bg-green-200 dark:text-green-800"
+                    role="alert">
+                    {{ session('success') }}
+                </div>
+            @endif
             <table id="export-table" class="min-w-full rounded-md">
                 <thead>
                     <tr class="bg-gray-200 text-gray-600 dark:bg-slate-900 dark:text-white text-sm leading-normal">

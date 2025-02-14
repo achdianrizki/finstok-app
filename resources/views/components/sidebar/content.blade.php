@@ -103,6 +103,10 @@
         </x-slot>
 
         <x-sidebar.sublink title="Kategori" href="{{ route('manager.other.categories.index') }}" :active="request()->routeIs('manager.other.categories*')" />
+
+        <x-sidebar.sublink title="Pelanggan" href="{{ route('manager.other.buyer.index') }}" :active="request()->routeIs('manager.other.buyer*')" />
+
+        <x-sidebar.sublink title="Sales" href="{{ route('manager.other.salesman.index') }}" :active="request()->routeIs('manager.other.salesman*')" />
     </x-sidebar.dropdown>
 
 </x-perfect-scrollbar>

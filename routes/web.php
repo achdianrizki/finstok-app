@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AssetController;
+use App\Http\Controllers\BuyerController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\ModalController;
@@ -12,6 +13,7 @@ use App\Http\Controllers\WarehouseController;
 use App\Http\Controllers\DistributorController;
 use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\SaleController;
+use App\Http\Controllers\SalesmanController;
 use App\Http\Controllers\UserController;
 use App\Models\User;
 
@@ -66,6 +68,11 @@ Route::middleware('auth')->group(function () {
         Route::prefix('other')->name('other.')->group(function () {
             Route::resource('categories', CategoryController::class)->middleware('role:manager|admin');
             Route::resource('distributors', DistributorController::class)->middleware('role:manager|admin');
+
+            // MASTER BUYER
+            Route::resource('buyer', BuyerController::class)->middleware('role:manager|admin');
+            // MASTER SALESMANA
+            Route::resource('salesman', SalesmanController::class)->middleware('role:manager|admin');
         });
     });
     //printPdf & ExportExcel
@@ -89,6 +96,8 @@ Route::get('/items-data-sale', [SaleController::class, 'searchItem']);
 Route::get('/users-data', [UserController::class, 'getUsers'])->name('manager.users.data');
 Route::get('/sales-data', [SaleController::class, 'getSales']);
 Route::get('/assets-data', [AssetController::class, 'getAssets']);
+Route::get('/buyers-data', [BuyerController::class, 'getBuyers']);
+Route::get('/salesmans-data', [SalesmanController::class, 'getSalesman']);
 
 Route::get('/laporan/laba-rugi', [ChartController::class, 'getLabaRugi']);
 

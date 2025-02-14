@@ -47,7 +47,8 @@ class DistributorController extends Controller
 
         Distributor::create($validatedData);
 
-        return redirect()->route('manager.distributors.index')->with('success', 'Distributor added successfully');
+        toast('Distributor berhasil ditambahkan', 'success');
+        return redirect()->route('manager.distributors.index')->with('success', 'Distributor berhasil ditambahkan');
     }
 
     /**
@@ -75,7 +76,8 @@ class DistributorController extends Controller
         
         $distributor->update($validatedData);
 
-        return redirect()->route('manager.distributors.index')->with('success','Distributor updated successfully');
+        toast('Distributor berhasil diupdate', 'success');
+        return redirect()->route('manager.distributors.index')->with('success','Distributor berhasil diupdate');
     }
 
     /**
@@ -85,6 +87,7 @@ class DistributorController extends Controller
     {
         $distributor->delete();
 
-        return redirect()->route('manager.distributors.index')->with('success', 'Distributor deleted successfully');
+        toast('Distributor berhasil dihapus', 'success');
+        return redirect()->route('manager.distributors.index')->with('success', 'Distributor berhasil dihapus');
     }
 }

@@ -19,19 +19,23 @@
                 <div class="mb-5 space-y-2">
                     <x-form.label for="name" :value="__('Nama barang')" />
                     <x-form.input id="name" class="block w-full" type="text" name="name" :value="old('name')"
-                        placeholder="{{ __('Nama barang') }}" required />
+                        placeholder="{{ __('Nama barang') }}" />
+                    <x-input-error :messages="$errors->get('name')" class="mt-2" />
                 </div>
 
                 <div class="mb-5 space-y-2">
                     <x-form.label for="price" :value="__('Harga (PCS)')" />
                     <x-form.input id="price" class="block w-full" type="number" name="price" :value="old('price')"
-                        placeholder="{{ __('Harga per PCS') }}" required />
+                        placeholder="{{ __('Harga per PCS') }}" />
+                    <x-input-error :messages="$errors->get('price')" class="mt-2" />
                 </div>
+
 
                 <div class="mb-5 space-y-2">
                     <x-form.label for="qty" :value="__('Jumlah barang')" />
                     <x-form.input id="qty" class="block w-full" type="number" name="qty" :value="old('qty')"
-                        placeholder="{{ __('Jumlah barang') }}" required />
+                        placeholder="{{ __('Jumlah barang') }}" />
+                    <x-input-error :messages="$errors->get('qty')" class="mt-2" />
                 </div>
 
                 <div class="mb-5 space-y-2">

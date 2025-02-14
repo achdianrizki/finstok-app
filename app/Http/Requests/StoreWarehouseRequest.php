@@ -26,4 +26,17 @@ class StoreWarehouseRequest extends FormRequest
             'address' => 'required|string|max:255',
         ];
     }
+
+    public function messages(): array
+    {
+        return [
+            'name.required' => 'Nama wajib diisi.',
+            'name.string' => 'Nama harus berupa string.',
+            'name.max' => 'Nama tidak boleh lebih dari 255 karakter.',
+
+            'address.required' => 'Alamat wajib diisi.',
+            'address.string' => 'Alamat harus berupa string.',
+            'address.max' => 'Alamat tidak boleh lebih dari 255 karakter.',
+        ];
+    }
 }

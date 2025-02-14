@@ -27,4 +27,19 @@ class UpdateUserRequest extends FormRequest
             'role_id' => 'required|exists:roles,id',
         ];
     }
+
+    public function messages(): array
+    {
+        return [
+            'name.required' => 'Nama wajib diisi.',
+            'name.string' => 'Nama harus berupa string.',
+            'name.max' => 'Nama tidak boleh lebih dari 255 karakter.',
+
+            'email.required' => 'Email wajib diisi.',
+            'email.email' => 'Email harus berupa dalam format email (admin@gmail.com).',
+            'email.max' => 'Email tidak boleh lebih dari 50 karakter.',
+
+            'role_id.required' => 'Role wajib diisi.',
+        ];
+    }
 }

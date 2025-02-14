@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreBuyerRequest;
+use App\Http\Requests\UpdateBuyerRequest;
 use App\Models\Buyer;
 use Illuminate\Http\Request;
 
@@ -12,7 +14,20 @@ class BuyerController extends Controller
      */
     public function index()
     {
-        //
+        return view('manager.buyer.index');
+    }
+
+    public function getBuyers(Request $request)
+    {
+        $query = Buyer::query();
+
+        if ($request->has('search')) {
+            $query->where('name', 'like', '%' . $request->search . '%');
+        }
+
+        $buyers = $query->paginate(5);
+
+        return response()->json($buyers);
     }
 
     /**
@@ -20,15 +35,20 @@ class BuyerController extends Controller
      */
     public function create()
     {
-        //
+        return view('manager.buyer.create');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreBuyerRequest $request)
     {
-        //
+        $validatedData = $request->validated();
+
+        Buyer::create($validatedData);
+
+        toast('Pelanggan berhasil ditambahkan', 'success');
+        return redirect()->route('manager.other.buyer.index')->with('success', 'Pelanggan berhasil ditambahkan');
     }
 
     /**
@@ -44,15 +64,20 @@ class BuyerController extends Controller
      */
     public function edit(Buyer $buyer)
     {
-        //
+        return view('manager.buyer.edit', compact('buyer'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Buyer $buyer)
+    public function update(UpdateBuyerRequest $request, Buyer $buyer)
     {
-        //
+        $validatedData = $request->validated();
+        
+        $buyer->update($validatedData);
+
+        toast('Pelanggan berhasil diupdate', 'success');
+        return redirect()->route('manager.other.buyer.index')->with('success','Pelanggan berhasil diupdate');
     }
 
     /**
@@ -60,6 +85,9 @@ class BuyerController extends Controller
      */
     public function destroy(Buyer $buyer)
     {
-        //
+        $buyer->delete();
+
+        toast('Pelanggan berhasil dihapus', 'success');
+        return redirect()->route('manager.other.buyer.index')->with('success', 'Pelanggan berhasil dihapus');
     }
 }

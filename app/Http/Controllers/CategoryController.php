@@ -50,7 +50,8 @@ class CategoryController extends Controller
 
         Category::create($validatedData);
 
-        return redirect()->route('manager.other.categories.index')->with('success', 'Category added successfully');
+        toast('Kategori berhasil ditambahkan', 'success');
+        return redirect()->route('manager.other.categories.index')->with('success', 'Kategori berhasil ditambahkan');
     }
 
     /**
@@ -77,7 +78,9 @@ class CategoryController extends Controller
         $validatedData = $request->validated();
         $category->update($validatedData);
 
-        return redirect()->route('manager.other.categories.index')->with('success', 'Category updated successfully');
+
+        toast('Kategori berhasil diupdate', 'success');
+        return redirect()->route('manager.other.categories.index')->with('success', 'Kategori berhasil diupdate');
     }
 
     /**
@@ -87,7 +90,8 @@ class CategoryController extends Controller
     {
         $category->delete();
 
-        return redirect()->route('manager.other.categories.index')->with('success', 'Category added successfully');
+        toast('Kategori berhasil dihapus', 'success');
+        return redirect()->route('manager.other.categories.index')->with('success', 'Kategori berhasil dihapus');
     }
 
     public function search(Request $request)

@@ -1,23 +1,24 @@
 <x-app-layout>
     <x-slot name="header">
         <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-            <h2 class="text-xl font-semibold leading-tight">
-                {{ __('Aset') }}
+            <h2 class="font-semibold text-xl leading-tight">
+                {{ __('Pelanggan') }}
             </h2>
-            <x-button target="" href="{{ route('manager.asset.create') }}" variant="success"
+            <x-button target="" href="{{ route('manager.other.buyer.create') }}" variant="success"
                 class="justify-center max-w-xl gap-2">
                 <x-heroicon-o-plus class="w-6 h-6" aria-hidden="true" />
-                <span>Tambah Aset</span>
+                <span>Tambah Pelanggan</span>
             </x-button>
         </div>
     </x-slot>
 
     <div class="p-6 overflow-hidden bg-white rounded-md shadow-md dark:bg-dark-eval-1">
+
         <div class="flex flex-col md:flex-row md:justify-end gap-4 my-3">
 
             <!-- Search Input-->
             <div class="w-full md:w-auto">
-                <input type="text" id="search" placeholder="Search items..."
+                <input type="text" id="search" placeholder="Cari pelanggan..."
                     class=" rounded w-full md:w-auto px-4 py-2 dark:bg-dark-eval-1" name="search">
             </div>
         </div>
@@ -32,16 +33,17 @@
             <table id="export-table" class="min-w-full rounded-md">
                 <thead>
                     <tr class="bg-gray-200 text-gray-600 dark:bg-slate-900 dark:text-white text-sm leading-normal">
-                        <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Nama barang</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Nama pelanggan
+                        </th>
                         <th
                             class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider hidden sm:table-cell">
-                            Harga</th>
+                            Nomor telepon</th>
                         <th
                             class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider hidden sm:table-cell">
-                            Quantity</th>
+                            alamat</th>
                         <th
                             class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider hidden sm:table-cell">
-                            Total Harga</th>
+                            Tipe pelanggan</th>
                         <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Aksi</th>
                     </tr>
                 </thead>
@@ -51,8 +53,6 @@
                 </tbody>
             </table>
         </div>
-
-
 
         <!-- Pagination Controls -->
         <div class="mt-4 flex items-center justify-center">
@@ -81,7 +81,7 @@
                 }
             }
         </script>
-        @include('components.js.dtAssets')
+        @include('components.js.dtBuyers')
     @endpush
 
 </x-app-layout>

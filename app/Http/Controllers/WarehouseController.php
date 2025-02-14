@@ -50,7 +50,8 @@ class WarehouseController extends Controller
 
         Warehouse::create($validatedData);
 
-        return redirect()->route('manager.warehouses.index')->with('success', 'Warehouse added successfully');
+        toast('Gudang berhasil ditambahkan', 'success');
+        return redirect()->route('manager.warehouses.index')->with('success', 'Gudang berhasil ditambahkan');
     }
 
     /**
@@ -98,7 +99,8 @@ class WarehouseController extends Controller
 
         $warehouse->update($validatedData);
 
-        return redirect()->route('manager.warehouses.index')->with('success', 'Warehouse updated successfully');
+        toast('Gudang berhasil diupdate', 'success');
+        return redirect()->route('manager.warehouses.index')->with('success', 'Gudang berhasil diupdate');
     }
 
     /**
@@ -108,6 +110,7 @@ class WarehouseController extends Controller
     {
         $warehouse->delete();
 
-        return redirect()->route('manager.warehouses.index')->with('success', 'Warehouse deleted successfully');
+        toast('Gudang berhasil dihapus', 'success');
+        return redirect()->route('manager.warehouses.index')->with('success', 'Gudang berhasil dihapus');
     }
 }

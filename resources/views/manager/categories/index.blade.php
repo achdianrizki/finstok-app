@@ -14,6 +14,12 @@
 
     <div class="p-6 overflow-hidden bg-white rounded-md shadow-md dark:bg-dark-eval-1">
         <div class="overflow-x-auto">
+            @if (session('success'))
+                <div class="p-4 mb-4 text-sm text-green-700 bg-green-100 rounded-lg dark:bg-green-200 dark:text-green-800"
+                    role="alert">
+                    {{ session('success') }}
+                </div>
+            @endif
             <table id="export-table" class="min-w-full rounded-md">
                 <thead>
                     <tr class="bg-gray-200 text-gray-600 dark:bg-slate-900 dark:text-white text-sm leading-normal">

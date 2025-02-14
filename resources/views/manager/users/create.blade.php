@@ -19,13 +19,15 @@
                 <div class="mb-5 space-y-2">
                     <x-form.label for="name" :value="__('Nama')" />
                     <x-form.input id="name" class="block w-full" type="text" name="name" :value="old('name')"
-                        placeholder="{{ __('Nama pengguna') }}" required />
+                        placeholder="{{ __('Nama pengguna') }}" />
+                    <x-input-error :messages="$errors->get('name')" class="mt-2" />
                 </div>
 
                 <div class="mb-5 space-y-2">
                     <x-form.label for="email" :value="__('Email')" />
                     <x-form.input id="email" class="block w-full" type="text" name="email" :value="old('email')"
-                        placeholder="{{ __('Email') }}" required />
+                        placeholder="{{ __('Email') }}" />
+                    <x-input-error :messages="$errors->get('email')" class="mt-2" />
                 </div>
 
                 <div class="mb-5 space-y-2">
@@ -36,14 +38,15 @@
                             <option value="{{ $role->id }}">{{ $role->name }}</option>
                         @endforeach
                     </x-form.select>
-                    <x-input-error :messages="$errors->get('id')" class="mt-2" />
+                    <x-input-error :messages="$errors->get('role_id')" class="mt-2" />
                 </div>
 
                 <div class="mb-5 space-y-2">
-                  <x-form.label for="password" :value="__('Password')" />
-                  <x-form.input id="password" class="block w-full" type="text" name="password" :value="old('password')"
-                      placeholder="{{ __('Password') }}" required />
-              </div>
+                    <x-form.label for="password" :value="__('Password')" />
+                    <x-form.input id="password" class="block w-full" type="text" name="password" :value="old('password')"
+                        placeholder="{{ __('Password') }}" />
+                    <x-input-error :messages="$errors->get('password')" class="mt-2" />
+                </div>
 
                 <div class="grid justify-items-end">
                     <x-button class="gap-2">

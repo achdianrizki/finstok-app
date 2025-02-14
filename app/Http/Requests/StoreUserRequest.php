@@ -28,4 +28,23 @@ class StoreUserRequest extends FormRequest
             'password' => 'required|string|max:50',
         ];
     }
+
+    public function messages(): array
+    {
+        return [
+            'name.required' => 'Nama wajib diisi.',
+            'name.string' => 'Nama harus berupa string.',
+            'name.max' => 'Nama tidak boleh lebih dari 255 karakter.',
+
+            'email.required' => 'Email wajib diisi.',
+            'email.email' => 'Email harus berupa dalam format email (admin@gmail.com).',
+            'email.max' => 'Email tidak boleh lebih dari 50 karakter.',
+
+            'role_id.required' => 'Role wajib diisi.',
+
+            'password.required' => 'Password wajib diisi.',
+            'password.string' => 'Password harus berupa string.',
+            'password.max' => 'Password tidak boleh lebih dari 50 karakter.',
+        ];
+    }
 }

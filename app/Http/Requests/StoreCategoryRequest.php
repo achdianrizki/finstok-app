@@ -25,4 +25,13 @@ class StoreCategoryRequest extends FormRequest
             'name' => 'required|string|max:255',
         ];
     }
+
+    public function messages(): array
+    {
+        return [
+            'name.required' => 'Nama kategori wajib diisi.',
+            'name.string' => 'Nama kategori harus berupa string.',
+            'name.max' => 'Nama kategori tidak boleh lebih dari 255 karakter.',
+        ];
+    }
 }

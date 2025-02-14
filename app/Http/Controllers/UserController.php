@@ -54,7 +54,8 @@ class UserController extends Controller
             $user->assignRole($role->name);
         }
 
-        return redirect()->route('manager.users.index')->with('success', 'User added successfully');
+        toast('User berhasil ditambahkan', 'success');
+        return redirect()->route('manager.users.index')->with('success', 'User berhasil ditambahkan');
     }
 
     public function edit(User $user)
@@ -85,13 +86,15 @@ class UserController extends Controller
             }
         }
 
-        return redirect()->route('manager.users.index')->with('success', 'User updated successfully');
+        toast('User berhasil diupdate', 'success');
+        return redirect()->route('manager.users.index')->with('success', 'User berhasil diupdate');
     }
 
     public function destroy(User $user)
     {
         $user->delete();
 
-        return redirect()->route('manager.users.index')->with('success', 'User deleted successfully');
+        toast('User berhasil dihapus', 'success');
+        return redirect()->route('manager.users.index')->with('success', 'User berhasil dihapus');
     }
 }
