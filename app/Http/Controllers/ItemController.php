@@ -6,6 +6,7 @@ use App\Models\Item;
 use App\Models\Modal;
 use App\Models\Category;
 use App\Models\Purchase;
+use App\Models\Supplier;
 use App\Models\Warehouse;
 use App\Exports\ItemsExport;
 use App\Imports\ItemsImport;
@@ -60,43 +61,29 @@ class ItemController extends Controller
     public function create()
     {
         $warehouses = Warehouse::all();
-        return view('manager.items.create', compact('warehouses'));
+        $suppliers = Supplier::all();
+        $categories = Category::all();
+        return view('manager.items.create', compact('warehouses', 'suppliers', 'categories'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreItemRequest $request, Item $items)
+    public function store(StoreItemRequest $request)
     {
-        $modal_awal = Modal::value('amount');
+        $item = item::create([
+            'name' => $request->name,
+            'code' => $request->code,
+            'purchase_price' => $request->purchase_price,
+            'selling_price' => $request->selling_price,
+            'unit' => $request->unit,
+            'stock' => 0,
+            'description' => $request->description,
+            'category_id' => $request->category_id,
+            'warehouse_id' => $request->warehouse_id,
+        ]);
 
-        // DB::transaction(function () use ($request, $items, $modal_awal) {
-        $validated = $request->validated();
-        // dd($validated);
-
-        // $total_amount_item = $validated['price'] * $validated['stock'];
-
-        // if ($modal_awal < $total_amount_item) {
-
-        //     alert()->error('ErrorAlert', 'Modal tidak mencukupi untuk melakukan pembelian.');
-        //     return redirect()->route('manager.items.index');
-        // } else {
-        $items = Item::create($validated);
-
-        // dd($items);
-        // Purchase::create([
-        //     'name' => $validated['name'],
-        //     'item_id' => $items->id,
-        //     'price' => $validated['price'],
-        //     'qty' => $validated['stock'],
-        //     'total_price' => $total_amount_item,
-        //     'purchase_type' => 'stock',
-        //     'supplier_name' => "pak asep",
-        // ]);
-
-        // Modal::where('amount', $modal_awal)->decrement('amount', $total_amount_item);
-        // }    
-        // });
+        $item->suppliers()->attach($request->suppliers);
 
         toast('Success Added', 'success');
         return redirect()->route('manager.items.index');
@@ -118,7 +105,9 @@ class ItemController extends Controller
     {
         $warehouses = Warehouse::all();
         $selectedWarehouse = $item->warehouse_id;
-        return view('manager.items.edit', compact('item', 'warehouses', 'selectedWarehouse'));
+        $suppliers = Supplier::all();
+        $categories = Category::all();
+        return view('manager.items.edit', compact('item', 'warehouses', 'selectedWarehouse', 'suppliers', 'categories'));
     }
 
     /**
@@ -126,26 +115,26 @@ class ItemController extends Controller
      */
     public function update(UpdateItemRequest $request, Item $item)
     {
-        // DB::transaction(function () use ($request, $item) {
-        // dd($request);
-        $validated =  $request->validated();
+        $item->update([
+            'name' => $request->name,
+            'purchase_price' => $request->purchase_price,
+            'selling_price' => $request->selling_price,
+            'unit' => $request->unit,
+            'description' => $request->description,
+            'category_id' => $request->category_id,
+            'warehouse_id' => $request->warehouse_id,
+        ]);
 
-        $item->update($validated);
+        if ($request->has('suppliers')) {
+            $item->suppliers()->sync($request->suppliers);
+        } else {
+            $item->suppliers()->detach();
+        }
 
-
-        // Purchase::where('id', $item->id)->update([
-        //     'name' => $validated['name'],
-        //     'item_id' => $item->id,
-        //     'price' => $validated['price'],
-        //     'total_price' => $validated['price'] * $validated['stock'],
-        //     'purchase_type' => 'stock',
-        //     'supplier_name' => "pak asep",
-        // ]);
-        // });
-
-        toast('Success Updated', 'success');
+        toast('Update Success', 'success');
         return redirect()->route('manager.items.index');
     }
+
 
     /**
      * Remove the specified resource from storage.

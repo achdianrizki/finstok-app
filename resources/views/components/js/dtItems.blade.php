@@ -29,12 +29,10 @@
                         $.each(response.data, function(index, item) {
                             rows += `
                             <tr class="border dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-slate-900">
-                                <td class="px-6 py-4 whitespace-nowrap">${item.name}</td>
-                                <td class="px-6 py-4 whitespace-nowrap hidden sm:table-cell">${item.code}</td>
+                                <td class="px-6 py-4 whitespace-nowrap">${item.code}</td>
+                                <td class="px-6 py-4 whitespace-nowrap hidden sm:table-cell">${item.name}</td>
                                 <td class="px-6 py-4 whitespace-nowrap hidden md:table-cell">${item.category.name}</td>
-                                <td class="px-6 py-4 whitespace-nowrap hidden md:table-cell">${formatRupiah(item.price)}</td>
-                                <td class="px-6 py-4 whitespace-nowrap hidden md:table-cell">${item.stock}</td>
-                                <td class="px-6 py-4 whitespace-nowrap hidden md:table-cell">${item.warehouse.name}</td>
+                                <td class="px-6 py-4 whitespace-nowrap hidden md:table-cell">${item.unit}</td>
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <x-button target="" href="/manager/items/${item.id}/edit" variant="warning" class="justify-center max-w-sm gap-2">
                                         <x-heroicon-o-pencil class="w-3 h-3" aria-hidden="true" />
@@ -55,8 +53,9 @@
                             <tr id="details-${index}" class="hidden sm:hidden">
                                 <td colspan="6" class="px-6 py-4">
                                     <div>
-                                        <p><strong>Kode:</strong> ${item.code}</p>
-                                        <p><strong>Harga/pcs:</strong> ${formatRupiah(item.price)}</p>
+                                        <p><strong>Nama Barang:</strong> ${item.code}</p>
+                                        <p><strong>Kategori:</strong> ${item.category.name}</p>
+                                        <p><strong>Satuan:</strong> ${item.unit}</p>
                                     </div>
                                 </td>
                             </tr>

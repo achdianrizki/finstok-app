@@ -11,16 +11,25 @@ class Purchase extends Model
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
-        'item_id', 
-        'total_price', 
-        'price',
+        'supplier_id',
+        'total_price',
+        'sub_total',
+        'total_discount',
         'status',
-        'supplier_name',
-        'qty',
-        'invoice_number'
+        'tax',
+        'information',
+        'total_qty',
+        'purchase_number',
+        'purchase_date',
     ];
 
-    public function user(){
+    public function supplier()
+    {
+        return $this->belongsTo(Supplier::class);
+    }
+
+    public function user()
+    {
         return $this->belongsTo(User::class);
     }
 
@@ -32,5 +41,10 @@ class Purchase extends Model
     public function finance()
     {
         return $this->hasOne(Finance::class, 'purchase_id');
+    }
+
+    public function items()
+    {
+        return $this->belongsToMany(Item::class, 'item_purchase')->withPivot('qty');
     }
 }

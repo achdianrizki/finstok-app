@@ -12,6 +12,7 @@ use App\Http\Controllers\WarehouseController;
 use App\Http\Controllers\DistributorController;
 use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\SaleController;
+use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\UserController;
 use App\Models\User;
 
@@ -51,6 +52,7 @@ Route::middleware('auth')->group(function () {
         Route::resource('sales', SaleController::class)->middleware('role:manager|admin');
         Route::resource('distributors', DistributorController::class)->middleware('role:manager|admin');
         Route::resource('users', UserController::class)->middleware('role:manager');
+        Route::resource('supplier', SupplierController::class)->middleware('role:manager');
 
 
 
@@ -87,8 +89,24 @@ Route::get('/purchases-data', [PurchaseController::class, 'getPurchaseItem']);
 Route::get('/sales-data', [SaleController::class, 'getSaleItem']);
 Route::get('/items-data-sale', [SaleController::class, 'searchItem']);
 Route::get('/users-data', [UserController::class, 'getUsers'])->name('manager.users.data');
+Route::get('/supplier-data', [SupplierController::class, 'getSupplier'])->name('manager.users.data');
 Route::get('/sales-data', [SaleController::class, 'getSales']);
 Route::get('/assets-data', [AssetController::class, 'getAssets']);
+Route::get('/get-item/{item_id}/{supplier_id}', function ($item_id, $supplier_id) {
+    $item = \App\Models\Item::find($item_id);
+    $supplier = \App\Models\Supplier::find($supplier_id);
+
+    return response()->json([
+        'code' => $item->code,
+        'name' => $item->name,
+        'stock' => $item->stock,
+        'unit' => $item->unit,
+        'price' => $item->price,
+        'purchase_price' => $item->purchase_price,
+        'discount1' => $supplier ? $supplier->discount1 : 0,
+        'discount2' => $supplier ? $supplier->discount2 : 0,
+    ]);
+});
 
 Route::get('/laporan/laba-rugi', [ChartController::class, 'getLabaRugi']);
 

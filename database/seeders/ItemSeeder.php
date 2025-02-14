@@ -21,8 +21,11 @@ class ItemSeeder extends Seeder
         Item::create([
             'name' => 'Liptint Glossy',
             'code' => '09090231',
-            'price' => 10000,
+            'purchase_price' => 8000,
+            'selling_price' => 10000,
+            'unit' => 'pcs',
             'stock' => 0,
+            'description' => 'Liptint Glossy 12 GRM',
             'category_id' => 1,
             'warehouse_id' => 1,
         ]);

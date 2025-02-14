@@ -23,12 +23,41 @@ class StoreItemRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string', 'max:255'],
-            'code' => ['required', 'string', 'max:10'],
-            'price' => ['required', 'integer'],
-            'stock' => ['required', 'integer'],
-            'category_id' => ['required'],
-            'warehouse_id' => ['required'],
-            
+            'code' => ['required', 'string', 'max:10', 'unique:items,code'],
+            'purchase_price' => ['required', 'integer'],
+            'selling_price' => ['required', 'integer'],
+            'unit' => ['required', 'string'],
+            'stock' => ['integer'],
+            'description' => ['nullable', 'string'],
+            'suppliers' => ['required', 'array'],
+            'suppliers.*' => ['exists:suppliers,id'],
+            'category_id' => ['required', 'exists:categories,id'],
+            'warehouse_id' => ['required', 'exists:warehouses,id'],
+        ];
+    }
+
+    /**
+     * Get the error messages for the defined validation rules.
+     *
+     * @return array<string, string>
+     */
+    public function messages(): array
+    {
+        return [
+            'name.required' => 'Nama wajib diisi.',
+            'code.required' => 'Kode wajib diisi.',
+            'code.unique' => 'Kode sudah digunakan.',
+            'purchase_price.required' => 'Harga beli wajib diisi.',
+            'selling_price.required' => 'Harga jual wajib diisi.',
+            'unit.required' => 'Satuan wajib diisi.',
+            'stock.integer' => 'Stok harus berupa angka.',
+            'description.string' => 'Deskripsi harus berupa teks.',
+            'suppliers.required' => 'Pemasok wajib diisi.',
+            'suppliers.*.exists' => 'Pemasok tidak valid.',
+            'category_id.required' => 'Kategori wajib diisi.',
+            'category_id.exists' => 'Kategori tidak valid.',
+            'warehouse_id.required' => 'Gudang wajib diisi.',
+            'warehouse_id.exists' => 'Gudang tidak valid.',
         ];
     }
 }

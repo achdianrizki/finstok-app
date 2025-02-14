@@ -15,11 +15,13 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('code')->unique();
-            $table->unsignedBigInteger('price');
+            $table->unsignedBigInteger('purchase_price');
+            $table->unsignedBigInteger('selling_price');
+            $table->string('unit');
             $table->integer('stock');
+            $table->text('description');
             $table->foreignId('category_id')->constrained()->onDelete('cascade');
             $table->foreignId('warehouse_id')->constrained()->onDelete('cascade');
-            $table->softDeletes();
             $table->timestamps();
         });
     }
