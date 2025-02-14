@@ -1,147 +1,152 @@
 <x-app-layout>
     <x-slot name="header">
         <div class="flex items-center gap-4">
-            <x-button target="" href="{{ route('manager.items.index') }}" variant="primary" size="sm"
+            <x-button href="{{ route('manager.items.index') }}" variant="primary" size="sm"
                 class="justify-center gap-2">
                 <x-heroicon-o-arrow-left class="w-4 h-4" aria-hidden="true" />
             </x-button>
-            <h2 class="text-xl font-semibold leading-tight">
-                {{ __('Edit barang') }}
-            </h2>
+            <h2 class="text-xl font-semibold leading-tight">{{ __('Edit Barang') }}</h2>
         </div>
     </x-slot>
 
-    <div class="p-6 overflow-hidden bg-white rounded-md shadow-md dark:bg-dark-eval-1">
-        <form action="{{ route('manager.items.update', $item->id) }}" method="POST">
-            @csrf
-            @method('PUT')
-            
-            <div class="grid gap-2">
-                <div class="flex flex-col md:flex-row ">
-                    <div class="w-full md:w-1/2 mb-5 space-y-2">
-                        <x-form.label for="name" :value="__('Nama Barang')" />
-                        <x-form.input id="name" class="w-full" type="text" name="name" :value="$item->name"
-                            placeholder="{{ __('Nama Barang') }}" />
-                        <x-input-error :messages="$errors->get('name')" class="mt-2" />
-                    </div>
+    <form action="{{ route('manager.items.update', $item->id) }}" method="POST">
+        @csrf
+        @method('PUT')
+        <div class="p-6 overflow-hidden bg-white rounded-md shadow-md dark:bg-dark-eval-1">
+            <div class="grid grid-cols-2 gap-4">
+                <div class="space-y-2">
+                    <x-form.label for="name" :value="__('Nama Barang')" />
+                    <x-form.input id="name" class="w-full" type="text" name="name"
+                        value="{{ old('name', $item->name) }}" />
+                    <x-input-error :messages="$errors->get('name')" class="mt-2" />
 
-                    <div class="w-full md:w-1/2 md:ml-3 md:mt-0 mb-5 space-y-2">
-                        <x-form.label for="code" :value="__('Kode Barang')" />
-                        <x-form.input id="code" class="w-full" type="text" name="code" :value="$item->code"
-                            placeholder="{{ __('Kode Barang') }}" />
-                        <x-input-error :messages="$errors->get('code')" class="mt-2" />
-                    </div>
+
+                    <x-form.label for="code" :value="__('Kode Barang')" />
+                    <x-form.input id="code" class="w-full" type="text" name="code"
+                        value="{{ old('code', $item->code) }}" disabled />
+
+                    <x-form.label for="unit" :value="__('Satuan')" />
+                    <x-form.input id="unit" class="block w-full" type="text" name="unit"
+                        value="{{ old('unit', $item->unit) }}" />
+                    <x-input-error :messages="$errors->get('unit')" class="mt-2" />
+
+
+                    <x-form.label for="description" :value="__('Deskripsi')" />
+                    <textarea id="description" name="description" class="w-full border-gray-400 rounded-md" rows="3">{{ old('description', $item->description) }}</textarea>
+                    <x-input-error :messages="$errors->get('description')" class="mt-2" />
+
                 </div>
 
-                <div class="mb-5 space-y-2">
-                    <x-form.label for="price" :value="__('Harga/PCS')" />
-                    <x-form.input id="price" class="block w-full" type="number" inputmode="numeric" name="price"
-                        :value="$item->price" placeholder="{{ __('Harga') }}" />
-                    <x-input-error :messages="$errors->get('price')" class="mt-2" />
-                </div>
+                <div class="space-y-2">
+                    <x-form.label for="purchase_price" :value="__('Harga Beli')" />
+                    <x-form.input id="purchase_price" class="w-full" type="number" name="purchase_price"
+                        value="{{ old('purchase_price', $item->purchase_price) }}" />
+                    <x-input-error :messages="$errors->get('purchase_price')" class="mt-2" />
+                        
 
-                <div class="mb-5 space-y-2">
-                    <x-form.label for="category" :value="__('Kategori')" />
-                    <div class="custom-select">
-                        <input type="text" id="selectInput" name="category_name"
-                            class="block w-full py-2 border-gray-400 rounded-md focus:border-gray-400 focus:ring
-                        focus:ring-purple-500 focus:ring-offset-2 focus:ring-offset-white dark:border-gray-600 dark:bg-dark-eval-1
-                        dark:text-gray-300 dark:focus:ring-offset-dark-eval-1"
-                            placeholder="Pilih atau ketik..." autocomplete="off" value="{{ $item->category->name }}">
-                        <input type="hidden" id="category_id" name="category_id" value="{{ $item->category_id }}">
-                        <ul id="selectOptions"></ul>
-                        <x-input-error :messages="$errors->get('category_id')" class="mt-2" />
-                    </div>
-                </div>
+                    <x-form.label for="selling_price" :value="__('Harga Jual')" />
+                    <x-form.input id="selling_price" class="w-full" type="number" name="selling_price"
+                        value="{{ old('selling_price', $item->selling_price) }}" />
+                    <x-input-error :messages="$errors->get('selling_price')" class="mt-2" />
 
 
-
-                <div class="mb-5 space-y-2">
-                    <x-form.label for="stock" :value="__('stock awal')" />
-                    <x-form.input id="stock" class="block w-full" type="text" name="stock" :value="$item->stock"
-                        placeholder="{{ __('stock awal') }}" />
-                    <x-input-error :messages="$errors->get('stock')" class="mt-2" />
-                </div>
-
-                <div class="mb-5 space-y-2">
-                    <x-form.label for="warehouse" :value="__('Gudang')" />
-                    <x-form.select id="warehouse" class="block w-full" type="text" name="warehouse_id"
-                        :value="old('warehouse_id')">
-                        @forelse ($warehouses as $warehouse)
-                            <option value="{{ $warehouse->id }}" {{ $warehouse->id == $selectedWarehouse ? 'selected' : '' }} >
-                                
-                                {{ $warehouse->name }}
+                    <x-form.label for="warehouse_id" :value="__('Gudang')" />
+                    <x-form.select id="warehouse_id" class="block w-full" name="warehouse_id">
+                        @foreach ($warehouses as $warehouse)
+                            <option value="{{ $warehouse->id }}"
+                                {{ $item->warehouse_id == $warehouse->id ? 'selected' : '' }}>{{ $warehouse->name }}
                             </option>
-                        @empty
-                            <option value="" selected disabled hidden>{{ __('Pilih Gudang') }}
-                            </option>
-                        @endforelse
+                        @endforeach
                     </x-form.select>
+                    <x-input-error :messages="$errors->get('warehouse_id')" class="mt-2" />
+
+                    <x-form.label for="category_id" :value="__('Kategori')" />
+                    <x-form.select id="category_id" class="block w-full" name="category_id">
+                        @foreach ($categories as $category)
+                            <option value="{{ $category->id }}"
+                                {{ $item->category_id == $category->id ? 'selected' : '' }}>{{ $category->name }}
+                            </option>
+                        @endforeach
+                    </x-form.select>
+                    <x-input-error :messages="$errors->get('category_id')" class="mt-2" />
                 </div>
-
-
-                <div class="grid justify-items-end">
-                    <x-button class="gap-2" id="buttonSubmit">
-                        <span>{{ __('Submit') }}</span>
-                    </x-button>
-                </div>
-
             </div>
-        </form>
-    </div>
+        </div>
+
+        <div class="mt-6">
+            <h3 class="text-lg font-semibold">{{ __('Penyedia Barang') }}</h3>
+            <hr class="my-2 border-gray-300">
+        </div>
+
+        <div class="mt-5 space-y-2">
+            <x-input-error :messages="$errors->get('suppliers')" class="mt-2" />
+            
+            <button type="button" id="addSupplierRow" class="mt-2 px-4 py-2 bg-purple-500 text-white rounded">+ Tambah
+                Supplier</button>
+            <table class="w-full border border-gray-300" id="supplierTable">
+                <thead>
+                    <tr class="bg-gray-200">
+                        <th class="p-2 text-left">Supplier</th>
+                        <th class="p-2 text-center">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($item->suppliers as $supplier)
+                        <tr>
+                            <td class="p-2">
+                                <select name="suppliers[]" class="w-full p-2 border border-gray-300 rounded">
+                                    @foreach ($suppliers as $sup)
+                                        <option value="{{ $sup->id }}"
+                                            {{ $supplier->id == $sup->id ? 'selected' : '' }}>{{ $sup->name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </td>
+                            <td class="p-2 text-center">
+                                <button type="button"
+                                    class="removeSupplierRow px-2 py-1 bg-red-500 text-white rounded">X</button>
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+
+        <div class="grid justify-items-end mt-6">
+            <x-button class="gap-2" id="buttonSubmit">Update</x-button>
+        </div>
+    </form>
 
     @push('scripts')
-        @include('components.js.selectOrCreate')
-
         <script>
-            const itemQuantity = newItem.querySelector('[name="itemQuantity[]"]');
-            const itemPrice = newItem.querySelector('[name="itemPrice[]"]');
-            const itemTotal = newItem.querySelector('[name="itemTotal[]"]');
+            $(document).ready(function() {
+                let suppliers = @json($suppliers);
+                let supplierOptions = '';
 
-            itemQuantity.addEventListener('input', calculateTotal);
-            itemPrice.addEventListener('input', calculateTotal);
+                suppliers.forEach(supplier => {
+                    supplierOptions += `<option value="${supplier.id}">${supplier.name}</option>`;
+                });
 
-            function calculateTotal() {
-                const quantity = parseFloat(itemQuantity.value) || 0;
-                const price = parseFloat(itemPrice.value) || 0;
-                const total = quantity * price;
+                $('#addSupplierRow').click(function() {
+                    let row = `
+                    <tr>
+                        <td class="p-2">
+                            <select name="suppliers[]" class="w-full p-2 border border-gray-300 rounded">
+                                <option value="">Pilih Supplier</option>
+                                ${supplierOptions}
+                            </select>
+                        </td>
+                        <td class="p-2 text-center">
+                            <button type="button" class="removeSupplierRow px-2 py-1 bg-red-500 text-white rounded">X</button>
+                        </td>
+                    </tr>`;
+                    $('#supplierTable tbody').append(row);
+                });
 
-                itemTotal.value = formatRupiah(total.toFixed(2));
-            }
+                $(document).on('click', '.removeSupplierRow', function() {
+                    $(this).closest('tr').remove();
+                });
+            });
         </script>
-    @endpush
-
-    @push('styles')
-        <style>
-            .custom-select input {
-                width: 100%;
-                padding: 8px;
-                box-sizing: border-box;
-                border-radius: 5px;
-            }
-
-            .custom-select ul {
-                position: absolute;
-                max-height: 150px;
-                overflow-y: auto;
-                background-color: white;
-                border: 1px solid #ccc;
-                margin-top: 0;
-                padding-left: 0;
-                list-style-type: none;
-                display: none;
-                border-radius: 5px;
-                font-size: 13px;
-            }
-
-            .custom-select ul li {
-                padding: 8px;
-                cursor: pointer;
-            }
-
-            .custom-select ul li:hover {
-                background-color: #f1f1f1;
-            }
-        </style>
     @endpush
 </x-app-layout>

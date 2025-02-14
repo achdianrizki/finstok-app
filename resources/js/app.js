@@ -5,6 +5,9 @@ import collapse from '@alpinejs/collapse'
 import PerfectScrollbar from 'perfect-scrollbar'
 import Swal from 'sweetalert2'
 import 'flowbite'
+import flatpckr from 'flatpickr'
+
+window.flatpckr = flatpckr;
 
 window.PerfectScrollbar = PerfectScrollbar
 

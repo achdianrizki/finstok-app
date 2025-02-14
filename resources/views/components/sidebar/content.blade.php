@@ -20,17 +20,21 @@
         </x-slot>
     </x-sidebar.link>
 
-    <x-sidebar.link title="Pembelian" href="{{ route('manager.purchase.index') }}" :isActive="request()->routeIs('manager.purchase*')">
-        <x-slot name="icon">
-            <x-icons.invoice class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
-        </x-slot>
-    </x-sidebar.link>
-
     <x-sidebar.link title="Distributor" href="{{ route('manager.distributors.index') }}" :isActive="request()->routeIs('manager.distributors*')">
         <x-slot name="icon">
             <x-heroicon-o-user-group class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
         </x-slot>
     </x-sidebar.link>
+
+    <x-sidebar.dropdown title="Pembelian" :active="request()->routeIs('manager.supplier*') || request()->routeIs('manager.purchase*')">
+        <x-slot name="icon">
+            <x-icons.supplier class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
+        </x-slot>
+
+        <x-sidebar.sublink title="Pemasok Barang" href="{{ route('manager.supplier.index') }}" :active="request()->routeIs('manager.supplier*')" />
+
+        <x-sidebar.sublink title="Pembelian Barang" href="{{ route('manager.purchase.index') }}" :active="request()->routeIs('manager.purchase*')" />
+    </x-sidebar.dropdown>
 
     @role('manager')
         <x-sidebar.link title="Pengguna" href="{{ route('manager.users.index') }}" :isActive="request()->routeIs('manager.users*')">

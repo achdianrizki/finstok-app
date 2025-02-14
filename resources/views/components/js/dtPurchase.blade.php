@@ -21,22 +21,20 @@
 
                     if (response.data.length === 0) {
                         rows = `
-                    <tr>
-                        <td colspan="6" class="py-3 px-6 text-center">Not Found</td>
-                    </tr>
-                    `;
+                            <tr>
+                                <td colspan="7" class="py-3 px-6 text-center">Data tidak ditemukan</td>
+                            </tr>
+                            `;
                     } else {
                         $.each(response.data, function(index, purchase) {
                             rows += `
                             <tr class="border dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-slate-900">
-                                <td class="px-6 py-4 whitespace-nowrap">${purchase.item.name}</td>
-                                <td class="px-6 py-4 whitespace-nowrap hidden md:table-cell">${purchase.qty}</td>
-                                <td class="px-6 py-4 whitespace-nowrap hidden md:table-cell">${formatRupiah(purchase.total_price)}</td>
+                                <td class="px-6 py-4 whitespace-nowrap">${purchase.purchase_number}</td>
+                                <td class="px-6 py-4 whitespace-nowrap hidden md:table-cell">${purchase.purchase_date}</td>
+                                <td class="px-6 py-4 whitespace-nowrap hidden md:table-cell">${purchase.supplier.name}</td>
                                 <td class="px-6 py-4 whitespace-nowrap hidden md:table-cell">${purchase.status}</td>
-                                <td class="px-6 py-4 whitespace-nowrap hidden md:table-cell">${purchase.invoice_number}</td>
-                                <td class="px-6 py-4 whitespace-nowrap hidden sm:table-cell">${purchase.supplier_name}</td>
                                 <td class="px-6 py-4 whitespace-nowrap">
-                                    <x-button target="" href="/manager/purchases/${purchase.id}/edit" variant="warning" class="justify-center max-w-sm gap-2">
+                                    <x-button target="" href="/manager/purchase/${purchase.id}/edit" variant="warning" class="justify-center max-w-sm gap-2">
                                         <x-heroicon-o-pencil class="w-3 h-3" aria-hidden="true" />
                                     </x-button>
                                     <form method="POST" action="/manager/purchases/${purchase.id}" style="display:inline;">

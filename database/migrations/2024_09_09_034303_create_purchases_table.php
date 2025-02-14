@@ -13,13 +13,16 @@ return new class extends Migration
     {
         Schema::create('purchases', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('item_id')->nullable()->constrained('items')->onDelete('cascade');
+            $table->foreignId('supplier_id')->nullable()->constrained('suppliers')->onDelete('cascade');
             $table->unsignedBigInteger('total_price');
-            $table->unsignedBigInteger('price');
-            $table->enum('status', ['lunas', 'belum_lunas']);
-            $table->string('supplier_name');
-            $table->integer('qty');
-            $table->string('invoice_number');
+            $table->unsignedBigInteger('sub_total');
+            $table->decimal('total_discount')->nullable();
+            $table->date('purchase_date');
+            $table->enum('status', ['lunas', 'belum_lunas'])->default('belum_lunas');
+            $table->string('tax');
+            $table->text('information');
+            $table->integer('total_qty');
+            $table->string('purchase_number');
             $table->softDeletes();
             $table->timestamps();
         });

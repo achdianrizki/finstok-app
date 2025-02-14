@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Item;
 use App\Models\Modal;
+use App\Models\Category;
 use App\Models\Purchase;
+use App\Models\Supplier;
+use App\Models\Warehouse;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -19,7 +22,7 @@ class PurchaseController extends Controller
     {
         $purchase_items = Purchase::with(['item'])->get();
 
-        return view('manager.finance.purchase.index', compact('purchase_items'));
+        return view('manager.purchase.index', compact('purchase_items'));
     }
 
     public function getItemsPurchase()
@@ -29,17 +32,17 @@ class PurchaseController extends Controller
 
     public function getPurchaseItem(Request $request)
     {
-        $query = Purchase::with('item');
+        $query = Purchase::with(['supplier']);
 
         if ($request->filled('search')) {
             $search = $request->search;
 
             $query->where(function ($q) use ($search) {
-                $q->where('invoice_number', 'like', '%' . $search . '%')
-                    ->orWhere('supplier_name', 'like', '%' . $search . '%')
-                    ->orWhereHas('item', function ($query) use ($search) {
+                $q->where('purchase_number', 'like', '%' . $search . '%')
+                    ->orWhereHas('supplier', function ($query) use ($search) {
                         $query->where('name', 'like', '%' . $search . '%');
-                    });
+                    })
+                    ->orWhere('purchase_date', 'like', '%' . $search . '%');
             });
         }
 
@@ -55,49 +58,46 @@ class PurchaseController extends Controller
      */
     public function create()
     {
-        return view('manager.finance.purchase.create');
+        $suppliers = Supplier::all();
+        $items = Item::all();
+        return view('manager.purchase.create', compact('suppliers', 'items'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StorePurchaseRequest $request, Purchase $purchases)
+    public function store(Request $request)
     {
 
-        // dd($request->all());
-        // DB::transaction(function () use ($request) {
-        $validated = $request->validated();
-        $validated['status'] = 'lunas';
-        $validated['invoice_number'] = 'INV-' . now()->format('Y') . '/' . str_pad(mt_rand(1, 999), 3, '0', STR_PAD_LEFT);
+        // dd($request);
 
-        $purchase =  Purchase::create($validated);
+        $total_qty = array_sum($request->qty);
 
-        $modal = Modal::where('is_confirm', true)->sum('amount');
+        $purchase = Purchase::create([
+            'purchase_number' => $request->purchase_number,
+            'purchase_date' => $request->purchase_date,
+            'supplier_id' => $request->supplier_id,
+            'tax' => $request->tax,
+            'information' => $request->information,
+            'sub_total' => $request->sub_total,
+            'total_discount' => $request->total_discount,
+            'total_price' => $request->total_price,
+            'total_qty' => $total_qty,
+        ]);
 
-        $modal = Modal::first(); // Pastikan modal sudah diambil dari database
+        foreach ($request->items as $index => $item_id) {
+            $item = Item::findOrFail($item_id);
 
-        if ($modal->amount < $request->total_price) {
-            alert()->error('Modal tidak cukup');
-            return redirect()->back();
+            $item->purchases()->attach($purchase->id, [
+                'qty' => $request->qty[$index],
+            ]);
         }
 
-        if ($purchase) {
-            $item = Item::find($request->item_id);
-            if ($item) {
-                $item->stock += $request->qty;
-                $item->save();
-            }
 
-            $modal->amount -= $request->total_price; // Perbaikan pengurangan modal
-            $modal->save();
-        }
-
-        // });
-
-        // dd($purchase);
         toast('Data berhasil disimpan', 'success');
         return redirect()->route('manager.purchase.index');
     }
+
 
     /**
      * Display the specified resource.
@@ -112,7 +112,11 @@ class PurchaseController extends Controller
      */
     public function edit(Purchase $purchase)
     {
-        //
+        $warehouses = Warehouse::all();
+        $suppliers = Supplier::all();
+        $categories = Category::all();
+        $items = Item::all();
+        return view('manager.purchase.edit', compact('purchase', 'warehouses', 'suppliers', 'categories', 'items'));
     }
 
     /**

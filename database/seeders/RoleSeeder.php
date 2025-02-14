@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Supplier;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
@@ -29,24 +30,40 @@ class RoleSeeder extends Seeder
 
         $userOwner = User::create([
             'name' => 'manager',
+            'username' => 'manager',
             'email' => 'manager@manager.com',
             'password' => bcrypt('password')
         ]);
 
-        $userFinance = User::create([
-            'name' => 'finance',
-            'email' => 'finance@finance.com',
-            'password' => bcrypt('password')
-        ]);
+        // $userFinance = User::create([
+        //     'name' => 'finance',
+        //     'email' => 'finance@finance.com',
+        //     'password' => bcrypt('password')
+        // ]);
 
-        $userAdmin = User::create([
-            'name' => 'admin',
-            'email' => 'admin@admin.com',
-            'password' => bcrypt('password')
+        // $userAdmin = User::create([
+        //     'name' => 'admin',
+        //     'email' => 'admin@admin.com',
+        //     'password' => bcrypt('password')
+        // ]);
+
+        $supplier = Supplier::create([
+            'supplier_code' => 'SUP001',
+            'name' => 'Juhana',
+            'contact' => '08123456789',
+            'discount1' => null,
+            'discount2' => null,
+            'phone' => '08123456789',
+            'fax_nomor' => null,
+            'address' => 'Jl. Supplier No. 1',
+            'city' => 'Jakarta',
+            'province' => 'DKI Jakarta',
+            'payment_term' => null,
+            'status' => true,
         ]);
 
         $userOwner->assignRole($managerRole);
-        $userFinance->assignRole($financeRole);
-        $userAdmin->assignRole($adminRole);
+        // $userFinance->assignRole($financeRole);
+        // $userAdmin->assignRole($adminRole);
     }
 }

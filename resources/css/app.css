@@ -2,6 +2,11 @@
 @import "tailwindcss/components";
 @import "perfect-scrollbar/css/perfect-scrollbar.css";
 @import "tailwindcss/utilities";
+@import 'flatpickr/dist/flatpickr.css';
+
+.flatpickr-input {
+    @apply w-full px-2 py-1 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500;
+}
 
 .dark .ps__rail-y,
 .dark .ps__rail-x {

@@ -1,13 +1,13 @@
 <x-app-layout>
     <x-slot name="header">
         <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-            <h2 class="text-xl font-semibold leading-tight">
-                {{ __('Pembelian Barang') }}
+            <h2 class="font-semibold text-xl leading-tight">
+                {{ __('Data Pemasok') }}
             </h2>
-            <x-button target="" href="{{ route('manager.purchase.create') }}" variant="success"
+            <x-button target="" href="{{ route('manager.supplier.create') }}" variant="success"
                 class="justify-center max-w-xl gap-2">
                 <x-heroicon-o-plus class="w-6 h-6" aria-hidden="true" />
-                <span>Tambah Pembelian</span>
+                <span>Tambah Pemasok</span>
             </x-button>
         </div>
     </x-slot>
@@ -41,27 +41,38 @@
                     class=" rounded w-full md:w-auto px-4 py-2 dark:bg-dark-eval-1" name="search">
             </div>
         </div>
-
         <div class="overflow-x-auto">
             <table id="export-table" class="min-w-full rounded-md">
                 <thead>
                     <tr class="bg-gray-200 text-gray-600 dark:bg-slate-900 dark:text-white text-sm leading-normal">
-                        <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Nama barang</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider hidden md:table-cell">Qty</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider hidden sm:table-cell">Total Harga</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider hidden sm:table-cell">Status</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider hidden md:table-cell">Invoice</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider hidden md:table-cell">Supplier</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Kode Pemasok
+                        </th>
+                        <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Nama Pemasok
+                        </th>
+                        <th
+                            class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider hidden sm:table-cell">
+                            Alamat</th>
+                        <th
+                            class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider hidden sm:table-cell">
+                            Kota</th>
+                        <th
+                            class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider hidden sm:table-cell">
+                            Provinsi</th>
+                        <th
+                            class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider hidden sm:table-cell">
+                            Nama Kontak</th>
+                        <th
+                            class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider hidden sm:table-cell">
+                            Nomor Telepon</th>
+
                         <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Aksi</th>
                     </tr>
                 </thead>
-                <tbody id="purchaseTable" class="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-dark-eval-1">
-
+                <tbody id="supplierTable"
+                    class="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-dark-eval-1">
                 </tbody>
             </table>
         </div>
-        
-
 
         <!-- Pagination Controls -->
         <div class="mt-4 flex items-center justify-center">
@@ -90,7 +101,7 @@
                 }
             }
         </script>
-        @include('components.js.dtPurchase')
+        @include('components.js.dtSupplier')
     @endpush
 
 </x-app-layout>
