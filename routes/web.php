@@ -11,12 +11,12 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ChartController;
 use App\Http\Controllers\WarehouseController;
 use App\Http\Controllers\DistributorController;
+use App\Http\Controllers\OutgoingPaymentController;
 use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\SaleController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\SalesmanController;
 use App\Http\Controllers\UserController;
-use App\Models\User;
 
 /*
 |--------------------------------------------------------------------------
@@ -55,6 +55,12 @@ Route::middleware('auth')->group(function () {
         Route::resource('distributors', DistributorController::class)->middleware('role:manager|admin');
         Route::resource('users', UserController::class)->middleware('role:manager');
         Route::resource('supplier', SupplierController::class)->middleware('role:manager');
+        Route::resource('outgoingpayment', OutgoingPaymentController::class)->middleware('role:manager');
+        Route::get('/outgoingpayment/payment/{purchase}', [OutgoingPaymentController::class, 'create_payment'])
+            ->middleware('role:manager')
+            ->name('outgoingpayment.payment');
+
+
 
 
 
@@ -93,6 +99,7 @@ Route::get('/warehouses-data', [WarehouseController::class, 'getWarehouses']);
 Route::get('/manager/warehouses/{warehouse:id}/items', [WarehouseController::class, 'getItemsByWarehouse']);
 Route::get('/distributors-data', [DistributorController::class, 'getDistributors']);
 Route::get('/purchases-data', [PurchaseController::class, 'getPurchaseItem']);
+Route::get('/outgoingpayment-data', [OutgoingPaymentController::class, 'getPurchaseItem']);
 Route::get('/sales-data', [SaleController::class, 'getSaleItem']);
 Route::get('/items-data-sale', [SaleController::class, 'searchItem']);
 Route::get('/users-data', [UserController::class, 'getUsers'])->name('manager.users.data');
@@ -116,7 +123,6 @@ Route::get('/get-item/{item_id}/{supplier_id}', function ($item_id, $supplier_id
 });
 Route::get('/buyers-data', [BuyerController::class, 'getBuyers']);
 Route::get('/salesmans-data', [SalesmanController::class, 'getSalesman']);
-
 Route::get('/laporan/laba-rugi', [ChartController::class, 'getLabaRugi']);
 
 

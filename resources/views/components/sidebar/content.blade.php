@@ -26,7 +26,7 @@
         </x-slot>
     </x-sidebar.link>
 
-    <x-sidebar.dropdown title="Pembelian" :active="request()->routeIs('manager.supplier*') || request()->routeIs('manager.purchase*')">
+    <x-sidebar.dropdown title="Pembelian" :active="request()->routeIs('manager.supplier*') || request()->routeIs('manager.purchase*') || request()->routeIs('manager.outgoingpayment*')">
         <x-slot name="icon">
             <x-icons.supplier class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
         </x-slot>
@@ -34,6 +34,8 @@
         <x-sidebar.sublink title="Pemasok Barang" href="{{ route('manager.supplier.index') }}" :active="request()->routeIs('manager.supplier*')" />
 
         <x-sidebar.sublink title="Pembelian Barang" href="{{ route('manager.purchase.index') }}" :active="request()->routeIs('manager.purchase*')" />
+
+        <x-sidebar.sublink title="Pembayaran Keluar" href="{{ route('manager.outgoingpayment.index') }}" :active="request()->routeIs('manager.outgoingpayment*')" />
     </x-sidebar.dropdown>
 
     @role('manager')

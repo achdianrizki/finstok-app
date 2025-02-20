@@ -40,14 +40,14 @@
                 <div class="space-y-2">
                     <x-form.label for="purchase_price" :value="__('Harga Beli')" />
                     <x-form.input id="purchase_price" class="w-full" type="number" name="purchase_price"
-                        value="{{ old('purchase_price', $item->purchase_price) }}" />
+                        value="{{ old('purchase_price', intval($item->purchase_price)) }}" />
                     <x-input-error :messages="$errors->get('purchase_price')" class="mt-2" />
-                        
 
                     <x-form.label for="selling_price" :value="__('Harga Jual')" />
                     <x-form.input id="selling_price" class="w-full" type="number" name="selling_price"
-                        value="{{ old('selling_price', $item->selling_price) }}" />
+                        value="{{ old('selling_price', intval($item->selling_price)) }}" />
                     <x-input-error :messages="$errors->get('selling_price')" class="mt-2" />
+
 
 
                     <x-form.label for="warehouse_id" :value="__('Gudang')" />
@@ -80,7 +80,7 @@
 
         <div class="mt-5 space-y-2">
             <x-input-error :messages="$errors->get('suppliers')" class="mt-2" />
-            
+
             <button type="button" id="addSupplierRow" class="mt-2 px-4 py-2 bg-purple-500 text-white rounded">+ Tambah
                 Supplier</button>
             <table class="w-full border border-gray-300" id="supplierTable">

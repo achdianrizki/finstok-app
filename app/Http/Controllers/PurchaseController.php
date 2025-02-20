@@ -83,13 +83,18 @@ class PurchaseController extends Controller
             'total_discount' => $request->total_discount,
             'total_price' => $request->total_price,
             'total_qty' => $total_qty,
+            'tax_type' => $request->taxt_type
         ]);
 
         foreach ($request->items as $index => $item_id) {
             $item = Item::findOrFail($item_id);
 
+            $item->stock += $request->qty[$index];
+            $item->save();
+
             $item->purchases()->attach($purchase->id, [
                 'qty' => $request->qty[$index],
+                'price_per_item' => $request->price_per_item[$index]
             ]);
         }
 

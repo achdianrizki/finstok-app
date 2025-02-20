@@ -10,6 +10,8 @@ class Purchase extends Model
 {
     use HasFactory, SoftDeletes;
 
+    protected $primaryKey = 'id';
+
     protected $fillable = [
         'supplier_id',
         'total_price',
@@ -45,6 +47,11 @@ class Purchase extends Model
 
     public function items()
     {
-        return $this->belongsToMany(Item::class, 'item_purchase')->withPivot('qty');
+        return $this->belongsToMany(Item::class, 'item_purchase')->withPivot('qty', 'price_per_item');
+    }
+
+    public function payments()
+    {
+        return $this->hasMany(OutgoingPayment::class);
     }
 }

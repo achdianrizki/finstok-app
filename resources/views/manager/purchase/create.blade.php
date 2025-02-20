@@ -24,7 +24,7 @@
                     </select>
 
                     <x-form.label for="tax" :value="__('Pajak')" />
-                    <x-form.select id="tax" class="block w-full" name="tax">
+                    <x-form.select id="tax" class="block w-full" name="tax_type">
                         <option value="" disabled selected>Pilih</option>
                         <option value="ppn" {{ old('tax') == 'ppn' ? 'selected' : '' }}>PPN 11%</option>
                         <option value="non_ppn" {{ old('tax') == 'non_ppn' ? 'selected' : '' }}>NON-PPN</option>
@@ -189,9 +189,9 @@
                     let subTotal = parseFloat($('#sub_total').val()) || 0;
                     let taxRate = $('#tax').val() === 'ppn' ? 0.11 : 0;
                     let taxAmount = subTotal * taxRate;
-                    let totalPrice = subTotal - taxAmount;
+                    let totalPrice = subTotal + taxAmount;
 
-                    console.log(`Tax Rate: ${taxRate}, Tax Amount: ${taxAmount}, Final Total: ${totalPrice}`);
+                    // console.log(`Tax Rate: ${taxRate}, Tax Amount: ${taxAmount}, Final Total: ${totalPrice}`);
 
                     $('#taxRate').val(taxAmount.toFixed(2));
                     $('#total_price').val(totalPrice.toFixed(2));
@@ -227,7 +227,7 @@
                             <input type="text" name="discount2[]" class="discount2 w-full px-2 py-1 border border-gray-300 rounded-md bg-gray-100 text-right" readonly>
                         </div>
                     </td>
-                    <td><input type="text" name="total_prices[]" class="total-price w-full px-2 py-1 border border-gray-300 rounded-md bg-gray-100 text-right" readonly></td>
+                    <td><input type="text" name="price_per_item[]" class="total-price w-full px-2 py-1 border border-gray-300 rounded-md bg-gray-100 text-right" readonly></td>
                     <td><button type="button" class="remove-item px-3 py-1 bg-red-500 text-white rounded-md hover:bg-red-600 transition">Hapus</button></td>
                 </tr>
                 `;

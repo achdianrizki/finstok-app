@@ -16,8 +16,8 @@ return new class extends Migration
             $table->string('supplier_code');
             $table->string('name');
             $table->string('contact');
-            $table->decimal('discount1')->nullable();
-            $table->decimal('discount2')->nullable();
+            $table->decimal('discount1', 8, 2)->nullable();
+            $table->decimal('discount2', 8, 2)->nullable();
             $table->string('phone')->nullable();
             $table->string('fax_nomor')->nullable();
             $table->text('address');
