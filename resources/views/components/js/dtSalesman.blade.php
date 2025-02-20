@@ -26,11 +26,11 @@
                               <td class="px-6 py-4 whitespace-nowrap hidden sm:table-cell">${salesman.phone}</td>
                               <td class="px-6 py-4 whitespace-nowrap hidden sm:table-cell">${salesman.address}</td>
                               <td class="px-6 py-4 whitespace-nowrap">
-                                  <x-button target="" href="/manager/other/salesman/${salesman.id}/edit" variant="warning" class="justify-center max-w-sm gap-2">
+                                  <x-button target="" href="/manager/salesman/${salesman.id}/edit" variant="warning" class="justify-center max-w-sm gap-2">
                                       <x-heroicon-o-pencil class="w-3 h-3" aria-hidden="true" />
                                   </x-button>
                                   <!-- Destroy form -->
-                                      <form action="/manager/other/salesman/${salesman.id}" method="POST" class="inline-block">
+                                      <form action="/manager/salesman/${salesman.id}" method="POST" class="inline-block">
                                           @csrf
                                           @method('DELETE')
                                           <x-button variant="danger" type="submit" class="justify-center max-w-sm gap-2">

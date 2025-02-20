@@ -13,15 +13,23 @@ return new class extends Migration
     {
         Schema::create('sales', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('distributor_id')->constrained('distributors')->onDelete('cascade');
-            $table->foreignId('item_id')->constrained('items')->onDelete('cascade');
-            $table->integer('qty_sold');
-            $table->enum('payment_method', ['cash', 'credit']);
-            $table->enum('payment_status', ['lunas', 'belum lunas']);
-            $table->unsignedBigInteger('discount')->nullable();
-            $table->unsignedBigInteger('down_payment')->nullable();
-            $table->unsignedBigInteger('remaining_payment');
+            $table->foreignId('buyer_id')->constrained('buyers')->onDelete('cascade');
+            $table->foreignId('salesman_id')->nullable()->constrained('salesman')->onDelete('cascade');
+            $table->string('sale_number');
             $table->unsignedBigInteger('total_price');
+            $table->unsignedBigInteger('sub_total');
+            $table->decimal('total_discount')->nullable();
+            $table->date('sale_date');
+            $table->enum('status', ['lunas', 'belum_lunas'])->default('belum_lunas');
+            $table->string('tax');
+            $table->text('information');
+            $table->integer('qty_sold');
+            // $table->integer('qty_sold');
+            // $table->enum('payment_status', ['lunas', 'belum lunas']);
+            // $table->unsignedBigInteger('discount')->nullable();
+            // $table->unsignedBigInteger('down_payment')->nullable();
+            // $table->unsignedBigInteger('remaining_payment');
+            // $table->unsignedBigInteger('total_price');
             $table->softDeletes();
             $table->timestamps();
         });

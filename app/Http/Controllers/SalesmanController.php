@@ -39,7 +39,7 @@ class SalesmanController extends Controller
     Salesman::create($validatedData);
 
     toast('Sales berhasil ditambahkan', 'success');
-    return redirect()->route('manager.other.salesman.index')->with('success', 'Sales berhasil ditambahkan');
+    return redirect()->route('manager.salesman.index')->with('success', 'Sales berhasil ditambahkan');
   }
 
   public function edit(Salesman $salesman)
@@ -54,7 +54,7 @@ class SalesmanController extends Controller
     $salesman->update($validatedData);
 
     toast('Sales berhasil diupdate', 'success');
-    return redirect()->route('manager.other.salesman.index')->with('success', 'Sales berhasil diupdate');
+    return redirect()->route('manager.salesman.index')->with('success', 'Sales berhasil diupdate');
   }
 
   public function destroy(Salesman $salesman)
@@ -62,6 +62,6 @@ class SalesmanController extends Controller
     $salesman->delete();
 
     toast('Sales berhasil dihapus', 'success');
-    return redirect()->route('manager.other.salesman.index')->with('success', 'Sales berhasil dihapus');
+    return redirect()->route('manager.salesman.index')->with('success', 'Sales berhasil dihapus');
   }
 }

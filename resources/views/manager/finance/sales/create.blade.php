@@ -1,223 +1,303 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="flex items-center gap-4">
-            <x-button target="" href="{{ route('manager.sales.index') }}" variant="primary" size="sm"
-                class="justify-center gap-2">
-                <x-heroicon-o-arrow-left class="w-4 h-4" aria-hidden="true" />
-            </x-button>
-            <h2 class="text-xl font-semibold leading-tight">
-                {{ __('Tambah Penjualan') }}
-            </h2>
-        </div>
+        <h2 class="text-xl font-semibold leading-tight">{{ __('Tambah Penjualan') }}</h2>
     </x-slot>
 
-    <div class="p-6 overflow-hidden bg-white rounded-md shadow-md dark:bg-dark-eval-1">
-        <form action="{{ route('manager.sales.store') }}" method="POST">
-            @csrf
+    <form action="{{ route('manager.sales.store') }}" method="POST">
+        @csrf
+        <div class="p-6 bg-white rounded-md shadow-md">
+            <div class="grid grid-cols-2 gap-4">
+                <div class="space-y-2">
+                    <x-form.label for="sale_number" :value="__('Nomor Penjualan')" />
+                    <x-form.input id="sale_number" class="block w-full" type="text" name="sale_number" />
 
-            <div class="grid gap-6">
+                    <x-form.label for="sale_date" :value="__('Tanggal Penjualan')" />
+                    <x-form.input id="sale_date" class="block w-full flatpickr-input" type="date" name="sale_date"
+                        autocomplete="off" />
 
-                <!-- Distributor (Optional) -->
-                <div class="mb-5 space-y-2">
-                    <x-form.label for="distributor_id" :value="__('Distributor')" />
-                    <x-form.select id="distributor_id" class="block w-full" name="distributor_id">
-                        <option value="" disabled selected>{{ __('Pilih Distributor') }}</option>
-                        @foreach ($distributors as $distributor)
-                            <option value="{{ $distributor->id }}" data-address="{{ $distributor->address }}"
-                                data-phone="{{ $distributor->phone }}">{{ $distributor->name }}</option>
+                    <x-form.label for="buyer_id" :value="__('Pelanggan')" />
+                    <x-form.select id="buyer_id" name="buyer_id" class="w-full select2">
+                        <option value="" selected disabled>{{ __('Pilih Pelanggan') }}</option>
+                        @foreach ($buyers as $buyer)
+                            <option value="{{ $buyer->id }}">{{ $buyer->name }}</option>
                         @endforeach
                     </x-form.select>
-                    <x-input-error :messages="$errors->get('distributor_id')" class="mt-2" />
-                </div>
 
-                <!-- Buyer Name -->
-                {{-- <div class="mb-5 space-y-2">
-                    <x-form.label for="buyer_name" :value="__('Nama Pembeli')" />
-                    <x-form.input id="buyer_name" class="block w-full" type="text" name="buyer_name"
-                        :value="old('buyer_name')" placeholder="{{ __('Nama Pembeli') }}" required autofocus />
-                </div> --}}
-
-                <!-- Buyer Address -->
-                <div class="mb-5 space-y-2">
-                    <x-form.label for="buyer_address" :value="__('Alamat')" />
-                    <x-form.input id="buyer_address" class="block w-full" type="text" name="buyer_address"
-                        :value="old('buyer_address')" placeholder="{{ __('Alamat Pembeli') }}" autofocus />
-                </div>
-
-                <!-- Buyer Phone -->
-                <div class="mb-5 space-y-2">
-                    <x-form.label for="buyer_phone" :value="__('Nomor Telepon')" />
-                    <x-form.input id="buyer_phone" class="block w-full" type="text" name="buyer_phone"
-                        :value="old('buyer_phone')" placeholder="{{ __('Nomor Telepon Pembeli') }}" autofocus />
-                </div>
-
-                <!-- Item -->
-                <div class="mb-5 space-y-2">
-                    <x-form.label for="item_id" :value="__('Barang')" />
-                    <select id="item_id" class="block w-full" name="item_id" required>
-                        <option value=""></option>
-                        {{-- @foreach ($items as $item)
-                            <option value="{{ $item->id }}" data-price="{{ $item->price }}">{{ $item->name }}
-                            </option>
-                        @endforeach --}}
-                    </select>
-                </div>
-
-                <!-- Harga Barang -->
-                <div class="mb-5 space-y-2">
-                    <x-form.label for="price" :value="__('Harga per PCS')" />
-                    <x-form.input id="price" class="block w-full" type="text" name="price"
-                        placeholder="Harga Barang" readonly />
-
-                </div>
-
-                <!-- Quantity Sold -->
-                <div class="mb-5 space-y-2">
-                    <x-form.label for="qty_sold" :value="__('Jumlah Terjual')" />
-                    <x-form.input id="qty_sold" class="block w-full" type="number" inputmode="numeric" name="qty_sold"
-                        :value="old('qty_sold')" placeholder="{{ __('Jumlah Terjual') }}" required />
-                </div>
-
-                <!-- Payment Method -->
-                <div class="mb-5 space-y-2">
-                    <x-form.label for="payment_method" :value="__('Metode Pembayaran')" />
-                    <x-form.select id="payment_method" class="block w-full" name="payment_method" required>
-                        <option value="" disabled selected>{{ __('Pilih Metode Pembayaran') }}</option>
-                        <option value="cash">{{ __('Tunai') }}</option>
-                        <option value="credit">{{ __('Kredit') }}</option>
+                    <x-form.label for="salesman_id" :value="__('Sales')" />
+                    <x-form.select id="salesman_id" name="salesman_id" class="w-full select2">
+                        <option value="" selected disabled>{{ __('Pilih Sales') }}</option>
+                        @foreach ($salesmans as $salesman)
+                            <option value="{{ $salesman->id }}">{{ $salesman->name }}</option>
+                        @endforeach
                     </x-form.select>
-                    <x-input-error :messages="$errors->get('payment_method')" class="mt-2" />
-                </div>
 
-                <!-- Payment Status -->
-                <div class="mb-5 space-y-2">
-                    <x-form.label for="payment_status" :value="__('Status Pembayaran')" />
-                    <x-form.select id="payment_status" class="block w-full" name="payment_status" required>
-                        <option value="" disabled selected>{{ __('Pilih Status Pembayaran') }}</option>
-                        <option value="lunas">{{ __('Lunas') }}</option>
-                        <option value="belum lunas">{{ __('Belum Lunas') }}</option>
+                    <x-form.label for="tax" :value="__('Pajak')" />
+                    <x-form.select id="tax" class="block w-full" name="tax">
+                        <option value="" disabled selected>Pilih</option>
+                        <option value="ppn" {{ old('tax') == 'ppn' ? 'selected' : '' }}>PPN 11%</option>
+                        <option value="non_ppn" {{ old('tax') == 'non_ppn' ? 'selected' : '' }}>NON-PPN</option>
                     </x-form.select>
-                    <x-input-error :messages="$errors->get('payment_status')" class="mt-2" />
+
                 </div>
 
-                <!-- Discount -->
-                <div class="mb-5 space-y-2">
-                    <x-form.label for="discount" :value="__('Diskon (dalam angka)')" />
-                    <x-form.input id="discount" class="block w-full" type="number" name="discount" :value="old('discount')"
-                        placeholder="{{ __('Diskon (dalam angka)') }}"  />
-                </div>
-
-                <!-- Down Payment -->
-                <div class="mb-5 space-y-2">
-                    <x-form.label for="down_payment" :value="__('Uang Muka')" />
-                    <x-form.input id="down_payment" class="block w-full" type="number" name="down_payment"
-                        :value="old('down_payment')" placeholder="{{ __('Uang Muka') }}"  />
-                    <span id="formatted_down_payment" class="text-gray-500"></span>
-                </div>
-
-                <!-- Total Price -->
-                <div class="mb-5 space-y-2">
-                    <x-form.label for="total_price" :value="__('Total Harga')" />
-                    <x-form.input id="total_price_dsp" class="block w-full" type="text" name="total_price"
-                        :value="old('total_price')" placeholder="{{ __('Total Harga') }}" readonly />
-                    <span id="formatted_total_price" class="text-gray-500"></span>
-                </div>
-
-                <!-- Submit Button -->
-                <div class="grid justify-items-end">
-                    <x-button class="gap-2">
-                        <span>{{ __('Submit') }}</span>
-                    </x-button>
+                <div>
+                    <x-form.label for="information" :value="__('Keterangan')" class="mb-2" />
+                    <textarea id="information" name="information"
+                        class="w-full border-gray-400 rounded-md focus:ring focus:ring-purple-500 focus:ring-offset-2 dark:border-gray-600 dark:bg-dark-eval-1 dark:text-gray-300"
+                        rows="3" placeholder="Deskripsi barang">{{ old('information') }}</textarea>
                 </div>
             </div>
-        </form>
-    </div>
+        </div>
+        <div class="mt-6">
+            <h3 class="text-lg font-semibold">{{ __('Barang') }}</h3>
+            <hr class="my-2 border-gray-300">
+        </div>
 
-    @php
-        $button =
-            "<p class='text-xs'>Barang tidak ditemukan </p>";
-    @endphp
+        <div class="mt-5 space-y-2">
+            <p id="supplier_null" class="text-red-500 mt-2"></p>
+
+            <button type="button" id="add-item" class="mt-2 px-4 py-2 bg-purple-500 text-white rounded">+ Tambah
+                Barang
+            </button>
+
+            <table class="w-full border border-gray-300 mt-2 shadow-md rounded-lg overflow-hidden" id="items-table">
+                <thead class="bg-gray-200 text-gray-700 uppercase text-sm tracking-wider">
+                    <tr>
+                        <th class="px-4 py-2 text-left border-b border-gray-300 w-2/12">Kode Barang</th>
+                        <th class="px-4 py-2 text-left border-b border-gray-300 w-3/12">Nama Barang</th>
+                        <th class="px-2 py-2 text-center border-b border-gray-300 w-1/12">Stok</th>
+                        <th class="px-2 py-2 text-center border-b border-gray-300 w-1/12">Satuan</th>
+                        <th class="px-3 py-2 text-center border-b border-gray-300 w-1/12">Jumlah</th>
+                        <th class="px-4 py-2 text-right border-b border-gray-300 w-2/12">Harga/pcs</th>
+                        <th class="px-4 py-2 text-right border-b border-gray-300 w-2/12">Diskon (%)</th>
+                        <th class="px-4 py-2 text-right border-b border-gray-300 w-2/12">Total Harga</th>
+                        <th class="px-3 py-2 text-center border-b border-gray-300 w-1/12">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-300">
+                    <!-- Data Barang akan ditambahkan di sini -->
+                </tbody>
+            </table>
+
+
+        </div>
+
+        <div class="grid justify-items-end mt-4 space-y-2">
+            <div class="flex justify-between items-center w-full max-w-md">
+                <label for="sub_total" class="mr-4">Sub Total</label>
+                <input type="text" class="w-1/2 border-gray-300 rounded-md p-2" name="sub_total" id="sub_total"
+                    readonly>
+            </div>
+
+            <div class="flex justify-between items-center w-full max-w-md">
+                <label for="total_discount" class="mr-4">Diskon</label>
+                <input type="text" class="w-1/2 border-gray-300 rounded-md p-2" name="total_discount"
+                    id="total_discount" readonly>
+            </div>
+
+            <div class="flex justify-between items-center w-full max-w-md">
+                <label for="tax" class="mr-4">PPN 11%</label>
+                <input type="text" class="w-1/2 border-gray-300 rounded-md p-2" name="tax" id="taxRate"
+                    readonly>
+            </div>
+
+            <div class="flex justify-between items-center w-full max-w-md">
+                <label for="total_price" class="mr-4">Total Price</label>
+                <input type="text" class="w-1/2 border-gray-300 rounded-md p-2" name="total_price" id="total_price"
+                    readonly>
+            </div>
+        </div>
+
+
+        <div class="grid justify-items-end">
+            <x-button class="gap-2" id="buttonSubmit">
+                <span>{{ __('Submit') }}</span>
+            </x-button>
+        </div>
+    </form>
 
     @push('scripts')
         <script>
             $(document).ready(function() {
-                let select = $('#item_id');
-
-                select.select2({
-                    placeholder: "Cari Nama Barang...",
-                    allowClear: true,
-                    width: '100%',
-                    language: {
-                        noResults: function() {
-                            return ` {!! $button !!}`;
-                        }
-                    },
-                    escapeMarkup: function(markup) {
-                        return markup;
-                    }
+                $("#sale_date").flatpickr({
+                    dateFormat: "Y-m-d",
+                    allowInput: true,
+                    minDate: "today"
                 });
 
-                $.get('/get-items', function(data) {
-                    if (Array.isArray(data)) {
-                        data.forEach(item => {
-                            select.append(
-                                `<option value="${item.id}" data-price="${item.price}">${item.name}</option>`
-                            );
+                $('#buyer_id').select2();
+
+                $('#buyer_id').on('change', function() {
+                    let supplierId = $(this).val();
+                    $('.item-select').each(function() {
+                        let row = $(this).closest('tr');
+                        let itemId = $(this).val();
+                    });
+                });
+
+                $(document).on('change', '.item-select', function() {
+                    let row = $(this).closest('tr');
+                    let itemId = $(this).val();
+                    let supplierId = $('#salesman_id').val();
+                });
+
+                $('#salesman_id').select2();
+
+                $('#salesman_id').on('change', function() {
+                    let supplierId = $(this).val();
+                    $('.item-select').each(function() {
+                        let row = $(this).closest('tr');
+                        let itemId = $(this).val();
+                    });
+                });
+
+                $(document).on('change', '.item-select', function() {
+                    let row = $(this).closest('tr');
+                    let itemId = $(this).val();
+                    let supplierId = $('#salesman_id').val();
+                    updateItemData(row, itemId);
+                });
+
+                function updateItemData(row, itemId) {
+                    if (itemId) {
+                        $.get(`/get-sales-item/${itemId}`, function(data) {
+                            row.find('.item-code').val(data.code);
+                            row.find('.item-name').val(data.name);
+                            row.find('.price').val(data.selling_price);
+                            row.find('.unit').val(data.unit);
+                            row.find('.stock').val(data.stock);
+                            row.find('.discount1').val(data.discount1);
+                            row.find('.discount2').val(data.discount2);
+                            row.find('.qty').val();
+                            calculateTotal(row);
                         });
                     }
-                });
-
-                select.on('change', function() {
-                    let selectedOption = $(this).find(':selected');
-                    let price = selectedOption.data('price') || 0;
-
-                    $('#price').val(price);
-                    calculateTotal();
-                });
-
-                $('#qty_sold, #discount').on('input', function() {
-                    calculateTotal();
-                });
-
-                function calculateTotal() {
-                    let price = parseFloat($('#price').val()) || 0;
-                    let qty = parseFloat($('#qty_sold').val()) || 0;
-                    let discount = parseFloat($('#discount').val()) || 0;
-
-                    let subtotal = price * qty;
-                    let discountAmount = (discount / 100) * subtotal;
-                    let total = subtotal - discountAmount;
-
-                    if (total < 0) total = 0; // Hindari total negatif
-
-                    $('#total_price_dsp').val(total.toLocaleString('id-ID', {
-                        style: 'currency',
-                        currency: 'IDR'
-                    }));
-
-                    $('#total_price').val(total.toFixed(0));
                 }
-            });
 
-            // MINE
+                $(document).on('input', '.qty', function() {
+                    let row = $(this).closest('tr');
+                    calculateTotal(row);
+                });
 
-            document.addEventListener("DOMContentLoaded", function() {
-                const distributorSelect = document.getElementById("distributor_id");
-                const buyerAddress = document.getElementById("buyer_address");
-                const buyerPhone = document.getElementById("buyer_phone");
+                function calculateTotal(row) {
+                    let price = parseFloat(row.find('.price').val()) || 0;
+                    let qty = parseFloat(row.find('.qty').val()) || 0;
+                    let discount1 = parseFloat(row.find('.discount1').val()) || 0;
+                    let discount2 = parseFloat(row.find('.discount2').val()) || 0;
 
-                // Mengisi alamat dan nomor telepon berdasarkan distributor yang dipilih
-                distributorSelect.addEventListener("change", function() {
-                    const selectedOption = distributorSelect.options[distributorSelect.selectedIndex];
+                    let total = (price - (discount1 + discount2)) * qty;
+                    row.find('.total-price').val(total.toFixed(2));
 
-                    const address = selectedOption.getAttribute("data-address") || "";
-                    const phone = selectedOption.getAttribute("data-phone") || "";
+                    calculateSubTotal();
+                }
 
-                    buyerAddress.value = address;
-                    buyerPhone.value = phone;
+                function calculateSubTotal() {
+                    let subTotal = 0;
+                    let totalDiscount = 0;
+
+                    $('.total-price').each(function() {
+                        subTotal += parseFloat($(this).val()) || 0;
+                    });
+
+                    $('.discount1, .discount2').each(function() {
+                        totalDiscount += parseFloat($(this).val()) || 0;
+                    });
+
+                    $('#sub_total').val(subTotal.toFixed(2));
+                    $('#total_discount').val(totalDiscount.toFixed(2));
+
+                    calculateTotalPrice();
+                }
+
+                function calculateTotalPrice() {
+                    let subTotal = parseFloat($('#sub_total').val()) || 0;
+                    let taxRate = $('#tax').val() === 'ppn' ? 0.11 : 0;
+                    let taxAmount = subTotal * taxRate;
+                    let totalPrice = subTotal + taxAmount;
+
+                    console.log(`Tax Rate: ${taxRate}, Tax Amount: ${taxAmount}, Final Total: ${totalPrice}`);
+
+                    $('#taxRate').val(taxAmount.toFixed(2));
+                    $('#total_price').val(totalPrice.toFixed(2));
+                }
+
+                $('#tax').on('change', function() {
+                    calculateTotalPrice();
+                });
+
+                $('#add-item').click(function() {
+                    let supplierId = $('#salesman_id').val();
+                    $('#supplier_null').text(!supplierId ?
+                        'Anda belum memilih sales, tetapi Anda tetap bisa menambahkan barang.' : '');
+                    // if (!supplierId) return;
+
+                    let row = `
+                <tr>
+                    <td><input type="text" class="item-code w-full px-2 py-1 border border-gray-300 rounded-md bg-gray-100" readonly></td>
+                    <td>
+                        <select name="items[]" class="item-select w-full select2 px-2 py-1 border border-gray-300 rounded-md">
+                            <option value="">Pilih Barang</option>
+                            @foreach ($items as $item)
+                                <option value="{{ $item->id }}">{{ $item->name }}</option>
+                            @endforeach
+                        </select>
+                    </td>
+                    <td><input type="number" name="stock[]" class="stock w-full px-2 py-1 border border-gray-300 rounded-md bg-gray-100" readonly></td>
+                    <td><input type="text" name="unit[]" class="unit w-full px-2 py-1 border border-gray-300 rounded-md bg-gray-100" readonly></td>
+                    <td><input type="number" name="qty_sold[]" class="qty w-full px-2 py-1 border border-gray-300 rounded-md text-center" min="1" value="1"></td>
+                    <td><input type="text" name="prices[]" class="price w-full px-2 py-1 border border-gray-300 rounded-md bg-gray-100 text-right" readonly></td>
+                    <td>
+                        <div class="grid grid-cols-2 gap-1">
+                            <input type="text" name="discount1[]" class="discount1 w-full px-2 py-1 border border-gray-300 rounded-md bg-gray-100 text-right" readonly>
+                            <input type="text" name="discount2[]" class="discount2 w-full px-2 py-1 border border-gray-300 rounded-md bg-gray-100 text-right" readonly>
+                        </div>
+                    </td>
+                    <td><input type="text" name="total_prices[]" class="total-price w-full px-2 py-1 border border-gray-300 rounded-md bg-gray-100 text-right" readonly></td>
+                    <td><button type="button" class="remove-item px-3 py-1 bg-red-500 text-white rounded-md hover:bg-red-600 transition">Hapus</button></td>
+                </tr>
+                `;
+
+                    $('#items-table tbody').append(row);
+                    $('.item-select').select2();
+                });
+
+                $(document).on('click', '.remove-item', function() {
+                    $(this).closest('tr').remove();
+                    calculateSubTotal();
                 });
             });
         </script>
     @endpush
 
+    @push('styles')
+        <style>
+            .select2-container .select2-selection--single {
+                height: 37px !important;
+                border-radius: 5px;
+                border: 1px solid #9CA3AF;
+                padding-left: 0.30rem;
+                padding-top: 0.25rem;
+                padding-bottom: 0.25rem;
+            }
+
+            .select2-container .select2-selection--single .select2-selection__rendered {
+                font-size: 16px;
+                color: #374151;
+            }
+
+            .select2-container .select2-selection--single .select2-selection__arrow {
+                height: 37px !important;
+            }
+
+            .select2-container--default .select2-results__option--highlighted[aria-selected] {
+                background-color: #3b82f6 !important;
+                color: white !important;
+            }
+
+            .select2-container--default .select2-results__option {
+                font-size: 14px;
+                padding: 10px;
+            }
+        </style>
+    @endpush
 </x-app-layout>

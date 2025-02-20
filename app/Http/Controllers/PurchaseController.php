@@ -88,6 +88,8 @@ class PurchaseController extends Controller
 
         foreach ($request->items as $index => $item_id) {
             $item = Item::findOrFail($item_id);
+            $item->stock += $request->qty[$index];
+            $item->save();
 
             $item->stock += $request->qty[$index];
             $item->save();
