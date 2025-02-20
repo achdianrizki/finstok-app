@@ -92,13 +92,15 @@
     @endrole
 
 
-    <x-sidebar.dropdown title="Penjualan" :active="request()->routeIs('manager.sales*')">
+    <x-sidebar.dropdown title="Penjualan" :active="request()->routeIs('manager.sales*') || request()->routeIs('manager.buyer*') || request()->routeIs('manager.salesman*')" >
         <x-slot name="icon">
             <x-icons.sale-tag class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
         </x-slot>
 
         <x-sidebar.sublink title="Data Penjualan" href="{{ route('manager.sales.index') }}" :active="request()->routeIs('manager.sales.index')" />
-        <x-sidebar.sublink title="Pesan Penjualan" href="{{ route('manager.sales.create') }}" :active="request()->routeIs('manager.sales.create')" />
+        <x-sidebar.sublink title="Master Pelanggan" href="{{ route('manager.buyer.index') }}" :active="request()->routeIs('manager.buyer*')" />
+
+        <x-sidebar.sublink title="Master Sales" href="{{ route('manager.salesman.index') }}" :active="request()->routeIs('manager.salesman*')" />
     </x-sidebar.dropdown>
 
     <x-sidebar.dropdown title="Lain Lain" :active="request()->routeIs('manager.other*')">
@@ -107,10 +109,6 @@
         </x-slot>
 
         <x-sidebar.sublink title="Kategori" href="{{ route('manager.other.categories.index') }}" :active="request()->routeIs('manager.other.categories*')" />
-
-        <x-sidebar.sublink title="Pelanggan" href="{{ route('manager.other.buyer.index') }}" :active="request()->routeIs('manager.other.buyer*')" />
-
-        <x-sidebar.sublink title="Sales" href="{{ route('manager.other.salesman.index') }}" :active="request()->routeIs('manager.other.salesman*')" />
     </x-sidebar.dropdown>
 
 </x-perfect-scrollbar>

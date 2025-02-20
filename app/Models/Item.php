@@ -37,6 +37,11 @@ class Item extends Model
         return $this->hasMany(Purchase::class);
     }
 
+    public function sale()
+    {
+        return $this->hasMany(Sale::class);
+    }
+
     public function suppliers()
     {
         return $this->belongsToMany(Supplier::class, 'item_supplier');
@@ -45,5 +50,10 @@ class Item extends Model
     public function purchases()
     {
         return $this->belongsToMany(Purchase::class, 'item_purchase')->withPivot('qty');
+    }
+
+    public function sales()
+    {
+        return $this->belongsToMany(Sale::class, 'item_sale')->withPivot('qty_sold');
     }
 }

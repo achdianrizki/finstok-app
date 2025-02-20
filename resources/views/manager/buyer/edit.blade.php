@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <div class="flex items-center gap-4">
-            <x-button target="" href="{{ route('manager.other.buyer.index') }}" variant="primary" size="sm"
+            <x-button target="" href="{{ route('manager.buyer.index') }}" variant="primary" size="sm"
                 class="justify-center gap-2">
                 <x-heroicon-o-arrow-left class="w-4 h-4" aria-hidden="true" />
             </x-button>
@@ -12,7 +12,7 @@
     </x-slot>
 
     <div class="p-6 overflow-hidden bg-white rounded-md shadow-md dark:bg-dark-eval-1">
-        <form action="{{ route('manager.other.buyer.update', $buyer->id) }}" method="POST">
+        <form action="{{ route('manager.buyer.update', $buyer->id) }}" method="POST">
             @csrf
             @method('PUT')
 

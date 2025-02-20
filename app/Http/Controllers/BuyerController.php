@@ -48,7 +48,7 @@ class BuyerController extends Controller
         Buyer::create($validatedData);
 
         toast('Pelanggan berhasil ditambahkan', 'success');
-        return redirect()->route('manager.other.buyer.index')->with('success', 'Pelanggan berhasil ditambahkan');
+        return redirect()->route('manager.buyer.index')->with('success', 'Pelanggan berhasil ditambahkan');
     }
 
     /**
@@ -77,7 +77,7 @@ class BuyerController extends Controller
         $buyer->update($validatedData);
 
         toast('Pelanggan berhasil diupdate', 'success');
-        return redirect()->route('manager.other.buyer.index')->with('success','Pelanggan berhasil diupdate');
+        return redirect()->route('manager.buyer.index')->with('success','Pelanggan berhasil diupdate');
     }
 
     /**
@@ -88,6 +88,6 @@ class BuyerController extends Controller
         $buyer->delete();
 
         toast('Pelanggan berhasil dihapus', 'success');
-        return redirect()->route('manager.other.buyer.index')->with('success', 'Pelanggan berhasil dihapus');
+        return redirect()->route('manager.buyer.index')->with('success', 'Pelanggan berhasil dihapus');
     }
 }
