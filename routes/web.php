@@ -18,11 +18,6 @@ use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\WarehouseController;
 use App\Http\Controllers\DistributorController;
 use App\Http\Controllers\OutgoingPaymentController;
-use App\Http\Controllers\PurchaseController;
-use App\Http\Controllers\SaleController;
-use App\Http\Controllers\SupplierController;
-use App\Http\Controllers\SalesmanController;
-use App\Http\Controllers\UserController;
 use App\Http\Controllers\incomingPaymentController;
 use App\Models\IncomingPayment;
 
@@ -63,6 +58,16 @@ Route::middleware('auth')->group(function () {
         Route::resource('distributors', DistributorController::class)->middleware('role:manager|admin');
         Route::resource('users', UserController::class)->middleware('role:manager');
         Route::resource('supplier', SupplierController::class)->middleware('role:manager');
+        Route::resource('outgoingpayment', OutgoingPaymentController::class)->middleware('role:manager');
+        Route::get('/outgoingpayment/payment/{purchase}', [OutgoingPaymentController::class, 'create_payment'])
+            ->middleware('role:manager')
+            ->name('outgoingpayment.payment');
+
+
+        // MASTER BUYER
+        Route::resource('buyer', BuyerController::class)->middleware('role:manager|admin');
+        // MASTER SALESMAN
+        Route::resource('salesman', SalesmanController::class)->middleware('role:manager|admin');
 
 
 
@@ -101,6 +106,7 @@ Route::middleware('auth')->group(function () {
 
     // Incoming Payment invoice ( 1 by 1)
     Route::get('/incomingPayment/export/pdf/{incomingPayment}', [incomingPaymentController::class, 'exportPDF'])->name('incomingPayment.export.pdf');
+    Route::get('/outgoingPayment/export/pdf/{outgoingPayment}', [OutgoingPaymentController::class, 'exportPDF'])->name('outgoingPayment.export.pdf');
 
     //Testing total modal
     Route::get('/manager/finance/primaryModal', [ModalController::class, 'primaryModal'])->name('manager.finance.modal.primaryModal');
@@ -114,6 +120,7 @@ Route::get('/warehouses-data', [WarehouseController::class, 'getWarehouses']);
 Route::get('/manager/warehouses/{warehouse:id}/items', [WarehouseController::class, 'getItemsByWarehouse']);
 Route::get('/distributors-data', [DistributorController::class, 'getDistributors']);
 Route::get('/purchases-data', [PurchaseController::class, 'getPurchaseItem']);
+Route::get('/outgoingpayment-data', [OutgoingPaymentController::class, 'getPurchaseItem']);
 Route::get('/sales-data', [SaleController::class, 'getSaleItem']);
 Route::get('/items-data-sale', [SaleController::class, 'searchItem']);
 Route::get('/users-data', [UserController::class, 'getUsers'])->name('manager.users.data');
@@ -140,10 +147,27 @@ Route::get('/get-item/{item_id}/{supplier_id}', function ($item_id, $supplier_id
         'discount2' => $supplier ? $supplier->discount2 : 0,
     ]);
 });
+
 Route::get('/buyers-data', [BuyerController::class, 'getBuyers']);
 Route::get('/salesmans-data', [SalesmanController::class, 'getSalesman']);
-
 Route::get('/laporan/laba-rugi', [ChartController::class, 'getLabaRugi']);
+Route::get('/get-sales-item/{item_id}', function ($item_id) {
+    $item = \App\Models\Item::find($item_id);
+
+    return response()->json([
+        'code' => $item->code,
+        'name' => $item->name,
+        'stock' => $item->stock,
+        'unit' => $item->unit,
+        'price' => $item->price,
+        'selling_price' => $item->selling_price,
+        'discount1' => 0,
+        'discount2' => 0,
+        // 'discount1' => $supplier ? $supplier->discount1 : 0,
+        // 'discount2' => $supplier ? $supplier->discount2 : 0,
+    ]);
+});
+
 
 
 require __DIR__ . '/auth.php';

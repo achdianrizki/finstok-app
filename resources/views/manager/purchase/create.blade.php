@@ -19,7 +19,7 @@
                     <select id="supplier_id" name="supplier_id" class="w-full select2">
                         <option value="" selected disabled>Pilih</option>
                         @foreach ($suppliers as $supplier)
-                            <option value="{{ $supplier->id }}">{{ $supplier->name }}</option>
+                            <option value="{{ $supplier->id }}">{{ $supplier->contact }}</option>
                         @endforeach
                     </select>
 

@@ -97,7 +97,7 @@
                                 <select name="suppliers[]" class="w-full p-2 border border-gray-300 rounded">
                                     @foreach ($suppliers as $sup)
                                         <option value="{{ $sup->id }}"
-                                            {{ $supplier->id == $sup->id ? 'selected' : '' }}>{{ $sup->name }}
+                                            {{ $supplier->id == $sup->id ? 'selected' : '' }}>{{ $sup->contact }}
                                         </option>
                                     @endforeach
                                 </select>

@@ -2,22 +2,25 @@
 
 namespace App\Http\Controllers;
 
+use Dompdf\Dompdf;
+use Dompdf\Options;
 use App\Models\Item;
 use App\Models\Category;
 use App\Models\Purchase;
 use App\Models\Supplier;
 use App\Models\Warehouse;
 use Illuminate\Http\Request;
-use App\Models\OutgoingPayment;
+use App\Models\outgoingPayment;
+use Illuminate\Support\Facades\View;
 
-class OutgoingPaymentController extends Controller
+class outgoingPaymentController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return view('manager.outgoingpayment.index');
+        return view('manager.outgoingPayment.index');
     }
 
     public function getPurchaseItem(Request $request)
@@ -47,7 +50,7 @@ class OutgoingPaymentController extends Controller
     public function create_payment(Purchase $purchase)
     {
         $suppliers = $purchase->supplier;
-        return view('manager.outgoingpayment.create', compact('suppliers', 'purchase'));
+        return view('manager.outgoingPayment.show', compact('suppliers', 'purchase'));
     }
 
 
@@ -66,7 +69,7 @@ class OutgoingPaymentController extends Controller
 
         $total_unpaid = $purchase->total_price - $request->amount_paid;
 
-        OutgoingPayment::create([
+        outgoingPayment::create([
             'supplier_id' => $request->supplier_id,
             'purchase_id' => $request->purchase_id,
             'receipt_number' => $receipt_number,
@@ -96,7 +99,9 @@ class OutgoingPaymentController extends Controller
     {
         $purchase = Purchase::with('payments', 'supplier')->findOrFail($id);
 
-        return view('manager.outgoingpayment.payment', compact('purchase'));
+        // dd($purchase);
+
+        return view('manager.outgoingPayment.payment', compact('purchase'));
     }
 
     /**
@@ -122,5 +127,26 @@ class OutgoingPaymentController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    public function exportPDF(Request $request, outgoingPayment $outgoingPayment)
+    {
+        $outgoingPayment->load('purchase');
+
+        // if ($request->query('preview')) {
+        //     return view('exports.outgoingPayment.pdf', compact('outgoingPayment'));
+        // }
+
+        $options = new Options();
+        $options->set('defaultFont', 'Helvetica');
+
+        $dompdf = new Dompdf($options);
+
+        $html = View::make('exports.outgoingPayment.pdf', compact('outgoingPayment'))->render();
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('A4', 'portrait');
+        $dompdf->render();
+
+        return $dompdf->stream('Pembayaran_' . (string)$outgoingPayment->receipt_number . '.pdf');
     }
 }

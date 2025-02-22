@@ -103,15 +103,18 @@
                                 <div class="grid grid-cols-2 gap-1">
                                     <input type="text" name="discount1[]"
                                         class="discount1 w-full px-2 py-1 border border-gray-300 rounded-md bg-gray-100 text-right"
-                                        readonly>
+                                        value="{{ $purchase->supplier->discount1 ?? '' }}" readonly>
+
                                     <input type="text" name="discount2[]"
                                         class="discount2 w-full px-2 py-1 border border-gray-300 rounded-md bg-gray-100 text-right"
-                                        readonly>
+                                        value="{{ $purchase->supplier->discount2 ?? '' }}" readonly>
                                 </div>
                             </td>
+
                             <td><input type="text" name="total_prices[]"
                                     class="total-price w-full px-2 py-1 border border-gray-300 rounded-md bg-gray-100 text-right"
-                                    readonly></td>
+                                    readonly value="{{ number_format($item->pivot->price_per_item, 2, '.', '') }}">
+                            </td>
                             <td><button type="button"
                                     class="remove-item px-3 py-1 bg-red-500 text-white rounded-md hover:bg-red-600 transition">Hapus</button>
                             </td>
@@ -127,25 +130,25 @@
             <div class="flex justify-between items-center w-full max-w-md">
                 <label for="sub_total" class="mr-4">Sub Total</label>
                 <input type="text" class="w-1/2 border-gray-300 rounded-md p-2" name="sub_total" id="sub_total"
-                    readonly>
+                    readonly value="{{ number_format($purchase->sub_total, 0, ',', '.') }}">
             </div>
 
-            <div class="flex justify-between items-center w-full max-w-md">
+            {{-- <div class="flex justify-between items-center w-full max-w-md">
                 <label for="total_discount" class="mr-4">Diskon</label>
                 <input type="text" class="w-1/2 border-gray-300 rounded-md p-2" name="total_discount"
-                    id="total_discount" readonly>
-            </div>
+                    id="total_discount" readonly >
+            </div> --}}
 
-            <div class="flex justify-between items-center w-full max-w-md">
+            {{-- <div class="flex justify-between items-center w-full max-w-md">
                 <label for="tax" class="mr-4">PPN 11%</label>
                 <input type="text" class="w-1/2 border-gray-300 rounded-md p-2" name="tax" id="taxRate"
                     readonly>
-            </div>
+            </div> --}}
 
             <div class="flex justify-between items-center w-full max-w-md">
                 <label for="total_price" class="mr-4">Total Price</label>
                 <input type="text" class="w-1/2 border-gray-300 rounded-md p-2" name="total_price"
-                    id="total_price" readonly>
+                    id="total_price" readonly value="{{ number_format($purchase->total_price, 0, ',', '.') }}">
             </div>
         </div>
 

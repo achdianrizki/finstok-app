@@ -93,13 +93,13 @@
             <x-input-error :messages="$errors->get('suppliers')" class="mt-2" />
 
             <button type="button" id="addSupplierRow" class="mt-2 px-4 py-2 bg-purple-500 text-white rounded">
-                + Tambah Supplier
+                + Tambah Pemasok
             </button>
 
             <table class="w-full border border-gray-300" id="supplierTable">
                 <thead>
                     <tr class="bg-gray-200">
-                        <th class="p-2 text-left">Supplier</th>
+                        <th class="p-2 text-left">Pemasok</th>
                         <th class="p-2 text-center">Aksi</th>
                     </tr>
                 </thead>

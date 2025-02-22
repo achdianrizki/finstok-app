@@ -19,6 +19,7 @@ class Purchase extends Model
         'total_discount',
         'status',
         'tax',
+        'tax_type',
         'information',
         'total_qty',
         'purchase_number',

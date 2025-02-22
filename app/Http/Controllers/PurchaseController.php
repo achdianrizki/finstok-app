@@ -119,12 +119,15 @@ class PurchaseController extends Controller
      */
     public function edit(Purchase $purchase)
     {
+        $purchase->load('supplier');
         $warehouses = Warehouse::all();
         $suppliers = Supplier::all();
         $categories = Category::all();
         $items = Item::all();
+
         return view('manager.purchase.edit', compact('purchase', 'warehouses', 'suppliers', 'categories', 'items'));
     }
+
 
     /**
      * Update the specified resource in storage.

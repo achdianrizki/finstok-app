@@ -55,10 +55,11 @@
                 <tr>
                     <th class="px-4 py-2 text-left border-b border-gray-300 w-2/12">Nomor Resi</th>
                     <th class="px-4 py-2 text-left border-b border-gray-300 w-2/12">Tanggal Pembayaran</th>
-                    <th class="px-4 py-2 text-left border-b border-gray-300 w-2/12">Deskripsi</th>
+                    <th class="px-4 py-2 text-left border-b border-gray-300 w-2/12">Note</th>
                     <th class="px-4 py-2 text-left border-b border-gray-300 w-2/12">Metode Pembayaran</th>
                     <th class="px-4 py-2 text-right border-b border-gray-300 w-2/12">Total Harga</th>
                     <th class="px-4 py-2 text-right border-b border-gray-300 w-2/12">Jumlah yg Belum Dibayar</th>
+                    <th class="px-4 py-2 text-left border-b border-gray-300 w-2/12">Print</th>
                 </tr>
             </thead>
             <tbody class="bg-white divide-y divide-gray-300">
@@ -72,6 +73,14 @@
                             {{ number_format($payment->total_price, 2) }}</td>
                         <td class="px-4 py-2 text-right border-b border-gray-300">
                             {{ number_format($payment->total_unpaid, 2) }}</td>
+                        <td>
+                            <a href="{{ route('outgoingPayment.export.pdf', $payment->id) }}"
+                                class="flex items-center  text-sm text-white bg-red-500 hover:bg-red-600 w-full px-2 py-1 border rounded-md"
+                                role="menuitem" tabindex="-1" id="menu-item-0">
+                                <x-icons.pdf class="w-5 h-5" aria-hidden="true" />
+                                <span>Bukti</span>
+                            </a>
+                        </td>
                     </tr>
                 @empty
                     <tr>
