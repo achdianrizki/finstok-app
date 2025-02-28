@@ -16,7 +16,9 @@ class Purchase extends Model
         'supplier_id',
         'total_price',
         'sub_total',
-        'total_discount',
+        'total_discount1',
+        'total_discount2',
+        'total_discount3',
         'status',
         'tax',
         'tax_type',
@@ -48,7 +50,7 @@ class Purchase extends Model
 
     public function items()
     {
-        return $this->belongsToMany(Item::class, 'item_purchase')->withPivot('qty', 'price_per_item');
+        return $this->belongsToMany(Item::class, 'item_purchase')->withPivot('qty', 'price_per_item', 'discount1', 'discount2', 'discount3');
     }
 
     public function payments()

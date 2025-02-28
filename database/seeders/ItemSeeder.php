@@ -19,61 +19,111 @@ class ItemSeeder extends Seeder
         ]);
 
         Item::create([
-            'name' => 'Liptint Glossy',
-            'code' => '09090231',
-            'purchase_price' => 8000,
-            'selling_price' => 10000,
+            'name' => 'SALSA BOLD EYELINER',
+            'code' => '10001',
+            'purchase_price' => 16216.21,
             'unit' => 'pcs',
             'stock' => 0,
-            'description' => 'Liptint Glossy 12 GRM',
+            'description' => 'SALSA BOLD EYELINER',
             'category_id' => 1,
             'warehouse_id' => 1,
         ]);
 
         Item::create([
-            'name' => 'BDL-PAPAYA SOAP 128 GR',
-            'code' => 'BDL0002',
-            'purchase_price' => 9099,
-            'selling_price' => 9099,
-            'unit' => 'pcs',
+            'name' => 'SALSA NAIL POLISH 8ML NUDE 1',
+            'code' => '10002',
+            'purchase_price' => 27477,
+            'unit' => 'set',
             'stock' => 0,
-            'description' => 'BDL-PAPAYA SOAP 128 GR',
+            'description' => 'SALSA NAIL POLISH 8ML NUDE 1',
             'category_id' => 1,
             'warehouse_id' => 1,
         ]);
 
         Item::create([
-            'name' => 'HIMALAYA PURIFYING NEEM FACE WASH 50ML',
-            'code' => '8004827',
-            'purchase_price' => 18986,
-            'selling_price' => 18.986,
-            'unit' => 'pcs',
+            'name' => 'SALSA NAIL POLISH 8ML NUDE 2',
+            'code' => '10003',
+            'purchase_price' => 27477,
+            'unit' => 'set',
             'stock' => 0,
-            'description' => 'HIMALAYA PURIFYING NEEM FACE WASH 50ML',
+            'description' => 'SALSA NAIL POLISH 8ML NUDE 2',
             'category_id' => 1,
             'warehouse_id' => 1,
         ]);
 
         Item::create([
-            'name' => 'Salsa Eyebrow 2 In 1 isi 12',
-            'code' => 'SALSA020',
-            'purchase_price' => 4144,
-            'selling_price' => 4144,
-            'unit' => 'pcs',
+            'name' => 'SALSA NAIL POLISH 8 ML GLAMOUR',
+            'code' => '10004',
+            'purchase_price' => 27477,
+            'unit' => 'set',
             'stock' => 0,
-            'description' => 'Salsa Eyebrow 2 In 1 isi 12',
+            'description' => 'SALSA NAIL POLISH 8 ML GLAMOUR',
             'category_id' => 1,
             'warehouse_id' => 1,
         ]);
 
         Item::create([
-            'name' => 'BIOAQUA Rose Yeast Elastic & Tender Spray 150ml ',
-            'code' => 'AQ0025',
-            'purchase_price' => 27026,
-            'selling_price' => 27026,
+            'name' => 'SALSA KUTEX PEEL POLISH COFFEE',
+            'code' => '10005',
+            'purchase_price' => 19633,
             'unit' => 'pcs',
             'stock' => 0,
-            'description' => 'BIOAQUA Rose Yeast Elastic & Tender Spray 150ml ',
+            'description' => 'SALSA KUTEX PEEL POLISH COFFEE',
+            'category_id' => 1,
+            'warehouse_id' => 1,
+        ]);
+
+        Item::create([
+            'name' => 'SALSA KUTEX PEEL POLISH PINK ON',
+            'code' => '10006',
+            'purchase_price' => 19633,
+            'unit' => 'pcs',
+            'stock' => 0,
+            'description' => 'SALSA KUTEX PEEL POLISH PINK ON',
+            'category_id' => 1,
+            'warehouse_id' => 1,
+        ]);
+
+        Item::create([
+            'name' => 'SALSA KUTEX PEEL POLISH FLORIS',
+            'code' => '10007',
+            'purchase_price' => 19633,
+            'unit' => 'pcs',
+            'stock' => 0,
+            'description' => 'SALSA KUTEX PEEL POLISH FLORIS',
+            'category_id' => 1,
+            'warehouse_id' => 1,
+        ]);
+
+        Item::create([
+            'name' => 'SALSA NAIL POLISH 6 ML BENING (HS) 121',
+            'code' => '10008',
+            'purchase_price' => 4810,
+            'unit' => 'pcs',
+            'stock' => 0,
+            'description' => 'SALSA NAIL POLISH 6 ML BENING (HS) 121',
+            'category_id' => 1,
+            'warehouse_id' => 1,
+        ]);
+
+        Item::create([
+            'name' => 'SALSA KERATIN HAIR SERUM',
+            'code' => '10034',
+            'purchase_price' => 16216,
+            'unit' => 'pcs',
+            'stock' => 0,
+            'description' => 'SALSA KERATIN HAIR SERUM',
+            'category_id' => 1,
+            'warehouse_id' => 1,
+        ]);
+
+        Item::create([
+            'name' => 'SALSA GROWTH HAIR SERUM',
+            'code' => '10035',
+            'purchase_price' => 16216,
+            'unit' => 'pcs',
+            'stock' => 0,
+            'description' => 'SALSA GROWTH HAIR SERUM',
             'category_id' => 1,
             'warehouse_id' => 1,
         ]);

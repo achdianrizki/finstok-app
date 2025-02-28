@@ -16,11 +16,14 @@ return new class extends Migration
             $table->foreignId('supplier_id')->nullable()->constrained('suppliers')->onDelete('cascade');
             $table->decimal('total_price', 15, 2);
             $table->decimal('sub_total', 15, 2);
-            $table->decimal('total_discount', 15, 2)->nullable();
+            $table->decimal('total_discount1', 15, 2)->nullable();
+            $table->decimal('total_discount2', 15, 2)->nullable();
+            $table->decimal('total_discount3', 15, 2)->nullable();
             $table->date('purchase_date');
             $table->enum('status', ['lunas', 'belum_lunas'])->default('belum_lunas');
             $table->decimal('tax', 15, 2)->nullable();
             $table->string('tax_type')->nullable();
+            $table->unsignedBigInteger('ad')->nullable();
             $table->text('information');
             $table->integer('total_qty');
             $table->string('purchase_number');

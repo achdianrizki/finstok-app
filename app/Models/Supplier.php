@@ -14,8 +14,6 @@ class Supplier extends Model
         'supplier_code',
         'name',
         'contact',
-        'discount1',
-        'discount2',
         'phone',
         'fax_nomor',
         'address',

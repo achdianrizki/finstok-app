@@ -33,6 +33,7 @@
                                 <td class="px-6 py-4 whitespace-nowrap hidden sm:table-cell">${item.name}</td>
                                 <td class="px-6 py-4 whitespace-nowrap hidden md:table-cell">${item.category.name}</td>
                                 <td class="px-6 py-4 whitespace-nowrap hidden md:table-cell">${item.unit}</td>
+                                <td class="px-6 py-4 whitespace-nowrap hidden md:table-cell">${formatRupiah(item.purchase_price)}</td>
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <x-button target="" href="/manager/items/${item.id}/edit" variant="warning" class="justify-center max-w-sm gap-2">
                                         <x-heroicon-o-pencil class="w-3 h-3" aria-hidden="true" />

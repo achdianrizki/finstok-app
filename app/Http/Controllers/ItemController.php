@@ -34,7 +34,7 @@ class ItemController extends Controller
     public function getItems(Request $request)
     {
         // dd($request->all);
-        $query = Item::with(['category', 'warehouse']);
+        $query = Item::with(['category', 'warehouse'])->latest();
 
         if ($request->filled('search')) {
             $search = $request->search;
@@ -69,13 +69,12 @@ class ItemController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreItemRequest $request)
+    public function store(Request $request)
     {
         $item = item::create([
             'name' => $request->name,
             'code' => $request->code,
             'purchase_price' => $request->purchase_price,
-            'selling_price' => $request->selling_price,
             'unit' => $request->unit,
             'stock' => 0,
             'description' => $request->description,
@@ -118,7 +117,6 @@ class ItemController extends Controller
         $item->update([
             'name' => $request->name,
             'purchase_price' => $request->purchase_price,
-            'selling_price' => $request->selling_price,
             'unit' => $request->unit,
             'description' => $request->description,
             'category_id' => $request->category_id,

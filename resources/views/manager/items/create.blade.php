@@ -1,6 +1,5 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="flex items-center gap-4">
             <x-button target="" href="{{ route('manager.items.index') }}" variant="primary" size="sm"
                 class="justify-center gap-2">
                 <x-heroicon-o-arrow-left class="w-4 h-4" aria-hidden="true" />
@@ -51,11 +50,6 @@
                     <x-form.input id="purchase_price" class="w-full" type="number" name="purchase_price"
                         :value="old('purchase_price')" placeholder="Harga Beli" />
                     <x-input-error :messages="$errors->get('purchase_price')" class="mt-2" />
-
-                    <x-form.label for="selling_price" :value="__('Harga Jual')" />
-                    <x-form.input id="selling_price" class="w-full" type="number" name="selling_price"
-                        :value="old('selling_price')" placeholder="Harga Jual" />
-                    <x-input-error :messages="$errors->get('selling_price')" class="mt-2" />
 
                     <x-form.label for="warehouse_id" :value="__('Gudang')" />
                     <x-form.select id="warehouse_id" class="block w-full" name="warehouse_id">

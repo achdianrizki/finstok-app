@@ -107,6 +107,7 @@ Route::middleware('auth')->group(function () {
     // Incoming Payment invoice ( 1 by 1)
     Route::get('/incomingPayment/export/pdf/{incomingPayment}', [incomingPaymentController::class, 'exportPDF'])->name('incomingPayment.export.pdf');
     Route::get('/outgoingPayment/export/pdf/{outgoingPayment}', [OutgoingPaymentController::class, 'exportPDF'])->name('outgoingPayment.export.pdf');
+    Route::get('/invoice/export/pdf/{invoice}', [OutgoingPaymentController::class, 'exportInvoice'])->name('invoice.export.pdf');
 
     //Testing total modal
     Route::get('/manager/finance/primaryModal', [ModalController::class, 'primaryModal'])->name('manager.finance.modal.primaryModal');
@@ -143,8 +144,6 @@ Route::get('/get-item/{item_id}/{supplier_id}', function ($item_id, $supplier_id
         'unit' => $item->unit,
         'price' => $item->price,
         'purchase_price' => $item->purchase_price,
-        'discount1' => $supplier ? $supplier->discount1 : 0,
-        'discount2' => $supplier ? $supplier->discount2 : 0,
     ]);
 });
 

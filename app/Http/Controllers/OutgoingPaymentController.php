@@ -25,7 +25,7 @@ class outgoingPaymentController extends Controller
 
     public function getPurchaseItem(Request $request)
     {
-        $query = Purchase::with(['supplier']);
+        $query = Purchase::with(['supplier'])->latest();
 
         if ($request->filled('search')) {
             $search = $request->search;
@@ -99,7 +99,9 @@ class outgoingPaymentController extends Controller
     {
         $purchase = Purchase::with('payments', 'supplier')->findOrFail($id);
 
-        // dd($purchase);
+
+
+        // dd($items);
 
         return view('manager.outgoingPayment.payment', compact('purchase'));
     }
@@ -148,5 +150,40 @@ class outgoingPaymentController extends Controller
         $dompdf->render();
 
         return $dompdf->stream('Pembayaran_' . (string)$outgoingPayment->receipt_number . '.pdf');
+    }
+
+    public function exportInvoice(Request $request, $invoice)
+    {
+        $purchase = Purchase::with('items')->findOrFail($invoice);
+
+        $items = $purchase->items->map(function ($item) {
+            return [
+                'id' => $item->id,
+                'code' => $item->code,
+                'name' => $item->name,
+                'unit' => $item->unit,
+                'qty' => $item->pivot->qty,
+                'purchase_price' => $item->purchase_price,
+                'price_per_item' => $item->pivot->price_per_item,
+                'discount1' => $item->pivot->discount1,
+                'discount2' => $item->pivot->discount2,
+                'discount3' => $item->pivot->discount3,
+                'ad' => $item->pivot->ad,
+                'total_price_before_discount' => $item->pivot->sub_total,
+                'total_price_after_discount' => $item->pivot->total_price_after_discount,
+            ];
+        });
+
+        $options = new Options();
+        $options->set('defaultFont', 'Helvetica');
+
+        $dompdf = new Dompdf($options);
+
+        $html = View::make('exports.invoice.outInvoice', compact('items', 'purchase'))->render();
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('A4', 'portrait');
+        $dompdf->render();
+
+        return $dompdf->stream('Pembayaran_' . $invoice . '.pdf');
     }
 }
