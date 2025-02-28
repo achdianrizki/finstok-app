@@ -32,8 +32,6 @@ class StoreIncomingPaymentRequest extends FormRequest
             'information' => 'nullable|string|max:255',
             'sub_total' => 'required|numeric|min:0',
             'remaining_payment' => 'required|string',
-            // total_paid
-            // 'tax' => 'required|numeric|min:0',
         ];
     }
 }

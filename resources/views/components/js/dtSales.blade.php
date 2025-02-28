@@ -29,7 +29,7 @@
                         $.each(response.data, function(index, sale) {
                             rows += `
                             <tr class="border dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-slate-900">
-                                <td class="px-6 py-4 whitespace-nowrap"><a class="text-blue-500" href="/manager/sales/${sale.id}">${sale.sale_number}</a></td>
+                                <td class="px-6 py-4 whitespace-nowrap">${sale.sale_number}</td>
                                 <td class="px-6 py-4 whitespace-nowrap hidden md:table-cell">${sale.sale_date}</td>
                                 <td class="px-6 py-4 whitespace-nowrap hidden md:table-cell">${sale.buyer.name}</td>
                                 <td class="px-6 py-4 whitespace-nowrap hidden md:table-cell">${sale.status}</td>

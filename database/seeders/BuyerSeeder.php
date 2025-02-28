@@ -15,6 +15,7 @@ class BuyerSeeder extends Seeder
     {
         Buyer::create([
             'name' => 'Jack',
+            'contact' => 'PT Sentosa Jaya Abadi',
             'phone' => '0384789347',
             'address' => 'Jl Pahlawan',
             'type' => 'General Trade',
@@ -22,6 +23,7 @@ class BuyerSeeder extends Seeder
 
         Buyer::create([
             'name' => 'John',
+            'contact' => 'PT Mitra Global Sejahtera',
             'phone' => '03243478',
             'address' => 'Jl Ahmad Yani',
             'type' => 'Modern Trade',
@@ -29,6 +31,7 @@ class BuyerSeeder extends Seeder
 
         Buyer::create([
             'name' => 'Max',
+            'contact' => 'PT Sukses Makmur Bersama',
             'phone' => '03487423987',
             'address' => 'Jl Kebenruntungan',
             'type' => 'Modern Trade',
@@ -36,6 +39,7 @@ class BuyerSeeder extends Seeder
 
         Buyer::create([
             'name' => 'Ahmad',
+            'contact' => 'PT Indo Perkasa Mandiri',
             'phone' => '042747623',
             'address' => 'Jl Cijeruk',
             'type' => 'General Trade',

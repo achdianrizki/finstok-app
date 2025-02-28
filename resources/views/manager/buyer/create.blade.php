@@ -24,6 +24,13 @@
                 </div>
 
                 <div class="mb-5 space-y-2">
+                    <x-form.label for="contact" :value="__('Nama kontak')" />
+                    <x-form.input id="contact" class="block w-full" type="text" name="contact" :value="old('contact')"
+                        placeholder="{{ __('Nama kontak') }}" />
+                    <x-input-error :messages="$errors->get('contact')" class="mt-2" />
+                </div>
+
+                <div class="mb-5 space-y-2">
                     <x-form.label for="phone" :value="__('Nomor telepon')" />
                     <x-form.input id="phone" class="block w-full" type="number" name="phone" :value="old('phone')"
                         placeholder="{{ __('086751324897') }}" />

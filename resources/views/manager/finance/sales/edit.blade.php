@@ -149,7 +149,6 @@
                 // $("#sale_date").flatpickr({
                 //     dateFormat: "Y-m-d",
                 //     allowInput: true,
-                //     minDate: "today"
                 // });
 
                 // $('#buyer_id').select2();

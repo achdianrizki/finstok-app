@@ -14,11 +14,23 @@
         Menu
     </div>
 
-    <x-sidebar.link title="Master Barang" href="{{ route('manager.items.index') }}" :isActive="request()->routeIs('manager.items*')">
+    <x-sidebar.dropdown title="Master" :active="request()->routeIs('manager.items*') ||
+        request()->routeIs('manager.supplier*') ||
+        request()->routeIs('manager.salesman*') ||
+        request()->routeIs('manager.buyer*')">
         <x-slot name="icon">
             <x-heroicon-o-rectangle-stack class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
         </x-slot>
-    </x-sidebar.link>
+
+        <x-sidebar.sublink title="Barang" href="{{ route('manager.items.index') }}" :active="request()->routeIs('manager.items*')" />
+
+        <x-sidebar.sublink title="Pemasok Barang" href="{{ route('manager.supplier.index') }}" :active="request()->routeIs('manager.supplier*')" />
+
+        <x-sidebar.sublink title="Master Pelanggan" href="{{ route('manager.buyer.index') }}" :active="request()->routeIs('manager.buyer*')" />
+
+        <x-sidebar.sublink title="Master Sales" href="{{ route('manager.salesman.index') }}" :active="request()->routeIs('manager.salesman*')" />
+
+    </x-sidebar.dropdown>
 
     <x-sidebar.link title="Distributor" href="{{ route('manager.distributors.index') }}" :isActive="request()->routeIs('manager.distributors*')">
         <x-slot name="icon">
@@ -26,16 +38,27 @@
         </x-slot>
     </x-sidebar.link>
 
-    <x-sidebar.dropdown title="Pembelian" :active="request()->routeIs('manager.supplier*') || request()->routeIs('manager.purchase*') || request()->routeIs('manager.outgoingpayment*')">
+    <x-sidebar.dropdown title="Pembelian" :active="request()->routeIs('manager.purchase*') || request()->routeIs('manager.outgoingpayment*')">
         <x-slot name="icon">
             <x-icons.supplier class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
         </x-slot>
 
-        <x-sidebar.sublink title="Pemasok Barang" href="{{ route('manager.supplier.index') }}" :active="request()->routeIs('manager.supplier*')" />
-
         <x-sidebar.sublink title="Pembelian Barang" href="{{ route('manager.purchase.index') }}" :active="request()->routeIs('manager.purchase*')" />
 
-        <x-sidebar.sublink title="Pembayaran Keluar" href="{{ route('manager.outgoingpayment.index') }}" :active="request()->routeIs('manager.outgoingpayment*')" />
+        <x-sidebar.sublink title="Pembayaran Keluar" href="{{ route('manager.outgoingpayment.index') }}"
+            :active="request()->routeIs('manager.outgoingpayment*')" />
+    </x-sidebar.dropdown>
+
+    <x-sidebar.dropdown title="Penjualan" :active="request()->routeIs('manager.sales.*') || request()->routeIs('manager.incomingpayment*')">
+        <x-slot name="icon">
+            <x-icons.sale-tag class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
+        </x-slot>
+
+        <x-sidebar.sublink title="Penjualan Barang" href="{{ route('manager.sales.index') }}" :active="request()->routeIs('manager.sales.index')" />
+
+        <x-sidebar.sublink title="Pembayaran Masuk" href="{{ route('manager.incomingpayment.index') }}"
+            :active="request()->routeIs('manager.incomingpayment*')" />
+
     </x-sidebar.dropdown>
 
     @role('manager')
@@ -93,17 +116,6 @@
         {{-- Warehouse End --}}
     @endrole
 
-
-    <x-sidebar.dropdown title="Penjualan" :active="request()->routeIs('manager.sales*') || request()->routeIs('manager.buyer*') || request()->routeIs('manager.salesman*')" >
-        <x-slot name="icon">
-            <x-icons.sale-tag class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
-        </x-slot>
-
-        <x-sidebar.sublink title="Data Penjualan" href="{{ route('manager.sales.index') }}" :active="request()->routeIs('manager.sales.index')" />
-        <x-sidebar.sublink title="Master Pelanggan" href="{{ route('manager.buyer.index') }}" :active="request()->routeIs('manager.buyer*')" />
-
-        <x-sidebar.sublink title="Master Sales" href="{{ route('manager.salesman.index') }}" :active="request()->routeIs('manager.salesman*')" />
-    </x-sidebar.dropdown>
 
     <x-sidebar.dropdown title="Lain Lain" :active="request()->routeIs('manager.other*')">
         <x-slot name="icon">

@@ -63,10 +63,14 @@ Route::middleware('auth')->group(function () {
             ->middleware('role:manager')
             ->name('outgoingpayment.payment');
 
+        Route::resource('incomingpayment', IncomingPaymentController::class)->middleware('role:manager');
 
-        // MASTER BUYER
+        Route::get('/incomingpayment/payment/{id}', [IncomingPaymentController::class, 'create'])
+            ->name('incomingpayment.payment');
+
+
+
         Route::resource('buyer', BuyerController::class)->middleware('role:manager|admin');
-        // MASTER SALESMAN
         Route::resource('salesman', SalesmanController::class)->middleware('role:manager|admin');
 
 
@@ -81,15 +85,13 @@ Route::middleware('auth')->group(function () {
         Route::resource('asset', AssetController::class)->middleware('role:manager|finance');
 
         // SALE PAYMENT
-        Route::get('/incomingPayment/create/{sale_id}', [IncomingPaymentController::class, 'create'])
-            ->name('incomingPayment.create');
+        // Route::get('/incomingPayment/create/{sale_id}', [IncomingPaymentController::class, 'create'])
+        //     ->name('incomingPayment.create');
 
         // Route untuk menyimpan incomingPayment
         Route::post('/incomingPayment/store', [IncomingPaymentController::class, 'store'])
             ->name('incomingPayment.store')
             ->middleware('role:manager|finance');
-
-        // Route::resource('incomingPayment', incomingPaymentController::class)->middleware('role:manager|finance');
 
 
         Route::prefix('other')->name('other.')->group(function () {
@@ -167,6 +169,8 @@ Route::get('/get-sales-item/{item_id}', function ($item_id) {
         // 'discount2' => $supplier ? $supplier->discount2 : 0,
     ]);
 });
+
+Route::get('/incomingpayment-data', [incomingPaymentController::class, 'getSaleItem']);
 
 
 

@@ -23,6 +23,7 @@ class StoreBuyerRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:255',
+            'contact' => 'required|string|max:255',
             'phone' => 'required|string|max:255',
             'address' => 'required|string|max:255',
             'type' => 'required|string|max:255',
@@ -35,6 +36,10 @@ class StoreBuyerRequest extends FormRequest
             'name.required' => 'Nama wajib diisi.',
             'name.string' => 'Nama harus berupa string.',
             'name.max' => 'Nama tidak boleh lebih dari 255 karakter.',
+
+            'contact.required' => 'Nama kontak wajib diisi.',
+            'contact.string' => 'Nama kontak harus berupa string.',
+            'contact.max' => 'Nama kontak tidak boleh lebih dari 255 karakter.',
 
             'phone.required' => 'Nomor telepon wajib diisi.',
             'phone.string' => 'Nomor telepon harus berupa string.',

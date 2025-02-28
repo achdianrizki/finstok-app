@@ -23,6 +23,7 @@
                           rows += `
                         <tr class="border dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-slate-900">
                               <td class="px-6 py-4 whitespace-nowrap">${buyer.name}</td>
+                              <td class="px-6 py-4 whitespace-nowrap">${buyer.contact}</td>
                               <td class="px-6 py-4 whitespace-nowrap hidden sm:table-cell">${buyer.phone}</td>
                               <td class="px-6 py-4 whitespace-nowrap hidden sm:table-cell">${buyer.address}</td>
                               <td class="px-6 py-4 whitespace-nowrap hidden sm:table-cell">${buyer.type}</td>

@@ -4,7 +4,7 @@
             {{ __('Tambah Pembayaran :sale_number', ['sale_number' => $sale->sale_number]) }}</h2>
     </x-slot>
 
-    <form action="{{ route('manager.incomingPayment.store') }}" method="POST">
+    <form id="incoming-payment-form" action="{{ route('manager.incomingPayment.store') }}" method="POST" data-parsley-validate>
         @csrf
         <div class="p-6 bg-white rounded-md shadow-md">
             <div class="grid grid-cols-2 gap-4">
@@ -14,14 +14,14 @@
                 <div class="space-y-2">
                     <x-form.label for="invoice_number" :value="__('Nomor Resi')" />
                     <x-form.input id="invoice_number" class="block w-full" type="text" name="invoice_number"
-                        :value="old('invoice_number')" />
+                        :value="old('invoice_number')" required data-parsley-required-message="Nomor Resi wajib diisi" />
 
                     <x-form.label for="payment_date" :value="__('Tanggal Pembayaran')" />
                     <x-form.input id="payment_date" class="block w-full flatpickr-input" type="date"
-                        name="payment_date" autocomplete="off" />
+                        name="payment_date" autocomplete="off" required data-parsley-required-message="Tanggal Pembayaran wajib diisi"/>
 
                     <x-form.label for="payment_method" :value="__('Metode Pembayaran')" />
-                    <x-form.select id="payment_method" class="block w-full" name="payment_method">
+                    <x-form.select id="payment_method" class="block w-full" name="payment_method" required data-parsley-required-message="Metode Pembayaran wajib diisi">
                         <option value="" disabled selected>Pilih</option>
                         <option value="tunai" {{ old('payment_method') == 'tunai' ? 'selected' : '' }}>Tunai</option>
                         <option value="transfer" {{ old('payment_method') == 'transfer' ? 'selected' : '' }}>Transfer
@@ -36,16 +36,12 @@
                         <x-form.label for="payment_code" :value="__('Kode Pembayaran')" class="mt-2 mb-2" />
                         <x-form.input id="payment_code" class="block w-full" type="text" name="payment_code" />
                     </div>
-
-                    {{-- <x-form.label for="tax" :value="__('Pajak')" />
-                <x-form.input id="tax" class="block w-full flatpickr-input" type="text" name="tax"
-                    :value="old('tax')" /> --}}
                 </div>
 
                 <div>
                     <x-form.label for="pay_amount" :value="__('Jumlah Dibayarkan')" class="mb-2" />
                     <x-form.input id="pay_amount" class="block w-full flatpickr-input" type="number" name="pay_amount"
-                        :value="old('pay_amount')" />
+                        :value="old('pay_amount')" required data-parsley-required-message="Jumlah Dibayarkan wajib diisi"/>
                     <span id="pay_amount_error" class="text-red-500 text-sm mt-5 hidden">Jumlah dibayarkan tidak boleh
                         lebih besar dari sisa pembayaran.</span>
 
@@ -77,12 +73,6 @@
                     value="{{ number_format($sale->total_price, 2, '.', '') }}" readonly>
             </div>
 
-            <div class="flex justify-between items-center w-full max-w-md">
-                <label for="tax" class="mr-4">PPN 11%</label>
-                <input type="text" class="w-1/2 border-gray-300 rounded-md p-2" name="tax" id="taxRate"
-                    readonly>
-            </div>
-
             <div class="grid justify-items-end">
                 <x-button class="gap-2" id="buttonSubmit">
                     <span>{{ __('Submit') }}</span>
@@ -102,7 +92,6 @@
                 $("#payment_date").flatpickr({
                     dateFormat: "Y-m-d",
                     allowInput: true,
-                    minDate: "today"
                 });
 
                 $('#pay_amount').on('input', function() {
@@ -113,13 +102,13 @@
                     let remainingPayment = totalPrice - totalPayed;
 
                     if (payAmount > remainingPayment) {
-                        $('#pay_amount_error').removeClass('hidden'); // Tampilkan pesan error
-                        $(this).addClass('border-red-500'); // Tambahkan warna merah ke input
-                        $('#buttonSubmit').prop('disabled', true); // Disable tombol submit
+                        $('#pay_amount_error').removeClass('hidden');
+                        $(this).addClass('border-red-500');
+                        $('#buttonSubmit').prop('disabled', true);
                     } else {
-                        $('#pay_amount_error').addClass('hidden'); // Sembunyikan pesan error
-                        $(this).removeClass('border-red-500'); // Hilangkan warna merah dari input
-                        $('#buttonSubmit').prop('disabled', false); // Enable tombol submit
+                        $('#pay_amount_error').addClass('hidden');
+                        $(this).removeClass('border-red-500');
+                        $('#buttonSubmit').prop('disabled', false);
                     }
                 });
 
@@ -133,7 +122,6 @@
                     }
                 });
 
-                // Hitung ulang saat pay_amount berubah
                 $('#pay_amount').on('input', function() {
                     calculateRemainingPayment();
                 });
@@ -145,7 +133,6 @@
 
                     let remainingPayment = totalPrice - totalPayed;
 
-                    // Jika payAmount lebih besar dari remainingPayment, set remainingPayment ke 0
                     if (payAmount >= remainingPayment) {
                         $('#remaining_payment').val('0.00');
                     } else {
@@ -155,11 +142,40 @@
                     }
                 }
 
-                // Simpan nilai awal total_payed agar tidak terus bertambah saat user mengetik
                 $('#total_payed').attr('data-initial', $('#total_payed').val());
+
+                $('incoming-payment-form').parsley();
+
+                // $('#buttonSubmit').on('click', function(event) {
+                //     let isValid = true;
+
+                //     $('#buyer_id').each(function() {
+                //         if ($(this).val() === null || $(this).val() === "") {
+                //             $(this).next('.select2-container').find('.select2-selection').addClass(
+                //                 'error');
+                //             isValid = false;
+                //         } else {
+                //             $(this).next('.select2-container').find('.select2-selection').removeClass(
+                //                 'error');
+                //         }
+                //     });
+                // });
+
+                // $('#buyer_id').on('change', function() {
+                //     if ($(this).val() !== null && $(this).val() !== "") {
+                //         $(this).siblings('.select2-container').find('.select2-selection').addClass('success');
+                //     }
+                // });
+
+                // $('#buyer_id').on('change', function() {
+                //     if ($(this).val() !== null && $(this).val() !== "") {
+                //         $(this).siblings('.select2-container').find('.select2-selection').removeClass(
+                //             'error');
+                //     }
+                // });
             });
         </script>
-    @endpush    
+    @endpush
 
 
     @push('styles')

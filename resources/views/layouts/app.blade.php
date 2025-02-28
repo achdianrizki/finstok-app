@@ -15,6 +15,7 @@
         rel="stylesheet" />
 
         <link rel="stylesheet" href="/vendor/select2/css/select2.min.css">
+        <link rel="stylesheet" href="/assets/css/parsley.css">
     <!-- Styles -->
     @stack('styles')
     <style>
@@ -79,6 +80,7 @@
     @include('sweetalert::alert')
     <!-- Script Tambhan -->
     <script src="{{ asset('assets/js/jquery.js') }}"></script>
+    <script src="{{ asset('assets/js/parsley.min.js') }}"></script>
     <script src="/vendor/select2/js/select2.min.js"></script>
     @stack('scripts')
 </body>

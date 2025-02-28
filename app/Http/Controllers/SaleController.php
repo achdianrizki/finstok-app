@@ -94,47 +94,32 @@ class SaleController extends Controller
      */
     public function store(Request $request)
     {
-        // DB::transaction(function () use ($request) {
+        $lastSale = Sale::latest()->first();
 
-        // });
-        // $validatedData = $request->validated();
+        if ($lastSale) {
+            $lastNumber = (int) str_replace('SEVENA/SALE/', '', $lastSale->sale_number);
+            $newNumber = $lastNumber + 1;
+        } else {
+            $newNumber = 1;
+        }
 
-        // // Hapus format mata uang dari total_price dan down_payment sebelum perhitungan
-        // $validatedData['total_price'] = (float) preg_replace('/[^0-9]/', '', $validatedData['total_price']);
-        // $validatedData['total_price'] = floor($validatedData['total_price'] / 100);
-
-        // $validatedData['down_payment'] = (float) preg_replace('/[^0-9]/', '', $validatedData['down_payment']);
-
-
-        // // Hitung remaining_payment setelah nilai yang benar diperoleh
-        // $validatedData['remaining_payment'] = $validatedData['total_price'] - $validatedData['down_payment'];
-
-        // $item = Item::find($validatedData['item_id']);
-
-        // if ($item->stock < $validatedData['qty_sold']) {
-        //     toast('Jumlah stok barang lebih sedikit dari jumlah penjualan barang!', 'error');
-        // } else {
-        //     Sale::create($validatedData);
-
-        //     if ($item) {
-        //         $item->decrement('stock', $validatedData['qty_sold']); // Mengurangi stok sebesar qty_sold
-        //     }
-
-        //     $item->sales()->attach($request->salesman);
-        // }
+        $saleNumber = 'SEVENA/SALE/' . str_pad($newNumber, 5, '0', STR_PAD_LEFT);
 
         $qty_sold = array_sum($request->qty_sold);
+
+        $total_discount = $request->total_discount1 + $request->total_discount2 + $request->total_discount3;
 
         $sale = Sale::create([
             'buyer_id' => $request->buyer_id,
             'salesman_id' => $request->salesman_id,
-            'sale_number' => $request->sale_number,
+            'sale_number' => $saleNumber,
             'total_price' => $request->total_price,
             'sub_total' => $request->sub_total,
-            'total_discount' => $request->total_discount,
+            'total_discount' => $total_discount,
             'sale_date' => $request->sale_date,
             'payment_method' => $request->payment_method,
             'tax' => $request->tax,
+            'status' => $request->status,
             'information' => $request->information,
             'qty_sold' => $qty_sold,
 
@@ -146,9 +131,13 @@ class SaleController extends Controller
             $item->stock -= $request->qty_sold[$index];
             $item->save();
 
-            // $item->sales()->attach($sale->id, [
-            //     'qty_sold' => $request->qty_sold[$index],
-            // ]);
+            $item->sales()->attach($sale->id, [
+                'qty_sold' => $request->qty_sold[$index],
+                'discount1' => $request->discount1[$index],
+                'discount2' => $request->discount2[$index],
+                'discount3' => $request->discount3[$index],
+                'sale_price' => $request->sale_prices[$index],
+            ]);
         }
 
 
@@ -159,22 +148,8 @@ class SaleController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Sale $sale)
-    {
-        $items = Item::all();
-        $buyer = $sale->buyer;
-        $salesman = $sale->salesman;
-        $incomingPayments = $sale->incomingPayments;
-        $total_payed = $sale->incomingPayments->sum('pay_amount');
 
-        // Menggunakan Query Builder agar bisa pakai orderByDesc
-        $last_payment = $sale->incomingPayments()->orderByDesc('created_at')->first();
-        $remaining_payment = optional($last_payment)->remaining_payment ?? 0;
-
-
-        // return view('manager.finance.sales', compact('sale'));
-        return view('manager.finance.sales.show', compact('sale', 'items', 'buyer', 'salesman', 'incomingPayments', 'total_payed', 'remaining_payment'));
-    }
+    public function show() {}
 
     /**
      * Show the form for editing the specified resource.
