@@ -22,7 +22,7 @@ return new class extends Migration
             $table->date('sale_date');
             $table->enum('status', ['lunas', 'belum_lunas'])->default('belum_lunas');
             $table->string('tax');
-            $table->text('information');
+            $table->text('information')->nullable();
             $table->integer('qty_sold');
             // $table->integer('qty_sold');
             // $table->enum('payment_status', ['lunas', 'belum lunas']);

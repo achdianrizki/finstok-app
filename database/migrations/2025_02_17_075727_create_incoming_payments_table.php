@@ -22,7 +22,7 @@ return new class extends Migration
             $table->unsignedBigInteger('pay_amount');
             $table->unsignedBigInteger('remaining_payment');
             $table->unsignedBigInteger('total_paid');
-            $table->text('information');
+            $table->text('information')->nullable();
             $table->foreign('sale_id')->references('id')->on('sales')->onDelete('cascade');
             $table->timestamps();
         });

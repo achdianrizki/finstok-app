@@ -16,6 +16,11 @@ return new class extends Migration
             $table->unsignedBigInteger('item_id');
             $table->unsignedBigInteger('sale_id');
             $table->integer('qty_sold');
+            $table->integer('discount1')->nullable();
+            $table->integer('discount2')->nullable();
+            $table->integer('discount3')->nullable();
+            $table->decimal('sale_price')->nullable();
+            // $table->integer('add')->nullable();
             $table->timestamps();
             $table->foreign('item_id')->references('id')->on('items')->onDelete('cascade');
             $table->foreign('sale_id')->references('id')->on('sales')->onDelete('cascade');

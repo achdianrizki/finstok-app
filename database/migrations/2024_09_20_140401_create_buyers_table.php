@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('buyers', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->string('contact');
             $table->string('phone');
             $table->string('address');
             $table->enum('type', ['General Trade', 'Modern Trade',]);

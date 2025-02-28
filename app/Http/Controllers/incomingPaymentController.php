@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Dompdf\Dompdf;
 use Dompdf\Options;
+use App\Models\Item;
 use App\Models\Sale;
 use Illuminate\Http\Request;
 use App\Models\IncomingPayment;
@@ -12,13 +13,55 @@ use App\Http\Requests\StoreIncomingPaymentRequest;
 
 class incomingPaymentController extends Controller
 {
-    public function create($sale_id)
+    public function index()
     {
-        $sale = Sale::findOrFail($sale_id);
+        return view('manager.finance.incomingPayment.index');
+    }
+
+    public function create($id)
+    {
+        $sale = Sale::findOrFail($id);
 
         $payed_amount = $sale->incomingPayments->sum('pay_amount');
 
         return view('manager.finance.incomingPayment.create', compact('sale', 'payed_amount'));
+    }
+
+    public function getSaleItem(Request $request)
+    {
+        $query = Sale::with(['buyer']);
+
+        if ($request->filled('search')) {
+            $search = $request->search;
+
+            $query->where(function ($q) use ($search) {
+                $q->where('sale_number', 'like', '%' . $search . '%')
+                    ->orWhereHas('buyer', function ($query) use ($search) {
+                        $query->where('name', 'like', '%' . $search . '%');
+                    })
+                    ->orWhere('sale_date', 'like', '%' . $search . '%');
+            });
+        }
+
+        $products = $query->paginate(5);
+
+        return response()->json($products);
+    }
+
+    public function show($id)
+    {
+        $sale = Sale::findOrFail($id);
+        $items = Item::all();
+        $buyer = $sale->buyer;
+        $salesman = $sale->salesman;
+        $incomingPayments = $sale->incomingPayments;
+        $total_payed = $sale->incomingPayments->sum('pay_amount');
+
+        // Menggunakan Query Builder agar bisa pakai orderByDesc
+        $last_payment = $sale->incomingPayments()->orderByDesc('created_at')->first();
+        $remaining_payment = optional($last_payment)->remaining_payment ?? 0;
+
+        return view('manager.finance.incomingPayment.payment', compact('sale', 'items', 'buyer', 'salesman', 'incomingPayments', 'total_payed', 'remaining_payment'));
     }
 
     public function store(Request $request)
@@ -48,7 +91,7 @@ class incomingPaymentController extends Controller
 
 
         toast('Pembayaran berhasil ditambahkan', 'success');
-        return redirect()->route('manager.sales.show', $request->sale_id)->with('success', 'Pembayaran berhasil ditambahkan');
+        return redirect()->route('manager.incomingpayment.show', $request->sale_id)->with('success', 'Pembayaran berhasil ditambahkan');
     }
 
     public function exportPDF(IncomingPayment $incomingPayment)
