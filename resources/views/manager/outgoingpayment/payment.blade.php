@@ -158,7 +158,7 @@
                     <th class="px-4 py-2 text-left border-b border-gray-300 w-2/12">Tanggal Pembayaran</th>
                     <th class="px-4 py-2 text-left border-b border-gray-300 w-2/12">Note</th>
                     <th class="px-4 py-2 text-left border-b border-gray-300 w-2/12">Metode Pembayaran</th>
-                    <th class="px-4 py-2 text-right border-b border-gray-300 w-2/12">Total Harga</th>
+                    <th class="px-4 py-2 text-right border-b border-gray-300 w-2/12">Total Bayar</th>
                     <th class="px-4 py-2 text-right border-b border-gray-300 w-2/12">Jumlah yg Belum Dibayar</th>
                     <th class="px-4 py-2 text-left border-b border-gray-300 w-2/12">Print</th>
                 </tr>
@@ -171,7 +171,7 @@
                         <td class="px-4 py-2 border-b border-gray-300">{{ $payment->description }}</td>
                         <td class="px-4 py-2 border-b border-gray-300">{{ $payment->payment_method }}</td>
                         <td class="px-4 py-2 text-right border-b border-gray-300">
-                            {{ number_format($payment->total_price, 2) }}</td>
+                            {{ number_format($payment->amount_paid, 2) }}</td>
                         <td class="px-4 py-2 text-right border-b border-gray-300">
                             {{ number_format($payment->total_unpaid, 2) }}</td>
                         <td>

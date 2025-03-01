@@ -61,6 +61,16 @@
 
     </x-sidebar.dropdown>
 
+    <x-sidebar.dropdown title="Report" :active="request()->routeIs('manager.report*')">
+        <x-slot name="icon">
+            <x-icons.list-bullet class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
+        </x-slot>
+
+        <x-sidebar.sublink title="Laporan Pembelian" href="{{ route('manager.report.purchase') }}"
+            :active="request()->routeIs('manager.report.purchase')" />
+        <x-sidebar.sublink title="Laporan Penjualan" href="{{ route('manager.report.sale') }}" :active="request()->routeIs('manager.report.sale')" />
+    </x-sidebar.dropdown>
+
     @role('manager')
         <x-sidebar.link title="Pengguna" href="{{ route('manager.users.index') }}" :isActive="request()->routeIs('manager.users*')">
             <x-slot name="icon">
@@ -85,7 +95,6 @@
             </x-slot>
 
             <x-sidebar.sublink title="Kelola Modal" href="{{ route('manager.modal.index') }}" :active="request()->routeIs('manager.modal*')" />
-
             <x-sidebar.sublink title="Rincian Aset" href="{{ route('manager.asset.index') }}" :active="request()->routeIs('manager.asset*')" />
         </x-sidebar.dropdown>
     @endrole
@@ -115,6 +124,8 @@
         </div>
         {{-- Warehouse End --}}
     @endrole
+
+
 
 
     <x-sidebar.dropdown title="Lain Lain" :active="request()->routeIs('manager.other*')">

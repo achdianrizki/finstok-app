@@ -57,38 +57,71 @@
 <body>
     <div class="header">Pembayaran {{ $purchase->purchase_number }}</div>
 
-    <table class="table-head">
-        <tr>
-            <td>Nomor Pembelian</td>
-            <td>: {{ $purchase->purchase_number }}</td>
-        </tr>
-        <tr>
-            <td>Tanggal Pembelian</td>
-            <td>: {{ $purchase->purchase_date }}</td>
-        </tr>
-        <tr>
-            <td>Pelanggan</td>
-            <td>: {{ $purchase->supplier->contact }}</td>
-        </tr>
-        <tr>
-            <td>Pajak</td>
-            <td>: {{ number_format($purchase->tax, 2, ',', '.') }}</td>
-        </tr>
-        <tr>
-            <td>Status</td>
-            <td>: {{ $purchase->status == 'lunas' ? 'Lunas' : 'Belum lunas' }}</td>
-        </tr>
-    </table>
+    <div style="display: flex; justify-content: space-between; margin-top: 20px;">
+        <div style="width: 45%;">
+            <table class="table-head">
+                <tr>
+                    <td><strong>Pemasok:</strong></td>
+                </tr>
+                <tr>
+                    <td>{{ $purchase->supplier->name }}</td>
+                </tr>
+                <tr>
+                    <td>{{ $purchase->supplier->address }}</td>
+                </tr>
+                <tr>
+                    <td>NPWP</td>
+                    <td>:0239102931023</td>
+                </tr>
+                <tr>
+                    <td>Bank</td>
+                    <td>:0239102931023</td>
+                </tr>
+                <tr>
+                    <td>Telp</td>
+                    <td>:{{ $purchase->supplier->phone }}</td>
+                </tr>
+            </table>
+        </div>
+        <div style="width: 45%;">
+            <table class="table-head">
+                <tr>
+                    <td><strong>Faktur Pembelian:</strong></td>
+                </tr>
+                <tr>
+                    <td>Nomor Pembelian</td>
+                    <td>: {{ $purchase->purchase_number }}</td>
+                </tr>
+                <tr>
+                    <td>Tanggal Pembelian</td>
+                    <td>: {{ $purchase->purchase_date }}</td>
+                </tr>
+                <tr>
+                    <td>Pelanggan</td>
+                    <td>: {{ $purchase->supplier->name }}</td>
+                </tr>
+                <tr>
+                    <td>Pajak</td>
+                    <td>: {{ number_format($purchase->tax, 2, ',', '.') }}</td>
+                </tr>
+                <tr>
+                    <td>Status</td>
+                    <td>: {{ $purchase->status == 'lunas' ? 'Lunas' : 'Belum lunas' }}</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
 
     <div class="header">Detail Pembayaran</div>
 
     <table class="table">
         <thead>
             <tr>
-                <th>Kode Barang</th>
+                <th>No</th>
                 <th>Nama Barang</th>
-                <th>Satuan</th>
                 <th>Qty</th>
+                <th>Satuan</th>
                 <th>Harga</th>
                 <th>Diskon 1</th>
                 <th>Diskon 2</th>
@@ -100,10 +133,10 @@
         <tbody>
             @foreach ($items as $item)
                 <tr>
-                    <td>{{ $item['code'] }}</td>
+                    <td>{{ $loop->iteration }}</td>
                     <td>{{ $item['name'] }}</td>
-                    <td>{{ $item['unit'] }}</td>
                     <td>{{ $item['qty'] }}</td>
+                    <td>{{ $item['unit'] }}</td>
                     <td>{{ number_format($item['purchase_price'], 2, ',', '.') }}</td>
                     <td>{{ $item['discount1'] ?: 0 }}%</td>
                     <td>{{ $item['discount2'] ?: 0 }}%</td>
@@ -112,6 +145,10 @@
                     <td>{{ number_format($item['price_per_item'], 2, ',', '.') }}</td>
                 </tr>
             @endforeach
+            <tr>
+                <td colspan="2">total</td>
+                <td>10</td>
+            </tr>
         </tbody>
     </table>
 
@@ -142,10 +179,18 @@
         </tr>
     </table>
 
-    <div class="signature">
-        <p>Hormat Kami,</p>
-        <br><br><br>
-        <p>(___________________)</p>
+    <div style="display: flex; justify-content: space-between;">
+        <div class="signature">
+            <p>Diterima Oleh,</p>
+            <br><br><br>
+            <p>(___________________)</p>
+        </div>
+
+        <div class="signature">
+            <p>Hormat Kami,</p>
+            <br><br><br>
+            <p>(___________________)</p>
+        </div>
     </div>
 </body>
 

@@ -91,7 +91,7 @@ class PurchaseController extends Controller
                 'supplier_id'      => $request->supplier_id,
                 'tax'              => $request->tax,
                 'tax_type'         => $request->tax_type,
-                'information'      => $request->information,
+                'information'      => $request->information ?? '-',
                 'sub_total'        => $request->sub_total,
                 'total_discount1'  => $request->total_discount1 ?? 0,
                 'total_discount2'  => $request->total_discount2 ?? 0,

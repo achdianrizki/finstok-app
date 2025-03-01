@@ -87,7 +87,8 @@ class outgoingPaymentController extends Controller
             $purchase->update(['status' => 'belum_lunas']);
         }
 
-        return redirect()->back()->with('success', 'Pembayaran berhasil disimpan');
+        toast('Data berhasil disimpan', 'success');
+        return redirect()->route('manager.outgoingpayment.show', ['outgoingpayment' => $purchase->id]);
     }
 
 
@@ -174,16 +175,18 @@ class outgoingPaymentController extends Controller
             ];
         });
 
-        $options = new Options();
-        $options->set('defaultFont', 'Helvetica');
+        return view('exports.invoice.outInvoice', compact('items', 'purchase'));
 
-        $dompdf = new Dompdf($options);
+        // $options = new Options();
+        // $options->set('defaultFont', 'Helvetica');
 
-        $html = View::make('exports.invoice.outInvoice', compact('items', 'purchase'))->render();
-        $dompdf->loadHtml($html);
-        $dompdf->setPaper('A4', 'portrait');
-        $dompdf->render();
+        // $dompdf = new Dompdf($options);
 
-        return $dompdf->stream('Pembayaran_' . $invoice . '.pdf');
+        // $html = View::make('exports.invoice.outInvoice', compact('items', 'purchase'))->render();
+        // $dompdf->loadHtml($html);
+        // $dompdf->setPaper('A4', 'portrait');
+        // $dompdf->render();
+
+        return $dompdf->stream('Invoice_' . str_replace('/', '_', $purchase->purchase_number) . '.pdf');
     }
 }

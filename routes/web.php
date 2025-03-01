@@ -19,6 +19,7 @@ use App\Http\Controllers\WarehouseController;
 use App\Http\Controllers\DistributorController;
 use App\Http\Controllers\OutgoingPaymentController;
 use App\Http\Controllers\incomingPaymentController;
+use App\Http\Controllers\ReportController;
 use App\Models\IncomingPayment;
 
 /*
@@ -97,6 +98,11 @@ Route::middleware('auth')->group(function () {
         Route::prefix('other')->name('other.')->group(function () {
             Route::resource('categories', CategoryController::class)->middleware('role:manager|admin');
             Route::resource('distributors', DistributorController::class)->middleware('role:manager|admin');
+        });
+
+        Route::prefix('report')->name('report.')->group(function () {
+            Route::get('/purchase', [ReportController::class, 'purchase'])->name('purchase');
+            Route::get('/sale', [ReportController::class, 'sale'])->name('sale');
         });
     });
     //printPdf & ExportExcel

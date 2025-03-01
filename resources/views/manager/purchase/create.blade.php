@@ -8,12 +8,10 @@
         <div class="p-6 bg-white rounded-md shadow-md">
             <div class="grid grid-cols-2 gap-4">
                 <div class="space-y-2">
-                    {{-- <x-form.label for="purchase_number" :value="__('Nomor Pembelian')" />
-                    <x-form.input id="purchase_number" class="block w-full" type="text" name="purchase_number" /> --}}
-
                     <x-form.label for="purchase_date" :value="__('Tanggal Pembelian')" />
                     <x-form.input id="purchase_date" class="block w-full flatpickr-input" type="date"
                         name="purchase_date" />
+                    <x-input-error :messages="$errors->get('purchase_date')" class="mt-2" />
 
                     <x-form.label for="supplier_id" :value="__('Supplier')" />
                     <select id="supplier_id" name="supplier_id" class="w-full select2">
@@ -251,10 +249,11 @@
                     let taxType = $('#tax').val();
                     let taxRate = (taxType === 'ppn') ? 0.11 : 0;
 
-                    let taxAmount = parseFloat((subTotal * taxRate).toFixed(2));
+                    let taxAmount = parseFloat((totalPrice * taxRate).toFixed(2));
                     let finalTotalPrice = parseFloat((totalPrice + taxAmount).toFixed(2));
+                    
 
-                    console.log("Tax Rate : " + taxRate);
+                    console.log("Tax Rate : " + taxRate * totalPrice);
                     console.log("Total Pajak : " + taxAmount);
                     console.log("Total Harga Setelah Pajak : " + finalTotalPrice);
 
