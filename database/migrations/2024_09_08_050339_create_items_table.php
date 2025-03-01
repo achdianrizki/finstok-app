@@ -16,7 +16,6 @@ return new class extends Migration
             $table->string('name');
             $table->string('code')->unique();
             $table->decimal('purchase_price', 15, 2);
-            $table->decimal('selling_price', 15, 2);
             $table->string('unit');
             $table->integer('stock');
             $table->text('description');

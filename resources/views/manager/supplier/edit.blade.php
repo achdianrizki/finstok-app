@@ -45,20 +45,6 @@
                         <span class="text-red-500 text-sm">{{ $message }}</span>
                     @enderror
 
-                    <x-form.label for="discount1" :value="__('Diskon 1')" />
-                    <x-form.input id="discount1" class="block w-full" type="text" name="discount1" :value="old('discount1', $supplier->discount1)"
-                        placeholder="{{ __('Masukan Diskon 1') }}" />
-                    @error('discount1')
-                        <span class="text-red-500 text-sm">{{ $message }}</span>
-                    @enderror
-
-                    <x-form.label for="discount2" :value="__('Diskon 2')" />
-                    <x-form.input id="discount2" class="block w-full" type="text" name="discount2" :value="old('discount2', $supplier->discount2)"
-                        placeholder="{{ __('Masukan Diskon 2') }}" />
-                    @error('discount2')
-                        <span class="text-red-500 text-sm">{{ $message }}</span>
-                    @enderror
-
                     <x-form.label for="address" :value="__('Alamat')" />
                     <textarea name="address" id="address" class="block w-full py-2 border-gray-400 rounded-md">{{ $supplier->address }}</textarea>
                     @error('address')

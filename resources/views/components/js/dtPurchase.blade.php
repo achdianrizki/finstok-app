@@ -31,8 +31,8 @@
                             <tr class="border dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-slate-900">
                                 <td class="px-6 py-4 whitespace-nowrap">${purchase.purchase_number}</td>
                                 <td class="px-6 py-4 whitespace-nowrap hidden md:table-cell">${purchase.purchase_date}</td>
-                                <td class="px-6 py-4 whitespace-nowrap hidden md:table-cell">${purchase.supplier.name}</td>
-                                <td class="px-6 py-4 whitespace-nowrap hidden md:table-cell">${purchase.status}</td>
+                                <td class="px-6 py-4 whitespace-nowrap hidden md:table-cell">${purchase.supplier.contact}</td>
+                                <td class="px-6 py-4 whitespace-nowrap hidden md:table-cell">${purchase.status === 'belum_lunas' ? 'Belum Lunas' : purchase.status === 'lunas' ? 'Lunas' : purchase.status}</td>
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <x-button target="" href="/manager/purchase/${purchase.id}/edit" variant="warning" class="justify-center max-w-sm gap-2">
                                         <x-heroicon-o-pencil class="w-3 h-3" aria-hidden="true" />

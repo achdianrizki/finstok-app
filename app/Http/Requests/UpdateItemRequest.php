@@ -24,7 +24,6 @@ class UpdateItemRequest extends FormRequest
         return [
             'name' => ['required', 'string', 'max:255'],
             'purchase_price' => ['required', 'integer'],
-            'selling_price' => ['required', 'integer'],
             'unit' => ['required', 'string'],
             'stock' => ['integer'],
             'description' => ['nullable', 'string'],
@@ -48,8 +47,6 @@ class UpdateItemRequest extends FormRequest
             'name.max' => 'Nama tidak boleh lebih dari 255 karakter.',
             'purchase_price.required' => 'Harga beli wajib diisi.',
             'purchase_price.integer' => 'Harga beli harus berupa angka.',
-            'selling_price.required' => 'Harga jual wajib diisi.',
-            'selling_price.integer' => 'Harga jual harus berupa angka.',
             'unit.required' => 'Satuan wajib diisi.',
             'unit.string' => 'Satuan harus berupa string.',
             'stock.integer' => 'Stok harus berupa angka.',

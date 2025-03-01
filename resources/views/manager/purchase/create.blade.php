@@ -8,12 +8,10 @@
         <div class="p-6 bg-white rounded-md shadow-md">
             <div class="grid grid-cols-2 gap-4">
                 <div class="space-y-2">
-                    <x-form.label for="purchase_number" :value="__('Nomor Pembelian')" />
-                    <x-form.input id="purchase_number" class="block w-full" type="text" name="purchase_number" />
-
                     <x-form.label for="purchase_date" :value="__('Tanggal Pembelian')" />
                     <x-form.input id="purchase_date" class="block w-full flatpickr-input" type="date"
                         name="purchase_date" />
+                    <x-input-error :messages="$errors->get('purchase_date')" class="mt-2" />
 
                     <x-form.label for="supplier_id" :value="__('Supplier')" />
                     <select id="supplier_id" name="supplier_id" class="w-full select2">
@@ -26,8 +24,8 @@
                     <x-form.label for="tax" :value="__('Pajak')" />
                     <x-form.select id="tax" class="block w-full" name="tax_type">
                         <option value="" disabled selected>Pilih</option>
-                        <option value="ppn" {{ old('tax') == 'ppn' ? 'selected' : '' }}>PPN 11%</option>
-                        <option value="non_ppn" {{ old('tax') == 'non_ppn' ? 'selected' : '' }}>NON-PPN</option>
+                        <option value="ppn" {{ old('tax_type') == 'ppn' ? 'selected' : '' }}>PPN 11%</option>
+                        <option value="non_ppn" {{ old('tax_type') == 'non_ppn' ? 'selected' : '' }}>NON-PPN</option>
                     </x-form.select>
                 </div>
 
@@ -39,6 +37,7 @@
                 </div>
             </div>
         </div>
+
         <div class="mt-6">
             <h3 class="text-lg font-semibold">{{ __('Barang') }}</h3>
             <hr class="my-2 border-gray-300">
@@ -47,29 +46,32 @@
         <div class="mt-5 space-y-2">
             <p id="supplier_null" class="text-red-500 mt-2"></p>
 
-            <button type="button" id="add-item" class="mt-2 px-4 py-2 bg-purple-500 text-white rounded">+ Tambah
-                Barang
+            <button type="button" id="add-item" class="mt-2 px-4 py-2 bg-purple-500 text-white rounded">
+                + Tambah Barang
             </button>
 
-            <table class="w-full border border-gray-300 mt-2 shadow-md rounded-lg overflow-hidden" id="items-table">
-                <thead class="bg-gray-200 text-gray-700 uppercase text-sm tracking-wider">
-                    <tr>
-                        <th class="px-4 py-2 text-left border-b border-gray-300 w-2/12">Kode Barang</th>
-                        <th class="px-4 py-2 text-left border-b border-gray-300 w-3/12">Nama Barang</th>
-                        <th class="px-2 py-2 text-center border-b border-gray-300 w-1/12">Stok</th>
-                        <th class="px-2 py-2 text-center border-b border-gray-300 w-1/12">Satuan</th>
-                        <th class="px-3 py-2 text-center border-b border-gray-300 w-1/12">Jumlah</th>
-                        <th class="px-4 py-2 text-right border-b border-gray-300 w-2/12">Harga/pcs</th>
-                        <th class="px-4 py-2 text-right border-b border-gray-300 w-2/12">Diskon (%)</th>
-                        <th class="px-4 py-2 text-right border-b border-gray-300 w-2/12">Total Harga</th>
-                        <th class="px-3 py-2 text-center border-b border-gray-300 w-1/12">Aksi</th>
-                    </tr>
-                </thead>
-                <tbody class="bg-white divide-y divide-gray-300">
-                    <!-- Data Barang akan ditambahkan di sini -->
-                </tbody>
-            </table>
-
+            <div class="max-h-96 overflow-y-auto border border-gray-300 rounded-lg shadow-md">
+                <div class="overflow-x-auto">
+                    <table class="w-full min-w-max border border-gray-300 shadow-md table-auto" id="items-table">
+                        <thead class="bg-gray-200 text-gray-700 uppercase text-sm tracking-wider sticky top-0 z-10">
+                            <tr>
+                                <th class="px-4 py-2 text-center border-b border-gray-300 ">Kode Barang</th>
+                                <th class="px-4 py-2 text-center border-b border-gray-300 ">Nama Barang</th>
+                                <th class="px-2 py-2 text-center border-b border-gray-300 ">Stok</th>
+                                <th class="px-2 py-2 text-center border-b border-gray-300 ">Satuan</th>
+                                <th class="px-3 py-2 text-center border-b border-gray-300 ">Jumlah</th>
+                                <th class="px-4 py-2 text-center border-b border-gray-300 ">Harga/pcs</th>
+                                <th class="px-4 py-2 text-center border-b border-gray-300 ">Diskon (%)</th>
+                                <th class="px-4 py-2 text-center border-b border-gray-300 ">Total Harga</th>
+                                <th class="px-3 py-2 text-center border-b border-gray-300 ">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-300">
+                            <!-- Data Barang akan ditambahkan di sini -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
 
         </div>
 
@@ -81,9 +83,21 @@
             </div>
 
             <div class="flex justify-between items-center w-full max-w-md">
-                <label for="total_discount" class="mr-4">Diskon</label>
-                <input type="text" class="w-1/2 border-gray-300 rounded-md p-2" name="total_discount"
-                    id="total_discount" readonly>
+                <label for="total_discount1" class="mr-4">Diskon 1</label>
+                <input type="text" class="w-1/2 border-gray-300 rounded-md p-2" name="total_discount1"
+                    id="total_discount1" readonly>
+            </div>
+
+            <div class="flex justify-between items-center w-full max-w-md">
+                <label for="total_discount2" class="mr-4">Diskon 2</label>
+                <input type="text" class="w-1/2 border-gray-300 rounded-md p-2" name="total_discount2"
+                    id="total_discount2" readonly>
+            </div>
+
+            <div class="flex justify-between items-center w-full max-w-md">
+                <label for="total_discount3" class="mr-4">Diskon 3</label>
+                <input type="text" class="w-1/2 border-gray-300 rounded-md p-2" name="total_discount3"
+                    id="total_discount3" readonly>
             </div>
 
             <div class="flex justify-between items-center w-full max-w-md">
@@ -99,6 +113,17 @@
             </div>
         </div>
 
+        <div class="grid justify-items-end mt-4 space-y-2">
+            <div class="flex justify-between items-center w-full max-w-md">
+                <label for="status" class="mr-4">Status Pembayaran</label>
+                <select name="status" id="status" class="w-1/2 border-gray-300 rounded-md p-2">
+                    <option value="belum_lunas" selected>Belum Lunas</option>
+                    <option value="lunas">Lunas</option>
+                </select>
+            </div>
+        </div>
+
+        <input type="hidden" name="total_qty" id="total_qty">
 
         <div class="grid justify-items-end">
             <x-button class="gap-2" id="buttonSubmit">
@@ -113,7 +138,6 @@
                 $("#purchase_date").flatpickr({
                     dateFormat: "Y-m-d",
                     allowInput: true,
-                    minDate: "today"
                 });
 
                 $('#supplier_id').select2();
@@ -142,9 +166,7 @@
                             row.find('.price').val(data.purchase_price);
                             row.find('.unit').val(data.unit);
                             row.find('.stock').val(data.stock);
-                            row.find('.discount1').val(data.discount1);
-                            row.find('.discount2').val(data.discount2);
-                            row.find('.qty').val();
+                            row.find('.qty').val('');
                             calculateTotal(row);
                         });
                     }
@@ -153,6 +175,11 @@
                 $(document).on('input', '.qty', function() {
                     let row = $(this).closest('tr');
                     calculateTotal(row);
+                    calculateTotalQty();
+                });
+
+                $(document).on('input', '.discount1, .discount2, .discount3', function() {
+                    calculateSubTotal();
                 });
 
                 function calculateTotal(row) {
@@ -160,77 +187,138 @@
                     let qty = parseFloat(row.find('.qty').val()) || 0;
                     let discount1 = parseFloat(row.find('.discount1').val()) || 0;
                     let discount2 = parseFloat(row.find('.discount2').val()) || 0;
+                    let discount3 = parseFloat(row.find('.discount3').val()) || 0;
 
-                    let total = (price - (discount1 + discount2)) * qty;
+                    let originalTotal = price * qty;
+                    let discountAmount1 = (originalTotal * discount1) / 100;
+                    let discountAmount2 = (originalTotal * discount2) / 100;
+                    let discountAmount3 = (originalTotal * discount3) / 100;
+
+                    let total = originalTotal - discountAmount1 - discountAmount2 - discountAmount3;
+
                     row.find('.total-price').val(total.toFixed(2));
 
                     calculateSubTotal();
                 }
 
+
                 function calculateSubTotal() {
                     let subTotal = 0;
-                    let totalDiscount = 0;
+                    let totalDiscount1 = 0;
+                    let totalDiscount2 = 0;
+                    let totalDiscount3 = 0;
 
-                    $('.total-price').each(function() {
-                        subTotal += parseFloat($(this).val()) || 0;
+                    $('.price').each(function() {
+                        let row = $(this).closest('tr');
+                        let price = parseFloat($(this).val()) || 0;
+                        let qty = parseFloat(row.find('.qty').val()) || 0;
+                        let discount1 = parseFloat(row.find('.discount1').val()) || 0;
+                        let discount2 = parseFloat(row.find('.discount2').val()) || 0;
+                        let discount3 = parseFloat(row.find('.discount3').val()) || 0;
+
+                        let originalTotal = price * qty;
+
+                        let discountAmount1 = parseFloat((originalTotal * discount1 / 100).toFixed(2));
+                        let discountAmount2 = parseFloat((originalTotal * discount2 / 100).toFixed(2));
+                        let discountAmount3 = parseFloat((originalTotal * discount3 / 100).toFixed(2));
+
+                        totalDiscount1 += discountAmount1;
+                        totalDiscount2 += discountAmount2;
+                        totalDiscount3 += discountAmount3;
+
+                        subTotal += originalTotal;
                     });
 
-                    $('.discount1, .discount2').each(function() {
-                        totalDiscount += parseFloat($(this).val()) || 0;
-                    });
+                    let totalDiscount = parseFloat((totalDiscount1 + totalDiscount2 + totalDiscount3).toFixed(2));
+                    let totalPrice = parseFloat((subTotal - totalDiscount).toFixed(2));
+
+                    console.log("Total Discount : " + totalDiscount);
+                    console.log("Total Price sebelum pajak : " + totalPrice);
 
                     $('#sub_total').val(subTotal.toFixed(2));
-                    $('#total_discount').val(totalDiscount.toFixed(2));
+                    $('#total_discount1').val(totalDiscount1.toFixed(2));
+                    $('#total_discount2').val(totalDiscount2.toFixed(2));
+                    $('#total_discount3').val(totalDiscount3.toFixed(2));
+                    $('#total_price').val(totalPrice.toFixed(2));
 
-                    calculateTotalPrice();
+                    calculateTotalPrice(totalPrice);
                 }
 
-                function calculateTotalPrice() {
+                function calculateTotalPrice(totalPrice) {
                     let subTotal = parseFloat($('#sub_total').val()) || 0;
-                    let taxRate = $('#tax').val() === 'ppn' ? 0.11 : 0;
-                    let taxAmount = subTotal * taxRate;
-                    let totalPrice = subTotal + taxAmount;
+                    let taxType = $('#tax').val();
+                    let taxRate = (taxType === 'ppn') ? 0.11 : 0;
 
-                    // console.log(`Tax Rate: ${taxRate}, Tax Amount: ${taxAmount}, Final Total: ${totalPrice}`);
+                    let taxAmount = parseFloat((totalPrice * taxRate).toFixed(2));
+                    let finalTotalPrice = parseFloat((totalPrice + taxAmount).toFixed(2));
+                    
+
+                    console.log("Tax Rate : " + taxRate * totalPrice);
+                    console.log("Total Pajak : " + taxAmount);
+                    console.log("Total Harga Setelah Pajak : " + finalTotalPrice);
 
                     $('#taxRate').val(taxAmount.toFixed(2));
-                    $('#total_price').val(totalPrice.toFixed(2));
+                    $('#total_price').val(finalTotalPrice.toFixed(2));
                 }
 
                 $('#tax').on('change', function() {
                     calculateTotalPrice();
                 });
 
+
+
                 $('#add-item').click(function() {
                     let supplierId = $('#supplier_id').val();
-                    $('#supplier_null').text(!supplierId ? 'Silakan pilih supplier terlebih dahulu!' : '');
-                    if (!supplierId) return;
+                    if (!supplierId) {
+                        $('#supplier_null').text('Silakan pilih supplier terlebih dahulu!');
+                        return;
+                    } else {
+                        $('#supplier_null').text('');
+                    }
 
                     let row = `
-                <tr>
-                    <td><input type="text" class="item-code w-full px-2 py-1 border border-gray-300 rounded-md bg-gray-100" readonly></td>
-                    <td>
-                        <select name="items[]" class="item-select w-full select2 px-2 py-1 border border-gray-300 rounded-md">
-                            <option value="">Pilih Barang</option>
-                            @foreach ($items as $item)
-                                <option value="{{ $item->id }}">{{ $item->name }}</option>
-                            @endforeach
-                        </select>
-                    </td>
-                    <td><input type="number" name="stock[]" class="stock w-full px-2 py-1 border border-gray-300 rounded-md bg-gray-100" readonly></td>
-                    <td><input type="text" name="unit[]" class="unit w-full px-2 py-1 border border-gray-300 rounded-md bg-gray-100" readonly></td>
-                    <td><input type="number" name="qty[]" class="qty w-full px-2 py-1 border border-gray-300 rounded-md text-center" min="1" value="1"></td>
-                    <td><input type="text" name="prices[]" class="price w-full px-2 py-1 border border-gray-300 rounded-md bg-gray-100 text-right" readonly></td>
-                    <td>
-                        <div class="grid grid-cols-2 gap-1">
-                            <input type="text" name="discount1[]" class="discount1 w-full px-2 py-1 border border-gray-300 rounded-md bg-gray-100 text-right" readonly>
-                            <input type="text" name="discount2[]" class="discount2 w-full px-2 py-1 border border-gray-300 rounded-md bg-gray-100 text-right" readonly>
-                        </div>
-                    </td>
-                    <td><input type="text" name="price_per_item[]" class="total-price w-full px-2 py-1 border border-gray-300 rounded-md bg-gray-100 text-right" readonly></td>
-                    <td><button type="button" class="remove-item px-3 py-1 bg-red-500 text-white rounded-md hover:bg-red-600 transition">Hapus</button></td>
-                </tr>
-                `;
+            <tr class="border-b border-gray-300">
+            <td class="px-1 py-2">
+            <input type="text" class="item-code w-full px-2 py-1 border border-gray-300 rounded-md bg-gray-100 text-center" readonly>
+            </td>
+            <td class="px-1 py-2">
+            <select name="items[]" class="item-select w-40 select2 px-2 py-1 border border-gray-300 rounded-md">
+            <option value="">Pilih Barang</option>
+            @foreach ($items as $item)
+                <option value="{{ $item->id }}">{{ $item->name }}</option>
+            @endforeach
+            </select>
+            </td>
+            <td class="px-1 py-2">
+            <input type="number" name="stock[]" class="stock w-16 px-2 py-1 border border-gray-300 rounded-md bg-gray-100 text-center" readonly>
+            </td>
+            <td class="px-1 py-2">
+            <input type="text" name="unit[]" class="unit w-16 px-2 py-1 border border-gray-300 rounded-md bg-gray-100 text-center" readonly>
+            </td>
+            <td class="px-1 py-2">
+            <input type="number" name="qty[]" class="qty w-16 px-2 py-1 border border-gray-300 rounded-md text-center" value="0">
+            </td>
+            <td class="px-1 py-2">
+            <input type="text" name="prices[]" class="price w-full px-2 py-1 border border-gray-300 rounded-md bg-gray-100 text-right" readonly>
+            </td>
+            <td class="px-1 py-2">
+            <div class="flex space-x-1">
+            <input type="text" name="discount1[]" class="discount1 w-8 px-1 py-1 border border-gray-300 rounded-md text-right" placeholder="D1">
+            <input type="text" name="discount2[]" class="discount2 w-8 px-1 py-1 border border-gray-300 rounded-md text-right" placeholder="D2">
+            <input type="text" name="discount3[]" class="discount3 w-8 px-1 py-1 border border-gray-300 rounded-md text-right" placeholder="D3">
+            <input type="text" name="ad[]" class="ad w-8 px-1 py-1 border border-gray-300 rounded-md text-right" placeholder="AD">
+            </div>
+            </td>
+            <td class="px-1 py-2">
+            <input type="text" name="price_per_item[]" class="total-price w-40 px-2 py-1 border border-gray-300 rounded-md bg-gray-100 text-right" readonly>
+            </td>
+            <td class="px-1 py-2 text-center">
+            <button type="button" class="remove-item px-3 py-1 bg-red-500 text-white rounded-md hover:bg-red-600 transition">
+            Hapus
+            </button>
+            </td>
+            </tr>
+            `;
 
                     $('#items-table tbody').append(row);
                     $('.item-select').select2();
@@ -239,7 +327,16 @@
                 $(document).on('click', '.remove-item', function() {
                     $(this).closest('tr').remove();
                     calculateSubTotal();
+                    calculateTotalQty();
                 });
+
+                function calculateTotalQty() {
+                    let totalQty = 0;
+                    $('.qty').each(function() {
+                        totalQty += parseFloat($(this).val()) || 0;
+                    });
+                    $('#total_qty').val(totalQty);
+                }
             });
         </script>
     @endpush

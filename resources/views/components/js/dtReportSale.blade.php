@@ -4,7 +4,7 @@
         let lastPage = 1;
         let searchQuery = '';
 
-        function fetchitems(page, searchQuery = '') {
+        function fetchItems(page, searchQuery = '') {
 
             function formatRupiah(number) {
                 return new Intl.NumberFormat('id-ID', {
@@ -14,31 +14,30 @@
             }
 
             $.ajax({
-                url: '/items-data?page=' + page + '&search=' + searchQuery,
+                url: '/sales-data?page=' + page + '&search=' + searchQuery,
                 method: 'GET',
                 success: function(response) {
                     let rows = '';
 
                     if (response.data.length === 0) {
                         rows = `
-                    <tr>
-                        <td colspan="6" class="py-3 px-6 text-center">Not Found</td>
-                    </tr>
-                    `;
+                  <tr>
+                      <td colspan="6" class="py-3 text-center">Not Found</td>
+                  </tr>
+                  `;
                     } else {
-                        $.each(response.data, function(index, item) {
+                        $.each(response.data, function(index, sale) {
                             rows += `
                             <tr class="border dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-slate-900">
-                                <td class="px-6 py-4 whitespace-nowrap">${item.code}</td>
-                                <td class="px-6 py-4 whitespace-nowrap hidden sm:table-cell">${item.name}</td>
-                                <td class="px-6 py-4 whitespace-nowrap hidden md:table-cell">${item.category.name}</td>
-                                <td class="px-6 py-4 whitespace-nowrap hidden md:table-cell">${item.unit}</td>
-                                <td class="px-6 py-4 whitespace-nowrap hidden md:table-cell">${formatRupiah(item.purchase_price)}</td>
+                                <td class="px-6 py-4 whitespace-nowrap">${sale.sale_number}</td>
+                                <td class="px-6 py-4 whitespace-nowrap hidden md:table-cell">${sale.sale_date}</td>
+                                <td class="px-6 py-4 whitespace-nowrap hidden md:table-cell">${sale.buyer.name}</td>
+                                <td class="px-6 py-4 whitespace-nowrap hidden md:table-cell">${sale.status}</td>
                                 <td class="px-6 py-4 whitespace-nowrap">
-                                    <x-button target="" href="/manager/items/${item.id}/edit" variant="warning" class="justify-center max-w-sm gap-2">
+                                    <x-button target="" href="/manager/sales/${sale.id}/edit" variant="warning" class="justify-center max-w-sm gap-2">
                                         <x-heroicon-o-pencil class="w-3 h-3" aria-hidden="true" />
                                     </x-button>
-                                    <form method="POST" action="/manager/items/${item.id}" style="display:inline;">
+                                    <form method="POST" action="/manager/sales/${sale.id}" style="display:inline;">
                                         @csrf
                                         <input type="hidden" name="_method" value="DELETE">
                                         <x-button type="submit" class="bg-red-500 text-white py-1 px-3 rounded hover:bg-red-600">
@@ -54,9 +53,8 @@
                             <tr id="details-${index}" class="hidden sm:hidden">
                                 <td colspan="6" class="px-6 py-4">
                                     <div>
-                                        <p><strong>Nama Barang:</strong> ${item.code}</p>
-                                        <p><strong>Kategori:</strong> ${item.category.name}</p>
-                                        <p><strong>Satuan:</strong> ${item.unit}</p>
+                                        <p><strong>Kode:</strong> ${sale.code}</p>
+                                        <p><strong>Harga/pcs:</strong> ${formatRupiah(sale.price)}</p>
                                     </div>
                                 </td>
                             </tr>
@@ -75,28 +73,26 @@
             });
         }
 
-        fetchitems(page);
+        fetchItems(page);
 
         $('#nextPage').on('click', function() {
             if (page < lastPage) {
                 page++;
-                fetchitems(page, searchQuery);
+                fetchItems(page, searchQuery);
             }
         });
 
         $('#prevPage').on('click', function() {
             if (page > 1) {
                 page--;
-                fetchitems(page, searchQuery);
+                fetchItems(page, searchQuery);
             }
         });
 
         $('#search').on('keyup', function() {
             searchQuery = $(this).val();
             page = 1;
-            fetchitems(page, searchQuery);
+            fetchItems(page, searchQuery);
         });
     });
-
-    
 </script>

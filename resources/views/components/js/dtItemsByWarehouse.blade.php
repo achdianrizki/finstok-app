@@ -34,7 +34,7 @@
                                 <td class="px-6 py-4 whitespace-nowrap">${item.name}</td>
                                 <td class="px-6 py-4 whitespace-nowrap hidden sm:table-cell">${item.code}</td>
                                 <td class="px-6 py-4 whitespace-nowrap hidden md:table-cell">${item.category.name}</td>
-                                <td class="px-6 py-4 whitespace-nowrap hidden md:table-cell">${formatRupiah(item.price)}</td>
+                                <td class="px-6 py-4 whitespace-nowrap hidden md:table-cell">${formatRupiah(item.purchase_price)}</td>
                                 <td class="px-6 py-4 whitespace-nowrap hidden md:table-cell">${item.stock}</td>
                                 <td class="px-6 py-4 whitespace-nowrap hidden md:table-cell">${item.warehouse.name}</td>
                                 <td class="px-6 py-4 whitespace-nowrap">

@@ -17,10 +17,14 @@ return new class extends Migration
             $table->unsignedBigInteger('purchase_id');
             $table->integer('qty');
             $table->decimal('price_per_item', 10, 2);
-            $table->timestamps();
-
+            $table->decimal('discount1', 10, 2)->default(0);
+            $table->decimal('discount2', 10, 2)->default(0);
+            $table->decimal('discount3', 10, 2)->default(0);
+            $table->unsignedBigInteger('ad')->default(0);
+            
             $table->foreign('item_id')->references('id')->on('items')->onDelete('cascade');
             $table->foreign('purchase_id')->references('id')->on('purchases')->onDelete('cascade');
+            $table->timestamps();
         });
     }
 

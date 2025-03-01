@@ -11,9 +11,8 @@
         </div>
     </x-slot>
 
-
     <div class="mt-6">
-        <h3 class="text-lg font-semibold">{{ __(' Barang') }}</h3>
+        <h3 class="text-lg font-semibold">{{ __('Barang') }}</h3>
         <hr class="my-2 border-gray-300">
     </div>
 
@@ -34,8 +33,13 @@
 
 
                     <x-form.label for="unit" :value="__('Satuan')" />
-                    <x-form.input id="unit" class="block w-full" type="text" name="unit" :value="old('unit')"
-                        placeholder="Satuan (pcs, kg, liter, dll)" />
+                    <x-form.select id="unit" class="block w-full" name="unit">
+                        <option value="" disabled selected>Pilih Satuan</option>
+                        <option value="pcs" {{ old('unit') == 'pcs' ? 'selected' : '' }}>Pcs</option>
+                        <option value="kg" {{ old('unit') == 'kg' ? 'selected' : '' }}>Kg</option>
+                        <option value="liter" {{ old('unit') == 'liter' ? 'selected' : '' }}>Liter</option>
+                        <option value="meter" {{ old('unit') == 'meter' ? 'selected' : '' }}>Meter</option>
+                    </x-form.select>
                     <x-input-error :messages="$errors->get('unit')" class="mt-2" />
 
                     <x-form.label for="description" :value="__('Deskripsi')" />
@@ -48,14 +52,9 @@
 
                 <div class="space-y-2">
                     <x-form.label for="purchase_price" :value="__('Harga Beli')" />
-                    <x-form.input id="purchase_price" class="w-full" type="number" name="purchase_price"
+                    <x-form.input id="purchase_price" class="w-full" type="number" step=".01" name="purchase_price"
                         :value="old('purchase_price')" placeholder="Harga Beli" />
                     <x-input-error :messages="$errors->get('purchase_price')" class="mt-2" />
-
-                    <x-form.label for="selling_price" :value="__('Harga Jual')" />
-                    <x-form.input id="selling_price" class="w-full" type="number" name="selling_price"
-                        :value="old('selling_price')" placeholder="Harga Jual" />
-                    <x-input-error :messages="$errors->get('selling_price')" class="mt-2" />
 
                     <x-form.label for="warehouse_id" :value="__('Gudang')" />
                     <x-form.select id="warehouse_id" class="block w-full" name="warehouse_id">

@@ -2,13 +2,8 @@
     <x-slot name="header">
         <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
             <h2 class="text-xl font-semibold leading-tight">
-                {{ __('Barang') }}
+                {{ __('Pembelian Barang') }}
             </h2>
-            <x-button target="" href="{{ route('manager.items.create') }}" variant="success"
-                class="justify-center max-w-xl gap-2">
-                <x-heroicon-o-plus class="w-6 h-6" aria-hidden="true" />
-                <span>Tambah Barang</span>
-            </x-button>
         </div>
     </x-slot>
 
@@ -46,20 +41,27 @@
             <table id="export-table" class="min-w-full rounded-md">
                 <thead>
                     <tr class="bg-gray-200 text-gray-600 dark:bg-slate-900 dark:text-white text-sm leading-normal">
-                        <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Kode</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider hidden sm:table-cell">Nama barang</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider hidden sm:table-cell">Kategori</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider hidden md:table-cell">Satuan</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider hidden md:table-cell">Harga</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Nomor Pembelian
+                        </th>
+                        <th
+                            class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider hidden md:table-cell">
+                            Tanggal Pembelian</th>
+                        <th
+                            class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider hidden md:table-cell">
+                            Nama Pemasok</th>
+                        <th
+                            class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider hidden sm:table-cell">
+                            Status</th>
                         <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Aksi</th>
                     </tr>
                 </thead>
-                <tbody id="itemTable" class="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-dark-eval-1">
+                <tbody id="purchaseTable"
+                    class="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-dark-eval-1">
 
                 </tbody>
             </table>
         </div>
-        
+
 
 
         <!-- Pagination Controls -->
@@ -89,7 +91,7 @@
                 }
             }
         </script>
-        @include('components.js.dtItems')
+        @include('components.js.dtReportPurchase')
     @endpush
 
 </x-app-layout>

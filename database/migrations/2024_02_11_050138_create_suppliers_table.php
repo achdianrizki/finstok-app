@@ -16,14 +16,12 @@ return new class extends Migration
             $table->string('supplier_code');
             $table->string('name');
             $table->string('contact');
-            $table->decimal('discount1', 8, 2)->nullable();
-            $table->decimal('discount2', 8, 2)->nullable();
             $table->string('phone')->nullable();
             $table->string('fax_nomor')->nullable();
             $table->text('address');
-            $table->string('city');
-            $table->string('province');
-            $table->integer('payment_term')->nullable();
+            $table->string('city')->default('-');
+            $table->string('province')->default('-');
+            $table->date('payment_term')->nullable();
             $table->boolean('status');
             $table->timestamps();
         });

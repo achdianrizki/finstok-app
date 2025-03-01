@@ -13,7 +13,6 @@ class Item extends Model
         'name',
         'code',
         'purchase_price',
-        'selling_price',
         'unit',
         'stock',
         'description',
@@ -49,7 +48,7 @@ class Item extends Model
 
     public function purchases()
     {
-        return $this->belongsToMany(Purchase::class, 'item_purchase')->withPivot('qty', 'price_per_item');
+        return $this->belongsToMany(Purchase::class, 'item_purchase')->withPivot('qty', 'price_per_item', 'discount1', 'discount2', 'discount3');
     }
 
     public function sales()

@@ -25,9 +25,6 @@
             <!-- Detail Pembayaran -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                    <x-form.label for="receipt_number" :value="__('Nomor Pembayaran')" />
-                    <x-form.input id="receipt_number" class="w-full" type="text" name="receipt_number" />
-
                     <x-form.label for="payment_date" :value="__('Tanggal Pembayaran')" />
                     <x-form.input id="payment_date" class="w-full flatpickr-input" type="date" name="payment_date" />
                 </div>

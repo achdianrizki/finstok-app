@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\Item;
 use App\Models\Modal;
 use App\Models\Category;
@@ -32,7 +33,7 @@ class PurchaseController extends Controller
 
     public function getPurchaseItem(Request $request)
     {
-        $query = Purchase::with(['supplier']);
+        $query = Purchase::with(['supplier'])->latest();
 
         if ($request->filled('search')) {
             $search = $request->search;
@@ -68,42 +69,58 @@ class PurchaseController extends Controller
      */
     public function store(Request $request)
     {
+        return DB::transaction(function () use ($request) {
+            $total_qty = array_sum($request->qty);
 
-        // dd($request);
+            $date = Carbon::parse($request->purchase_date);
+            $year = $date->year;
+            $month = str_pad($date->month, 2, '0', STR_PAD_LEFT);
 
-        $total_qty = array_sum($request->qty);
+            $lastNumber = Purchase::whereYear('purchase_date', $year)
+                ->whereMonth('purchase_date', $date->month)
+                ->latest('purchase_number')
+                ->value('purchase_number');
 
-        $purchase = Purchase::create([
-            'purchase_number' => $request->purchase_number,
-            'purchase_date' => $request->purchase_date,
-            'supplier_id' => $request->supplier_id,
-            'tax' => $request->tax,
-            'information' => $request->information,
-            'sub_total' => $request->sub_total,
-            'total_discount' => $request->total_discount,
-            'total_price' => $request->total_price,
-            'total_qty' => $total_qty,
-            'tax_type' => $request->taxt_type
-        ]);
+            $newNumber = $lastNumber ? (int) substr($lastNumber, -7, 3) + 1 : 1;
 
-        foreach ($request->items as $index => $item_id) {
-            $item = Item::findOrFail($item_id);
-            $item->stock += $request->qty[$index];
-            $item->save();
+            $purchase_number = 'SDI/BUY/' . $month . '/' . str_pad($newNumber, 3, '0', STR_PAD_LEFT) . '/' . $year;
 
-            $item->stock += $request->qty[$index];
-            $item->save();
-
-            $item->purchases()->attach($purchase->id, [
-                'qty' => $request->qty[$index],
-                'price_per_item' => $request->price_per_item[$index]
+            $purchase = Purchase::create([
+                'purchase_number'  => $purchase_number,
+                'purchase_date'    => $request->purchase_date,
+                'supplier_id'      => $request->supplier_id,
+                'tax'              => $request->tax,
+                'tax_type'         => $request->tax_type,
+                'information'      => $request->information ?? '-',
+                'sub_total'        => $request->sub_total,
+                'total_discount1'  => $request->total_discount1 ?? 0,
+                'total_discount2'  => $request->total_discount2 ?? 0,
+                'total_discount3'  => $request->total_discount3 ?? 0,
+                'total_price'      => $request->total_price,
+                'total_qty'        => $total_qty,
             ]);
-        }
 
+            foreach ($request->items as $index => $item_id) {
+                $item = Item::find($item_id);
+                if ($item) {
+                    $item->increment('stock', $request->qty[$index]);
 
-        toast('Data berhasil disimpan', 'success');
-        return redirect()->route('manager.purchase.index');
+                    $item->purchases()->attach($purchase->id, [
+                        'qty'            => $request->qty[$index],
+                        'price_per_item' => $request->price_per_item[$index],
+                        'discount1'      => $request->discount1[$index] ?? 0,
+                        'discount2'      => $request->discount2[$index] ?? 0,
+                        'discount3'      => $request->discount3[$index] ?? 0,
+                        'ad'             => $request->ad[$index] ?? 0,
+                    ]);
+                }
+            }
+
+            toast('Data berhasil disimpan', 'success');
+            return redirect()->route('manager.purchase.index');
+        });
     }
+
 
 
     /**
