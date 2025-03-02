@@ -97,13 +97,13 @@ class SaleController extends Controller
         $lastSale = Sale::latest()->first();
 
         if ($lastSale) {
-            $lastNumber = (int) str_replace('SEVENA/SALE/', '', $lastSale->sale_number);
+            $lastNumber = (int) str_replace('SAVENA/SALE/', '', $lastSale->sale_number);
             $newNumber = $lastNumber + 1;
         } else {
             $newNumber = 1;
         }
 
-        $saleNumber = 'SEVENA/SALE/' . str_pad($newNumber, 5, '0', STR_PAD_LEFT);
+        $saleNumber = 'SAVENA/SALE/' . str_pad($newNumber, 5, '0', STR_PAD_LEFT);
 
         $qty_sold = array_sum($request->qty_sold);
 
@@ -115,6 +115,9 @@ class SaleController extends Controller
             'sale_number' => $saleNumber,
             'total_price' => $request->total_price,
             'sub_total' => $request->sub_total,
+            'discount1_value' => $request->total_discount1,
+            'discount2_value' => $request->total_discount2,
+            'discount3_value' => $request->total_discount3,
             'total_discount' => $total_discount,
             'sale_date' => $request->sale_date,
             'payment_method' => $request->payment_method,

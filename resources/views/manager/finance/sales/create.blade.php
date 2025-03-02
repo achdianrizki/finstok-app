@@ -193,7 +193,7 @@
                         $.get(`/get-sales-item/${itemId}`, function(data) {
                             row.find('.item-code').val(data.code);
                             row.find('.item-name').val(data.name);
-                            row.find('.price').val(data.selling_price);
+                            row.find('.price').val(data.purchase_price);
                             row.find('.unit').val(data.unit);
                             row.find('.stock').val(data.stock);
                             row.find('.qty').val();

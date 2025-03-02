@@ -103,6 +103,8 @@ Route::middleware('auth')->group(function () {
         Route::prefix('report')->name('report.')->group(function () {
             Route::get('/purchase', [ReportController::class, 'purchase'])->name('purchase');
             Route::get('/sale', [ReportController::class, 'sale'])->name('sale');
+            // Sale PDF (1 by 1)
+            Route::get('/sale-report/export/pdf/{id}', [ReportController::class, 'exportSalePDF'])->name('sale-report.export.pdf');
         });
     });
     //printPdf & ExportExcel
@@ -167,7 +169,7 @@ Route::get('/get-sales-item/{item_id}', function ($item_id) {
         'stock' => $item->stock,
         'unit' => $item->unit,
         'price' => $item->price,
-        'selling_price' => $item->selling_price,
+        'purchase_price' => $item->purchase_price,
         'discount1' => 0,
         'discount2' => 0,
         // 'discount1' => $supplier ? $supplier->discount1 : 0,

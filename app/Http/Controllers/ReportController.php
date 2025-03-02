@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Dompdf\Dompdf;
 use Dompdf\Options;
+use App\Models\Sale;
 use App\Models\Purchase;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -54,5 +55,24 @@ class ReportController extends Controller
         $dompdf->render();
 
         return $dompdf->stream('Invoice_' . str_replace('/', '_', $purchase->purchase_number) . '.pdf');
+    }
+
+    public function exportSalePDF($id)
+    {
+        $sale = Sale::with('items')->findOrFail($id);
+
+        $options = new Options();
+        $options->set('defaultFont', 'Helvetica');
+
+        $dompdf = new Dompdf($options);
+
+        $html = View::make('exports.report.sale', compact('sale'))->render();
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper([0, 0, 595.28, 5000]); // 595.28px = A4 width, 2000px = custom height
+        $dompdf->render();
+
+        // return $dompdf->stream('SAVENA/SALE/' . str_replace('/', '_', $sale->sale_number) . '.pdf');
+        return $dompdf->stream('sale.pdf', ['Attachment' => false]);
+        // return view('exports.report.sale', compact('sale'));
     }
 }

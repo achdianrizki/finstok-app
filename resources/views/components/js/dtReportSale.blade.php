@@ -31,9 +31,10 @@
                             <tr class="border dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-slate-900">
                                 <td class="px-6 py-4 whitespace-nowrap">${sale.sale_number}</td>
                                 <td class="px-6 py-4 whitespace-nowrap hidden md:table-cell">${sale.sale_date}</td>
-                                <td class="px-6 py-4 whitespace-nowrap hidden md:table-cell">${sale.buyer.name}</td>
+                                <td class="px-6 py-4 whitespace-nowrap hidden md:table-cell">${sale.buyer.contact}</td>
                                 <td class="px-6 py-4 whitespace-nowrap hidden md:table-cell">${sale.status}</td>
                                 <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="flex items-center gap-2">
                                     <x-button target="" href="/manager/sales/${sale.id}/edit" variant="warning" class="justify-center max-w-sm gap-2">
                                         <x-heroicon-o-pencil class="w-3 h-3" aria-hidden="true" />
                                     </x-button>
@@ -44,6 +45,14 @@
                                             <x-heroicon-o-trash class="w-3 h-3" aria-hidden="true" />
                                         </x-button>
                                     </form>
+
+                                    <a href="sale-report/export/pdf/${sale.id}"
+                                            class="flex items-center  text-sm text-white bg-red-500 hover:bg-red-600 w-20 px-2 py-1 border rounded-md"
+                                            role="menuitem" tabindex="-1" id="menu-item-0">
+                                            <x-icons.pdf class="w-5 h-5" aria-hidden="true" />
+                                            <span>Bukti</span>
+                                    </a>
+                                    </div>
 
                                     <button onclick="toggleDetails(${index})" class="bg-green-800 text-white  p-2 rounded sm:hidden">
                                         <x-heroicon-o-chevron-down class="w-2 h-2" aria-hidden="true" />    

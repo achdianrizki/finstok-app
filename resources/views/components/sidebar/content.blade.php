@@ -29,11 +29,11 @@
 
         <x-sidebar.sublink title="Pemasok Barang" href="{{ route('manager.supplier.index') }}" :active="request()->routeIs('manager.supplier*')" />
 
-        <x-sidebar.sublink title="Master Pelanggan" href="{{ route('manager.buyer.index') }}" :active="request()->routeIs('manager.buyer*')" />
+        <x-sidebar.sublink title="Pelanggan" href="{{ route('manager.buyer.index') }}" :active="request()->routeIs('manager.buyer*')" />
 
-        <x-sidebar.sublink title="Master Sales" href="{{ route('manager.salesman.index') }}" :active="request()->routeIs('manager.salesman*')" />
+        <x-sidebar.sublink title="Sales" href="{{ route('manager.salesman.index') }}" :active="request()->routeIs('manager.salesman*')" />
 
-        <x-sidebar.sublink title="Master Gudang" href="{{ route('manager.warehouses.index') }}" :active="request()->routeIs('manager.warehouses.index')" />
+        <x-sidebar.sublink title="Gudang" href="{{ route('manager.warehouses.index') }}" :active="request()->routeIs('manager.warehouses.index')" />
 
     </x-sidebar.dropdown>
 

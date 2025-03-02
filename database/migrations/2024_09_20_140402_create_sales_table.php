@@ -18,6 +18,9 @@ return new class extends Migration
             $table->string('sale_number');
             $table->unsignedBigInteger('total_price');
             $table->unsignedBigInteger('sub_total');
+            $table->unsignedBigInteger('discount1_value')->nullable();
+            $table->unsignedBigInteger('discount2_value')->nullable();
+            $table->unsignedBigInteger('discount3_value')->nullable();
             $table->decimal('total_discount')->nullable();
             $table->date('sale_date');
             $table->enum('status', ['lunas', 'belum_lunas'])->default('belum_lunas');
