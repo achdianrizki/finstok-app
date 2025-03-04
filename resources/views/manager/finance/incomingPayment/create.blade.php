@@ -4,7 +4,8 @@
             {{ __('Tambah Pembayaran :sale_number', ['sale_number' => $sale->sale_number]) }}</h2>
     </x-slot>
 
-    <form id="incoming-payment-form" action="{{ route('manager.incomingPayment.store') }}" method="POST" data-parsley-validate>
+    <form id="incoming-payment-form" action="{{ route('manager.incomingPayment.store') }}" method="POST"
+        data-parsley-validate>
         @csrf
         <div class="p-6 bg-white rounded-md shadow-md">
             <div class="grid grid-cols-2 gap-4">
@@ -18,10 +19,12 @@
 
                     <x-form.label for="payment_date" :value="__('Tanggal Pembayaran')" />
                     <x-form.input id="payment_date" class="block w-full flatpickr-input" type="date"
-                        name="payment_date" autocomplete="off" required data-parsley-required-message="Tanggal Pembayaran wajib diisi"/>
+                        name="payment_date" autocomplete="off" required
+                        data-parsley-required-message="Tanggal Pembayaran wajib diisi" />
 
                     <x-form.label for="payment_method" :value="__('Metode Pembayaran')" />
-                    <x-form.select id="payment_method" class="block w-full" name="payment_method" required data-parsley-required-message="Metode Pembayaran wajib diisi">
+                    <x-form.select id="payment_method" class="block w-full" name="payment_method" required
+                        data-parsley-required-message="Metode Pembayaran wajib diisi">
                         <option value="" disabled selected>Pilih</option>
                         <option value="tunai" {{ old('payment_method') == 'tunai' ? 'selected' : '' }}>Tunai</option>
                         <option value="transfer" {{ old('payment_method') == 'transfer' ? 'selected' : '' }}>Transfer
@@ -40,8 +43,8 @@
 
                 <div>
                     <x-form.label for="pay_amount" :value="__('Jumlah Dibayarkan')" class="mb-2" />
-                    <x-form.input id="pay_amount" class="block w-full flatpickr-input" type="number" name="pay_amount"
-                        :value="old('pay_amount')" required data-parsley-required-message="Jumlah Dibayarkan wajib diisi"/>
+                    <x-form.input id="pay_amount" class="block w-full flatpickr-input" type="text" name="pay_amount"
+                        :value="old('pay_amount')" required data-parsley-required-message="Jumlah Dibayarkan wajib diisi" />
                     <span id="pay_amount_error" class="text-red-500 text-sm mt-5 hidden">Jumlah dibayarkan tidak boleh
                         lebih besar dari sisa pembayaran.</span>
 
@@ -58,7 +61,7 @@
             <div class="flex justify-between items-center w-full max-w-md">
                 <label for="total_payed" class="mr-4">Jumlah Pembayaran</label>
                 <input type="text" class="w-1/2 border-gray-300 rounded-md p-2" name="total_payed" id="total_payed"
-                    value="{{ number_format($payed_amount, 2, '.', '') }}" readonly>
+                    value="Rp {{ number_format($payed_amount, 2, ',', '.') }}" readonly>
             </div>
 
             <div class="flex justify-between items-center w-full max-w-md">
@@ -70,7 +73,7 @@
             <div class="flex justify-between items-center w-full max-w-md">
                 <label for="total_price" class="mr-4">Total Price</label>
                 <input type="text" class="w-1/2 border-gray-300 rounded-md p-2" name="total_price" id="total_price"
-                    value="{{ number_format($sale->total_price, 2, '.', '') }}" readonly>
+                    value="Rp {{ number_format($sale->total_price, 2, ',', '.') }}" readonly>
             </div>
 
             <div class="grid justify-items-end">
@@ -85,6 +88,23 @@
     @push('scripts')
         <script>
             $(document).ready(function() {
+                $('#pay_amount').on('input', function(e) {
+                    let value = e.target.value.replace(/[^,\d]/g, '').toString();
+
+                    let split = value.split(',');
+                    let sisa = split[0].length % 3;
+                    let rupiah = split[0].substr(0, sisa);
+                    let ribuan = split[0].substr(sisa).match(/\d{3}/g);
+
+                    if (ribuan) {
+                        let separator = sisa ? '.' : '';
+                        rupiah += separator + ribuan.join('.');
+                    }
+
+                    rupiah = split[1] !== undefined ? rupiah + ',' + split[1] : rupiah;
+
+                    $(this).val(rupiah);
+                });
 
                 $('#total_payed').attr('data-initial', $('#total_payed').val());
                 calculateRemainingPayment();
@@ -95,9 +115,9 @@
                 });
 
                 $('#pay_amount').on('input', function() {
-                    let payAmount = parseFloat($(this).val()) || 0;
-                    let totalPayed = parseFloat($('#total_payed').attr('data-initial')) || 0;
-                    let totalPrice = parseFloat($('#total_price').val()) || 0;
+                    let payAmount = parseFloat($(this).val().replace(/\./g, '').replace(',', '.')) || 0;
+                    let totalPayed = parseFloat($('#total_payed').attr('data-initial').replace(/Rp\s?/g, '').replace(/\./g, '').replace(',', '.')) || 0;
+                    let totalPrice = parseFloat($('#total_price').val().replace(/Rp\s?/g, '').replace(/\./g, '').replace(',', '.')) || 0;
 
                     let remainingPayment = totalPrice - totalPayed;
 
@@ -127,52 +147,38 @@
                 });
 
                 function calculateRemainingPayment() {
-                    let payAmount = parseFloat($('#pay_amount').val()) || 0;
-                    let totalPayed = parseFloat($('#total_payed').attr('data-initial')) || 0;
-                    let totalPrice = parseFloat($('#total_price').val()) || 0;
+                    let payAmount = parseFloat($('#pay_amount').val().replace(/Rp\s?/g, '').replace(/\./g, '').replace(',', '.')) || 0;
+                    let totalPayed = parseFloat($('#total_payed').attr('data-initial').replace(/Rp\s?/g, '').replace(/\./g, '').replace(',',
+                        '.')) || 0;
+                    let totalPrice = parseFloat($('#total_price').val().replace(/Rp\s?/g, '').replace(/\./g, '')
+                        .replace(',', '.')) || 0;
 
-                    let remainingPayment = totalPrice - totalPayed;
+                    console.log("payAmount:", payAmount);
+                    console.log("totalPayed:", totalPayed);
+                    console.log("totalPrice:", totalPrice);
 
-                    if (payAmount >= remainingPayment) {
-                        $('#remaining_payment').val('0.00');
+                    let remainingPayment;
+
+                    if (totalPayed === 0 && payAmount === 0) {
+                        remainingPayment = totalPrice;
                     } else {
                         let newTotalPayed = totalPayed + payAmount;
-                        let updatedRemainingPayment = totalPrice - newTotalPayed;
-                        $('#remaining_payment').val(updatedRemainingPayment.toFixed(2));
+                        // remainingPayment = totalPrice - newTotalPayed;
+                        remainingPayment = totalPrice - totalPayed;
                     }
+
+                    // Pastikan tidak negatif
+                    remainingPayment = Math.max(remainingPayment, 0);
+
+                    $('#remaining_payment').val(
+                        `Rp ${remainingPayment.toLocaleString('id-ID', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
+                    );
                 }
+
 
                 $('#total_payed').attr('data-initial', $('#total_payed').val());
 
-                $('incoming-payment-form').parsley();
-
-                // $('#buttonSubmit').on('click', function(event) {
-                //     let isValid = true;
-
-                //     $('#buyer_id').each(function() {
-                //         if ($(this).val() === null || $(this).val() === "") {
-                //             $(this).next('.select2-container').find('.select2-selection').addClass(
-                //                 'error');
-                //             isValid = false;
-                //         } else {
-                //             $(this).next('.select2-container').find('.select2-selection').removeClass(
-                //                 'error');
-                //         }
-                //     });
-                // });
-
-                // $('#buyer_id').on('change', function() {
-                //     if ($(this).val() !== null && $(this).val() !== "") {
-                //         $(this).siblings('.select2-container').find('.select2-selection').addClass('success');
-                //     }
-                // });
-
-                // $('#buyer_id').on('change', function() {
-                //     if ($(this).val() !== null && $(this).val() !== "") {
-                //         $(this).siblings('.select2-container').find('.select2-selection').removeClass(
-                //             'error');
-                //     }
-                // });
+                $('#incoming-payment-form').parsley();
             });
         </script>
     @endpush

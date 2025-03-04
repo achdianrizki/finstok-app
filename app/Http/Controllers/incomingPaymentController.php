@@ -68,7 +68,10 @@ class incomingPaymentController extends Controller
     {
         $latestPayment = IncomingPayment::where('sale_id', $request->sale_id)->latest()->first();
 
-        $totalPaid = $latestPayment ? $latestPayment->total_paid + $request->pay_amount : $request->pay_amount;
+        $totalPaid = $latestPayment ? $latestPayment->total_paid + (float) str_replace('.', '', $request->pay_amount) : (float) str_replace('.', '', $request->pay_amount);
+
+        // Kalo gamau dinamis
+        $remainingAmount = (float) str_replace(['Rp', '.', ','], ['', '', '.'], $request->remaining_payment) - (float) str_replace('.', '', $request->pay_amount);
 
         $sale = Sale::find($request->sale_id);
 
@@ -79,9 +82,10 @@ class incomingPaymentController extends Controller
             'payment_method' => $request->payment_method,
             'bank_account_number' => $request->bank_account_number,
             'payment_code' => $request->payment_code,
-            'pay_amount' => $request->pay_amount,
+            'pay_amount' => (float) str_replace('.', '', $request->pay_amount),
             'information' => $request->information,
-            'remaining_payment' => $request->remaining_payment,
+            // 'remaining_payment' => (float) str_replace(['Rp', '.', ','], ['', '', '.'], $request->remaining_payment),
+            'remaining_payment' => $remainingAmount,
             'total_paid' => $totalPaid,
         ]);
 

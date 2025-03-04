@@ -134,12 +134,14 @@ class SaleController extends Controller
             $item->stock -= $request->qty_sold[$index];
             $item->save();
 
+            $sale_price = str_replace('.', '', $request->sale_prices[$index]);
+
             $item->sales()->attach($sale->id, [
                 'qty_sold' => $request->qty_sold[$index],
                 'discount1' => $request->discount1[$index],
                 'discount2' => $request->discount2[$index],
                 'discount3' => $request->discount3[$index],
-                'sale_price' => $request->sale_prices[$index],
+                'sale_price' => $sale_price,
             ]);
         }
 

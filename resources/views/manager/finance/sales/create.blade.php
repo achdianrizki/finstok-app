@@ -150,6 +150,23 @@
     @push('scripts')
         <script>
             $(document).ready(function() {
+
+                $('#buttonSubmit').click(function(event) {
+                    const items = document.querySelectorAll('.item-select');
+
+                    // Hapus pesan error sebelumnya
+                    $('#error-message').remove();
+
+                    if (items.length === 0) {
+                        // Mencegah form submit
+                        event.preventDefault();
+
+                        // Tambahkan pesan error di bawah tombol tambah barang
+                        $('#add-item').after(
+                            '<p id="error-message" class="text-red-500 mt-2">Barang tidak boleh kosong</p>');
+                    }
+                });
+
                 $("#sale_date").flatpickr({
                     dateFormat: "Y-m-d",
                     allowInput: true,
@@ -186,6 +203,27 @@
                     let itemId = $(this).val();
                     let supplierId = $('#salesman_id').val();
                     updateItemData(row, itemId);
+
+                    console.log($('.sale_price').length);
+
+                    $('.sale_price').on('input', function(e) {
+
+                        let value = e.target.value.replace(/[^,\d]/g, '').toString();
+
+                        let split = value.split(',');
+                        let sisa = split[0].length % 3;
+                        let rupiah = split[0].substr(0, sisa);
+                        let ribuan = split[0].substr(sisa).match(/\d{3}/g);
+
+                        if (ribuan) {
+                            let separator = sisa ? '.' : '';
+                            rupiah += separator + ribuan.join('.');
+                        }
+
+                        rupiah = split[1] !== undefined ? rupiah + ',' + split[1] : rupiah;
+
+                        $(this).val(rupiah);
+                    })
                 });
 
                 function updateItemData(row, itemId) {
@@ -212,7 +250,7 @@
                 });
 
                 function calculateTotal(row) {
-                    let salePrice = parseFloat(row.find('.sale_price').val()) || 0;
+                    let salePrice = parseFloat(row.find('.sale_price').val().replace(/\./g, '')) || 0;
                     let qty = parseFloat(row.find('.qty').val()) || 0;
                     let discount1 = parseFloat(row.find('.discount1').val()) || 0;
                     let discount2 = parseFloat(row.find('.discount2').val()) || 0;
@@ -239,7 +277,7 @@
 
                     $('.price').each(function() {
                         let row = $(this).closest('tr');
-                        let salePrice = parseFloat(row.find('.sale_price').val()) || 0;
+                        let salePrice = parseFloat(row.find('.sale_price').val().replace(/\./g, '')) || 0;
                         let qty = parseFloat(row.find('.qty').val()) || 0;
                         let discount1 = parseFloat(row.find('.discount1').val()) || 0;
                         let discount2 = parseFloat(row.find('.discount2').val()) || 0;
@@ -314,7 +352,7 @@
                     <td class="px-1 py-2"><input type="text" name="unit[]" class="unit w-16 px-2 py-1 border border-gray-300 rounded-md bg-gray-100 text-center" readonly></td>
                     <td class="px-1 py-2"><input type="number" name="qty_sold[]" class="qty w-16 px-2 py-1 border border-gray-300 rounded-md text-center" min="1" value="1" required data-parsley-required-message="Jumlah harus diisi"></td>
                     <td class="px-1 py-2"><input type="text" name="prices[]" class="price w-full px-2 py-1 border border-gray-300 rounded-md bg-gray-100 text-right" readonly></td>
-                    <td class="px-1 py-2"><input type="number" name="sale_prices[]" class="sale_price w-full px-2 py-1 border border-gray-300 rounded-md text-right" required data-parsley-required-message="Harga jual harus diisi"></td>
+                    <td class="px-1 py-2"><input type="text" name="sale_prices[]" class="sale_price w-full px-2 py-1 border border-gray-300 rounded-md text-right" required data-parsley-required-message="Harga jual harus diisi"></td>
                     <td class="px-1 py-2">
                     <div class="flex space-x-1">
                     <input type="text" name="discount1[]" class="discount1 w-8 px-1 py-1 border border-gray-300 rounded-md text-right" placeholder="D1">
