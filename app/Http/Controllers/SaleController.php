@@ -94,6 +94,7 @@ class SaleController extends Controller
      */
     public function store(Request $request)
     {
+        
         $lastSale = Sale::latest()->first();
 
         if ($lastSale) {
@@ -107,21 +108,21 @@ class SaleController extends Controller
 
         $qty_sold = array_sum($request->qty_sold);
 
-        $total_discount = $request->total_discount1 + $request->total_discount2 + $request->total_discount3;
+        $total_discount = str_replace(['Rp', '.', ','], ['', '', '.'], $request->total_discount1) + str_replace(['Rp', '.', ','], ['', '', '.'], $request->total_discount2) + str_replace(['Rp', '.', ','], ['', '', '.'], $request->total_discount3);
 
         $sale = Sale::create([
             'buyer_id' => $request->buyer_id,
             'salesman_id' => $request->salesman_id,
             'sale_number' => $saleNumber,
-            'total_price' => $request->total_price,
-            'sub_total' => $request->sub_total,
-            'discount1_value' => $request->total_discount1,
-            'discount2_value' => $request->total_discount2,
-            'discount3_value' => $request->total_discount3,
+            'total_price' => str_replace(['Rp', '.', ','], ['', '', '.'], $request->total_price),
+            'sub_total' => str_replace(['Rp', '.', ','], ['', '', '.'], $request->sub_total),
+            'discount1_value' => str_replace(['Rp', '.', ','], ['', '', '.'], $request->total_discount1),
+            'discount2_value' => str_replace(['Rp', '.', ','], ['', '', '.'], $request->total_discount2),
+            'discount3_value' => str_replace(['Rp', '.', ','], ['', '', '.'], $request->total_discount3),
             'total_discount' => $total_discount,
             'sale_date' => $request->sale_date,
             'payment_method' => $request->payment_method,
-            'tax' => $request->tax,
+            'tax' => str_replace(['Rp', '.', ','], ['', '', '.'], $request->tax),
             'status' => $request->status,
             'information' => $request->information,
             'qty_sold' => $qty_sold,
@@ -134,7 +135,7 @@ class SaleController extends Controller
             $item->stock -= $request->qty_sold[$index];
             $item->save();
 
-            $sale_price = str_replace('.', '', $request->sale_prices[$index]);
+            $sale_price = str_replace(',', '.', str_replace('.', '', $request->sale_prices[$index]) );
 
             $item->sales()->attach($sale->id, [
                 'qty_sold' => $request->qty_sold[$index],

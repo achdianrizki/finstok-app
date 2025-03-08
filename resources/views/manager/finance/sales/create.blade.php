@@ -94,37 +94,37 @@
         <div class="grid justify-items-end mt-4 space-y-2">
             <div class="flex justify-between items-center w-full max-w-md">
                 <label for="sub_total" class="mr-4">Sub Total</label>
-                <input type="text" class="w-1/2 border-gray-300 rounded-md p-2" name="sub_total" id="sub_total"
-                    readonly>
+                <input type="text" class="w-1/2 border-gray-500 rounded-md p-2 bg-gray-100" name="sub_total"
+                    id="sub_total" readonly>
             </div>
 
             <div class="flex justify-between items-center w-full max-w-md">
                 <label for="total_discount1" class="mr-4">Diskon 1</label>
-                <input type="text" class="w-1/2 border-gray-300 rounded-md p-2" name="total_discount1"
+                <input type="text" class="w-1/2 border-gray-500 rounded-md p-2 bg-gray-100" name="total_discount1"
                     id="total_discount1" readonly>
             </div>
 
             <div class="flex justify-between items-center w-full max-w-md">
                 <label for="total_discount2" class="mr-4">Diskon 2</label>
-                <input type="text" class="w-1/2 border-gray-300 rounded-md p-2" name="total_discount2"
+                <input type="text" class="w-1/2 border-gray-500 rounded-md p-2 bg-gray-100" name="total_discount2"
                     id="total_discount2" readonly>
             </div>
 
             <div class="flex justify-between items-center w-full max-w-md">
                 <label for="total_discount3" class="mr-4">Diskon 3</label>
-                <input type="text" class="w-1/2 border-gray-300 rounded-md p-2" name="total_discount3"
+                <input type="text" class="w-1/2 border-gray-500 rounded-md p-2 bg-gray-100" name="total_discount3"
                     id="total_discount3" readonly>
             </div>
 
             <div class="flex justify-between items-center w-full max-w-md">
                 <label for="tax" class="mr-4">PPN 11%</label>
-                <input type="text" class="w-1/2 border-gray-300 rounded-md p-2" name="tax" id="taxRate"
-                    readonly>
+                <input type="text" class="w-1/2 border-gray-500 rounded-md p-2 bg-gray-100" name="tax"
+                    id="taxRate" readonly>
             </div>
 
             <div class="flex justify-between items-center w-full max-w-md">
                 <label for="total_price" class="mr-4">Total Price</label>
-                <input type="text" class="w-1/2 border-gray-300 rounded-md p-2" name="total_price"
+                <input type="text" class="w-1/2 border-gray-500 rounded-md p-2 bg-gray-100" name="total_price"
                     id="total_price" readonly>
             </div>
 
@@ -226,12 +226,20 @@
                     })
                 });
 
+                function formatRupiah(number) {
+                    return new Intl.NumberFormat('id-ID', {
+                        currency: 'IDR',
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2,
+                    }).format(number);
+                }
+
                 function updateItemData(row, itemId) {
                     if (itemId) {
                         $.get(`/get-sales-item/${itemId}`, function(data) {
                             row.find('.item-code').val(data.code);
                             row.find('.item-name').val(data.name);
-                            row.find('.price').val(data.purchase_price);
+                            row.find('.price').val(formatRupiah(data.purchase_price));
                             row.find('.unit').val(data.unit);
                             row.find('.stock').val(data.stock);
                             row.find('.qty').val();
@@ -250,7 +258,7 @@
                 });
 
                 function calculateTotal(row) {
-                    let salePrice = parseFloat(row.find('.sale_price').val().replace(/\./g, '')) || 0;
+                    let salePrice = parseFloat(row.find('.sale_price').val().replace(/\./g, '').replace(',', '.')) || 0;
                     let qty = parseFloat(row.find('.qty').val()) || 0;
                     let discount1 = parseFloat(row.find('.discount1').val()) || 0;
                     let discount2 = parseFloat(row.find('.discount2').val()) || 0;
@@ -264,7 +272,7 @@
 
                     let total = originalTotal - discountAmount1 - discountAmount2 - discountAmount3;
 
-                    row.find('.total-price').val(total.toFixed(2));
+                    row.find('.total-price').val(formatRupiah(total.toFixed(2)));
 
                     calculateSubTotal();
                 }
@@ -277,9 +285,9 @@
 
                     $('.price').each(function() {
                         let row = $(this).closest('tr');
-                        let salePrice = parseFloat(row.find('.sale_price').val().replace(/\./g, '')) || 0;
+                        let salePrice = parseFloat(row.find('.sale_price').val().replace(/\./g, '').replace(',', '.')) || 0;
                         let qty = parseFloat(row.find('.qty').val()) || 0;
-                        let discount1 = parseFloat(row.find('.discount1').val()) || 0;
+                        let discount1 = parseFloat(formatRupiah(row.find('.discount1').val())) || 0;
                         let discount2 = parseFloat(row.find('.discount2').val()) || 0;
                         let discount3 = parseFloat(row.find('.discount3').val()) || 0;
 
@@ -299,18 +307,18 @@
                         totalDiscount3 += discountAmount3;
 
                         subTotal += originalTotal;
-                        row.find('.real_price').val(originalTotal.toFixed(2));
+                        row.find('.real_price').val(formatRupiah(originalTotal.toFixed(2)));
 
                     });
 
                     let totalDiscount = totalDiscount1 + totalDiscount2 + totalDiscount3;
                     let totalPrice = subTotal - totalDiscount;
 
-                    $('#sub_total').val(subTotal.toFixed(2));
-                    $('#total_discount1').val(totalDiscount1.toFixed(2));
-                    $('#total_discount2').val(totalDiscount2.toFixed(2));
-                    $('#total_discount3').val(totalDiscount3.toFixed(2));
-                    $('#total_price').val(totalPrice.toFixed(2));
+                    $('#sub_total').val('Rp ' + formatRupiah(subTotal.toFixed(2)));
+                    $('#total_discount1').val('Rp ' + formatRupiah(totalDiscount1.toFixed(2)));
+                    $('#total_discount2').val('Rp ' + formatRupiah(totalDiscount2.toFixed(2)));
+                    $('#total_discount3').val('Rp ' + formatRupiah(totalDiscount3.toFixed(2)));
+                    $('#total_price').val('Rp ' + formatRupiah(totalPrice.toFixed(2)));
 
                     calculateTotalPrice(totalPrice);
                 }
@@ -322,12 +330,8 @@
                     let taxAmount = totalPrice * taxRate;
                     let finalTotalPrice = totalPrice + taxAmount;
 
-                    console.log("Tax Rate : " + taxRate);
-                    console.log("Total Pajak : " + taxAmount.toFixed(2));
-                    console.log("Total Harga Setelah Pajak : " + finalTotalPrice.toFixed(2));
-
-                    $('#taxRate').val(taxAmount.toFixed(2));
-                    $('#total_price').val(finalTotalPrice.toFixed(2));
+                    $('#taxRate').val('Rp ' + formatRupiah(taxAmount.toFixed(2)));
+                    $('#total_price').val('Rp ' + formatRupiah(finalTotalPrice.toFixed(2)));
                 }
 
                 $('#add-item').click(function() {

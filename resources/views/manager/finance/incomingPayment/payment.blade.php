@@ -19,31 +19,31 @@
             <div class="space-y-2">
                 <x-form.label for="sale_number" :value="__('Nomor Penjualan')" />
                 <x-form.input id="sale_number" class="block w-full" type="text" name="sale_number" :value="old('sale_number', $sale->sale_number)"
-                    readonly />
+                    readonly :disabled="true" />
 
                 <x-form.label for="sale_date" :value="__('Tanggal Penjualan')" />
                 <x-form.input id="sale_date" class="block w-full flatpickr-input" type="date" name="sale_date"
-                    :value="old('name', $sale->sale_date)" readonly />
+                    :value="old('name', $sale->sale_date)" readonly :disabled="true" />
 
                 <x-form.label for="buyer_id" :value="__('Pelanggan')" />
                 <x-form.input id="buyer_id" class="block w-full flatpickr-input" type="text" name="buyer_id"
-                    :value="old('buyer_id', $buyer->name)" readonly />
+                    :value="old('buyer_id', $buyer->name)" readonly :disabled="true" />
 
                 <x-form.label for="salesman_id" :value="__('Sales')" />
                 <x-form.input id="salesman_id" class="block w-full flatpickr-input" type="text" name="salesman_id"
-                    :value="old('salesman_id', $salesman ? $salesman->name : __('Sales tidak ditambahkan'))" readonly />
+                    :value="old('salesman_id', $salesman ? $salesman->name : __('Sales tidak ditambahkan'))" readonly :disabled="true" />
 
                 <x-form.label for="tax" :value="__('Pajak')" />
                 <x-form.input id="tax" class="block w-full flatpickr-input" type="text" name="tax"
-                    :value="old('tax', $sale->tax == null ? 'NON PPN' : 'PPN 11%')" readonly />
+                    :value="old('tax', $sale->tax == null ? 'NON PPN' : 'PPN 11%')" readonly :disabled="true" />
 
             </div>
 
             <div>
                 <x-form.label for="information" :value="__('Keterangan')" class="mb-2" />
                 <textarea id="information" name="information"
-                    class="w-full border-gray-400 rounded-md focus:ring focus:ring-purple-500 focus:ring-offset-2 dark:border-gray-600 dark:bg-dark-eval-1 dark:text-gray-300"
-                    rows="3" placeholder="Deskripsi barang" readonly>{{ old('information', $sale->information) }}</textarea>
+                    class="w-full border-gray-400 rounded-md focus:ring focus:ring-purple-500 focus:ring-offset-2 dark:border-gray-600 bg-gray-200 dark:bg-dark-eval-1 dark:text-gray-300"
+                    rows="3" placeholder="Deskripsi barang" readonly disabled>{{ old('information', $sale->information) }}</textarea>
             </div>
 
         </div>
@@ -223,52 +223,53 @@
 
             <div class="flex justify-between items-center w-full max-w-md">
                 <label for="sub_total" class="mr-4">Sub Total</label>
-                <input type="text" class="w-1/2 border-gray-300 rounded-md p-2" name="sub_total" id="sub_total"
-                    readonly value="Rp {{ number_format($sale->sub_total, 2, ',', '.') }}">
+                <input type="text" class="w-1/2 border-gray-500 bg-gray-100 rounded-md p-2" name="sub_total" id="sub_total"
+                    readonly value="Rp {{ number_format(floor($sale->sub_total * 100) / 100, 2, ',', '.') }}
+">
             </div>
 
             <div class="flex justify-between items-center w-full max-w-md">
                 <label for="total_discount1" class="mr-4">Diskon 1</label>
-                <input type="text" class="w-1/2 border-gray-300 rounded-md p-2" name="total_discount1"
+                <input type="text" class="w-1/2 border-gray-500 bg-gray-100 rounded-md p-2" name="total_discount1"
                     id="total_discount1" readonly
                     value="Rp {{ number_format($sale->discount1_value, 2, ',', '.') }}">
             </div>
 
             <div class="flex justify-between items-center w-full max-w-md">
                 <label for="total_discount2" class="mr-4">Diskon 2</label>
-                <input type="text" class="w-1/2 border-gray-300 rounded-md p-2" name="total_discount2"
+                <input type="text" class="w-1/2 border-gray-500 bg-gray-100 rounded-md p-2" name="total_discount2"
                     id="total_discount2" readonly
                     value="Rp {{ number_format($sale->discount2_value, 2, ',', '.') }}">
             </div>
 
             <div class="flex justify-between items-center w-full max-w-md">
                 <label for="total_discount3" class="mr-4">Diskon 3</label>
-                <input type="text" class="w-1/2 border-gray-300 rounded-md p-2" name="total_discount3"
+                <input type="text" class="w-1/2 border-gray-500 bg-gray-100 rounded-md p-2" name="total_discount3"
                     id="total_discount3" readonly
                     value="Rp {{ number_format($sale->discount3_value, 2, ',', '.') }}">
             </div>
 
             <div class="flex justify-between items-center w-full max-w-md">
                 <label for="tax" class="mr-4">PPN 11%</label>
-                <input type="text" class="w-1/2 border-gray-300 rounded-md p-2" name="tax" id="taxRate"
+                <input type="text" class="w-1/2 border-gray-500 bg-gray-100 rounded-md p-2" name="tax" id="taxRate"
                     readonly value="Rp {{ number_format($sale->tax, 2, ',', '.') }}">
             </div>
 
             <div class="flex justify-between items-center w-full max-w-md">
                 <label for="total_payed" class="mr-4">Jumlah Pembayaran</label>
-                <input type="text" class="w-1/2 border-gray-300 rounded-md p-2" name="total_payed"
+                <input type="text" class="w-1/2 border-gray-500 bg-gray-100 rounded-md p-2" name="total_payed"
                     id="total_payed" value="Rp {{ number_format($total_payed, 2, ',', '.') }}" readonly>
             </div>
 
             <div class="flex justify-between items-center w-full max-w-md">
                 <label for="remaining_payment" class="mr-4">Sisa Pembayaran</label>
-                <input type="text" class="w-1/2 border-gray-300 rounded-md p-2" name="remaining_payment"
+                <input type="text" class="w-1/2 border-gray-500 bg-gray-100 rounded-md p-2" name="remaining_payment"
                     id="remaining_payment" value="Rp {{ number_format($remaining_payment, 2, ',', '.') }}" readonly>
             </div>
 
             <div class="flex justify-between items-center w-full max-w-md">
                 <label for="total_price" class="mr-4">Total Price</label>
-                <input type="text" class="w-1/2 border-gray-300 rounded-md p-2" name="total_price"
+                <input type="text" class="w-1/2 border-gray-500 bg-gray-100 rounded-md p-2" name="total_price"
                     id="total_price" value="Rp {{ number_format($sale->total_price, 2, ',', '.') }}" readonly>
             </div>
         </div>

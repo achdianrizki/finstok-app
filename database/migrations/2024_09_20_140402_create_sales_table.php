@@ -24,7 +24,7 @@ return new class extends Migration
             $table->decimal('total_discount', 15, 2)->nullable();
             $table->date('sale_date');
             $table->enum('status', ['lunas', 'belum_lunas'])->default('belum_lunas');
-            $table->string('tax', 15, 2);
+            $table->decimal('tax', 15, 2);
             $table->text('information')->nullable();
             $table->integer('qty_sold');
             // $table->integer('qty_sold');

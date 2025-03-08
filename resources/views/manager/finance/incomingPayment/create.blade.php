@@ -60,19 +60,19 @@
         <div class="grid justify-items-end mt-4 space-y-2">
             <div class="flex justify-between items-center w-full max-w-md">
                 <label for="total_payed" class="mr-4">Jumlah Pembayaran</label>
-                <input type="text" class="w-1/2 border-gray-300 rounded-md p-2" name="total_payed" id="total_payed"
+                <input type="text" class="w-1/2 border-gray-500 bg-gray-100 rounded-md p-2" name="total_payed" id="total_payed"
                     value="Rp {{ number_format($payed_amount, 2, ',', '.') }}" readonly>
             </div>
 
             <div class="flex justify-between items-center w-full max-w-md">
                 <label for="remaining_payment" class="mr-4">Sisa Pembayaran</label>
-                <input type="text" class="w-1/2 border-gray-300 rounded-md p-2" name="remaining_payment"
+                <input type="text" class="w-1/2 border-gray-500 bg-gray-100 rounded-md p-2" name="remaining_payment"
                     id="remaining_payment" readonly>
             </div>
 
             <div class="flex justify-between items-center w-full max-w-md">
                 <label for="total_price" class="mr-4">Total Price</label>
-                <input type="text" class="w-1/2 border-gray-300 rounded-md p-2" name="total_price" id="total_price"
+                <input type="text" class="w-1/2 border-gray-500 bg-gray-100 rounded-md p-2" name="total_price" id="total_price"
                     value="Rp {{ number_format($sale->total_price, 2, ',', '.') }}" readonly>
             </div>
 
@@ -101,7 +101,9 @@
                         rupiah += separator + ribuan.join('.');
                     }
 
-                    rupiah = split[1] !== undefined ? rupiah + ',' + split[1] : rupiah;
+                    if (split[1] !== undefined) {
+                        rupiah += ',' + split[1].slice(0, 2);
+                    }
 
                     $(this).val(rupiah);
                 });
@@ -116,8 +118,10 @@
 
                 $('#pay_amount').on('input', function() {
                     let payAmount = parseFloat($(this).val().replace(/\./g, '').replace(',', '.')) || 0;
-                    let totalPayed = parseFloat($('#total_payed').attr('data-initial').replace(/Rp\s?/g, '').replace(/\./g, '').replace(',', '.')) || 0;
-                    let totalPrice = parseFloat($('#total_price').val().replace(/Rp\s?/g, '').replace(/\./g, '').replace(',', '.')) || 0;
+                    let totalPayed = parseFloat($('#total_payed').attr('data-initial').replace(/Rp\s?/g, '')
+                        .replace(/\./g, '').replace(',', '.')) || 0;
+                    let totalPrice = parseFloat($('#total_price').val().replace(/Rp\s?/g, '').replace(/\./g, '')
+                        .replace(',', '.')) || 0;
 
                     let remainingPayment = totalPrice - totalPayed;
 
@@ -147,8 +151,9 @@
                 });
 
                 function calculateRemainingPayment() {
-                    let payAmount = parseFloat($('#pay_amount').val().replace(/Rp\s?/g, '').replace(/\./g, '').replace(',', '.')) || 0;
-                    let totalPayed = parseFloat($('#total_payed').attr('data-initial').replace(/Rp\s?/g, '').replace(/\./g, '').replace(',',
+                    let payAmount = parseFloat($('#pay_amount').val().replace(/\./g, '').replace(',', '.')) || 0;
+                    let totalPayed = parseFloat($('#total_payed').attr('data-initial').replace(/Rp\s?/g, '').replace(
+                        /\./g, '').replace(',',
                         '.')) || 0;
                     let totalPrice = parseFloat($('#total_price').val().replace(/Rp\s?/g, '').replace(/\./g, '')
                         .replace(',', '.')) || 0;
@@ -163,8 +168,9 @@
                         remainingPayment = totalPrice;
                     } else {
                         let newTotalPayed = totalPayed + payAmount;
-                        // remainingPayment = totalPrice - newTotalPayed;
-                        remainingPayment = totalPrice - totalPayed;
+                        remainingPayment = totalPrice - newTotalPayed;
+                        console.log(remainingPayment);
+                        
                     }
 
                     // Pastikan tidak negatif

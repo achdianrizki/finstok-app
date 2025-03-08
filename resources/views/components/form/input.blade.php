@@ -5,7 +5,7 @@
 
 @php
     $withiconClasses = $withicon ? 'pl-11 pr-4' : 'px-4';
-    $disabledClasses = $disabled ? 'bg-gray-200 text-gray-500' : '';
+    $disabledClasses = $disabled ? 'bg-gray-200' : '';
 @endphp
 
 <input {{ $disabled ? 'disabled' : '' }} {!! $attributes->merge([
