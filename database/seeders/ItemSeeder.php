@@ -26,7 +26,7 @@ class ItemSeeder extends Seeder
             'stock' => 0,
             'description' => 'SALSA BOLD EYELINER',
             'category_id' => 1,
-            'warehouse_id' => 1,
+            
         ]);
 
         Item::create([
@@ -37,7 +37,7 @@ class ItemSeeder extends Seeder
             'stock' => 0,
             'description' => 'SALSA NAIL POLISH 8ML NUDE 1',
             'category_id' => 1,
-            'warehouse_id' => 1,
+            
         ]);
 
         Item::create([
@@ -48,7 +48,7 @@ class ItemSeeder extends Seeder
             'stock' => 0,
             'description' => 'SALSA NAIL POLISH 8ML NUDE 2',
             'category_id' => 1,
-            'warehouse_id' => 1,
+            
         ]);
 
         Item::create([
@@ -59,7 +59,7 @@ class ItemSeeder extends Seeder
             'stock' => 0,
             'description' => 'SALSA NAIL POLISH 8 ML GLAMOUR',
             'category_id' => 1,
-            'warehouse_id' => 1,
+            
         ]);
 
         Item::create([
@@ -70,7 +70,7 @@ class ItemSeeder extends Seeder
             'stock' => 0,
             'description' => 'SALSA KUTEX PEEL POLISH COFFEE',
             'category_id' => 1,
-            'warehouse_id' => 1,
+            
         ]);
 
         Item::create([
@@ -81,7 +81,7 @@ class ItemSeeder extends Seeder
             'stock' => 0,
             'description' => 'SALSA KUTEX PEEL POLISH PINK ON',
             'category_id' => 1,
-            'warehouse_id' => 1,
+            
         ]);
 
         Item::create([
@@ -92,7 +92,7 @@ class ItemSeeder extends Seeder
             'stock' => 0,
             'description' => 'SALSA KUTEX PEEL POLISH FLORIS',
             'category_id' => 1,
-            'warehouse_id' => 1,
+            
         ]);
 
         Item::create([
@@ -103,7 +103,7 @@ class ItemSeeder extends Seeder
             'stock' => 0,
             'description' => 'SALSA NAIL POLISH 6 ML BENING (HS) 121',
             'category_id' => 1,
-            'warehouse_id' => 1,
+            
         ]);
 
         Item::create([
@@ -114,7 +114,7 @@ class ItemSeeder extends Seeder
             'stock' => 0,
             'description' => 'SALSA KERATIN HAIR SERUM',
             'category_id' => 1,
-            'warehouse_id' => 1,
+            
         ]);
 
         Item::create([
@@ -125,7 +125,7 @@ class ItemSeeder extends Seeder
             'stock' => 0,
             'description' => 'SALSA GROWTH HAIR SERUM',
             'category_id' => 1,
-            'warehouse_id' => 1,
+            
         ]);
     }
 }

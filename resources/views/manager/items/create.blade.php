@@ -36,9 +36,9 @@
                     <x-form.select id="unit" class="block w-full" name="unit">
                         <option value="" disabled selected>Pilih Satuan</option>
                         <option value="pcs" {{ old('unit') == 'pcs' ? 'selected' : '' }}>Pcs</option>
-                        <option value="kg" {{ old('unit') == 'kg' ? 'selected' : '' }}>Kg</option>
-                        <option value="liter" {{ old('unit') == 'liter' ? 'selected' : '' }}>Liter</option>
-                        <option value="meter" {{ old('unit') == 'meter' ? 'selected' : '' }}>Meter</option>
+                        <option value="kg" {{ old('unit') == 'gross' ? 'selected' : '' }}>Gross</option>
+                        <option value="liter" {{ old('unit') == 'lusin' ? 'selected' : '' }}>Lusin</option>
+                        <option value="meter" {{ old('unit') == 'karton' ? 'selected' : '' }}>Meter</option>
                     </x-form.select>
                     <x-input-error :messages="$errors->get('unit')" class="mt-2" />
 
@@ -55,17 +55,6 @@
                     <x-form.input id="purchase_price" class="w-full" type="number" step=".01" name="purchase_price"
                         :value="old('purchase_price')" placeholder="Harga Beli" />
                     <x-input-error :messages="$errors->get('purchase_price')" class="mt-2" />
-
-                    <x-form.label for="warehouse_id" :value="__('Gudang')" />
-                    <x-form.select id="warehouse_id" class="block w-full" name="warehouse_id">
-                        @foreach ($warehouses as $warehouse)
-                            <option value="{{ $warehouse->id }}"
-                                {{ old('warehouse_id') == $warehouse->id ? 'selected' : '' }}>
-                                {{ $warehouse->name }}
-                            </option>
-                        @endforeach
-                    </x-form.select>
-                    <x-input-error :messages="$errors->get('warehouse_id')" class="mt-2" />
 
                     <x-form.label for="category_id" :value="__('Kategori')" />
                     <x-form.select id="category_id" class="block w-full" name="category_id">

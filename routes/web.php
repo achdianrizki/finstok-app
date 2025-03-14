@@ -1,6 +1,5 @@
 <?php
 
-use App\Models\User;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\SaleController;
@@ -20,7 +19,6 @@ use App\Http\Controllers\DistributorController;
 use App\Http\Controllers\OutgoingPaymentController;
 use App\Http\Controllers\incomingPaymentController;
 use App\Http\Controllers\ReportController;
-use App\Models\IncomingPayment;
 
 /*
 |--------------------------------------------------------------------------
@@ -55,6 +53,7 @@ Route::middleware('auth')->group(function () {
             'warehouses' => 'warehouse:slug'
         ])->middleware('role:manager|admin');
         Route::resource('purchase', PurchaseController::class)->middleware('role:manager|admin');
+        Route::post('/purchases/{id}/return', [PurchaseController::class, 'returnPurchase'])->name('purchase.return');
         Route::resource('sales', SaleController::class)->middleware('role:manager|admin');
         Route::resource('distributors', DistributorController::class)->middleware('role:manager|admin');
         Route::resource('users', UserController::class)->middleware('role:manager');
@@ -103,6 +102,8 @@ Route::middleware('auth')->group(function () {
         Route::prefix('report')->name('report.')->group(function () {
             Route::get('/purchase', [ReportController::class, 'purchase'])->name('purchase');
             Route::get('/sale', [ReportController::class, 'sale'])->name('sale');
+            Route::get('/purchases/return', [ReportController::class, 'returnPurchaseView'])->name('purchase.return');
+
 
             // REPORT
             // ITEMS AND INVOICE START

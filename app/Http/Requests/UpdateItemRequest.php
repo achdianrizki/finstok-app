@@ -30,7 +30,6 @@ class UpdateItemRequest extends FormRequest
             'suppliers' => ['required', 'array'],
             'suppliers.*' => ['exists:suppliers,id'],
             'category_id' => ['required', 'exists:categories,id'],
-            'warehouse_id' => ['required', 'exists:warehouses,id'],
         ];
     }
 
@@ -56,8 +55,6 @@ class UpdateItemRequest extends FormRequest
             'suppliers.*.exists' => 'Pemasok yang dipilih tidak valid.',
             'category_id.required' => 'Kategori wajib diisi.',
             'category_id.exists' => 'Kategori yang dipilih tidak valid.',
-            'warehouse_id.required' => 'Gudang wajib diisi.',
-            'warehouse_id.exists' => 'Gudang yang dipilih tidak valid.',
         ];
     }
 }

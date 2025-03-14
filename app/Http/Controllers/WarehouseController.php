@@ -22,7 +22,7 @@ class WarehouseController extends Controller
 
     public function getWarehouses(Request $request)
     {
-        $query = Warehouse::query();
+        $query = Warehouse::query()->latest();
 
         if ($request->has('search')) {
             $query->where('name', 'like', '%' . $request->search . '%');
@@ -64,8 +64,10 @@ class WarehouseController extends Controller
 
     public function getItemsByWarehouse(Request $request, Warehouse $warehouse)
     {
-        $query = Item::with(['category', 'warehouse'])
-            ->where('warehouse_id', $warehouse->id);
+        $query = Item::with(['category', 'item_warehouse'])
+            ->whereHas('item_warehouse', function ($q) use ($warehouse) {
+                $q->where('slug', $warehouse->slug);
+            });
 
         if ($request->filled('search')) {
             $search = $request->search;
@@ -80,7 +82,6 @@ class WarehouseController extends Controller
 
         return response()->json($query->paginate(10));
     }
-
 
     /**
      * Show the form for editing the specified resource.

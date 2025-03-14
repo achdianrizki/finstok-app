@@ -18,7 +18,7 @@
                 <div>
                     <h3 class="text-md font-semibold text-gray-700">Total Belum Dibayar</h3>
                     <span class="text-gray-600 text-lg">Rp
-                        {{ number_format($purchase->total_price, 0, ',', '.') }}</span>
+                        {{ number_format($purchase->payments->sum('total_unpaid'), 0, ',', '.') }}</span>
                 </div>
             </div>
 

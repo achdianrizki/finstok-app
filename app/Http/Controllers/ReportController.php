@@ -8,6 +8,7 @@ use App\Models\Sale;
 use App\Models\Purchase;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\View;
 
 class ReportController extends Controller
@@ -20,6 +21,17 @@ class ReportController extends Controller
     public function sale()
     {
         return view('manager.report.sale');
+    }
+
+    public function returnPurchaseView()
+    {
+        $return = DB::table('return_purchases')
+            ->join('purchases', 'return_purchases.purchase_id', '=', 'purchases.id')
+            ->join('suppliers', 'return_purchases.supplier_id', '=', 'suppliers.id')
+            ->join('return_purchase_items', 'return_purchases.id', '=', 'return_purchase_items.return_purchase_id')
+            ->select('return_purchases.*', 'purchases.*', 'suppliers.contact as supplier_name', 'return_purchase_items.*')
+            ->get();
+        return view('manager.report.purchase_return', compact('return'));
     }
 
     // public function exportPurchasePDF()

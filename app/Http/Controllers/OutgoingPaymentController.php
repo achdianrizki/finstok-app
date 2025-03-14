@@ -50,6 +50,7 @@ class outgoingPaymentController extends Controller
     public function create_payment(Purchase $purchase)
     {
         $suppliers = $purchase->supplier;
+        // dd($purchase->payments->total_unpaid);
         return view('manager.outgoingPayment.show', compact('suppliers', 'purchase'));
     }
 
@@ -67,7 +68,14 @@ class outgoingPaymentController extends Controller
 
         $receipt_number = date('Y') . '/SDIPAY/' . rand(1000, 9999);
 
-        $total_unpaid = $purchase->total_price - $request->amount_paid;
+        // Hitung total unpaid, pastikan tidak negatif
+        if ($request->amount_paid >= $purchase->total_price) {
+            $total_unpaid = 0;
+            $status = 'lunas';
+        } else {
+            $total_unpaid = $purchase->total_price - $request->amount_paid;
+            $status = 'belum_lunas';
+        }
 
         outgoingPayment::create([
             'supplier_id' => $request->supplier_id,
@@ -81,15 +89,14 @@ class outgoingPaymentController extends Controller
             'amount_paid' => $request->amount_paid,
         ]);
 
-        if ($total_unpaid <= 0) {
-            $purchase->update(['status' => 'lunas']);
-        } else {
-            $purchase->update(['status' => 'belum_lunas']);
-        }
+        // Update status pembelian
+        $purchase->update(['status' => $status]);
 
         toast('Data berhasil disimpan', 'success');
         return redirect()->route('manager.outgoingpayment.show', ['outgoingpayment' => $purchase->id]);
     }
+
+
 
 
 
@@ -157,6 +164,7 @@ class outgoingPaymentController extends Controller
         $options = new Options();
         $options->set('defaultFont', 'Helvetica');
 
+        $dompdf = new Dompdf($options);
         $dompdf = new Dompdf($options);
 
         // Render Blade dengan data
