@@ -26,6 +26,7 @@
                               <td class="px-6 py-4 whitespace-nowrap">${buyer.contact}</td>
                               <td class="px-6 py-4 whitespace-nowrap hidden sm:table-cell">${buyer.phone}</td>
                               <td class="px-6 py-4 whitespace-nowrap hidden sm:table-cell">${buyer.address}</td>
+                              <td class="px-6 py-4 whitespace-nowrap hidden sm:table-cell">${buyer.NPWP ?? ''}</td>
                               <td class="px-6 py-4 whitespace-nowrap hidden sm:table-cell">${buyer.type}</td>
                               <td class="px-6 py-4 whitespace-nowrap">
                                   <x-button target="" href="/manager/buyer/${buyer.id}/edit" variant="warning" class="justify-center max-w-sm gap-2">

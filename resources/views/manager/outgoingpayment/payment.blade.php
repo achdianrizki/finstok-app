@@ -3,7 +3,7 @@
         <div class="flex justify-between items-center">
             <h2 class="text-xl font-semibold leading-tight">{{ 'Pembayaran ' . $purchase->purchase_number }}</h2>
 
-            <a href="{{ route('invoice.export.pdf', $purchase->id) }}"
+            <a href="{{ route('manager.report.outgoingPayment.export.allPdf', $purchase->id) }}"
                 class="flex items-center text-sm text-white bg-red-500 hover:bg-red-600 px-2 py-1 border rounded-md"
                 role="menuitem" tabindex="-1" id="menu-item-0">
                 <x-icons.pdf class="w-5 h-5" aria-hidden="true" />
@@ -175,7 +175,7 @@
                         <td class="px-4 py-2 text-right border-b border-gray-300">
                             {{ number_format($payment->total_unpaid, 2) }}</td>
                         <td>
-                            <a href="{{ route('outgoingPayment.export.pdf', $payment->id) }}"
+                            <a href="{{ route('manager.report.outgoingPayment.export.onePdf', $payment->id) }}"
                                 class="flex items-center  text-sm text-white bg-red-500 hover:bg-red-600 w-full px-2 py-1 border rounded-md"
                                 role="menuitem" tabindex="-1" id="menu-item-0">
                                 <x-icons.pdf class="w-5 h-5" aria-hidden="true" />

@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('contact');
             $table->string('phone');
             $table->string('address');
+            $table->string('NPWP')->nullable();
             $table->enum('type', ['General Trade', 'Modern Trade',]);
             $table->timestamps();
         });

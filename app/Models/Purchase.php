@@ -57,4 +57,9 @@ class Purchase extends Model
     {
         return $this->hasMany(OutgoingPayment::class);
     }
+
+    public function outgoingPayments()
+    {
+        return $this->hasMany(OutgoingPayment::class, 'purchase_id');
+    }
 }

@@ -39,6 +39,13 @@
                 </div>
 
                 <div class="mb-5 space-y-2">
+                    <x-form.label for="NPWP" :value="__('NPWP')" />
+                    <x-form.input id="NPWP" class="block w-full" type="text" name="NPWP" :value="old('NPWP', $buyer->NPWP)"
+                        placeholder="{{ __('NPWP') }}" />
+                    <x-input-error :messages="$errors->get('NPWP')" class="mt-2" />
+                </div>
+
+                <div class="mb-5 space-y-2">
                     <x-form.label for="type" :value="__('Tipe pelanggan')" />
                     <x-form.select id="type" class="block w-full" name="type">
                         <option value="" disabled {{ old('type', $buyer->type) == '' ? 'selected' : '' }}>Pilih

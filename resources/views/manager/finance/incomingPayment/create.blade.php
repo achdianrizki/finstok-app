@@ -60,8 +60,8 @@
         <div class="grid justify-items-end mt-4 space-y-2">
             <div class="flex justify-between items-center w-full max-w-md">
                 <label for="total_payed" class="mr-4">Jumlah Pembayaran</label>
-                <input type="text" class="w-1/2 border-gray-500 bg-gray-100 rounded-md p-2" name="total_payed" id="total_payed"
-                    value="Rp {{ number_format($payed_amount, 2, ',', '.') }}" readonly>
+                <input type="text" class="w-1/2 border-gray-500 bg-gray-100 rounded-md p-2" name="total_payed"
+                    id="total_payed" value="Rp {{ number_format($payed_amount, 2, ',', '.') }}" readonly>
             </div>
 
             <div class="flex justify-between items-center w-full max-w-md">
@@ -72,8 +72,8 @@
 
             <div class="flex justify-between items-center w-full max-w-md">
                 <label for="total_price" class="mr-4">Total Price</label>
-                <input type="text" class="w-1/2 border-gray-500 bg-gray-100 rounded-md p-2" name="total_price" id="total_price"
-                    value="Rp {{ number_format($sale->total_price, 2, ',', '.') }}" readonly>
+                <input type="text" class="w-1/2 border-gray-500 bg-gray-100 rounded-md p-2" name="total_price"
+                    id="total_price" value="Rp {{ number_format($sale->total_price, 2, ',', '.') }}" readonly>
             </div>
 
             <div class="grid justify-items-end">
@@ -125,6 +125,9 @@
 
                     let remainingPayment = totalPrice - totalPayed;
 
+                    payAmount = parseFloat(payAmount.toFixed(2));
+                    remainingPayment = parseFloat(remainingPayment.toFixed(2));
+
                     if (payAmount > remainingPayment) {
                         $('#pay_amount_error').removeClass('hidden');
                         $(this).addClass('border-red-500');
@@ -170,7 +173,7 @@
                         let newTotalPayed = totalPayed + payAmount;
                         remainingPayment = totalPrice - newTotalPayed;
                         console.log(remainingPayment);
-                        
+
                     }
 
                     // Pastikan tidak negatif

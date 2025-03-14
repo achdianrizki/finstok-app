@@ -33,12 +33,34 @@ class PurchaseController extends Controller
 
     public function getPurchaseItem(Request $request)
     {
-        $query = Purchase::with(['supplier'])->latest();
+        // $query = Purchase::with(['supplier'])->latest();
 
+        // if ($request->filled('search')) {
+        //     $search = $request->search;
+
+        //     $query->where(function ($q) use ($search) {
+        //         $q->where('purchase_number', 'like', '%' . $search . '%')
+        //             ->orWhereHas('supplier', function ($query) use ($search) {
+        //                 $query->where('name', 'like', '%' . $search . '%');
+        //             })
+        //             ->orWhere('purchase_date', 'like', '%' . $search . '%');
+        //     });
+        // }
+
+        // $products = $query->paginate(5);
+
+        // return response()->json($products);
+
+        $search = $request->query('search');
+        $period = $request->query('period');
+        $startDate = $request->query('start_date');
+        $endDate = $request->query('end_date');
+
+        $purchaseQuery = Purchase::with(['supplier']);
+
+        // Filter berdasarkan pencarian
         if ($request->filled('search')) {
-            $search = $request->search;
-
-            $query->where(function ($q) use ($search) {
+            $purchaseQuery->where(function ($q) use ($search) {
                 $q->where('purchase_number', 'like', '%' . $search . '%')
                     ->orWhereHas('supplier', function ($query) use ($search) {
                         $query->where('name', 'like', '%' . $search . '%');
@@ -47,9 +69,18 @@ class PurchaseController extends Controller
             });
         }
 
-        $products = $query->paginate(5);
+        if ($period == 'day') {
+            $purchaseQuery->whereDate('purchase_date', Carbon::today());
+        } elseif ($period == 'month') {
+            $purchaseQuery->whereMonth('purchase_date', Carbon::now()->month)
+                ->whereYear('purchase_date', Carbon::now()->year);
+        } elseif ($period == 'custom' && $startDate && $endDate) {
+            $purchaseQuery->whereBetween('purchase_date', [$startDate, $endDate]);
+        }
 
-        return response()->json($products);
+        $purchases = $purchaseQuery->paginate(5);
+
+        return response()->json($purchases);
     }
 
 

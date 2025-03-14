@@ -14,6 +14,7 @@ class Buyer extends Model
         'contact',
         'phone',
         'address',
+        'NPWP',
         'type',
     ];
 }

@@ -132,61 +132,39 @@ class outgoingPaymentController extends Controller
         //
     }
 
-    public function exportPDF(Request $request, outgoingPayment $outgoingPayment)
+    public function exportOneInvoicePDF(OutgoingPayment $outgoingPayment)
     {
         $outgoingPayment->load('purchase');
-
-        // if ($request->query('preview')) {
-        //     return view('exports.outgoingPayment.pdf', compact('outgoingPayment'));
-        // }
 
         $options = new Options();
         $options->set('defaultFont', 'Helvetica');
 
         $dompdf = new Dompdf($options);
 
-        $html = View::make('exports.outgoingPayment.pdf', compact('outgoingPayment'))->render();
+        // Render Blade dengan data
+        $html = View::make('exports.outgoingPayment.onePdf', compact('outgoingPayment'))->render();
         $dompdf->loadHtml($html);
         $dompdf->setPaper('A4', 'portrait');
         $dompdf->render();
 
-        return $dompdf->stream('Pembayaran_' . (string)$outgoingPayment->receipt_number . '.pdf');
+        return $dompdf->stream('Pembayaran_' . $outgoingPayment->invoice_number . '.pdf');
     }
 
-    public function exportInvoice(Request $request, $invoice)
+    public function exportAllInvoicePDF(Purchase $purchase)
     {
-        $purchase = Purchase::with('items')->findOrFail($invoice);
+        $purchase->load('outgoingPayments');
 
-        $items = $purchase->items->map(function ($item) {
-            return [
-                'id' => $item->id,
-                'code' => $item->code,
-                'name' => $item->name,
-                'unit' => $item->unit,
-                'qty' => $item->pivot->qty,
-                'purchase_price' => $item->purchase_price,
-                'price_per_item' => $item->pivot->price_per_item,
-                'discount1' => $item->pivot->discount1,
-                'discount2' => $item->pivot->discount2,
-                'discount3' => $item->pivot->discount3,
-                'ad' => $item->pivot->ad,
-                'total_price_before_discount' => $item->pivot->sub_total,
-                'total_price_after_discount' => $item->pivot->total_price_after_discount,
-            ];
-        });
+        $options = new Options();
+        $options->set('defaultFont', 'Helvetica');
 
-        return view('exports.invoice.outInvoice', compact('items', 'purchase'));
+        $dompdf = new Dompdf($options);
 
-        // $options = new Options();
-        // $options->set('defaultFont', 'Helvetica');
+        // Render Blade dengan data
+        $html = View::make('exports.outgoingPayment.allPdf', compact('purchase'))->render();
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('A4', 'portrait');
+        $dompdf->render();
 
-        // $dompdf = new Dompdf($options);
-
-        // $html = View::make('exports.invoice.outInvoice', compact('items', 'purchase'))->render();
-        // $dompdf->loadHtml($html);
-        // $dompdf->setPaper('A4', 'portrait');
-        // $dompdf->render();
-
-        return $dompdf->stream('Invoice_' . str_replace('/', '_', $purchase->purchase_number) . '.pdf');
+        return $dompdf->stream('Pembayaran_' . $purchase->purchase_number . '.pdf');
     }
 }

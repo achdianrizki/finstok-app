@@ -22,42 +22,61 @@ class ReportController extends Controller
         return view('manager.report.sale');
     }
 
-    public function exportPurchasePDF()
-    {
-        $purchase = Purchase::with('items');
+    // public function exportPurchasePDF()
+    // {
+    //     $purchase = Purchase::with('items');
 
-        $items = $purchase->items->map(function ($item) {
-            return [
-                'id' => $item->id,
-                'code' => $item->code,
-                'name' => $item->name,
-                'unit' => $item->unit,
-                'qty' => $item->pivot->qty,
-                'purchase_price' => $item->purchase_price,
-                'price_per_item' => $item->pivot->price_per_item,
-                'discount1' => $item->pivot->discount1,
-                'discount2' => $item->pivot->discount2,
-                'discount3' => $item->pivot->discount3,
-                'ad' => $item->pivot->ad,
-                'total_price_before_discount' => $item->pivot->sub_total,
-                'total_price_after_discount' => $item->pivot->total_price_after_discount,
-            ];
-        });
+    //     $items = $purchase->items->map(function ($item) {
+    //         return [
+    //             'id' => $item->id,
+    //             'code' => $item->code,
+    //             'name' => $item->name,
+    //             'unit' => $item->unit,
+    //             'qty' => $item->pivot->qty,
+    //             'purchase_price' => $item->purchase_price,
+    //             'price_per_item' => $item->pivot->price_per_item,
+    //             'discount1' => $item->pivot->discount1,
+    //             'discount2' => $item->pivot->discount2,
+    //             'discount3' => $item->pivot->discount3,
+    //             'ad' => $item->pivot->ad,
+    //             'total_price_before_discount' => $item->pivot->sub_total,
+    //             'total_price_after_discount' => $item->pivot->total_price_after_discount,
+    //         ];
+    //     });
+
+    //     $options = new Options();
+    //     $options->set('defaultFont', 'Helvetica');
+
+    //     $dompdf = new Dompdf($options);
+
+    //     $html = View::make('exports.report.purchase', compact('items', 'purchase'))->render();
+    //     $dompdf->loadHtml($html);
+    //     $dompdf->setPaper('A4', 'portrait');
+    //     $dompdf->render();
+
+    //     return $dompdf->stream('Invoice_' . str_replace('/', '_', $purchase->purchase_number) . '.pdf');
+    // }
+
+    public function exportPurchaseInvoicePDF($id)
+    {
+        $purchase = Purchase::with('items')->findOrFail($id);
 
         $options = new Options();
         $options->set('defaultFont', 'Helvetica');
 
         $dompdf = new Dompdf($options);
 
-        $html = View::make('exports.report.purchase', compact('items', 'purchase'))->render();
+        $html = View::make('exports.invoice.purchaseInvoice', compact('purchase'))->render();
         $dompdf->loadHtml($html);
-        $dompdf->setPaper('A4', 'portrait');
+        $dompdf->setPaper([0, 0, 595.28, 5000]); // 595.28px = A4 width, 2000px = custom height
         $dompdf->render();
 
-        return $dompdf->stream('Invoice_' . str_replace('/', '_', $purchase->purchase_number) . '.pdf');
+        // return $dompdf->stream('SEVENA/SALE/' . str_replace('/', '_', $purchase->sale_number) . '.pdf');
+        return $dompdf->stream('purchase.pdf', ['Attachment' => false]);
+        // return view('exports.report.purchase', compact('purchase'));
     }
 
-    public function exportSalePDF($id)
+    public function exportSaleInvoicePDF($id)
     {
         $sale = Sale::with('items')->findOrFail($id);
 
@@ -66,13 +85,81 @@ class ReportController extends Controller
 
         $dompdf = new Dompdf($options);
 
-        $html = View::make('exports.report.sale', compact('sale'))->render();
+        $html = View::make('exports.invoice.saleInvoice', compact('sale'))->render();
         $dompdf->loadHtml($html);
         $dompdf->setPaper([0, 0, 595.28, 5000]); // 595.28px = A4 width, 2000px = custom height
         $dompdf->render();
 
-        // return $dompdf->stream('SAVENA/SALE/' . str_replace('/', '_', $sale->sale_number) . '.pdf');
+        // return $dompdf->stream('SEVENA/SALE/' . str_replace('/', '_', $sale->sale_number) . '.pdf');
         return $dompdf->stream('sale.pdf', ['Attachment' => false]);
+        // return view('exports.report.sale', compact('sale'));
+    }
+
+    public function exportSaleItemsPDF(Request $request)
+    {
+        $period = $request->period;
+        $startDate = $request->start_date;
+        $endDate = $request->end_date;
+
+        $query = Sale::with('items');
+
+        if ($period === 'day') {
+            $query->whereDate('sale_date', now()->toDateString());
+        } elseif ($period === 'month') {
+            $query->whereMonth('sale_date', now()->month)
+                ->whereYear('sale_date', now()->year);
+        } elseif ($period === 'custom' && $startDate && $endDate) {
+            $query->whereBetween('sale_date', [$startDate, $endDate]);
+        }
+
+        $sales = $query->get();
+
+        $options = new Options();
+        $options->set('defaultFont', 'Helvetica');
+
+        $dompdf = new Dompdf($options);
+
+        $html = View::make('exports.report.sale', compact('sales', 'period'))->render();
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper([0, 0, 595.28, 5000]); // 595.28px = A4 width, 2000px = custom height
+        $dompdf->render();
+
+        // return $dompdf->stream('SEVENA/SALE/' . str_replace('/', '_', $sale->sale_number) . '.pdf');
+        return $dompdf->stream('sale.pdf', ['Attachment' => false]);
+        // return view('exports.report.sale', compact('sale'));
+    }
+
+    public function exportPurchaseItemsPDF(Request $request)
+    {
+        $period = $request->period;
+        $startDate = $request->start_date;
+        $endDate = $request->end_date;
+
+        $query = Purchase::with('items');
+
+        if ($period === 'day') {
+            $query->whereDate('purchase_date', now()->toDateString());
+        } elseif ($period === 'month') {
+            $query->whereMonth('purchase_date', now()->month)
+                ->whereYear('purchase_date', now()->year);
+        } elseif ($period === 'custom' && $startDate && $endDate) {
+            $query->whereBetween('purchase_date', [$startDate, $endDate]);
+        }
+
+        $purchases = $query->get();
+
+        $options = new Options();
+        $options->set('defaultFont', 'Helvetica');
+
+        $dompdf = new Dompdf($options);
+
+        $html = View::make('exports.report.purchase', compact('purchases', 'period'))->render();
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper([0, 0, 595.28, 5000]); // 595.28px = A4 width, 2000px = custom height
+        $dompdf->render();
+
+        // return $dompdf->stream('SEVENA/SALE/' . str_replace('/', '_', $sale->sale_number) . '.pdf');
+        return $dompdf->stream('purchase.pdf', ['Attachment' => false]);
         // return view('exports.report.sale', compact('sale'));
     }
 }

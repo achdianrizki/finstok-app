@@ -18,4 +18,4 @@
     />
 </svg> --}}
 
-<img src="{{ asset('assets/image/logo.png') }}" alt="Logo" class="w-14 h-14 object-contain border border-yellow-500 rounded-full">
+<img src="{{ asset('assets/image/logo.png') }}" alt="Logo" class="w-20 h-20 object-contain border border-yellow-500 rounded-full" style="background-color: #FFE3FC">

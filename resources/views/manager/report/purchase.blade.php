@@ -9,26 +9,53 @@
 
     <div class="p-6 overflow-hidden bg-white rounded-md shadow-md dark:bg-dark-eval-1">
         <div class="flex flex-col md:flex-row md:justify-between gap-4 my-3">
-            <x-dropdown.dropdown>
-                <x-slot name="slot">
-                    <x-heroicon-o-download class="w-6 h-6 dark:text-white" aria-hidden="true" />
-                </x-slot>
+            <div class="flex gap-4">
+                <x-dropdown.dropdown>
+                    <x-slot name="slot">
+                        <x-heroicon-o-download class="w-6 h-6 dark:text-white" aria-hidden="true" />
+                    </x-slot>
 
-                <x-slot name="menu">
-                    <a href="{{ route('items.export.pdf') }}"
-                        class="flex items-center gap-2 px-4 py-2 mb-2 text-sm text-white bg-red-500 hover:bg-red-600"
-                        role="menuitem" tabindex="-1" id="menu-item-0">
-                        <x-icons.pdf class="w-5 h-5" aria-hidden="true" />
-                        <span>Download PDF</span>
-                    </a>
-                    <a href="{{ route('items.export.excel') }}"
-                        class="flex items-center gap-2 px-4 py-2 text-sm text-white bg-green-600 hover:bg-green-700"
-                        role="menuitem" tabindex="-1" id="menu-item-1">
-                        <x-icons.excel class="w-5 h-5" aria-hidden="true" />
-                        <span>Download Excel</span>
-                    </a>
-                </x-slot>
-            </x-dropdown.dropdown>
+                    <x-slot name="menu">
+                        <form id="pdfForm" action="{{ route('manager.report.purchase-items-report.export.pdf') }}"
+                            method="POST">
+                            @csrf
+                            <input type="hidden" name="period" id="pdfPeriod">
+                            <input type="hidden" name="start_date" id="pdfStartDate">
+                            <input type="hidden" name="end_date" id="pdfEndDate">
+                            <button type="submit"
+                                class="flex items-center gap-2 px-4 py-2 mb-2 text-sm text-white bg-red-500 hover:bg-red-600 w-full">
+                                <x-icons.pdf class="w-5 h-5" aria-hidden="true" />
+                                <span>Download PDF</span>
+                            </button>
+                        </form>
+                        <a href="{{ route('items.export.excel') }}"
+                            class="flex items-center gap-2 px-4 py-2 text-sm text-white bg-green-600 hover:bg-green-700"
+                            role="menuitem" tabindex="-1" id="menu-item-1">
+                            <x-icons.excel class="w-5 h-5" aria-hidden="true" />
+                            <span>Download Excel</span>
+                        </a>
+                    </x-slot>
+                </x-dropdown.dropdown>
+
+                <x-form.select id="period" class="block w-40 h-10" name="type">
+                    <option value="" {{ old('period') == '' ? 'selected' : '' }}>Pilih
+                        Periode...</option>
+                    <option value="day">
+                        Hari ini</option>
+                    <option value="month">Bulan ini</option>
+                    <option value="custom">Custom</option>
+                </x-form.select>
+
+                <div class="flex gap-4 hidden custom">
+                    <x-form.input id="start_date" class="block flatpickr-input" type="date" name="start_date"
+                        autocomplete="off" placeholder="Dari"
+                        style="width: 120px !important; height: 40px !important;" />
+
+                    <x-form.input id="end_date" class="block flatpickr-input" type="date" name="end_date"
+                        autocomplete="off" placeholder="Sampai"
+                        style="width: 120px !important; height: 40px !important;" />
+                </div>
+            </div>
 
             <!-- Search Input-->
             <div class="w-full md:w-auto">
@@ -90,6 +117,40 @@
                     detailRow.classList.add('hidden');
                 }
             }
+
+            $(document).ready(function() {
+
+                $("#start_date").flatpickr({
+                    dateFormat: "Y-m-d",
+                    allowInput: true,
+                });
+
+                $("#end_date").flatpickr({
+                    dateFormat: "Y-m-d",
+                    allowInput: true,
+                });
+
+                $('#pdfForm').on('submit', function(event) {
+                    let period = $('#period').val();
+                    $('#pdfPeriod').val(period);
+
+                    let startDate = $('#start_date').val();
+                    $('#pdfStartDate').val(startDate);
+
+                    let endDate = $('#end_date').val();
+                    $('#pdfEndDate').val(endDate);
+                });
+
+                $('#period').change(function() {
+                    if ($(this).val() === 'custom') {
+                        $('.custom').removeClass('hidden');
+                    } else {
+                        $('.custom').addClass('hidden');
+                        $('#start_date').val("")
+                        $('#end_date').val("")
+                    }
+                });
+            });
         </script>
         @include('components.js.dtReportPurchase')
     @endpush

@@ -26,6 +26,7 @@ class StoreBuyerRequest extends FormRequest
             'contact' => 'required|string|max:255',
             'phone' => 'required|string|max:255',
             'address' => 'required|string|max:255',
+            'NPWP' => 'nullable|string|max:255',
             'type' => 'required|string|max:255',
         ];
     }

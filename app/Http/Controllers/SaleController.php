@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use Dompdf\Dompdf;
 use Dompdf\Options;
 use App\Models\Item;
@@ -10,8 +11,8 @@ use App\Models\Buyer;
 use App\Models\Salesman;
 use App\Models\Distributor;
 use Illuminate\Http\Request;
-use App\Models\IncomingPayment;
 
+use App\Models\IncomingPayment;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\View;
@@ -63,30 +64,44 @@ class SaleController extends Controller
     public function getSales()
     {
         $sales = Sale::with(['item', 'distributor', 'buyer'])
-            ->paginate(10);
+            ->paginate(5);
 
         return response()->json($sales);
     }
 
     public function getSaleItems(Request $request)
     {
-        $query = Sale::with(['buyer']);
+        $search = $request->query('search');
+        $period = $request->query('period');
+        $startDate = $request->query('start_date');
+        $endDate = $request->query('end_date');
 
+        $salesQuery = Sale::with(['buyer']);
+
+        // Filter berdasarkan pencarian
         if ($request->filled('search')) {
-            $search = $request->search;
-
-            $query->where(function ($q) use ($search) {
+            $salesQuery->where(function ($q) use ($search) {
                 $q->where('sale_number', 'like', '%' . $search . '%')
                     ->orWhereHas('buyer', function ($query) use ($search) {
-                        $query->where('name', 'like', '%' . $search . '%');
+                        $query->where('name', 'like', '%' . $search . '%')
+                            ->orWhere('contact', 'like', '%' . $search . '%');
                     })
-                    ->orWhere('sale_date', 'like', '%' . $search . '%');
+                    ->orWhere('sale_date', 'like', '%' . $search . '%')->orWhere('status', 'like', '%' . $search . '%');
             });
         }
 
-        $products = $query->paginate(5);
+        if ($period == 'day') {
+            $salesQuery->whereDate('sale_date', Carbon::today());
+        } elseif ($period == 'month') {
+            $salesQuery->whereMonth('sale_date', Carbon::now()->month)
+                ->whereYear('sale_date', Carbon::now()->year);
+        } elseif ($period == 'custom' && $startDate && $endDate) {
+            $salesQuery->whereBetween('sale_date', [$startDate, $endDate]);
+        }
 
-        return response()->json($products);
+        $sales = $salesQuery->paginate(5);
+
+        return response()->json($sales);
     }
 
     /**
@@ -94,17 +109,17 @@ class SaleController extends Controller
      */
     public function store(Request $request)
     {
-        
+
         $lastSale = Sale::latest()->first();
 
         if ($lastSale) {
-            $lastNumber = (int) str_replace('SAVENA/SALE/', '', $lastSale->sale_number);
+            $lastNumber = (int) str_replace('SEVENA/SALE/', '', $lastSale->sale_number);
             $newNumber = $lastNumber + 1;
         } else {
             $newNumber = 1;
         }
 
-        $saleNumber = 'SAVENA/SALE/' . str_pad($newNumber, 5, '0', STR_PAD_LEFT);
+        $saleNumber = 'SEVENA/SALE/' . str_pad($newNumber, 5, '0', STR_PAD_LEFT);
 
         $qty_sold = array_sum($request->qty_sold);
 
@@ -126,6 +141,8 @@ class SaleController extends Controller
             'status' => $request->status,
             'information' => $request->information,
             'qty_sold' => $qty_sold,
+            'due_date_duration' => $request->due_date_duration,
+            'due_date' => $request->due_date,
 
         ]);
 
@@ -135,7 +152,7 @@ class SaleController extends Controller
             $item->stock -= $request->qty_sold[$index];
             $item->save();
 
-            $sale_price = str_replace(',', '.', str_replace('.', '', $request->sale_prices[$index]) );
+            $sale_price = str_replace(',', '.', str_replace('.', '', $request->sale_prices[$index]));
 
             $item->sales()->attach($sale->id, [
                 'qty_sold' => $request->qty_sold[$index],
@@ -155,10 +172,7 @@ class SaleController extends Controller
      * Display the specified resource.
      */
 
-    public function show() 
-    {
-        
-    }
+    public function show() {}
 
     /**
      * Show the form for editing the specified resource.
@@ -217,22 +231,22 @@ class SaleController extends Controller
         return redirect()->route('manager.sales.index')->with('success', 'Data penjualan berhasil dihapus');
     }
 
-    public function exportPDF(Sale $sale)
-    {
-        // Ambil data sale beserta incomingPayments
-        $sale->load('incomingPayments');
+    // public function exportPDF(Sale $sale)
+    // {
+    //     // Ambil data sale beserta incomingPayments
+    //     $sale->load('incomingPayments');
 
-        $options = new Options();
-        $options->set('defaultFont', 'Helvetica');
+    //     $options = new Options();
+    //     $options->set('defaultFont', 'Helvetica');
 
-        $dompdf = new Dompdf($options);
+    //     $dompdf = new Dompdf($options);
 
-        // Render Blade dengan data
-        $html = View::make('exports.sales.pdf', compact('sale'))->render();
-        $dompdf->loadHtml($html);
-        $dompdf->setPaper('A4', 'portrait');
-        $dompdf->render();
+    //     // Render Blade dengan data
+    //     $html = View::make('exports.incomingPayment.pdf', compact('sale'))->render();
+    //     $dompdf->loadHtml($html);
+    //     $dompdf->setPaper('A4', 'portrait');
+    //     $dompdf->render();
 
-        return $dompdf->stream('Pembayaran_' . $sale->sale_number . '.pdf');
-    }
+    //     return $dompdf->stream('Pembayaran_' . $sale->sale_number . '.pdf');
+    // }
 }

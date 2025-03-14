@@ -56,6 +56,9 @@
                                 Tanggal Penjualan</th>
                             <th
                                 class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider hidden md:table-cell">
+                                Jatuh Tempo</th>
+                            <th
+                                class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider hidden md:table-cell">
                                 Nama Pelanggan</th>
                             <th
                                 class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider hidden sm:table-cell">
@@ -76,6 +79,20 @@
                 </x-button>
             </div> --}}
         </form>
+
+        <!-- Pagination Controls -->
+        <div class="mt-4 flex items-center justify-center">
+            <x-button id="prevPage" class="bg-blue-500 text-white p-2 rounded" variant="primary">
+                <x-heroicon-o-chevron-double-left class="w-4 h-4" aria-hidden="true" />
+            </x-button>
+
+            <span id="currentPage"
+                class="mx-4 p-2 border min-w-[40px] text-center rounded bg-gray-100 dark:bg-dark-eval-1 dark:border-dark-eval-1 ">1</span>
+
+            <x-button id="nextPage" variant="primary" class="">
+                <x-heroicon-o-chevron-double-right class="w-4 h-4" aria-hidden="true" />
+            </x-button>
+        </div>
 
         <!-- Modal -->
         <div id="crud-modal" tabindex="-1" aria-hidden="true"

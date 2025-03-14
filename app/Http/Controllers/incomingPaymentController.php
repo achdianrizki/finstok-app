@@ -39,7 +39,7 @@ class incomingPaymentController extends Controller
                     ->orWhereHas('buyer', function ($query) use ($search) {
                         $query->where('name', 'like', '%' . $search . '%');
                     })
-                    ->orWhere('sale_date', 'like', '%' . $search . '%');
+                    ->orWhere('sale_date', 'like', '%' . $search . '%')->orWhere('status', 'like', '%' . $search . '%');
             });
         }
 
@@ -68,7 +68,7 @@ class incomingPaymentController extends Controller
     {
         $latestPayment = IncomingPayment::where('sale_id', $request->sale_id)->latest()->first();
 
-        $totalPaid = $latestPayment ? $latestPayment->total_paid + (float)str_replace(',', '.', str_replace('.', '', $request->pay_amount) ) : (float) str_replace(',', '.', str_replace('.', '', $request->pay_amount) );
+        $totalPaid = $latestPayment ? $latestPayment->total_paid + (float)str_replace(',', '.', str_replace('.', '', $request->pay_amount)) : (float) str_replace(',', '.', str_replace('.', '', $request->pay_amount));
 
         // Kalo gamau dinamis
         $remainingAmount = (float) str_replace(['Rp', '.', ','], ['', '', '.'], $request->remaining_payment);
@@ -82,7 +82,7 @@ class incomingPaymentController extends Controller
             'payment_method' => $request->payment_method,
             'bank_account_number' => $request->bank_account_number,
             'payment_code' => $request->payment_code,
-            'pay_amount' => (float) str_replace(',', '.', str_replace('.', '', $request->pay_amount) ),
+            'pay_amount' => (float) str_replace(',', '.', str_replace('.', '', $request->pay_amount)),
             'information' => $request->information,
             // 'remaining_payment' => (float) str_replace(['Rp', '.', ','], ['', '', '.'], $request->remaining_payment),
             'remaining_payment' => $remainingAmount,
@@ -98,7 +98,7 @@ class incomingPaymentController extends Controller
         return redirect()->route('manager.incomingpayment.show', $request->sale_id)->with('success', 'Pembayaran berhasil ditambahkan');
     }
 
-    public function exportPDF(IncomingPayment $incomingPayment)
+    public function exportOneInvoicePDF(IncomingPayment $incomingPayment)
     {
         $incomingPayment->load('sale');
 
@@ -108,11 +108,30 @@ class incomingPaymentController extends Controller
         $dompdf = new Dompdf($options);
 
         // Render Blade dengan data
-        $html = View::make('exports.incomingPayment.pdf', compact('incomingPayment'))->render();
+        $html = View::make('exports.incomingPayment.onePdf', compact('incomingPayment'))->render();
         $dompdf->loadHtml($html);
         $dompdf->setPaper('A4', 'portrait');
         $dompdf->render();
 
         return $dompdf->stream('Pembayaran_' . $incomingPayment->invoice_number . '.pdf');
+    }
+
+    public function exportAllInvoicePDF(Sale $sale)
+    {
+        // Ambil data sale beserta incomingPayments
+        $sale->load('incomingPayments');
+
+        $options = new Options();
+        $options->set('defaultFont', 'Helvetica');
+
+        $dompdf = new Dompdf($options);
+
+        // Render Blade dengan data
+        $html = View::make('exports.incomingPayment.allPdf', compact('sale'))->render();
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('A4', 'portrait');
+        $dompdf->render();
+
+        return $dompdf->stream('Pembayaran_' . $sale->sale_number . '.pdf');
     }
 }

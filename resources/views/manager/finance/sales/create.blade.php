@@ -40,6 +40,26 @@
                         <option value="non_ppn" {{ old('tax') == 'non_ppn' ? 'selected' : '' }}>NON-PPN</option>
                     </x-form.select>
 
+                    <div>
+                        <x-form.label for="due_date_duration" :value="__('Durasi Jatuh Tempo (hari)')" class="mb-2" />
+                        <div class="flex gap-2 mb-2">
+                            <button type="button" class="px-4 py-2 bg-purple-500 text-white rounded-md duration-btn"
+                                data-value="14">14</button>
+                            <button type="button" class="px-4 py-2 bg-purple-500 text-white rounded-md duration-btn"
+                                data-value="30">30</button>
+                            <button type="button" class="px-4 py-2 bg-purple-500 text-white rounded-md duration-btn"
+                                data-value="45">45</button>
+                            <input type="number" id="custom_due_date"
+                                class="w-20 border-gray-400 rounded-md focus:ring focus:ring-purple-500 focus:ring-offset-2 dark:border-gray-600 dark:bg-dark-eval-1 dark:text-gray-300"
+                                placeholder="Custom">
+                        </div>
+                        <p id="due_date_error" class="text-red-500 mt-2 hidden">Durasi jatuh tempo harus diisi</p>
+                        <p id="sale_date_error" class="text-red-500 mt-2 hidden">Pilih tanggal terlebih dahulu!</p>
+                        <input type="hidden" id="due_date_duration" name="due_date_duration"
+                            value="{{ old('due_date_duration') }}">
+                        <input type="hidden" id="due_date" name="due_date" value="{{ old('due_date') }}">
+                    </div>
+
                 </div>
 
                 <div>
@@ -71,7 +91,6 @@
                                 <th class="px-2 py-2 text-center border-b border-gray-300 ">Stok</th>
                                 <th class="px-2 py-2 text-center border-b border-gray-300 ">Satuan</th>
                                 <th class="px-3 py-2 text-center border-b border-gray-300 ">Jumlah</th>
-                                <th class="px-4 py-2 text-center border-b border-gray-300 ">Harga Beli per pcs</th>
                                 <th class="px-4 py-2 text-center border-b border-gray-300 ">Harga Jual per pcs</th>
                                 <th class="px-4 py-2 text-center border-b border-gray-300 ">Diskon (%)</th>
                                 <th class="px-4 py-2 text-center border-b border-gray-300 ">Total Harga Setelah Diskon
@@ -151,26 +170,108 @@
         <script>
             $(document).ready(function() {
 
+                $(".duration-btn").prop("disabled", true).addClass("bg-gray-400");
+                $("#custom_due_date").prop("disabled", true).addClass("bg-gray-400");
+
+                $(".duration-btn").on("click", function() {
+                    $(".duration-btn").removeClass("bg-purple-700 ring-2 ring-purple-300");
+
+                    $(this).addClass("bg-purple-700 ring-2 ring-purple-300");
+
+                    let days = parseInt($(this).data("value"));
+
+                    let saleDateValue = $("#sale_date").val();
+
+                    let dueDate = new Date(saleDateValue);
+                    dueDate.setDate(dueDate.getDate() + days);
+
+                    let year = dueDate.getFullYear();
+                    let month = String(dueDate.getMonth() + 1).padStart(2, '0'); // Bulan mulai dari 0
+                    let day = String(dueDate.getDate()).padStart(2, '0');
+
+                    let formattedDueDate = `${year}-${month}-${day}`;
+
+                    $("#due_date_duration").val(days);
+                    $("#due_date").val(formattedDueDate);
+
+                    $("#custom_due_date").val("");
+
+                    $("#due_date_error").addClass("hidden");
+                    $("#sale_date_error").addClass("hidden");
+                });
+
+                $("#custom_due_date").on("input", function() {
+
+                    $(".duration-btn").removeClass("bg-purple-700 ring-2 ring-purple-300");
+
+                    let days = parseInt($(this).val());
+
+                    if (!isNaN(days)) {
+
+                        let saleDateValue = $("#sale_date").val();
+
+                        let dueDate = new Date(saleDateValue);
+                        dueDate.setDate(dueDate.getDate() + days);
+
+                        let year = dueDate.getFullYear();
+                        let month = String(dueDate.getMonth() + 1).padStart(2, '0'); // Bulan mulai dari 0
+                        let day = String(dueDate.getDate()).padStart(2, '0');
+
+                        let formattedDueDate = `${year}-${month}-${day}`;
+
+                        $("#due_date_duration").val(days);
+                        $("#due_date").val(formattedDueDate);
+
+                        $("#due_date_error").addClass("hidden");
+                        $("#sale_date_error").addClass("hidden");
+                    }
+                });
+
+
+
+                $("#sale_date").flatpickr({
+                    dateFormat: "Y-m-d",
+                    allowInput: true,
+                    onChange: function(selectedDates, dateStr) {
+                        if (dateStr) {
+                            $(".duration-btn").prop("disabled", false).removeClass("bg-gray-400");
+                            $("#custom_due_date").prop("disabled", false).removeClass("bg-gray-400");
+                            $("#due_date_error").addClass("hidden");
+                            $("#sale_date_error").addClass("hidden");
+                        }
+                    }
+                });
+
+                $("#buttonSubmit").click(function(e) {
+                    let dueDateDuration = $("#due_date_duration").val();
+                    let saleDateValue = $("#sale_date").val();
+
+                    if (!saleDateValue) {
+                        e.preventDefault();
+                        $("#sale_date_error").removeClass("hidden");
+                    } else if (!dueDateDuration) {
+                        e.preventDefault();
+                        $("#due_date_error").removeClass("hidden");
+                    } else {
+                        $("#sale_date_error").addClass("hidden");
+                        $("#due_date_error").addClass("hidden");
+                    }
+                });
+
+
                 $('#buttonSubmit').click(function(event) {
                     const items = document.querySelectorAll('.item-select');
 
-                    // Hapus pesan error sebelumnya
                     $('#error-message').remove();
 
                     if (items.length === 0) {
-                        // Mencegah form submit
                         event.preventDefault();
 
-                        // Tambahkan pesan error di bawah tombol tambah barang
                         $('#add-item').after(
                             '<p id="error-message" class="text-red-500 mt-2">Barang tidak boleh kosong</p>');
                     }
                 });
 
-                $("#sale_date").flatpickr({
-                    dateFormat: "Y-m-d",
-                    allowInput: true,
-                });
 
                 $('#buyer_id').select2();
 
@@ -239,7 +340,7 @@
                         $.get(`/get-sales-item/${itemId}`, function(data) {
                             row.find('.item-code').val(data.code);
                             row.find('.item-name').val(data.name);
-                            row.find('.price').val(formatRupiah(data.purchase_price));
+                            row.find('.sale_price').val(formatRupiah(data.purchase_price));
                             row.find('.unit').val(data.unit);
                             row.find('.stock').val(data.stock);
                             row.find('.qty').val();
@@ -254,7 +355,7 @@
                 });
 
                 $(document).on('change', '#tax', function() {
-                    calculateTotalPrice();
+                    calculateSubTotal();
                 });
 
                 function calculateTotal(row) {
@@ -283,9 +384,10 @@
                     let totalDiscount2 = 0;
                     let totalDiscount3 = 0;
 
-                    $('.price').each(function() {
+                    $('.sale_price').each(function() {
                         let row = $(this).closest('tr');
-                        let salePrice = parseFloat(row.find('.sale_price').val().replace(/\./g, '').replace(',', '.')) || 0;
+                        let salePrice = parseFloat(row.find('.sale_price').val().replace(/\./g, '').replace(',',
+                            '.')) || 0;
                         let qty = parseFloat(row.find('.qty').val()) || 0;
                         let discount1 = parseFloat(formatRupiah(row.find('.discount1').val())) || 0;
                         let discount2 = parseFloat(row.find('.discount2').val()) || 0;
@@ -299,9 +401,6 @@
 
                         let finalTotal = originalTotal - discountAmount1 - discountAmount2 - discountAmount3;
 
-                        // totalDiscount1 += originalTotal - afterDiscount1;
-                        // totalDiscount2 += afterDiscount1 - afterDiscount2;
-                        // totalDiscount3 += afterDiscount2 - afterDiscount3;
                         totalDiscount1 += discountAmount1;
                         totalDiscount2 += discountAmount2;
                         totalDiscount3 += discountAmount3;
@@ -320,10 +419,12 @@
                     $('#total_discount3').val('Rp ' + formatRupiah(totalDiscount3.toFixed(2)));
                     $('#total_price').val('Rp ' + formatRupiah(totalPrice.toFixed(2)));
 
-                    calculateTotalPrice(totalPrice);
+                    calculateTotalPrice();
                 }
 
-                function calculateTotalPrice(totalPrice = parseFloat($('#total_price').val()) || 0) {
+                function calculateTotalPrice() {
+                    let totalPrice = parseFloat($('#total_price').val().replace(/Rp\s?/g, '').replace(/\./g, '')
+                        .replace(',', '.')) || 0;
                     let taxType = $('#tax').val();
                     let taxRate = (taxType === 'ppn') ? 0.11 : 0;
 
@@ -355,7 +456,6 @@
                     <td class="px-1 py-2"><input type="number" name="stock[]" class="stock w-16 px-2 py-1 border border-gray-300 rounded-md bg-gray-100 text-center" readonly></td>
                     <td class="px-1 py-2"><input type="text" name="unit[]" class="unit w-16 px-2 py-1 border border-gray-300 rounded-md bg-gray-100 text-center" readonly></td>
                     <td class="px-1 py-2"><input type="number" name="qty_sold[]" class="qty w-16 px-2 py-1 border border-gray-300 rounded-md text-center" min="1" value="1" required data-parsley-required-message="Jumlah harus diisi"></td>
-                    <td class="px-1 py-2"><input type="text" name="prices[]" class="price w-full px-2 py-1 border border-gray-300 rounded-md bg-gray-100 text-right" readonly></td>
                     <td class="px-1 py-2"><input type="text" name="sale_prices[]" class="sale_price w-full px-2 py-1 border border-gray-300 rounded-md text-right" required data-parsley-required-message="Harga jual harus diisi"></td>
                     <td class="px-1 py-2">
                     <div class="flex space-x-1">
@@ -399,12 +499,6 @@
                     });
                 });
 
-                // $('#buyer_id').on('change', function() {
-                //     if ($(this).val() !== null && $(this).val() !== "") {
-                //         $(this).siblings('.select2-container').find('.select2-selection').addClass('success');
-                //     }
-                // });
-
                 $('#buyer_id').on('change', function() {
                     if ($(this).val() !== null && $(this).val() !== "") {
                         $(this).siblings('.select2-container').find('.select2-selection').removeClass(
@@ -443,6 +537,12 @@
             .select2-container--default .select2-results__option {
                 font-size: 14px;
                 padding: 10px;
+            }
+
+            .duration-btn:disabled {
+                background-color: #a0aec0;
+                cursor: not-allowed;
+                opacity: 0.6;
             }
         </style>
     @endpush

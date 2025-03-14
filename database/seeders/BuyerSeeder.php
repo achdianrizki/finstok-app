@@ -18,6 +18,7 @@ class BuyerSeeder extends Seeder
             'contact' => 'PT Sentosa Jaya Abadi',
             'phone' => '0384789347',
             'address' => 'Jl Pahlawan',
+            'NPWP' => '2342346',
             'type' => 'General Trade',
         ]);
 
@@ -33,7 +34,8 @@ class BuyerSeeder extends Seeder
             'name' => 'Max',
             'contact' => 'PT Sukses Makmur Bersama',
             'phone' => '03487423987',
-            'address' => 'Jl Kebenruntungan',
+            'address' => 'Jl Keberuntungan',
+            'NPWP' => '832478',
             'type' => 'Modern Trade',
         ]);
 

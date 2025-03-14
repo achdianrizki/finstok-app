@@ -4,11 +4,12 @@
             <h2 class="text-xl font-semibold leading-tight">
                 {{ __('Pembayaran :sale_number', ['sale_number' => $sale->sale_number]) }}</h2>
 
-            <a href="{{ route('sales.export.pdf', $sale->id) }}"
+            <a href="{{ route('manager.report.incomingPayment.export.allPdf', $sale->id) }}"
                 class="flex items-center text-sm text-white bg-red-500 hover:bg-red-600 px-2 py-1 border rounded-md"
                 role="menuitem" tabindex="-1" id="menu-item-0">
                 <x-icons.pdf class="w-5 h-5" aria-hidden="true" />
-                <span>Download Faktur</span>
+                {{-- <span>Download Faktur</span> --}}
+                <span>Download Bukti</span>
             </a>
         </div>
     </x-slot>
@@ -35,7 +36,7 @@
 
                 <x-form.label for="tax" :value="__('Pajak')" />
                 <x-form.input id="tax" class="block w-full flatpickr-input" type="text" name="tax"
-                    :value="old('tax', $sale->tax == null ? 'NON PPN' : 'PPN 11%')" readonly :disabled="true" />
+                    :value="old('tax', $sale->tax == 0.0 ? 'NON-PPN' : 'PPN 11%')" readonly :disabled="true" />
 
             </div>
 
@@ -44,6 +45,13 @@
                 <textarea id="information" name="information"
                     class="w-full border-gray-400 rounded-md focus:ring focus:ring-purple-500 focus:ring-offset-2 dark:border-gray-600 bg-gray-200 dark:bg-dark-eval-1 dark:text-gray-300"
                     rows="3" placeholder="Deskripsi barang" readonly disabled>{{ old('information', $sale->information) }}</textarea>
+
+                <x-form.label for="due_date_duration" :value="__('Durasi Jatuh Tempo (hari)')" class="mb-2" />
+                <button type="button" class="px-4 py-2 bg-purple-500 text-white rounded-md duration-btn mb-2">{{ old('due_date_duration', $sale->due_date_duration) }}</button>
+
+                <x-form.label for="due_date" :value="__('Tanggal Jatuh Tempo')" />
+                <x-form.input id="due_date" class="block w-full flatpickr-input" type="date" name="due_date"
+                    :value="old('due_date', $sale->due_date)" readonly :disabled="true" />
             </div>
 
         </div>
@@ -145,10 +153,10 @@
         </div>
 
         @if ($sale->status != 'lunas')
-        <x-button :href="route('manager.incomingpayment.payment', $sale->id)" variant="success" class="justify-center max-w-xl gap-2" size="sm">
-            <x-heroicon-o-plus class="w-6 h-6" aria-hidden="true" />
-            <span>Bayar</span>
-        </x-button>
+            <x-button :href="route('manager.incomingpayment.payment', $sale->id)" variant="success" class="justify-center max-w-xl gap-2" size="sm">
+                <x-heroicon-o-plus class="w-6 h-6" aria-hidden="true" />
+                <span>Bayar</span>
+            </x-button>
         @endif
 
         <div class="overflow-x-auto">
@@ -188,12 +196,13 @@
                             <td class="px-1 py-2">
                                 <input type="text"
                                     class="w-full px-2 py-1 border border-gray-300 rounded-md bg-gray-100 text-right"
-                                    value="{{ number_format($incoming_payment->pay_amount, 2 ,',', '.') }}" readonly>
+                                    value="{{ number_format($incoming_payment->pay_amount, 2, ',', '.') }}" readonly>
                             </td>
                             <td class="px-1 py-2">
                                 <input type="text"
                                     class="w-full px-2 py-1 border border-gray-300 rounded-md bg-gray-100 text-right"
-                                    value="{{ number_format($incoming_payment->remaining_payment, 2, ',', '.') }}" readonly>
+                                    value="{{ number_format($incoming_payment->remaining_payment, 2, ',', '.') }}"
+                                    readonly>
                             </td>
                             <td class="px-1 py-2">
                                 <input type="text"
@@ -201,7 +210,7 @@
                                     value="{{ number_format($incoming_payment->total_paid, 2, ',', '.') }}" readonly>
                             </td>
                             <td class="px-1 py-2">
-                                <a href="{{ route('incomingPayment.export.pdf', $incoming_payment->id) }}"
+                                <a href="{{ route('manager.report.incomingPayment.export.onePdf', $incoming_payment->id) }}"
                                     class="flex items-center  text-sm text-white bg-red-500 hover:bg-red-600 w-full px-2 py-1 border rounded-md"
                                     role="menuitem" tabindex="-1" id="menu-item-0">
                                     <x-icons.pdf class="w-5 h-5" aria-hidden="true" />
@@ -223,8 +232,9 @@
 
             <div class="flex justify-between items-center w-full max-w-md">
                 <label for="sub_total" class="mr-4">Sub Total</label>
-                <input type="text" class="w-1/2 border-gray-500 bg-gray-100 rounded-md p-2" name="sub_total" id="sub_total"
-                    readonly value="Rp {{ number_format(floor($sale->sub_total * 100) / 100, 2, ',', '.') }}
+                <input type="text" class="w-1/2 border-gray-500 bg-gray-100 rounded-md p-2" name="sub_total"
+                    id="sub_total" readonly
+                    value="Rp {{ number_format(floor($sale->sub_total * 100) / 100, 2, ',', '.') }}
 ">
             </div>
 
@@ -251,8 +261,8 @@
 
             <div class="flex justify-between items-center w-full max-w-md">
                 <label for="tax" class="mr-4">PPN 11%</label>
-                <input type="text" class="w-1/2 border-gray-500 bg-gray-100 rounded-md p-2" name="tax" id="taxRate"
-                    readonly value="Rp {{ number_format($sale->tax, 2, ',', '.') }}">
+                <input type="text" class="w-1/2 border-gray-500 bg-gray-100 rounded-md p-2" name="tax"
+                    id="taxRate" readonly value="Rp {{ number_format($sale->tax, 2, ',', '.') }}">
             </div>
 
             <div class="flex justify-between items-center w-full max-w-md">
@@ -263,8 +273,9 @@
 
             <div class="flex justify-between items-center w-full max-w-md">
                 <label for="remaining_payment" class="mr-4">Sisa Pembayaran</label>
-                <input type="text" class="w-1/2 border-gray-500 bg-gray-100 rounded-md p-2" name="remaining_payment"
-                    id="remaining_payment" value="Rp {{ number_format($remaining_payment, 2, ',', '.') }}" readonly>
+                <input type="text" class="w-1/2 border-gray-500 bg-gray-100 rounded-md p-2"
+                    name="remaining_payment" id="remaining_payment"
+                    value="Rp {{ number_format($remaining_payment, 2, ',', '.') }}" readonly>
             </div>
 
             <div class="flex justify-between items-center w-full max-w-md">

@@ -27,12 +27,8 @@ return new class extends Migration
             $table->decimal('tax', 15, 2);
             $table->text('information')->nullable();
             $table->integer('qty_sold');
-            // $table->integer('qty_sold');
-            // $table->enum('payment_status', ['lunas', 'belum lunas']);
-            // $table->unsignedBigInteger('discount')->nullable();
-            // $table->unsignedBigInteger('down_payment')->nullable();
-            // $table->unsignedBigInteger('remaining_payment');
-            // $table->unsignedBigInteger('total_price');
+            $table->integer('due_date_duration');
+            $table->date('due_date');
             $table->softDeletes();
             $table->timestamps();
         });

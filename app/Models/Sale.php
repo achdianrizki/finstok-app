@@ -10,6 +10,8 @@ class Sale extends Model
 {
     use HasFactory, SoftDeletes;
 
+    public $timestamps = true;
+
     protected $fillable = [
         'buyer_id',
         'salesman_id',
@@ -25,6 +27,8 @@ class Sale extends Model
         'tax',
         'information',
         'qty_sold',
+        'due_date_duration',
+        'due_date',
     ];
 
     public function user()

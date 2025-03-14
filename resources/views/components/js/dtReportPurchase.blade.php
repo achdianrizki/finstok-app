@@ -3,8 +3,11 @@
         let page = 1;
         let lastPage = 1;
         let searchQuery = '';
+        let period = '';
+        let startDate = '';
+        let endDate = '';
 
-        function fetchitems(page, searchQuery = '') {
+        function fetchitems(page, searchQuery = '', period = '', startDate = '', endDate = '') {
 
             function formatRupiah(number) {
                 return new Intl.NumberFormat('id-ID', {
@@ -14,7 +17,8 @@
             }
 
             $.ajax({
-                url: '/purchases-data?page=' + page + '&search=' + searchQuery,
+                url: '/purchases-data?page=' + page + '&search=' + searchQuery + '&period=' + period +
+                    '&start_date=' + startDate + '&end_date=' + endDate,
                 method: 'GET',
                 success: function(response) {
                     let rows = '';
@@ -34,9 +38,9 @@
                                 <td class="px-6 py-4 whitespace-nowrap hidden md:table-cell">${purchase.supplier.contact}</td>
                                 <td class="px-6 py-4 whitespace-nowrap hidden md:table-cell">${purchase.status === 'belum_lunas' ? 'Belum Lunas' : purchase.status === 'lunas' ? 'Lunas' : purchase.status}</td>
                                 <td class="px-6 py-4 whitespace-nowrap">
-                                    <x-button target="" href="/manager/purchase/${purchase.id}/edit" variant="warning" class="justify-center max-w-sm gap-2">
+                                   <!-- <x-button target="" href="/manager/purchase/${purchase.id}/edit" variant="warning" class="justify-center max-w-sm gap-2">
                                         <x-heroicon-o-pencil class="w-3 h-3" aria-hidden="true" />
-                                    </x-button>
+                                    </x-button> --!>
                                     <form method="POST" action="/manager/purchases/${purchase.id}" style="display:inline;">
                                         @csrf
                                         <input type="hidden" name="_method" value="DELETE">
@@ -78,21 +82,41 @@
         $('#nextPage').on('click', function() {
             if (page < lastPage) {
                 page++;
-                fetchitems(page, searchQuery);
+                fetchitems(page, searchQuery, period, startDate, endDate);
             }
         });
 
         $('#prevPage').on('click', function() {
             if (page > 1) {
                 page--;
-                fetchitems(page, searchQuery);
+                fetchitems(page, searchQuery, period, startDate, endDate);
             }
         });
 
         $('#search').on('keyup', function() {
             searchQuery = $(this).val();
             page = 1;
-            fetchitems(page, searchQuery);
+            fetchitems(page, searchQuery, period, startDate, endDate);
+        });
+
+        $('#period').on('change', function() {
+            period = $(this).val();
+            if (period === 'custom') {
+                $('.custom').removeClass('hidden');
+            } else {
+                $('.custom').addClass('hidden');
+                $('#start_date, #end_date').val('');
+                startDate = '';
+                endDate = '';
+            }
+            page = 1;
+            fetchitems(page, searchQuery, period, startDate, endDate);
+        });
+
+        $('#start_date, #end_date').on('change', function() {
+            startDate = $('#start_date').val();
+            endDate = $('#end_date').val();
+            fetchitems(page, searchQuery, period, startDate, endDate);
         });
     });
 </script>

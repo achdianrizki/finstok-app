@@ -34,9 +34,19 @@
                                 <td class="px-6 py-4 whitespace-nowrap hidden md:table-cell">${purchase.supplier.contact}</td>
                                 <td class="px-6 py-4 whitespace-nowrap hidden md:table-cell">${purchase.status === 'belum_lunas' ? 'Belum Lunas' : purchase.status === 'lunas' ? 'Lunas' : purchase.status}</td>
                                 <td class="px-6 py-4 whitespace-nowrap">
-                                    <x-button target="" href="/manager/purchase/${purchase.id}/edit" variant="warning" class="justify-center max-w-sm gap-2">
+                                    <!-- <x-button target="" href="/manager/purchase/${purchase.id}/edit" variant="warning" class="justify-center max-w-sm gap-2">
                                         <x-heroicon-o-pencil class="w-3 h-3" aria-hidden="true" />
-                                    </x-button>
+                                    </x-button> !-->
+
+
+                                    <div class="flex items-center gap-2">
+                                    <a href="report/purchase-invoice/export/pdf/${purchase.id}"
+                                            class="flex items-center  text-sm text-white bg-red-500 hover:bg-red-600 w-20 px-2 py-1 border rounded-md"
+                                            role="menuitem" tabindex="-1" id="menu-item-0">
+                                            <x-icons.pdf class="w-5 h-5" aria-hidden="true" />
+                                            <span>Bukti</span>
+                                    </a>
+
                                     <form method="POST" action="/manager/purchases/${purchase.id}" style="display:inline;">
                                         @csrf
                                         <input type="hidden" name="_method" value="DELETE">
@@ -44,6 +54,7 @@
                                             <x-heroicon-o-trash class="w-3 h-3" aria-hidden="true" />
                                         </x-button>
                                     </form>
+                                    </div>
 
                                     <button onclick="toggleDetails(${index})" class="bg-green-800 text-white  p-2 rounded sm:hidden">
                                         <x-heroicon-o-chevron-down class="w-2 h-2" aria-hidden="true" />    
