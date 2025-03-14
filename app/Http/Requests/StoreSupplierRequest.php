@@ -24,6 +24,7 @@ class StoreSupplierRequest extends FormRequest
         return [
             'supplier_code' => ['required', 'string'],
             'name' => ['required', 'string'],
+            'npwp' => ['integer'],
             'contact' => ['required', 'string'],
             'discount1' => ['nullable', 'numeric'],
             'discount2' => ['nullable', 'numeric'],

@@ -26,7 +26,7 @@
 
                 <x-form.label for="supplier_id" :value="__('Supplier')" />
                 <x-form.input id="supplier_id" class="block w-full" type="text" name="supplier_name"
-                    :value="$purchase->supplier->name" />
+                    :value="$purchase->supplier->contact" />
                 <x-form.input id="supplier_id" class="block w-full" type="hidden" name="supplier_id"
                     :value="old('supplier_id', $purchase->supplier_id)" />
 
@@ -99,7 +99,7 @@
                                 <td class="px-1 py-2">
                                     <input type="text"
                                         class="item-purchase_price w-full px-2 py-1 border border-gray-300 rounded-md bg-gray-100 text-right"
-                                        value="{{ number_format($item->pivot->price_per_item, 2, ',', '.') }}"
+                                        value="{{ number_format($item->purchase_price, 2, ',', '.') }}"
                                         readonly>
                                 </td>
                                 <td class="px-1 py-2">
@@ -124,12 +124,12 @@
                                 <td class="px-1 py-2">
                                     <input type="text"
                                         class="item-total-price w-full px-2 py-1 border border-gray-300 rounded-md bg-gray-100 text-right"
-                                        readonly>
+                                        readonly value="{{ number_format($item->pivot->price_per_item, 2, ',', '.') }}">
                                 </td>
                                 <td class="px-1 py-2">
                                     <input type="text"
                                         class="item-sub-total w-full px-2 py-1 border border-gray-300 rounded-md bg-gray-100 text-right"
-                                        readonly>
+                                        readonly value="{{ number_format($item->pivot->price_per_item - $item->total_discount1 - $item->total_discount2 - $item->total_discount3, 2, ',', '.') }}">
                                 </td>
                             </tr>
                         @endforeach

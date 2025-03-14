@@ -60,10 +60,9 @@ class ItemController extends Controller
      */
     public function create()
     {
-        $warehouses = Warehouse::all();
         $suppliers = Supplier::all();
         $categories = Category::all();
-        return view('manager.items.create', compact('warehouses', 'suppliers', 'categories'));
+        return view('manager.items.create', compact('suppliers', 'categories'));
     }
 
     /**
@@ -73,13 +72,12 @@ class ItemController extends Controller
     {
         $item = item::create([
             'name' => $request->name,
-            'code' => $request->code,
+            'code' => $request->code ?? "-",
             'purchase_price' => $request->purchase_price,
             'unit' => $request->unit,
             'stock' => 0,
             'description' => $request->description,
             'category_id' => $request->category_id,
-            'warehouse_id' => $request->warehouse_id,
         ]);
 
         $item->suppliers()->attach($request->suppliers);
@@ -120,7 +118,6 @@ class ItemController extends Controller
             'unit' => $request->unit,
             'description' => $request->description,
             'category_id' => $request->category_id,
-            'warehouse_id' => $request->warehouse_id,
         ]);
 
         if ($request->has('suppliers')) {

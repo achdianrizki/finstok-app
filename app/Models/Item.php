@@ -18,7 +18,6 @@ class Item extends Model
         'description',
         'supplier_id',
         'category_id',
-        'warehouse_id'
     ];
 
     public function category()
@@ -49,6 +48,11 @@ class Item extends Model
     public function purchases()
     {
         return $this->belongsToMany(Purchase::class, 'item_purchase')->withPivot('qty', 'price_per_item', 'discount1', 'discount2', 'discount3');
+    }
+
+    public function item_warehouse()
+    {
+        return $this->belongsToMany(Warehouse::class, 'item_warehouse')->withPivot('stock', 'price_per_item');
     }
 
     public function sales()

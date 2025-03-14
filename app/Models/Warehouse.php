@@ -38,4 +38,9 @@ class Warehouse extends Model
             $warehouse->slug = Str::slug($warehouse->name);
         });
     }
+
+    public function item_warehouse()
+    {
+        return $this->belongsToMany(Item::class, 'item_warehouse')->withPivot('stock', 'price_per_item');
+    }
 }

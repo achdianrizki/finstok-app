@@ -50,6 +50,7 @@ class RoleSeeder extends Seeder
         $supplier = Supplier::create([
             'supplier_code' => 'SUP001',
             'name' => 'Julian',
+            'npwp' => '09030910293',
             'contact' => 'PT.JULIANA',
             'phone' => '08123456789',
             'fax_nomor' => null,
@@ -63,6 +64,7 @@ class RoleSeeder extends Seeder
         $supplier = Supplier::create([
             'supplier_code' => 'SUP002',
             'name' => 'Ferupa',
+            'npwp' => '123456789',
             'contact' => 'PT.FERUPA',
             'phone' => '08123456789',
             'fax_nomor' => null,

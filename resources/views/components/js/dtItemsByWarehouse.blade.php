@@ -5,9 +5,7 @@
         let searchQuery = '';
         let warehouseId = $('#warehouseId').val();
 
-
-        function fetchitems(page, searchQuery = '') {
-
+        function fetchItems(page, searchQuery = '') {
             function formatRupiah(number) {
                 return new Intl.NumberFormat('id-ID', {
                     style: 'currency',
@@ -23,22 +21,29 @@
 
                     if (response.data.length === 0) {
                         rows = `
-                    <tr>
-                        <td colspan="6" class="py-3 px-6 text-center">Not Found</td>
-                    </tr>
+                        <tr>
+                            <td colspan="7" class="py-3 px-6 text-center">Not Found</td>
+                        </tr>
                     `;
                     } else {
                         $.each(response.data, function(index, item) {
+                            let warehouseInfo = item.item_warehouse.find(w => w.id ==
+                                warehouseId);
+
+                            let stockQty = warehouseInfo ? warehouseInfo.pivot.stock :
+                            0;
+                            let warehouseName = warehouseInfo ? warehouseInfo.name : '-';
+
                             rows += `
                             <tr class="border dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-slate-900">
                                 <td class="px-6 py-4 whitespace-nowrap">${item.name}</td>
                                 <td class="px-6 py-4 whitespace-nowrap hidden sm:table-cell">${item.code}</td>
                                 <td class="px-6 py-4 whitespace-nowrap hidden md:table-cell">${item.category.name}</td>
                                 <td class="px-6 py-4 whitespace-nowrap hidden md:table-cell">${formatRupiah(item.purchase_price)}</td>
-                                <td class="px-6 py-4 whitespace-nowrap hidden md:table-cell">${item.stock}</td>
-                                <td class="px-6 py-4 whitespace-nowrap hidden md:table-cell">${item.warehouse.name}</td>
+                                <td class="px-6 py-4 whitespace-nowrap hidden md:table-cell">${stockQty}</td>
+                                <td class="px-6 py-4 whitespace-nowrap hidden md:table-cell">${warehouseName}</td>
                                 <td class="px-6 py-4 whitespace-nowrap">
-                                    <x-button target="" href="/manager/items/${item.id}/edit" variant="warning" class="justify-center max-w-sm gap-2">
+                                    <x-button href="/manager/items/${item.id}/edit" variant="warning" class="justify-center max-w-sm gap-2">
                                         <x-heroicon-o-pencil class="w-3 h-3" aria-hidden="true" />
                                     </x-button>
                                     <form method="POST" action="/manager/items/${item.id}" style="display:inline;">
@@ -48,17 +53,17 @@
                                             <x-heroicon-o-trash class="w-3 h-3" aria-hidden="true" />
                                         </x-button>
                                     </form>
-
-                                    <button onclick="toggleDetails(${index})" class="bg-green-800 text-white  p-2 rounded sm:hidden">
+                                    <button onclick="toggleDetails(${index})" class="bg-green-800 text-white p-2 rounded sm:hidden">
                                         <x-heroicon-o-chevron-down class="w-2 h-2" aria-hidden="true" />    
                                     </button>
                                 </td>
                             </tr>
                             <tr id="details-${index}" class="hidden sm:hidden">
-                                <td colspan="6" class="px-6 py-4">
+                                <td colspan="7" class="px-6 py-4">
                                     <div>
                                         <p><strong>Kode:</strong> ${item.code}</p>
-                                        <p><strong>Harga/pcs:</strong> ${formatRupiah(item.price)}</p>
+                                        <p><strong>Harga/pcs:</strong> ${formatRupiah(item.purchase_price)}</p>
+                                        <p><strong>Stok di Gudang Ini:</strong> ${stockQty}</p>
                                     </div>
                                 </td>
                             </tr>
@@ -77,26 +82,32 @@
             });
         }
 
-        fetchitems(page);
+        fetchItems(page);
 
         $('#nextPage').on('click', function() {
             if (page < lastPage) {
                 page++;
-                fetchitems(page, searchQuery);
+                fetchItems(page, searchQuery);
             }
         });
 
         $('#prevPage').on('click', function() {
             if (page > 1) {
                 page--;
-                fetchitems(page, searchQuery);
+                fetchItems(page, searchQuery);
             }
         });
 
         $('#search').on('keyup', function() {
             searchQuery = $(this).val();
             page = 1;
-            fetchitems(page, searchQuery);
+            fetchItems(page, searchQuery);
+        });
+
+        $('#warehouseId').on('change', function() {
+            warehouseId = $(this).val();
+            page = 1;
+            fetchItems(page);
         });
     });
 </script>

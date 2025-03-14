@@ -11,20 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('item_purchase', function (Blueprint $table) {
+        Schema::create('item_warehouse', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('item_id');
-            $table->unsignedBigInteger('purchase_id');
             $table->unsignedBigInteger('warehouse_id');
-            $table->integer('qty');
-            $table->decimal('price_per_item', 10, 2);
-            $table->decimal('discount1', 10, 2)->default(0);
-            $table->decimal('discount2', 10, 2)->default(0);
-            $table->decimal('discount3', 10, 2)->default(0);
-            $table->unsignedBigInteger('ad')->default(0);
+            $table->integer('stock');
+            $table->decimal('price_per_item', 15, 2);
             
             $table->foreign('item_id')->references('id')->on('items')->onDelete('cascade');
-            $table->foreign('purchase_id')->references('id')->on('purchases')->onDelete('cascade');
             $table->foreign('warehouse_id')->references('id')->on('warehouses')->onDelete('cascade');
             $table->timestamps();
         });
@@ -35,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('item_purchase');
+        Schema::dropIfExists('item_warehouse');
     }
 };

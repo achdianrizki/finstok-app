@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('phone')->nullable();
             $table->string('fax_nomor')->nullable();
             $table->text('address');
+            $table->string('npwp');
             $table->string('city')->default('-');
             $table->string('province')->default('-');
             $table->date('payment_term')->nullable();
