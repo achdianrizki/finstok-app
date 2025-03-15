@@ -50,7 +50,7 @@
 
         <x-sidebar.sublink title="Pembelian Barang" href="{{ route('manager.purchase.index') }}" :active="request()->routeIs('manager.purchase*')" />
 
-        <x-sidebar.sublink title="Pembayaran Keluar" href="{{ route('manager.outgoingpayment.index') }}"
+        <x-sidebar.sublink title="Pelunasan Pembelian" href="{{ route('manager.outgoingpayment.index') }}"
             :active="request()->routeIs('manager.outgoingpayment*')" />
     </x-sidebar.dropdown>
 
@@ -61,7 +61,7 @@
 
         <x-sidebar.sublink title="Penjualan Barang" href="{{ route('manager.sales.index') }}" :active="request()->routeIs('manager.sales.index')" />
 
-        <x-sidebar.sublink title="Pembayaran Masuk" href="{{ route('manager.incomingpayment.index') }}"
+        <x-sidebar.sublink title="Pelunasan Penjualan" href="{{ route('manager.incomingpayment.index') }}"
             :active="request()->routeIs('manager.incomingpayment*')" />
 
     </x-sidebar.dropdown>

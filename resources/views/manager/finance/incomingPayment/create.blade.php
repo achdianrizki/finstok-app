@@ -48,10 +48,10 @@
                     <span id="pay_amount_error" class="text-red-500 text-sm mt-5 hidden">Jumlah dibayarkan tidak boleh
                         lebih besar dari sisa pembayaran.</span>
 
-                    <x-form.label for="information" :value="__('Keterangan')" class="mb-2 mt-2" />
+                    <x-form.label for="information" :value="__('Catatan')" class="mb-2 mt-2" />
                     <textarea id="information" name="information"
                         class="w-full border-gray-400 rounded-md focus:ring focus:ring-purple-500 focus:ring-offset-2 dark:border-gray-600 dark:bg-dark-eval-1 dark:text-gray-300"
-                        rows="3" placeholder="Deskripsi pembayaran"></textarea>
+                        rows="3" placeholder="Tambahkan catatan jika diperlukan"></textarea>
 
                 </div>
             </div>
@@ -160,10 +160,6 @@
                         '.')) || 0;
                     let totalPrice = parseFloat($('#total_price').val().replace(/Rp\s?/g, '').replace(/\./g, '')
                         .replace(',', '.')) || 0;
-
-                    console.log("payAmount:", payAmount);
-                    console.log("totalPayed:", totalPayed);
-                    console.log("totalPrice:", totalPrice);
 
                     let remainingPayment;
 

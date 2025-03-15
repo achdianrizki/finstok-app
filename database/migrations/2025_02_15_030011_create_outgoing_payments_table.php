@@ -18,10 +18,12 @@ return new class extends Migration
             $table->string('receipt_number');
             $table->date('payment_date');
             $table->text('note')->nullable();
-            $table->string('payment_method')->nullable();
-            $table->decimal('total_price', 15, 2)->default(0);
+            $table->enum('payment_method', ['tunai', 'transfer']);
+            $table->string('bank_account_number')->nullable();
+            $table->string('payment_code')->nullable();
             $table->decimal('total_unpaid', 15, 2)->default(0);
             $table->decimal('amount_paid', 15, 2)->default(0);
+            $table->decimal('total_paid', 15, 2)->default(0);
             $table->timestamps();
         });
     }

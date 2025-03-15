@@ -2,7 +2,7 @@
     <x-slot name="header">
         <div class="flex justify-between items-center">
             <h2 class="text-xl font-semibold leading-tight">
-                {{ __('Pembayaran :sale_number', ['sale_number' => $sale->sale_number]) }}</h2>
+                {{ __('Pelunasan :sale_number', ['sale_number' => $sale->sale_number]) }}</h2>
 
             <a href="{{ route('manager.report.incomingPayment.export.allPdf', $sale->id) }}"
                 class="flex items-center text-sm text-white bg-red-500 hover:bg-red-600 px-2 py-1 border rounded-md"
@@ -47,7 +47,8 @@
                     rows="3" placeholder="Deskripsi barang" readonly disabled>{{ old('information', $sale->information) }}</textarea>
 
                 <x-form.label for="due_date_duration" :value="__('Durasi Jatuh Tempo (hari)')" class="mb-2" />
-                <button type="button" class="px-4 py-2 bg-purple-500 text-white rounded-md duration-btn mb-2">{{ old('due_date_duration', $sale->due_date_duration) }}</button>
+                <button type="button"
+                    class="px-4 py-2 bg-purple-500 text-white rounded-md duration-btn mb-2">{{ old('due_date_duration', $sale->due_date_duration) }}</button>
 
                 <x-form.label for="due_date" :value="__('Tanggal Jatuh Tempo')" />
                 <x-form.input id="due_date" class="block w-full flatpickr-input" type="date" name="due_date"
@@ -227,127 +228,124 @@
                 </tbody>
             </table>
         </div>
+    </div>
 
-        <div class="grid justify-items-end mt-4 space-y-2">
+    <div class="grid justify-items-end mt-4 space-y-2">
 
-            <div class="flex justify-between items-center w-full max-w-md">
-                <label for="sub_total" class="mr-4">Sub Total</label>
-                <input type="text" class="w-1/2 border-gray-500 bg-gray-100 rounded-md p-2" name="sub_total"
-                    id="sub_total" readonly
-                    value="Rp {{ number_format(floor($sale->sub_total * 100) / 100, 2, ',', '.') }}
+        <div class="flex justify-between items-center w-full max-w-md">
+            <label for="sub_total" class="mr-4">Sub Total</label>
+            <input type="text" class="w-1/2 border-gray-500 bg-gray-100 rounded-md p-2" name="sub_total"
+                id="sub_total" readonly
+                value="Rp {{ number_format(floor($sale->sub_total * 100) / 100, 2, ',', '.') }}
 ">
-            </div>
-
-            <div class="flex justify-between items-center w-full max-w-md">
-                <label for="total_discount1" class="mr-4">Diskon 1</label>
-                <input type="text" class="w-1/2 border-gray-500 bg-gray-100 rounded-md p-2" name="total_discount1"
-                    id="total_discount1" readonly
-                    value="Rp {{ number_format($sale->discount1_value, 2, ',', '.') }}">
-            </div>
-
-            <div class="flex justify-between items-center w-full max-w-md">
-                <label for="total_discount2" class="mr-4">Diskon 2</label>
-                <input type="text" class="w-1/2 border-gray-500 bg-gray-100 rounded-md p-2" name="total_discount2"
-                    id="total_discount2" readonly
-                    value="Rp {{ number_format($sale->discount2_value, 2, ',', '.') }}">
-            </div>
-
-            <div class="flex justify-between items-center w-full max-w-md">
-                <label for="total_discount3" class="mr-4">Diskon 3</label>
-                <input type="text" class="w-1/2 border-gray-500 bg-gray-100 rounded-md p-2" name="total_discount3"
-                    id="total_discount3" readonly
-                    value="Rp {{ number_format($sale->discount3_value, 2, ',', '.') }}">
-            </div>
-
-            <div class="flex justify-between items-center w-full max-w-md">
-                <label for="tax" class="mr-4">PPN 11%</label>
-                <input type="text" class="w-1/2 border-gray-500 bg-gray-100 rounded-md p-2" name="tax"
-                    id="taxRate" readonly value="Rp {{ number_format($sale->tax, 2, ',', '.') }}">
-            </div>
-
-            <div class="flex justify-between items-center w-full max-w-md">
-                <label for="total_payed" class="mr-4">Jumlah Pembayaran</label>
-                <input type="text" class="w-1/2 border-gray-500 bg-gray-100 rounded-md p-2" name="total_payed"
-                    id="total_payed" value="Rp {{ number_format($total_payed, 2, ',', '.') }}" readonly>
-            </div>
-
-            <div class="flex justify-between items-center w-full max-w-md">
-                <label for="remaining_payment" class="mr-4">Sisa Pembayaran</label>
-                <input type="text" class="w-1/2 border-gray-500 bg-gray-100 rounded-md p-2"
-                    name="remaining_payment" id="remaining_payment"
-                    value="Rp {{ number_format($remaining_payment, 2, ',', '.') }}" readonly>
-            </div>
-
-            <div class="flex justify-between items-center w-full max-w-md">
-                <label for="total_price" class="mr-4">Total Price</label>
-                <input type="text" class="w-1/2 border-gray-500 bg-gray-100 rounded-md p-2" name="total_price"
-                    id="total_price" value="Rp {{ number_format($sale->total_price, 2, ',', '.') }}" readonly>
-            </div>
         </div>
 
-        @push('scripts')
-            <script>
-                $(document).ready(function() {
+        <div class="flex justify-between items-center w-full max-w-md">
+            <label for="total_discount1" class="mr-4">Diskon 1</label>
+            <input type="text" class="w-1/2 border-gray-500 bg-gray-100 rounded-md p-2" name="total_discount1"
+                id="total_discount1" readonly value="Rp {{ number_format($sale->discount1_value, 2, ',', '.') }}">
+        </div>
 
-                    $('#items-table tbody tr').each(function() {
-                        calculateTotal($(this));
-                    });
+        <div class="flex justify-between items-center w-full max-w-md">
+            <label for="total_discount2" class="mr-4">Diskon 2</label>
+            <input type="text" class="w-1/2 border-gray-500 bg-gray-100 rounded-md p-2" name="total_discount2"
+                id="total_discount2" readonly value="Rp {{ number_format($sale->discount2_value, 2, ',', '.') }}">
+        </div>
 
-                    function calculateTotal(row) {
-                        let salePrice = parseFloat(row.find('.item-sale_price').val().replace(/\./g, '').replace(',',
-                            '.')) || 0;
-                        let qty = parseFloat(row.find('.item-qty-sold').val()) || 0;
-                        let discount1 = parseFloat(row.find('.item-discount1').val()) || 0;
-                        let discount2 = parseFloat(row.find('.item-discount2').val()) || 0;
-                        let discount3 = parseFloat(row.find('.item-discount3').val()) || 0;
+        <div class="flex justify-between items-center w-full max-w-md">
+            <label for="total_discount3" class="mr-4">Diskon 3</label>
+            <input type="text" class="w-1/2 border-gray-500 bg-gray-100 rounded-md p-2" name="total_discount3"
+                id="total_discount3" readonly value="Rp {{ number_format($sale->discount3_value, 2, ',', '.') }}">
+        </div>
 
-                        let originalTotal = salePrice * qty;
-                        let totalDiscount = originalTotal * (discount1 + discount2 + discount3) / 100;
-                        let finalTotal = originalTotal - totalDiscount;
-                        let subTotalPerItem = qty * salePrice;
+        <div class="flex justify-between items-center w-full max-w-md">
+            <label for="tax" class="mr-4">PPN 11%</label>
+            <input type="text" class="w-1/2 border-gray-500 bg-gray-100 rounded-md p-2" name="tax"
+                id="taxRate" readonly value="Rp {{ number_format($sale->tax, 2, ',', '.') }}">
+        </div>
 
-                        row.find('.item-total-price').val(finalTotal.toLocaleString('id-ID', {
-                            minimumFractionDigits: 2,
-                            maximumFractionDigits: 2
-                        }));
-                        row.find('.item-sub-total').val(subTotalPerItem.toLocaleString('id-ID', {
-                            minimumFractionDigits: 2,
-                            maximumFractionDigits: 2
-                        }));
-                    }
+        <div class="flex justify-between items-center w-full max-w-md">
+            <label for="total_payed" class="mr-4">Jumlah Pembayaran</label>
+            <input type="text" class="w-1/2 border-gray-500 bg-gray-100 rounded-md p-2" name="total_payed"
+                id="total_payed" value="Rp {{ number_format($total_payed, 2, ',', '.') }}" readonly>
+        </div>
+
+        <div class="flex justify-between items-center w-full max-w-md">
+            <label for="remaining_payment" class="mr-4">Sisa Pembayaran</label>
+            <input type="text" class="w-1/2 border-gray-500 bg-gray-100 rounded-md p-2" name="remaining_payment"
+                id="remaining_payment" value="Rp {{ number_format($remaining_payment, 2, ',', '.') }}" readonly>
+        </div>
+
+        <div class="flex justify-between items-center w-full max-w-md">
+            <label for="total_price" class="mr-4">Total Price</label>
+            <input type="text" class="w-1/2 border-gray-500 bg-gray-100 rounded-md p-2" name="total_price"
+                id="total_price" value="Rp {{ number_format($sale->total_price, 2, ',', '.') }}" readonly>
+        </div>
+    </div>
+
+    @push('scripts')
+        <script>
+            $(document).ready(function() {
+
+                $('#items-table tbody tr').each(function() {
+                    calculateTotal($(this));
                 });
-            </script>
-        @endpush
 
-        @push('styles')
-            <style>
-                .select2-container .select2-selection--single {
-                    height: 37px !important;
-                    border-radius: 5px;
-                    border: 1px solid #9CA3AF;
-                    padding-left: 0.30rem;
-                    padding-top: 0.25rem;
-                    padding-bottom: 0.25rem;
-                }
+                function calculateTotal(row) {
+                    let salePrice = parseFloat(row.find('.item-sale_price').val().replace(/\./g, '').replace(',',
+                        '.')) || 0;
+                    let qty = parseFloat(row.find('.item-qty-sold').val()) || 0;
+                    let discount1 = parseFloat(row.find('.item-discount1').val()) || 0;
+                    let discount2 = parseFloat(row.find('.item-discount2').val()) || 0;
+                    let discount3 = parseFloat(row.find('.item-discount3').val()) || 0;
 
-                .select2-container .select2-selection--single .select2-selection__rendered {
-                    font-size: 16px;
-                    color: #374151;
-                }
+                    let originalTotal = salePrice * qty;
+                    let totalDiscount = originalTotal * (discount1 + discount2 + discount3) / 100;
+                    let finalTotal = originalTotal - totalDiscount;
+                    let subTotalPerItem = qty * salePrice;
 
-                .select2-container .select2-selection--single .select2-selection__arrow {
-                    height: 37px !important;
+                    row.find('.item-total-price').val(finalTotal.toLocaleString('id-ID', {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2
+                    }));
+                    row.find('.item-sub-total').val(subTotalPerItem.toLocaleString('id-ID', {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2
+                    }));
                 }
+            });
+        </script>
+    @endpush
 
-                .select2-container--default .select2-results__option--highlighted[aria-selected] {
-                    background-color: #3b82f6 !important;
-                    color: white !important;
-                }
+    @push('styles')
+        <style>
+            .select2-container .select2-selection--single {
+                height: 37px !important;
+                border-radius: 5px;
+                border: 1px solid #9CA3AF;
+                padding-left: 0.30rem;
+                padding-top: 0.25rem;
+                padding-bottom: 0.25rem;
+            }
 
-                .select2-container--default .select2-results__option {
-                    font-size: 14px;
-                    padding: 10px;
-                }
-            </style>
-        @endpush
+            .select2-container .select2-selection--single .select2-selection__rendered {
+                font-size: 16px;
+                color: #374151;
+            }
+
+            .select2-container .select2-selection--single .select2-selection__arrow {
+                height: 37px !important;
+            }
+
+            .select2-container--default .select2-results__option--highlighted[aria-selected] {
+                background-color: #3b82f6 !important;
+                color: white !important;
+            }
+
+            .select2-container--default .select2-results__option {
+                font-size: 14px;
+                padding: 10px;
+            }
+        </style>
+    @endpush
 </x-app-layout>

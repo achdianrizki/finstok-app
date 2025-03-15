@@ -217,7 +217,7 @@
                 <td style="text-align: left">{{ $item->name }}</td>
                 <td style="text-align: right">{{ $item->pivot->qty }}</td>
                 <td style="text-align: left">{{ $item->unit }}</td>
-                <td style="text-align: right">Rp {{ number_format($item->purchase_price, 2, ',', '.') }}
+                <td style="text-align: right">Rp {{ number_format($item->pivot->price_per_item, 2, ',', '.') }}
 
                 </td>
                 <td style="text-align: right">{{ number_format($item->pivot->discount1, 2) }}</td>
@@ -225,7 +225,7 @@
                 <td style="text-align: right">{{ number_format($item->pivot->discount3, 2) }}</td>
                 <td style="text-align: right">{{ $item->pivot->ad ? $item->pivot->ad : 0 }}</td>
                 <td style="text-align: right">Rp
-                    {{ number_format($item->pivot->qty * $item->purchase_price, 2, ',', '.') }}
+                    {{ number_format($item->pivot->qty * $item->pivot->price_per_item, 2, ',', '.') }}
                 </td>
             </tr>
         @endforeach

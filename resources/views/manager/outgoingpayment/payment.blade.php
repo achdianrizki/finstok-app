@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <div class="flex justify-between items-center">
-            <h2 class="text-xl font-semibold leading-tight">{{ 'Pembayaran ' . $purchase->purchase_number }}</h2>
+            <h2 class="text-xl font-semibold leading-tight">{{ 'Pelunasan ' . $purchase->purchase_number }}</h2>
 
             <a href="{{ route('manager.report.outgoingPayment.export.allPdf', $purchase->id) }}"
                 class="flex items-center text-sm text-white bg-red-500 hover:bg-red-600 px-2 py-1 border rounded-md"
@@ -66,8 +66,8 @@
                             <th class="px-4 py-2 text-center border-b border-gray-300">Kode Barang</th>
                             <th class="px-4 py-2 text-center border-b border-gray-300">Nama Barang</th>
                             <th class="px-2 py-2 text-center border-b border-gray-300">Satuan</th>
-                            <th class="px-4 py-2 text-center border-b border-gray-300">Jumlah Jual</th>
-                            <th class="px-4 py-2 text-center border-b border-gray-300">Harga Jual per pcs</th>
+                            <th class="px-4 py-2 text-center border-b border-gray-300">Jumlah Beli</th>
+                            <th class="px-4 py-2 text-center border-b border-gray-300">Harga Beli per pcs</th>
                             <th class="px-4 py-2 text-center border-b border-gray-300">Diskon (%)</th>
                             <th class="px-4 py-2 text-center border-b border-gray-300">Total Harga Setelah Diskon</th>
                             <th class="px-4 py-2 text-center border-b border-gray-300">Total Harga Sebelum Diskon</th>
@@ -98,9 +98,8 @@
                                 </td>
                                 <td class="px-1 py-2">
                                     <input type="text"
-                                        class="item-purchase_price w-full px-2 py-1 border border-gray-300 rounded-md bg-gray-100 text-right"
-                                        value="{{ number_format($item->purchase_price, 2, ',', '.') }}"
-                                        readonly>
+                                        class="item-price_per_item w-full px-2 py-1 border border-gray-300 rounded-md bg-gray-100 text-right"
+                                        value="{{ number_format($item->pivot->price_per_item, 2, ',', '.') }}" readonly>
                                 </td>
                                 <td class="px-1 py-2">
                                     <div class="flex space-x-1">
@@ -124,12 +123,14 @@
                                 <td class="px-1 py-2">
                                     <input type="text"
                                         class="item-total-price w-full px-2 py-1 border border-gray-300 rounded-md bg-gray-100 text-right"
-                                        readonly value="{{ number_format($item->pivot->price_per_item, 2, ',', '.') }}">
+                                        readonly
+                                        value="{{ number_format($item->pivot->price_per_item, 2, ',', '.') }}">
                                 </td>
                                 <td class="px-1 py-2">
                                     <input type="text"
                                         class="item-sub-total w-full px-2 py-1 border border-gray-300 rounded-md bg-gray-100 text-right"
-                                        readonly value="{{ number_format($item->pivot->price_per_item - $item->total_discount1 - $item->total_discount2 - $item->total_discount3, 2, ',', '.') }}">
+                                        readonly
+                                        value="{{ number_format($item->pivot->price_per_item - $item->total_discount1 - $item->total_discount2 - $item->total_discount3, 2, ',', '.') }}">
                                 </td>
                             </tr>
                         @endforeach
@@ -145,53 +146,82 @@
             <hr class="my-2 border-gray-300">
         </div>
 
-        <x-button :href="route('manager.outgoingpayment.payment', ['purchase' => $purchase->id])" variant="success" class="justify-center max-w-xl gap-2" size="sm">
-            <x-heroicon-o-plus class="w-6 h-6" aria-hidden="true" />
-            <span>Bayar</span>
-        </x-button>
+        @if ($purchase->status != 'lunas')
+            <x-button :href="route('manager.outgoingpayment.payment', ['purchase' => $purchase->id])" variant="success" class="justify-center max-w-xl gap-2" size="sm">
+                <x-heroicon-o-plus class="w-6 h-6" aria-hidden="true" />
+                <span>Bayar</span>
+            </x-button>
+        @endif
 
 
-        <table class="w-full border border-gray-300 mt-2 shadow-md rounded-lg overflow-hidden" id="items-table">
-            <thead class="bg-gray-200 text-gray-700 uppercase text-xs tracking-wider">
-                <tr>
-                    <th class="px-4 py-2 text-left border-b border-gray-300 w-2/12">Nomor Resi</th>
-                    <th class="px-4 py-2 text-left border-b border-gray-300 w-2/12">Tanggal Pembayaran</th>
-                    <th class="px-4 py-2 text-left border-b border-gray-300 w-2/12">Note</th>
-                    <th class="px-4 py-2 text-left border-b border-gray-300 w-2/12">Metode Pembayaran</th>
-                    <th class="px-4 py-2 text-right border-b border-gray-300 w-2/12">Total Bayar</th>
-                    <th class="px-4 py-2 text-right border-b border-gray-300 w-2/12">Jumlah yg Belum Dibayar</th>
-                    <th class="px-4 py-2 text-left border-b border-gray-300 w-2/12">Print</th>
-                </tr>
-            </thead>
-            <tbody class="bg-white divide-y divide-gray-300">
-                @forelse ($purchase->payments as $payment)
+        <div class="overflow-x-auto">
+            <table class="w-full min-w-max border border-gray-300 mt-2 shadow-md rounded-lg table-auto"
+                id="items-table">
+                <thead class="bg-gray-200 text-gray-700 uppercase text-sm tracking-wider sticky top-0 z-10">
                     <tr>
-                        <td class="px-4 py-2 border-b border-gray-300">{{ $payment->receipt_number }}</td>
-                        <td class="px-4 py-2 border-b border-gray-300">{{ $payment->payment_date }}</td>
-                        <td class="px-4 py-2 border-b border-gray-300">{{ $payment->description }}</td>
-                        <td class="px-4 py-2 border-b border-gray-300">{{ $payment->payment_method }}</td>
-                        <td class="px-4 py-2 text-right border-b border-gray-300">
-                            {{ number_format($payment->amount_paid, 2) }}</td>
-                        <td class="px-4 py-2 text-right border-b border-gray-300">
-                            {{ number_format($payment->total_unpaid, 2) }}</td>
-                        <td>
-                            <a href="{{ route('manager.report.outgoingPayment.export.onePdf', $payment->id) }}"
-                                class="flex items-center  text-sm text-white bg-red-500 hover:bg-red-600 w-full px-2 py-1 border rounded-md"
-                                role="menuitem" tabindex="-1" id="menu-item-0">
-                                <x-icons.pdf class="w-5 h-5" aria-hidden="true" />
-                                <span>Bukti</span>
-                            </a>
-                        </td>
+                        <th class="px-4 py-2 text-center border-b border-gray-300 ">Nomor Resi</th>
+                        <th class="px-4 py-2 text-center border-b border-gray-300 ">Tanggal Pembayaran</th>
+                        <th class="px-4 py-2 text-center border-b border-gray-300 ">Metode Pembayaran
+                        </th>
+                        <th class="px-4 py-2 text-center border-b border-gray-300 ">Jumlah Dibayarkan
+                        </th>
+                        <th class="px-4 py-2 text-center border-b border-gray-300 ">Sisa Pembayaran</th>
+                        <th class="px-4 py-2 text-center border-b border-gray-300 ">Total Dibayarkan</th>
+                        <th class="px-4 py-2 text-center border-b border-gray-300 ">Aksi</th>
                     </tr>
-                @empty
-                    <tr>
-                        <td colspan="7" class="px-4 py-2 text-center text-gray-500">
-                            {{ __('Belum ada pembayaran') }}</td>
-                    </tr>
-                @endforelse
-
-            </tbody>
-        </table>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-300">
+                    @forelse ($outgoingPayments as $outgoing_payment)
+                        <tr class="border-b border-gray-300">
+                            <td class="px-1 py-2">
+                                <input type="text"
+                                    class="w-full px-2 py-1 border border-gray-300 rounded-md bg-gray-100 text-center"
+                                    value="{{ $outgoing_payment->receipt_number }}" readonly>
+                            </td>
+                            <td class="px-1 py-2">
+                                <input type="text"
+                                    class="w-full px-2 py-1 border border-gray-300 rounded-md bg-gray-100 text-center"
+                                    value="{{ $outgoing_payment->payment_date }}" readonly>
+                            </td>
+                            <td class="px-1 py-2">
+                                <input type="text"
+                                    class="w-full px-2 py-1 border border-gray-300 rounded-md bg-gray-100 text-center"
+                                    value="{{ $outgoing_payment->payment_method }}" readonly>
+                            </td>
+                            <td class="px-1 py-2">
+                                <input type="text"
+                                    class="w-full px-2 py-1 border border-gray-300 rounded-md bg-gray-100 text-right"
+                                    value="{{ number_format($outgoing_payment->amount_paid, 2, ',', '.') }}" readonly>
+                            </td>
+                            <td class="px-1 py-2">
+                                <input type="text"
+                                    class="w-full px-2 py-1 border border-gray-300 rounded-md bg-gray-100 text-right"
+                                    value="{{ number_format($outgoing_payment->total_unpaid, 2, ',', '.') }}"
+                                    readonly>
+                            </td>
+                            <td class="px-1 py-2">
+                                <input type="text"
+                                    class="w-full px-2 py-1 border border-gray-300 rounded-md bg-gray-100 text-right"
+                                    value="{{ number_format($outgoing_payment->total_paid, 2, ',', '.') }}" readonly>
+                            </td>
+                            <td class="px-1 py-2">
+                                <a href="{{ route('manager.report.outgoingPayment.export.onePdf', $outgoing_payment->id) }}"
+                                    class="flex items-center  text-sm text-white bg-red-500 hover:bg-red-600 w-full px-2 py-1 border rounded-md"
+                                    role="menuitem" tabindex="-1" id="menu-item-0">
+                                    <x-icons.pdf class="w-5 h-5" aria-hidden="true" />
+                                    <span>Bukti</span>
+                                </a>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="7" class="px-4 py-2 text-center text-gray-500">
+                                {{ __('Belum ada pembayaran') }}</td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
     </div>
 
     <div class="grid justify-items-end mt-4 space-y-2">

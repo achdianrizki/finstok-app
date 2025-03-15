@@ -16,9 +16,11 @@ class OutgoingPayment extends Model
         'payment_date',
         'note',
         'payment_method',
-        'total_price',
+        'bank_account_number',
+        'payment_code',
         'total_unpaid',
         'amount_paid',
+        'total_paid',
     ];
 
     public function purchase()

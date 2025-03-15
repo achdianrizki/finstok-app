@@ -50,8 +50,10 @@ class outgoingPaymentController extends Controller
     public function create_payment(Purchase $purchase)
     {
         $suppliers = $purchase->supplier;
+
+        $payed_amount = $purchase->outgoingPayments->sum('amount_paid');
         // dd($purchase->payments->total_unpaid);
-        return view('manager.outgoingPayment.show', compact('suppliers', 'purchase'));
+        return view('manager.outgoingPayment.show', compact('suppliers', 'purchase', 'payed_amount'));
     }
 
 
@@ -60,40 +62,36 @@ class outgoingPaymentController extends Controller
      */
     public function store(Request $request)
     {
+        $latestPayment = OutgoingPayment::where('purchase_id', $request->purchase_id)->latest()->first();
+
+        $totalPaid = $latestPayment ? $latestPayment->total_paid + (float)str_replace(',', '.', str_replace('.', '', $request->amount_paid)) : (float) str_replace(',', '.', str_replace('.', '', $request->amount_paid));
+
+        // Kalo gamau dinamis
+        $total_unpaid = (float) str_replace(['Rp', '.', ','], ['', '', '.'], $request->total_unpaid);
+
         $purchase = Purchase::find($request->purchase_id);
 
-        if (!$purchase) {
-            return back()->withErrors(['error' => 'Purchase not found']);
-        }
-
-        $receipt_number = date('Y') . '/SDIPAY/' . rand(1000, 9999);
-
-        // Hitung total unpaid, pastikan tidak negatif
-        if ($request->amount_paid >= $purchase->total_price) {
-            $total_unpaid = 0;
-            $status = 'lunas';
-        } else {
-            $total_unpaid = $purchase->total_price - $request->amount_paid;
-            $status = 'belum_lunas';
-        }
-
-        outgoingPayment::create([
-            'supplier_id' => $request->supplier_id,
+        OutgoingPayment::create([
             'purchase_id' => $request->purchase_id,
-            'receipt_number' => $receipt_number,
+            'receipt_number' => $request->receipt_number,
             'payment_date' => $request->payment_date,
-            'note' => $request->note,
-            'total_price' => $purchase->total_price,
             'payment_method' => $request->payment_method,
+            'bank_account_number' => $request->bank_account_number,
+            'payment_code' => $request->payment_code,
+            'amount_paid' => (float) str_replace(',', '.', str_replace('.', '', $request->amount_paid)),
+            'note' => $request->note,
+            // 'remaining_payment' => (float) str_replace(['Rp', '.', ','], ['', '', '.'], $request->remaining_payment),
             'total_unpaid' => $total_unpaid,
-            'amount_paid' => $request->amount_paid,
+            'total_paid' => $totalPaid,
         ]);
 
-        // Update status pembelian
-        $purchase->update(['status' => $status]);
+        if ($totalPaid >= $purchase->total_price) {
+            $purchase->update(['status' => 'Lunas']);
+        }
 
-        toast('Data berhasil disimpan', 'success');
-        return redirect()->route('manager.outgoingpayment.show', ['outgoingpayment' => $purchase->id]);
+
+        toast('Pembayaran berhasil ditambahkan', 'success');
+        return redirect()->route('manager.outgoingpayment.show', $request->purchase_id)->with('success', 'Pembayaran berhasil ditambahkan');
     }
 
 
@@ -106,12 +104,18 @@ class outgoingPaymentController extends Controller
     public function show($id)
     {
         $purchase = Purchase::with('payments', 'supplier')->findOrFail($id);
+        $outgoingPayments = $purchase->outgoingPayments;
+        $total_payed = $purchase->outgoingPayments->sum('pay_amount');
+
+        // Menggunakan Query Builder agar bisa pakai orderByDesc
+        $last_payment = $purchase->outgoingPayments()->orderByDesc('created_at')->first();
+        $total_unpaid = optional($last_payment)->total_unpaid ?? 0;
 
 
 
         // dd($items);
 
-        return view('manager.outgoingPayment.payment', compact('purchase'));
+        return view('manager.outgoingPayment.payment', compact('purchase', 'outgoingPayments', 'total_payed', 'last_payment', 'total_unpaid'));
     }
 
     /**

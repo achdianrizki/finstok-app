@@ -35,9 +35,6 @@
                                 <td class="px-6 py-4 whitespace-nowrap hidden md:table-cell">${sale.buyer.contact}</td>
                                 <td class="px-6 py-4 whitespace-nowrap hidden md:table-cell">${sale.status}</td>
                                 <td class="px-6 py-4 whitespace-nowrap">
-                                  <!--  <x-button target="" href="/manager/sales/${sale.id}/edit" variant="warning" class="justify-center max-w-sm gap-2">
-                                        <x-heroicon-o-pencil class="w-3 h-3" aria-hidden="true" />
-                                    </x-button> --!>
 
                                     <div class="flex items-center gap-2">
                                     <a href="report/sale-invoice/export/pdf/${sale.id}"
@@ -46,6 +43,10 @@
                                             <x-icons.pdf class="w-5 h-5" aria-hidden="true" />
                                             <span>Bukti</span>
                                     </a>
+
+                                    <x-button target="" href="/manager/sales/${sale.id}/edit" variant="warning" class="justify-center max-w-sm gap-2">
+                                        <x-heroicon-o-pencil class="w-3 h-3" aria-hidden="true" />
+                                    </x-button>
 
                                     <form method="POST" action="/manager/sales/${sale.id}" style="display:inline;">
                                         @csrf

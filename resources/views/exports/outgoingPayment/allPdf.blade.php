@@ -69,7 +69,7 @@
         </tr>
         <tr>
             <td>Pajak</td>
-            <td>: {{ number_format($purchase->tax, 2) }}</td>
+            <td>: Rp {{ number_format($purchase->tax, 2, ',', '.') }}</td>
         </tr>
         <tr>
             <td>Status</td>
@@ -93,10 +93,10 @@
                 <td>{{ $outgoingPayment->receipt_number }}</td>
                 <td>{{ $outgoingPayment->payment_date }}</td>
                 <td>{{ $outgoingPayment->payment_method }}</td>
-                <td>{{ number_format($outgoingPayment->pay_amount, 2) }}</td>
-                <td>{{ number_format($outgoingPayment->remaining_payment, 2) }}</td>
-                <td>{{ number_format($outgoingPayment->total_paid, 2) }}</td>
-                <td>{{ number_format($outgoingPayment->purchase->total_price, 2) }}</td>
+                <td>Rp {{ number_format($outgoingPayment->amount_paid, 2, ',', '.') }}</td>
+                <td>Rp {{ number_format($outgoingPayment->total_unpaid, 2, ',', '.') }}</td>
+                <td>Rp {{ number_format($outgoingPayment->total_paid, 2) }}</td>
+                <td>Rp {{ number_format($outgoingPayment->purchase->total_price, 2) }}</td>
             </tr>
         @empty
             <tr>
