@@ -37,13 +37,22 @@
 
     </x-sidebar.dropdown>
 
-    <x-sidebar.link title="Distributor" href="{{ route('manager.distributors.index') }}" :isActive="request()->routeIs('manager.distributors*')">
+    <x-sidebar.dropdown title="Informasi Gudang" :active="request()->routeIs('manager.warehouses.show')">
         <x-slot name="icon">
-            <x-heroicon-o-user-group class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
+            <x-icons.warehouse class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
         </x-slot>
-    </x-sidebar.link>
 
-    <x-sidebar.dropdown title="Pembelian" :active="request()->routeIs('manager.purchase*') || request()->routeIs('manager.outgoingpayment*')">
+        @foreach ($warehouses as $warehouse)
+            <x-sidebar.sublink title="{{ $warehouse->name }}"
+                href="{{ route('manager.warehouses.show', $warehouse->slug) }}" :active="request()->routeIs('manager.warehouses.show') &&
+                    request()->route('warehouse') == $warehouse->slug" class="relative">
+            </x-sidebar.sublink>
+        @endforeach
+    </x-sidebar.dropdown>
+
+
+
+    <x-sidebar.dropdown title="Pembelian" :active="request()->routeIs('manager.purchase*') || request()->routeIs('manager.outgoingpayment*') || request()->routeIs('manager.return.purchase')">
         <x-slot name="icon">
             <x-icons.supplier class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
         </x-slot>
@@ -52,9 +61,13 @@
 
         <x-sidebar.sublink title="Pelunasan Pembelian" href="{{ route('manager.outgoingpayment.index') }}"
             :active="request()->routeIs('manager.outgoingpayment*')" />
+
+        <x-sidebar.sublink title="Retur Pembelian" href="{{ route('manager.return.purchase') }}"
+            :active="request()->routeIs('manager.return.purchase')" />
+
     </x-sidebar.dropdown>
 
-    <x-sidebar.dropdown title="Penjualan" :active="request()->routeIs('manager.sales.*') || request()->routeIs('manager.incomingpayment*')">
+    <x-sidebar.dropdown title="Penjualan" :active="request()->routeIs('manager.sales.*') || request()->routeIs('manager.incomingpayment*') || request()->routeIs('manager.return.sale')">
         <x-slot name="icon">
             <x-icons.sale-tag class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
         </x-slot>
@@ -64,15 +77,18 @@
         <x-sidebar.sublink title="Pelunasan Penjualan" href="{{ route('manager.incomingpayment.index') }}"
             :active="request()->routeIs('manager.incomingpayment*')" />
 
+            <x-sidebar.sublink title="Retur Penjualan" href="{{ route('manager.return.sale') }}"
+            :active="request()->routeIs('manager.return.sale')" />
+
     </x-sidebar.dropdown>
 
     <x-sidebar.dropdown title="Report" :active="request()->routeIs('manager.report*')">
         <x-slot name="icon">
-            <x-icons.list-bullet class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
+            <x-icons.report class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
         </x-slot>
 
         <x-sidebar.sublink title="Laporan Retur" href="{{ route('manager.report.purchase.return') }}"
-            :active="request()->routeIs('manager.report.purchase')" />
+            :active="request()->routeIs('manager.report.purchase.return')" />
 
         <x-sidebar.sublink title="Laporan Pembelian" href="{{ route('manager.report.purchase') }}"
             :active="request()->routeIs('manager.report.purchase')" />
@@ -80,15 +96,15 @@
         <x-sidebar.sublink title="Laporan Penjualan" href="{{ route('manager.report.sale') }}" :active="request()->routeIs('manager.report.sale')" />
     </x-sidebar.dropdown>
 
-    @role('manager')
+    {{-- @role('manager')
         <x-sidebar.link title="Pengguna" href="{{ route('manager.users.index') }}" :isActive="request()->routeIs('manager.users*')">
             <x-slot name="icon">
                 <x-heroicon-o-user class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
             </x-slot>
         </x-sidebar.link>
-    @endrole
+    @endrole --}}
 
-    <x-sidebar.dropdown title="Kelola Keuangan" :active="request()->routeIs('manager.finance*')">
+    {{-- <x-sidebar.dropdown title="Kelola Keuangan" :active="request()->routeIs('manager.finance*')">
         <x-slot name="icon">
             <x-heroicon-o-document-currency-dollar class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
         </x-slot>
@@ -106,23 +122,16 @@
             <x-sidebar.sublink title="Kelola Modal" href="{{ route('manager.modal.index') }}" :active="request()->routeIs('manager.modal*')" />
             <x-sidebar.sublink title="Rincian Aset" href="{{ route('manager.asset.index') }}" :active="request()->routeIs('manager.asset*')" />
         </x-sidebar.dropdown>
-    @endrole
+    @endrole --}}
 
     @role('manager')
         {{-- Warehouse Start --}}
 
-        <x-sidebar.dropdown title="Informasi Gudang" :active="request()->routeIs('manager.warehouses.show')">
+        {{-- <x-sidebar.link title="Distributor" href="{{ route('manager.distributors.index') }}" :isActive="request()->routeIs('manager.distributors*')">
             <x-slot name="icon">
-                <x-icons.warehouse class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
+                <x-heroicon-o-user-group class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
             </x-slot>
-
-            @foreach ($warehouses as $warehouse)
-                <x-sidebar.sublink title="{{ $warehouse->name }}"
-                    href="{{ route('manager.warehouses.show', $warehouse->slug) }}" :active="request()->routeIs('manager.warehouses.show') &&
-                        request()->route('warehouse') == $warehouse->slug" class="relative">
-                </x-sidebar.sublink>
-            @endforeach
-        </x-sidebar.dropdown>
+        </x-sidebar.link> --}}
 
 
         {{-- <div x-data="{ open: false }">

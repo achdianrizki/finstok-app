@@ -8,6 +8,7 @@ use App\Http\Controllers\AssetController;
 use App\Http\Controllers\BuyerController;
 use App\Http\Controllers\ChartController;
 use App\Http\Controllers\ModalController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\FinanceController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CategoryController;
@@ -15,10 +16,11 @@ use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\SalesmanController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\WarehouseController;
+use App\Http\Controllers\ReturnSaleController;
 use App\Http\Controllers\DistributorController;
-use App\Http\Controllers\OutgoingPaymentController;
+use App\Http\Controllers\ReturnPurchaseController;
 use App\Http\Controllers\incomingPaymentController;
-use App\Http\Controllers\ReportController;
+use App\Http\Controllers\OutgoingPaymentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -69,6 +71,14 @@ Route::middleware('auth')->group(function () {
             ->name('incomingpayment.payment');
 
 
+        //Return Purchase
+        Route::prefix('return')->name('return.')->group(function () {
+            Route::get('/purchase', [ReturnPurchaseController::class, 'index'])->name('purchase');
+            Route::get('/purchase/{purchase}', [ReturnPurchaseController::class, 'show'])->name('purchase.show');
+            
+            Route::get('/sale', [ReturnSaleController::class, 'index'])->name('sale');
+            Route::get('/sale/{sale}', [ReturnSaleController::class, 'show'])->name('sale.show');
+        });
 
         Route::resource('buyer', BuyerController::class)->middleware('role:manager|admin');
         Route::resource('salesman', SalesmanController::class)->middleware('role:manager|admin');
@@ -103,7 +113,6 @@ Route::middleware('auth')->group(function () {
             Route::get('/purchase', [ReportController::class, 'purchase'])->name('purchase');
             Route::get('/sale', [ReportController::class, 'sale'])->name('sale');
             Route::get('/purchases/return', [ReportController::class, 'returnPurchaseView'])->name('purchase.return');
-
 
             // REPORT
             // ITEMS AND INVOICE START
@@ -162,6 +171,9 @@ Route::get('/sales-data', [SaleController::class, 'getSaleItems']);
 Route::get('/assets-data', [AssetController::class, 'getAssets']);
 Route::get('/buyers-data', [BuyerController::class, 'getBuyers']);
 Route::get('/salesmans-data', [SalesmanController::class, 'getSalesman']);
+
+Route::get('/return-purchase-data', [ReturnPurchaseController::class, 'getPurchaseItem']);
+Route::get('/return-sale-data', [ReturnSaleController::class, 'getSaleItem']);
 
 Route::get('/laporan/laba-rugi', [ChartController::class, 'getLabaRugi']);
 Route::get('/get-item/{item_id}/{supplier_id}', function ($item_id, $supplier_id) {
