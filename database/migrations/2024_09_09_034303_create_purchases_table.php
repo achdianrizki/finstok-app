@@ -27,6 +27,8 @@ return new class extends Migration
             $table->text('information');
             $table->integer('total_qty');
             $table->string('purchase_number');
+            $table->integer('due_date_duration');
+            $table->date('due_date');
             $table->softDeletes();
             $table->timestamps();
         });

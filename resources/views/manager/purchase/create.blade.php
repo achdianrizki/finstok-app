@@ -14,7 +14,8 @@
                         data-parsley-required-message="Tanggal Penjualan wajib diisi" />
 
                     <x-form.label for="supplier_id" :value="__('Supplier')" />
-                    <select id="supplier_id" name="supplier_id" class="w-full select2">
+                    <select id="supplier_id" name="supplier_id" class="w-full select2"
+                        data-parsley-required-message="Pilih salah satu supplier">
                         <option value="" selected disabled>Pilih</option>
                         @foreach ($suppliers as $supplier)
                             <option value="{{ $supplier->id }}">{{ $supplier->contact }}</option>
@@ -45,6 +46,26 @@
                         @endforeach
                     </x-form.select>
                     <x-input-error :messages="$errors->get('warehouse_id')" class="mt-2" />
+                </div>
+
+                <div>
+                    <x-form.label for="due_date_duration" :value="__('Durasi Jatuh Tempo (hari)')" class="mb-2" />
+                    <div class="flex gap-2 mb-2">
+                        <button type="button" class="px-4 py-2 bg-purple-500 text-white rounded-md duration-btn"
+                            data-value="14">14</button>
+                        <button type="button" class="px-4 py-2 bg-purple-500 text-white rounded-md duration-btn"
+                            data-value="30">30</button>
+                        <button type="button" class="px-4 py-2 bg-purple-500 text-white rounded-md duration-btn"
+                            data-value="45">45</button>
+                        <input type="number" id="custom_due_date"
+                            class="w-20 border-gray-400 rounded-md focus:ring focus:ring-purple-500 focus:ring-offset-2 dark:border-gray-600 dark:bg-dark-eval-1 dark:text-gray-300"
+                            placeholder="Custom">
+                    </div>
+                    <p id="due_date_error" class="text-red-500 mt-2 hidden">Durasi jatuh tempo harus diisi</p>
+                    <p id="purchase_date_error" class="text-red-500 mt-2 hidden">Pilih tanggal terlebih dahulu!</p>
+                    <input type="hidden" id="due_date_duration" name="due_date_duration"
+                        value="{{ old('due_date_duration') }}">
+                    <input type="hidden" id="due_date" name="due_date" value="{{ old('due_date') }}">
                 </div>
             </div>
         </div>
@@ -146,23 +167,106 @@
 
     @push('scripts')
         <script>
-            $('#buttonSubmit').click(function(event) {
-                const items = document.querySelectorAll('.item-select');
-
-                $('#error-message').remove();
-
-                if (items.length === 0) {
-                    event.preventDefault();
-
-                    $('#add-item').after(
-                        '<p id="error-message" class="text-red-500 mt-2">Barang tidak boleh kosong</p>');
-                }
-            });
-
             $(document).ready(function() {
+
+                $(".duration-btn").prop("disabled", true).addClass("bg-gray-400");
+                $("#custom_due_date").prop("disabled", true).addClass("bg-gray-400");
+
+                $(".duration-btn").on("click", function() {
+                    $(".duration-btn").removeClass("bg-purple-700 ring-2 ring-purple-300");
+
+                    $(this).addClass("bg-purple-700 ring-2 ring-purple-300");
+
+                    let days = parseInt($(this).data("value"));
+
+                    let purchaseDateValue = $("#purchase_date").val();
+
+                    let dueDate = new Date(purchaseDateValue);
+                    dueDate.setDate(dueDate.getDate() + days);
+
+                    let year = dueDate.getFullYear();
+                    let month = String(dueDate.getMonth() + 1).padStart(2, '0'); // Bulan mulai dari 0
+                    let day = String(dueDate.getDate()).padStart(2, '0');
+
+                    let formattedDueDate = `${year}-${month}-${day}`;
+
+                    $("#due_date_duration").val(days);
+                    $("#due_date").val(formattedDueDate);
+
+                    $("#custom_due_date").val("");
+
+                    $("#due_date_error").addClass("hidden");
+                    $("#purchase_date_error").addClass("hidden");
+                });
+
+                $("#custom_due_date").on("input", function() {
+
+                    $(".duration-btn").removeClass("bg-purple-700 ring-2 ring-purple-300");
+
+                    let days = parseInt($(this).val());
+
+                    if (!isNaN(days)) {
+
+                        let purchaseDateValue = $("#purchase_date").val();
+
+                        let dueDate = new Date(purchaseDateValue);
+                        dueDate.setDate(dueDate.getDate() + days);
+
+                        let year = dueDate.getFullYear();
+                        let month = String(dueDate.getMonth() + 1).padStart(2, '0'); // Bulan mulai dari 0
+                        let day = String(dueDate.getDate()).padStart(2, '0');
+
+                        let formattedDueDate = `${year}-${month}-${day}`;
+
+                        $("#due_date_duration").val(days);
+                        $("#due_date").val(formattedDueDate);
+
+                        $("#due_date_error").addClass("hidden");
+                        $("#purchase_date_error").addClass("hidden");
+                    }
+                });
+
                 $("#purchase_date").flatpickr({
                     dateFormat: "Y-m-d",
                     allowInput: true,
+                    onChange: function(selectedDates, dateStr) {
+                        if (dateStr) {
+                            $(".duration-btn").prop("disabled", false).removeClass("bg-gray-400");
+                            $("#custom_due_date").prop("disabled", false).removeClass("bg-gray-400");
+                            $("#due_date_error").addClass("hidden");
+                            $("#purchase_date_error").addClass("hidden");
+                        }
+                    }
+                });
+
+                $("#buttonSubmit").click(function(e) {
+                    let dueDateDuration = $("#due_date_duration").val();
+                    let saleDateValue = $("#purchase_date").val();
+
+                    if (!saleDateValue) {
+                        e.preventDefault();
+                        $("#purchase_date_error").removeClass("hidden");
+                    } else if (!dueDateDuration) {
+                        e.preventDefault();
+                        $("#due_date_error").removeClass("hidden");
+                    } else {
+                        $("#purchase_date_error").addClass("hidden");
+                        $("#due_date_error").addClass("hidden");
+                    }
+                });
+
+
+                $('#buttonSubmit').click(function(event) {
+                    const items = document.querySelectorAll('.item-select');
+
+                    $('#error-message').remove();
+
+                    if (items.length === 0) {
+                        event.preventDefault();
+
+                        $('#add-item').after(
+                            '<p id="error-message" class="text-red-500 mt-2">Barang tidak boleh kosong</p>');
+                    }
                 });
 
                 $('#supplier_id').select2();
@@ -264,21 +368,24 @@
                     });
 
                     let totalDiscount = totalDiscount1 + totalDiscount2 + totalDiscount3;
-                    let totalPrice = subTotal - totalDiscount;
+                    let totalPriceBeforeTax = subTotal - totalDiscount;
 
                     $('#sub_total').val(formatRupiah(subTotal));
                     $('#total_discount1').val(formatRupiah(totalDiscount1));
                     $('#total_discount2').val(formatRupiah(totalDiscount2));
                     $('#total_discount3').val(formatRupiah(totalDiscount3));
-                    $('#total_price').val(formatRupiah(totalPrice));
-                    calculateTotalPrice(totalPrice);
+
+                    $('#total_price').attr('data-total', totalPriceBeforeTax.toFixed(2));
+
+                    calculateTotalPrice();
                 }
 
-                function calculateTotalPrice(totalPrice) {
+                function calculateTotalPrice() {
+                    let totalPriceBeforeTax = parseFloat($('#total_price').attr('data-total')) || 0;
                     let taxType = $('#tax').val();
                     let taxRate = (taxType === 'ppn') ? 0.11 : 0;
-                    let taxAmount = totalPrice * taxRate;
-                    let finalTotalPrice = totalPrice + taxAmount;
+                    let taxAmount = totalPriceBeforeTax * taxRate;
+                    let finalTotalPrice = totalPriceBeforeTax + taxAmount;
 
                     $('#taxRate').val(formatRupiah(taxAmount));
                     $('#total_price').val(formatRupiah(finalTotalPrice));
@@ -417,6 +524,12 @@
             .select2-container--default .select2-results__option {
                 font-size: 14px;
                 padding: 10px;
+            }
+
+            .duration-btn:disabled {
+                background-color: #a0aec0;
+                cursor: not-allowed;
+                opacity: 0.6;
             }
         </style>
     @endpush

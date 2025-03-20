@@ -44,7 +44,7 @@
                 <x-form.label for="information" :value="__('Keterangan')" class="mb-2" />
                 <textarea id="information" name="information"
                     class="w-full border-gray-400 rounded-md focus:ring focus:ring-purple-500 focus:ring-offset-2 dark:border-gray-600 bg-gray-200 dark:bg-dark-eval-1 dark:text-gray-300"
-                    rows="3" placeholder="Deskripsi barang" readonly disabled>{{ old('information', $sale->information) }}</textarea>
+                    rows="3" placeholder="-" readonly disabled>{{ old('information', $sale->information) }}</textarea>
 
                 <x-form.label for="due_date_duration" :value="__('Durasi Jatuh Tempo (hari)')" class="mb-2" />
                 <button type="button"
