@@ -9,9 +9,10 @@ use App\Models\Item;
 use App\Models\Sale;
 use App\Models\Buyer;
 use App\Models\Salesman;
+use App\Models\Warehouse;
 use App\Models\Distributor;
-use Illuminate\Http\Request;
 
+use Illuminate\Http\Request;
 use App\Models\IncomingPayment;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\DB;
@@ -39,9 +40,9 @@ class SaleController extends Controller
         $items = Item::all();
         $buyers = Buyer::all();
         $salesmans = Salesman::all();
+        $warehouses = Warehouse::all();
 
-
-        return view('manager.finance.sales.create', compact('items', 'buyers', 'salesmans'));
+        return view('manager.finance.sales.create', compact('items', 'buyers', 'salesmans', 'warehouses'));
     }
 
     public function searchItem(Request $request)
@@ -109,7 +110,7 @@ class SaleController extends Controller
      */
     public function store(Request $request)
     {
-
+        // dd($request->all());
         $lastSale = Sale::latest()->first();
 
         if ($lastSale) {
@@ -161,6 +162,32 @@ class SaleController extends Controller
                 'discount3' => $request->discount3[$index],
                 'sale_price' => $sale_price,
             ]);
+        }
+
+        $warehouse_id = $request->warehouse_id;
+        
+        foreach ($request->items as $data => $itemId) {
+            $item = Item::find($itemId);
+            if ($item) {
+                $qty = $request->qty_sold[$data];
+                $sale_price = (float) str_replace(',', '.', str_replace('.', '', $request->sale_prices[$data]));
+
+                $existing = $item->item_warehouse()
+                    ->wherePivot('warehouse_id', $warehouse_id)
+                    ->first();
+
+                if ($existing) {
+                    $item->item_warehouse()->updateExistingPivot($warehouse_id, [
+                        'stock' => $existing->pivot->stock - $qty,
+                        'price_per_item' => $sale_price
+                    ]);
+                } else {
+                    $item->item_warehouse()->attach($warehouse_id, [
+                        'stock'         => $qty,
+                        'price_per_item' => $sale_price,
+                    ]);
+                }
+            }
         }
 
 

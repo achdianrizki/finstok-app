@@ -68,6 +68,17 @@
                         class="w-full border-gray-400 rounded-md focus:ring focus:ring-purple-500 focus:ring-offset-2 dark:border-gray-600 dark:bg-dark-eval-1 dark:text-gray-300"
                         rows="3" placeholder="Deskripsi penjualan">{{ old('information') }}</textarea>
                 </div>
+
+                <x-form.label for="warehouse_id" :value="__('Gudang')" />
+                <x-form.select id="warehouse_id" class="block w-full" name="warehouse_id">
+                    @foreach ($warehouses as $warehouse)
+                        <option value="{{ $warehouse->id }}"
+                            {{ old('warehouse_id') == $warehouse->id ? 'selected' : '' }}>
+                            {{ $warehouse->name }}
+                        </option>
+                    @endforeach
+                </x-form.select>
+                <x-input-error :messages="$errors->get('warehouse_id')" class="mt-2" />
             </div>
         </div>
         <div class="mt-6">

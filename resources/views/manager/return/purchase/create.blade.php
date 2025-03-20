@@ -151,7 +151,7 @@
         </div>
     </form>
 
-    <form action="" method="POST">
+    <form action="{{ route('manager.return.purchase.create', $purchase->id) }}" method="POST">
         @csrf
         <div class="p-6 bg-white rounded-md shadow-md">
             <div class="space-y-2">

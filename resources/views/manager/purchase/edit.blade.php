@@ -183,58 +183,6 @@
         </div>
     </form>
 
-    <form action="{{ route('manager.purchase.return', $purchase->id) }}" method="POST">
-        @csrf
-        <div class="p-6 bg-white rounded-md shadow-md">
-            <div class="space-y-2">
-                <x-form.label for="reason" :value="__('Alasan Retur')" />
-                <textarea id="reason" name="reason" class="w-full border-gray-400 rounded-md focus:ring focus:ring-purple-500 focus:ring-offset-2 dark:border-gray-600 dark:bg-dark-eval-1 dark:text-gray-300" rows="3" required></textarea>
-            </div>
-
-            <div class="mt-6">
-                <h3 class="text-lg font-semibold">{{ __('Pilih Barang untuk Diretur') }}</h3>
-                <hr class="my-2 border-gray-300">
-            </div>
-
-            <div class="mt-5 space-y-2">
-                <div class="max-h-96 overflow-y-auto border border-gray-300 rounded-lg shadow-md">
-                    <div class="overflow-x-auto">
-                        <table class="w-full min-w-max border border-gray-300 shadow-md table-auto">
-                            <thead class="bg-gray-200 text-gray-700 uppercase text-sm tracking-wider sticky top-0 z-10">
-                                <tr>
-                                    <th class="px-4 py-2 text-center border-b border-gray-300">Nama Barang</th>
-                                    <th class="px-4 py-2 text-center border-b border-gray-300">Qty</th>
-                                    <th class="px-4 py-2 text-center border-b border-gray-300">Harga</th>
-                                </tr>
-                            </thead>
-                            <tbody class="bg-white divide-y divide-gray-300">
-                                @foreach ($purchase->items as $item)
-                                    <tr class="border-b border-gray-300">
-                                        <td class="px-4 py-2 text-center">{{ $item->name }}</td>
-                                        <td class="px-4 py-2 text-center">
-                                            <input type="number" name="qty[]" max="{{ $item->pivot->qty }}" class="w-full px-2 py-1 border border-gray-300 rounded-md text-center" required>
-                                        </td>
-                                        <td class="px-4 py-2 text-center">
-                                            <input type="hidden" name="items[]" value="{{ $item->id }}">
-                                            <input type="text" name="price_per_item[]" value="{{ $item->pivot->price_per_item }}" class="w-full px-2 py-1 border border-gray-300 rounded-md bg-gray-100 text-right" readonly>
-                                        </td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-
-            <div class="grid justify-items-end mt-4 space-y-2">
-                <x-button class="gap-2">
-                    <span>{{ __('Submit Retur') }}</span>
-                </x-button>
-            </div>
-        </div>
-    </form>
-
-
     @push('scripts')
         <script>
             $(document).ready(function() {

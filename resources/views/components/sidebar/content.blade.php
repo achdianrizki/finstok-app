@@ -52,7 +52,7 @@
 
 
 
-    <x-sidebar.dropdown title="Pembelian" :active="request()->routeIs('manager.purchase*') || request()->routeIs('manager.outgoingpayment*') || request()->routeIs('manager.return.purchase')">
+    <x-sidebar.dropdown title="Pembelian" :active="request()->routeIs('manager.purchase*') || request()->routeIs('manager.outgoingpayment*') || request()->routeIs('manager.return.purchase*')">
         <x-slot name="icon">
             <x-icons.supplier class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
         </x-slot>
@@ -63,11 +63,11 @@
             :active="request()->routeIs('manager.outgoingpayment*')" />
 
         <x-sidebar.sublink title="Retur Pembelian" href="{{ route('manager.return.purchase') }}"
-            :active="request()->routeIs('manager.return.purchase')" />
+            :active="request()->routeIs('manager.return.purchase*')" />
 
     </x-sidebar.dropdown>
 
-    <x-sidebar.dropdown title="Penjualan" :active="request()->routeIs('manager.sales.*') || request()->routeIs('manager.incomingpayment*') || request()->routeIs('manager.return.sale')">
+    <x-sidebar.dropdown title="Penjualan" :active="request()->routeIs('manager.sales.*') || request()->routeIs('manager.incomingpayment*') || request()->routeIs('manager.return.sale*')">
         <x-slot name="icon">
             <x-icons.sale-tag class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
         </x-slot>
@@ -78,7 +78,7 @@
             :active="request()->routeIs('manager.incomingpayment*')" />
 
             <x-sidebar.sublink title="Retur Penjualan" href="{{ route('manager.return.sale') }}"
-            :active="request()->routeIs('manager.return.sale')" />
+            :active="request()->routeIs('manager.return.sale*')" />
 
     </x-sidebar.dropdown>
 

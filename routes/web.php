@@ -55,7 +55,7 @@ Route::middleware('auth')->group(function () {
             'warehouses' => 'warehouse:slug'
         ])->middleware('role:manager|admin');
         Route::resource('purchase', PurchaseController::class)->middleware('role:manager|admin');
-        Route::post('/purchases/{id}/return', [PurchaseController::class, 'returnPurchase'])->name('purchase.return');
+        
         Route::resource('sales', SaleController::class)->middleware('role:manager|admin');
         Route::resource('distributors', DistributorController::class)->middleware('role:manager|admin');
         Route::resource('users', UserController::class)->middleware('role:manager');
@@ -75,9 +75,11 @@ Route::middleware('auth')->group(function () {
         Route::prefix('return')->name('return.')->group(function () {
             Route::get('/purchase', [ReturnPurchaseController::class, 'index'])->name('purchase');
             Route::get('/purchase/{purchase}', [ReturnPurchaseController::class, 'show'])->name('purchase.show');
+            Route::post('/purchases/{id}/return', [ReturnPurchaseController::class, 'returnPurchase'])->name('purchase.create');
             
             Route::get('/sale', [ReturnSaleController::class, 'index'])->name('sale');
             Route::get('/sale/{sale}', [ReturnSaleController::class, 'show'])->name('sale.show');
+            Route::post('/sale/{id}/return', [ReturnSaleController::class, 'returnSale'])->name('sale.create');
         });
 
         Route::resource('buyer', BuyerController::class)->middleware('role:manager|admin');
