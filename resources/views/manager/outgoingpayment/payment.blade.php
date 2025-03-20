@@ -18,34 +18,36 @@
             <div class="space-y-2">
                 <x-form.label for="purchase_number" :value="__('Nomor Pembelian')" />
                 <x-form.input id="purchase_number" class="block w-full" type="text" name="purchase_number"
-                    :value="old('purchase_number', $purchase->purchase_number)" />
+                    :value="old('purchase_number', $purchase->purchase_number)" readonly :disabled="true" />
 
                 <x-form.label for="purchase_date" :value="__('Tanggal Pembelian')" />
                 <x-form.input id="purchase_date" class="block w-full flatpickr-input" type="date"
-                    name="purchase_date" :value="old('purchase_date', $purchase->purchase_date)" />
+                    name="purchase_date" :value="old('purchase_date', $purchase->purchase_date)" readonly :disabled="true" />
 
                 <x-form.label for="supplier_id" :value="__('Supplier')" />
                 <x-form.input id="supplier_id" class="block w-full" type="text" name="supplier_name"
-                    :value="$purchase->supplier->contact" />
+                    :value="$purchase->supplier->contact" readonly :disabled="true" />
                 <x-form.input id="supplier_id" class="block w-full" type="hidden" name="supplier_id"
                     :value="old('supplier_id', $purchase->supplier_id)" />
 
                 <x-form.label for="tax" :value="__('Pajak')" />
-                <x-form.select id="tax" class="block w-full" name="tax">
-                    <option value="" disabled selected>Pilih</option>
-                    <option value="ppn" {{ old('tax_type', $purchase->tax_type) == 'ppn' ? 'selected' : '' }}>
-                        PPN 11%</option>
-                    <option value="non_ppn" {{ old('tax_type', $purchase->tax_type) == 'non_ppn' ? 'selected' : '' }}>
-                        NON-PPN
-                    </option>
-                </x-form.select>
+                <x-form.input id="tax" class="block w-full flatpickr-input" type="text" name="tax"
+                    :value="old('tax', $purchase->tax == 0.0 ? 'NON-PPN' : 'PPN 11%')" readonly :disabled="true" />
             </div>
 
             <div>
                 <x-form.label for="information" :value="__('Keterangan')" />
                 <textarea id="information" name="information"
-                    class="w-full border-gray-400 rounded-md focus:ring focus:ring-purple-500 focus:ring-offset-2 dark:border-gray-600 dark:bg-dark-eval-1 dark:text-gray-300"
-                    rows="3" placeholder="Deskripsi barang">{{ old('information', $purchase->information) }}</textarea>
+                    class="w-full border-gray-400 rounded-md focus:ring focus:ring-purple-500 focus:ring-offset-2 dark:border-gray-600 bg-gray-200 dark:bg-dark-eval-1 dark:text-gray-300"
+                    rows="3" placeholder="Deskripsi barang" readonly disabled>{{ old('information', $purchase->information) }}</textarea>
+
+                <x-form.label for="due_date_duration" :value="__('Durasi Jatuh Tempo (hari)')" class="mb-2" />
+                <button type="button"
+                    class="px-4 py-2 bg-purple-500 text-white rounded-md duration-btn mb-2">{{ old('due_date_duration', $purchase->due_date_duration) }}</button>
+
+                <x-form.label for="due_date" :value="__('Tanggal Jatuh Tempo')" />
+                <x-form.input id="due_date" class="block w-full flatpickr-input" type="date" name="due_date"
+                    :value="old('due_date', $purchase->due_date)" readonly :disabled="true" />
             </div>
         </div>
     </div>
@@ -99,7 +101,8 @@
                                 <td class="px-1 py-2">
                                     <input type="text"
                                         class="item-price_per_item w-full px-2 py-1 border border-gray-300 rounded-md bg-gray-100 text-right"
-                                        value="{{ number_format($item->pivot->price_per_item, 2, ',', '.') }}" readonly>
+                                        value="{{ number_format($item->pivot->price_per_item, 2, ',', '.') }}"
+                                        readonly>
                                 </td>
                                 <td class="px-1 py-2">
                                     <div class="flex space-x-1">

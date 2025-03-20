@@ -26,6 +26,8 @@ class Purchase extends Model
         'total_qty',
         'purchase_number',
         'purchase_date',
+        'due_date_duration',
+        'due_date',
     ];
 
     public function supplier()

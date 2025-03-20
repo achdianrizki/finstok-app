@@ -133,6 +133,8 @@ class PurchaseController extends Controller
                 'total_discount3'  => (float) str_replace(',', '.', str_replace('.', '', $request->total_discount3 ?? 0)),
                 'total_price'      => (float) str_replace(',', '.', str_replace('.', '', $request->total_price)),
                 'total_qty'        => $total_qty,
+                'due_date_duration' => $request->due_date_duration,
+                'due_date' => $request->due_date,
             ]);
 
             // dd($request->all());
@@ -227,7 +229,7 @@ class PurchaseController extends Controller
         //
     }
 
-    
+
 
     public function returnPurchase(Request $request, $id)
     {
