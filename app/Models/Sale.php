@@ -25,6 +25,7 @@ class Sale extends Model
         'sale_date',
         'status',
         'tax',
+        'tax_type',
         'information',
         'qty_sold',
         'due_date_duration',
