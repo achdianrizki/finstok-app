@@ -25,7 +25,7 @@
                         @foreach ($buyers as $buyer)
                             <option value="{{ $buyer->id }}"
                                 {{ old('buyer_id', $sale->buyer_id) == $buyer->id ? 'selected' : '' }}>
-                                {{ $buyer->name }}</option>
+                                {{ $buyer->contact }}</option>
                         @endforeach
                     </select>
 
@@ -78,7 +78,7 @@
                     <x-form.label for="information" :value="__('Keterangan')" class="mb-2" />
                     <textarea id="information" name="information"
                         class="w-full border-gray-400 rounded-md focus:ring focus:ring-purple-500 focus:ring-offset-2 dark:border-gray-600 dark:bg-dark-eval-1 dark:text-gray-300"
-                        rows="3" placeholder="Deskripsi barang" readonly>{{ old('information', $sale->information) }}</textarea>
+                        rows="3" placeholder="Deskripsi barang">{{ old('information', $sale->information) }}</textarea>
                         
                         <x-form.select id="warehouse_id" class="block w-full pointer-events-none bg-gray-200" name="warehouse_id">
                             @foreach ($warehouses as $warehouse)

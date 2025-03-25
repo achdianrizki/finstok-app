@@ -488,12 +488,42 @@
                 `;
 
                     $('#items-table tbody').append(row);
-                    $('.item-select').select2();
+                    $('.item-select').each(function() {
+                        if (!$(this).data('locked')) {
+                            $(this).select2();
+                        }
+                    });
+
+                    disableSelectedItems();
+                });
+
+                function disableSelectedItems() {
+                    let selectedItems = $('.item-select').map(function() {
+                        return $(this).val();
+                    }).get();
+
+                    $('.item-select').each(function() {
+                        let select = $(this);
+                        select.find('option').each(function() {
+                            let optionValue = $(this).val();
+                            if (selectedItems.includes(optionValue) && optionValue !== '' &&
+                                optionValue !== select.val()) {
+                                $(this).prop('disabled', true);
+                            } else {
+                                $(this).prop('disabled', false);
+                            }
+                        });
+                    });
+                }
+
+                $(document).on('change', '.item-select', function() {
+                    disableSelectedItems();
                 });
 
                 $(document).on('click', '.remove-item', function() {
                     $(this).closest('tr').remove();
                     calculateSubTotal();
+                    disableSelectedItems();
                 });
 
                 $('sales-form').parsley();
