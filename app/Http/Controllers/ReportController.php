@@ -152,8 +152,25 @@ class ReportController extends Controller
         // return view('exports.report.sale', compact('sale'));
     }
 
-    public function itemWarehouse(Warehouse $warehouse)
+    public function itemWarehouse($id)
     {
-        
+        $warehouse = Warehouse::findOrFail($id);
+
+        // Ambil semua item yang ada di warehouse tersebut
+        $items = $warehouse->item_warehouse()->withPivot('stock', 'price_per_item')->get();
+
+        $options = new Options();
+        $options->set('defaultFont', 'Helvetica');
+
+        $dompdf = new Dompdf($options);
+
+        $html = View::make('exports.warehouse.item-warehouse', compact('items', 'warehouse'))->render();
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper([0, 0, 595.28, 5000]); // 595.28px = A4 width, 2000px = custom height
+        $dompdf->render();
+
+        // return $dompdf->stream('SEVENA/SALE/' . str_replace('/', '_', $sale->sale_number) . '.pdf');
+        return $dompdf->stream('item-warehouse.pdf', ['Attachment' => false]);
+        // return view('exports.report.sale', compact('sale'));
     }
 }

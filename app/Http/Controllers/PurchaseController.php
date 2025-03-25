@@ -144,8 +144,15 @@ class PurchaseController extends Controller
                 $item = Item::find($item_id);
 
                 if ($item) {
-                    $item->increment('stock', $request->qty[$index]);
-                    $item->increment('stock', $request->ad[$index]);
+                    $qty = (int) ($request->qty[$index] ?? 0);
+                    $ad = (int) ($request->ad[$index] ?? 0); 
+
+                    if ($qty > 0) {
+                        $item->increment('stock', $qty);
+                    }
+                    if ($ad > 0) {
+                        $item->increment('stock', $ad);
+                    }
 
                     $item->purchases()->attach($purchase->id, [
                         'qty'            => $request->qty[$index],
