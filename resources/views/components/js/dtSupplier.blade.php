@@ -27,7 +27,6 @@
                                     <td class="px-6 py-4 whitespace-nowrap hidden sm:table-cell">${supplier.address}</td>
                                     <td class="px-6 py-4 whitespace-nowrap hidden sm:table-cell">${supplier.city}</td>
                                     <td class="px-6 py-4 whitespace-nowrap hidden sm:table-cell">${supplier.province}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap hidden md:table-cell">${supplier.contact}</td>
                                     <td class="px-6 py-4 whitespace-nowrap hidden md:table-cell">${(supplier.phone == null) ? '-' : supplier.phone}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <div class="flex items-center space-x-1">

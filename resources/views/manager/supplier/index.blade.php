@@ -60,9 +60,6 @@
                             Provinsi</th>
                         <th
                             class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider hidden sm:table-cell">
-                            Nama Kontak</th>
-                        <th
-                            class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider hidden sm:table-cell">
                             Nomor Telepon</th>
 
                         <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Aksi</th>

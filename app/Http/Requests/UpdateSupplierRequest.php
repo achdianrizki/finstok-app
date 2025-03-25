@@ -24,7 +24,6 @@ class UpdateSupplierRequest extends FormRequest
         return [
             'supplier_code' => ['required', 'string'],
             'name' => ['required', 'string'],
-            'contact' => ['required', 'string'],
             'discount1' => ['nullable', 'numeric'],
             'discount2' => ['nullable', 'numeric'],
             'phone' => ['nullable', 'string'],
@@ -32,7 +31,6 @@ class UpdateSupplierRequest extends FormRequest
             'address' => ['required', 'string'],
             'city' => ['required', 'string'],
             'province' => ['required', 'string'],
-            'payment_term' => ['nullable', 'integer'],
             'status' => ['required', 'boolean'],
         ];
     }

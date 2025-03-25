@@ -15,16 +15,15 @@ return new class extends Migration
             $table->id();
             $table->string('supplier_code');
             $table->string('name');
-            $table->string('contact');
             $table->string('phone')->nullable();
             $table->string('fax_nomor')->nullable();
             $table->text('address');
-            $table->string('npwp');
+            $table->string('npwp')->nullable();
             $table->string('city')->default('-');
             $table->string('province')->default('-');
-            $table->date('payment_term')->nullable();
             $table->boolean('status');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

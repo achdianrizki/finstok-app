@@ -31,13 +31,6 @@
                         <span class="text-red-500 text-sm">{{ $message }}</span>
                     @enderror
 
-                    <x-form.label for="contact" :value="__('Kontak')" />
-                    <x-form.input id="contact" class="block w-full" type="text" name="contact" :value="old('contact')"
-                        placeholder="{{ __('Masukan Kontak') }}" />
-                    @error('contact')
-                        <span class="text-red-500 text-sm">{{ $message }}</span>
-                    @enderror
-
                     <x-form.label for="npwp" :value="__('NPWP')" />
                     <x-form.input id="npwp" class="block w-full" type="text" name="npwp" :value="old('npwp')"
                         placeholder="{{ __('Masukan NPWP') }}" />
@@ -78,13 +71,6 @@
                     <x-form.input id="province" class="block w-full" type="text" name="province" :value="old('province')"
                         placeholder="{{ __('Masukan Provinsi') }}" />
                     @error('province')
-                        <span class="text-red-500 text-sm">{{ $message }}</span>
-                    @enderror
-
-                    <x-form.label for="payment_term" :value="__('Jangka Waktu Pembayaran')" />
-                    <x-form.input id="payment_term" class="block w-full" type="text" name="payment_term"
-                        :value="old('payment_term')" placeholder="{{ __('Masukan Jangka Waktu Pembayaran') }}" />
-                    @error('payment_term')
                         <span class="text-red-500 text-sm">{{ $message }}</span>
                     @enderror
 

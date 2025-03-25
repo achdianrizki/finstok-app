@@ -6,6 +6,7 @@ use Dompdf\Dompdf;
 use Dompdf\Options;
 use App\Models\Sale;
 use App\Models\Purchase;
+use App\Models\Warehouse;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\DB;
@@ -138,5 +139,10 @@ class ReportController extends Controller
         // return $dompdf->stream('SEVENA/SALE/' . str_replace('/', '_', $sale->sale_number) . '.pdf');
         return $dompdf->stream('purchase.pdf', ['Attachment' => false]);
         // return view('exports.report.sale', compact('sale'));
+    }
+
+    public function itemWarehouse(Warehouse $warehouse)
+    {
+        
     }
 }

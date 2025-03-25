@@ -24,8 +24,7 @@ class StoreSupplierRequest extends FormRequest
         return [
             'supplier_code' => ['required', 'string'],
             'name' => ['required', 'string'],
-            'npwp' => ['integer'],
-            'contact' => ['required', 'string'],
+            'npwp' => ['nullable'],
             'discount1' => ['nullable', 'numeric'],
             'discount2' => ['nullable', 'numeric'],
             'phone' => ['nullable', 'string'],
@@ -33,7 +32,6 @@ class StoreSupplierRequest extends FormRequest
             'address' => ['required', 'string'],
             'city' => ['required', 'string'],
             'province' => ['required', 'string'],
-            'payment_term' => ['nullable', 'integer'],
             'status' => ['required', 'boolean'],
         ];
     }
@@ -48,7 +46,6 @@ class StoreSupplierRequest extends FormRequest
         return [
             'supplier_code.required' => 'Kode pemasok wajib diisi.',
             'name.required' => 'Nama wajib diisi.',
-            'contact.required' => 'Kontak wajib diisi.',
             'discount1.numeric' => 'Diskon 1 harus berupa angka.',
             'discount2.numeric' => 'Diskon 2 harus berupa angka.',
             'phone.string' => 'Telepon harus berupa teks.',
@@ -56,7 +53,6 @@ class StoreSupplierRequest extends FormRequest
             'address.required' => 'Alamat wajib diisi.',
             'city.required' => 'Kota wajib diisi.',
             'province.required' => 'Provinsi wajib diisi.',
-            'payment_term.integer' => 'Jangka waktu pembayaran harus berupa angka.',
             'status.required' => 'Status wajib diisi.',
             'status.boolean' => 'Status harus berupa nilai benar atau salah.',
         ];

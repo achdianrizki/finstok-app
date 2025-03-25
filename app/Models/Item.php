@@ -47,12 +47,12 @@ class Item extends Model
 
     public function purchases()
     {
-        return $this->belongsToMany(Purchase::class, 'item_purchase')->withPivot('qty', 'price_per_item', 'discount1', 'discount2', 'discount3');
+        return $this->belongsToMany(Purchase::class, 'item_purchase')->withPivot('qty', 'price_per_item', 'discount1', 'discount2', 'discount3', 'ad', 'warehouse_id');
     }
 
     public function item_warehouse()
     {
-        return $this->belongsToMany(Warehouse::class, 'item_warehouse')->withPivot('stock', 'price_per_item');
+        return $this->belongsToMany(Warehouse::class, 'item_warehouse')->withPivot('stock', 'price_per_item', 'warehouse_id');
     }
 
     public function sales()

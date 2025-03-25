@@ -19,7 +19,7 @@ class SupplierController extends Controller
 
     public function getSupplier(Request $request)
     {
-        $query = DB::table('suppliers')->select('id', 'supplier_code', 'name', 'phone', 'address', 'city', 'province', 'contact', 'status');
+        $query = DB::table('suppliers')->select('id', 'supplier_code', 'name', 'phone', 'address', 'city', 'province', 'status')->whereNull('deleted_at');;
 
         if ($request->has('search')) {
             $search = $request->search;
@@ -29,8 +29,7 @@ class SupplierController extends Controller
                     ->orWhere('phone', 'like', '%' . $search . '%')
                     ->orWhere('address', 'like', '%' . $search . '%')
                     ->orWhere('city', 'like', '%' . $search . '%')
-                    ->orWhere('province', 'like', '%' . $search . '%')
-                    ->orWhere('contact', 'like', '%' . $search . '%');
+                    ->orWhere('province', 'like', '%' . $search . '%');
             });
         }
 
@@ -89,8 +88,18 @@ class SupplierController extends Controller
      */
     public function destroy(Request $request, Supplier $supplier)
     {
-            $supplier->forceDelete();
-            // return redirect()->route('manager.supplier.index')->with('success', "Supplier {$supplier->name} telah dihapus secara permanen.");
+        $supplier->delete();
+        // return redirect()->route('manager.supplier.index')->with('success', "Supplier {$supplier->name} telah dihapus secara permanen.");
 
+    }
+
+    public function deletedData()
+    {
+        $deletedSuppliers = DB::table('suppliers')
+            ->select('id', 'supplier_code', 'name', 'npwp', 'phone', 'fax_nomor', 'address', 'city', 'province', 'status', 'deleted_at')
+            ->whereNotNull('deleted_at')
+            ->paginate(5);
+
+        return view('manager.softdeletes.supplier.index', compact('deletedSuppliers'));
     }
 }

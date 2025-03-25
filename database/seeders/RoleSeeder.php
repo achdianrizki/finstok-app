@@ -49,29 +49,25 @@ class RoleSeeder extends Seeder
 
         $supplier = Supplier::create([
             'supplier_code' => 'SUP001',
-            'name' => 'Julian',
+            'name' => 'PT.JULIANA',
             'npwp' => '09030910293',
-            'contact' => 'PT.JULIANA',
             'phone' => '08123456789',
             'fax_nomor' => null,
             'address' => 'Jl. Supplier No. 1',
             'city' => 'Jakarta',
             'province' => 'DKI Jakarta',
-            'payment_term' => null,
             'status' => true,
         ]);
 
         $supplier = Supplier::create([
             'supplier_code' => 'SUP002',
-            'name' => 'Ferupa',
+            'name' => 'PT.FERUPA',
             'npwp' => '123456789',
-            'contact' => 'PT.FERUPA',
             'phone' => '08123456789',
             'fax_nomor' => null,
             'address' => 'Jl. Supplier No. 1',
             'city' => 'Jakarta',
             'province' => 'DKI Jakarta',
-            'payment_term' => null,
             'status' => true,
         ]);
 

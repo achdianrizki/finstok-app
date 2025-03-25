@@ -25,7 +25,7 @@
                                 <td class="px-6 py-4 whitespace-nowrap">${warehouse.name}</td>
                                 <td class="px-6 py-4 whitespace-nowrap hidden sm:table-cell">${warehouse.address}</td>
                                 <td class="px-6 py-4 whitespace-nowrap">
-                                    <x-button target="" href="/manager/warehouses/${warehouse.id}/edit" variant="warning" class="justify-center max-w-sm gap-2">
+                                    <x-button target="" href="/manager/warehouses/${warehouse.slug}/edit" variant="warning" class="justify-center max-w-sm gap-2">
                                         <x-heroicon-o-pencil class="w-3 h-3" aria-hidden="true" />
                                     </x-button>
                                     <!-- Destroy form -->

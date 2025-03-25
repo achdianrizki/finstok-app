@@ -16,29 +16,29 @@
         <hr class="my-2 border-gray-300">
     </div>
 
-    <form action="{{ route('manager.items.store') }}" method="POST">
+    <form action="{{ route('manager.items.store') }}" method="POST" data-parsley-validate>
         @csrf
         <div class="p-6 overflow-hidden bg-white rounded-md shadow-md dark:bg-dark-eval-1">
             <div class="grid grid-cols-2 gap-4">
                 <div class="space-y-2">
                     <x-form.label for="name" :value="__('Nama Barang')" />
                     <x-form.input id="name" class="w-full" type="text" name="name" :value="old('name')"
-                        placeholder="Nama Barang" />
+                        placeholder="Nama Barang" required data-parsley-required-message="Nama barang wajib diisi" />
                     <x-input-error :messages="$errors->get('name')" class="mt-2" />
 
                     <x-form.label for="code" :value="__('Kode Barang')" />
                     <x-form.input id="code" class="w-full" type="text" name="code" :value="old('code')"
-                        placeholder="Kode Barang" />
+                        placeholder="Kode Barang" required data-parsley-required-message="Kode barang wajib diisi" />
                     <x-input-error :messages="$errors->get('code')" class="mt-2" />
 
-
                     <x-form.label for="unit" :value="__('Satuan')" />
-                    <x-form.select id="unit" class="block w-full" name="unit">
+                    <x-form.select id="unit" class="block w-full" name="unit" required
+                        data-parsley-required-message="Satuan barang wajib diisi">
                         <option value="" disabled selected>Pilih Satuan</option>
                         <option value="pcs" {{ old('unit') == 'pcs' ? 'selected' : '' }}>Pcs</option>
-                        <option value="kg" {{ old('unit') == 'gross' ? 'selected' : '' }}>Gross</option>
-                        <option value="liter" {{ old('unit') == 'lusin' ? 'selected' : '' }}>Lusin</option>
-                        <option value="meter" {{ old('unit') == 'karton' ? 'selected' : '' }}>Meter</option>
+                        <option value="kg" {{ old('unit') == 'kg' ? 'selected' : '' }}>Kilogram</option>
+                        <option value="liter" {{ old('unit') == 'liter' ? 'selected' : '' }}>Liter</option>
+                        <option value="meter" {{ old('unit') == 'meter' ? 'selected' : '' }}>Meter</option>
                     </x-form.select>
                     <x-input-error :messages="$errors->get('unit')" class="mt-2" />
 
@@ -47,17 +47,18 @@
                         class="w-full border-gray-400 rounded-md focus:border-gray-400 focus:ring focus:ring-purple-500 focus:ring-offset-2 dark:border-gray-600 dark:bg-dark-eval-1 dark:text-gray-300"
                         rows="3" placeholder="Deskripsi barang">{{ old('description') }}</textarea>
                     <x-input-error :messages="$errors->get('description')" class="mt-2" />
-
                 </div>
 
                 <div class="space-y-2">
                     <x-form.label for="purchase_price" :value="__('Harga Beli')" />
-                    <x-form.input id="purchase_price" class="w-full" type="number" step=".01" name="purchase_price"
-                        :value="old('purchase_price')" placeholder="Harga Beli" />
+                    <x-form.input id="purchase_price" class="w-full" type="text" step=".01" name="purchase_price"
+                        :value="old('purchase_price')" placeholder="Harga Beli" required
+                        data-parsley-required-message="Harga beli barang wajib diisi" />
                     <x-input-error :messages="$errors->get('purchase_price')" class="mt-2" />
 
                     <x-form.label for="category_id" :value="__('Kategori')" />
-                    <x-form.select id="category_id" class="block w-full" name="category_id">
+                    <x-form.select id="category_id" class="block w-full" name="category_id" required
+                        data-parsley-required-message="Kategori barang wajib diisi">
                         <option value="" disabled selected>Pilih</option>
                         @foreach ($categories as $category)
                             <option value="{{ $category->id }}"
@@ -71,14 +72,13 @@
             </div>
         </div>
 
-
         <div class="mt-6">
             <h3 class="text-lg font-semibold">{{ __('Penyedia Barang') }}</h3>
             <hr class="my-2 border-gray-300">
         </div>
 
         <div class="mt-5 space-y-2">
-            <x-input-error :messages="$errors->get('suppliers')" class="mt-2" />
+            <x-input-error :messages="$errors->get('suppliers', 'Pemasok wajib diisi')" class="mt-2" />
 
             <button type="button" id="addSupplierRow" class="mt-2 px-4 py-2 bg-purple-500 text-white rounded">
                 + Tambah Pemasok
@@ -94,8 +94,6 @@
                 <tbody>
                 </tbody>
             </table>
-
-
         </div>
 
         <div class="grid justify-items-end">
@@ -119,7 +117,7 @@
                     let row = `
                     <tr>
                         <td class="p-2">
-                            <select name="suppliers[]" class="w-full p-2 border border-gray-300 rounded">
+                            <select name="suppliers[]" class="w-full p-2 border border-gray-300 rounded" required>
                                 <option value="">Pilih Supplier</option>
                                 ${supplierOptions}
                             </select>
@@ -129,50 +127,42 @@
                                 X
                             </button>
                         </td>
-                    </tr>
-                `;
+                    </tr>`;
                     $('#supplierTable tbody').append(row);
                 });
 
                 $(document).on('click', '.removeSupplierRow', function() {
                     $(this).closest('tr').remove();
                 });
+
+                $('form').parsley();
+
+                $('#purchase_price').on('input', function(e) {
+                    let value = e.target.value.replace(/[^,\d]/g, '').toString();
+
+                    let split = value.split(',');
+                    let sisa = split[0].length % 3;
+                    let rupiah = split[0].substr(0, sisa);
+                    let ribuan = split[0].substr(sisa).match(/\d{3}/g);
+
+                    if (ribuan) {
+                        let separator = sisa ? '.' : '';
+                        rupiah += separator + ribuan.join('.');
+                    }
+
+                    if (split[1] !== undefined) {
+                        rupiah += ',' + split[1].slice(0, 2);
+                    }
+
+                    $(this).val(rupiah);
+                });
+
+                $('#purchase_price').on('input', function() {
+                    let purchasePrice = parseFloat($(this).val().replace(/\./g, '').replace(',', '.')) || 0;
+
+                    purchasePrice = parseFloat(purchasePrice.toFixed(2));
+                });
             });
         </script>
-        @include('components.js.selectOrCreate')
-    @endpush
-
-    @push('styles')
-        <style>
-            .custom-select input {
-                width: 100%;
-                padding: 8px;
-                box-sizing: border-box;
-                border-radius: 5px;
-            }
-
-            .custom-select ul {
-                position: absolute;
-                max-height: 150px;
-                overflow-y: auto;
-                background-color: white;
-                border: 1px solid #ccc;
-                margin-top: 0;
-                padding-left: 0;
-                list-style-type: none;
-                display: none;
-                border-radius: 5px;
-                font-size: 10px;
-            }
-
-            .custom-select ul li {
-                padding: 8px;
-                cursor: pointer;
-            }
-
-            .custom-select ul li:hover {
-                background-color: #f1f1f1;
-            }
-        </style>
     @endpush
 </x-app-layout>

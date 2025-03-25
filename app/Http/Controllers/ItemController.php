@@ -73,7 +73,7 @@ class ItemController extends Controller
         $item = item::create([
             'name' => $request->name,
             'code' => $request->code ?? "-",
-            'purchase_price' => $request->purchase_price,
+            'purchase_price' => (float) str_replace(',', '.', str_replace('.', '', $request->purchase_price)),
             'unit' => $request->unit,
             'stock' => 0,
             'description' => $request->description,
@@ -110,11 +110,11 @@ class ItemController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateItemRequest $request, Item $item)
+    public function update(Request $request, Item $item)
     {
         $item->update([
             'name' => $request->name,
-            'purchase_price' => $request->purchase_price,
+            'purchase_price' => (float) str_replace(',', '.', str_replace('.', '', $request->purchase_price)),
             'unit' => $request->unit,
             'description' => $request->description,
             'category_id' => $request->category_id,

@@ -18,7 +18,7 @@
                         data-parsley-required-message="Pilih salah satu supplier">
                         <option value="" selected disabled>Pilih</option>
                         @foreach ($suppliers as $supplier)
-                            <option value="{{ $supplier->id }}">{{ $supplier->contact }}</option>
+                            <option value="{{ $supplier->id }}">{{ $supplier->name }}</option>
                         @endforeach
                     </select>
 
@@ -412,6 +412,10 @@
 
                     if (!supplierId || !taxVal) return;
 
+                    let selectedItems = $('.item-select').map(function() {
+                        return $(this).val();
+                    }).get();
+
                     let row = `
                         <tr class="border-b border-gray-300">
                                 <td class="px-1 py-1">
@@ -457,13 +461,43 @@
                         `;
 
                     $('#items-table tbody').append(row);
-                    $('.item-select').select2();
+                    $('.item-select').each(function() {
+                        if (!$(this).data('locked')) {
+                            $(this).select2();
+                        }
+                    });
+
+                    disableSelectedItems();
+                });
+
+                function disableSelectedItems() {
+                    let selectedItems = $('.item-select').map(function() {
+                        return $(this).val();
+                    }).get();
+
+                    $('.item-select').each(function() {
+                        let select = $(this);
+                        select.find('option').each(function() {
+                            let optionValue = $(this).val();
+                            if (selectedItems.includes(optionValue) && optionValue !== '' &&
+                                optionValue !== select.val()) {
+                                $(this).prop('disabled', true);
+                            } else {
+                                $(this).prop('disabled', false);
+                            }
+                        });
+                    });
+                }
+
+                $(document).on('change', '.item-select', function() {
+                    disableSelectedItems();
                 });
 
                 $(document).on('click', '.remove-item', function() {
                     $(this).closest('tr').remove();
                     calculateSubTotal();
                     calculateTotalQty();
+                    disableSelectedItems();
                 });
 
                 $('#purchase-form').parsley();

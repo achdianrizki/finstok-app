@@ -236,7 +236,6 @@ class SaleController extends Controller
             'payment_status' => $paymentStatus,
         ]);
 
-        // Redirect instead of returning a view directly
         return redirect()->route('manager.sales.index')->with('success', 'Sale updated successfully.');
     }
 

@@ -52,7 +52,7 @@ class Purchase extends Model
 
     public function items()
     {
-        return $this->belongsToMany(Item::class, 'item_purchase')->withPivot('qty', 'price_per_item', 'discount1', 'discount2', 'discount3');
+        return $this->belongsToMany(Item::class, 'item_purchase')->withPivot('qty', 'price_per_item', 'discount1', 'discount2', 'discount3', 'ad', 'warehouse_id');
     }
 
     public function payments()

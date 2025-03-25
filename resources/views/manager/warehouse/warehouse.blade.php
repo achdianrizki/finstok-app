@@ -2,7 +2,7 @@
     <x-slot name="header">
         <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
             <h2 class="text-xl font-semibold leading-tight">
-                {{ __('Barang') }}
+                Stok Barang di {{ __($warehouse->name) }}
             </h2>
             <x-button target="" href="{{ route('manager.items.create') }}" variant="success"
                 class="justify-center max-w-xl gap-2">
@@ -20,7 +20,7 @@
                 </x-slot>
 
                 <x-slot name="menu">
-                    <a href="{{ route('items.export.pdf') }}"
+                    <a href="{{ route('manager.report.item.warehouse', $warehouse->id) }}"
                         class="flex items-center gap-2 px-4 py-2 mb-2 text-sm text-white bg-red-500 hover:bg-red-600"
                         role="menuitem" tabindex="-1" id="menu-item-0">
                         <x-icons.pdf class="w-5 h-5" aria-hidden="true" />

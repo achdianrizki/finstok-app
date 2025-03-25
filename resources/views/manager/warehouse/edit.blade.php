@@ -12,7 +12,7 @@
     </x-slot>
 
     <div class="p-6 overflow-hidden bg-white rounded-md shadow-md dark:bg-dark-eval-1">
-        <form action="{{ route('manager.warehouses.update', $warehouse->id) }}" method="POST">
+        <form action="{{ route('manager.warehouses.update', $warehouse->slug) }}" method="POST">
             @csrf
             @method('PUT')
             <div class="grid gap-2">

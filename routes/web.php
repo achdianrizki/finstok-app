@@ -55,7 +55,7 @@ Route::middleware('auth')->group(function () {
             'warehouses' => 'warehouse:slug'
         ])->middleware('role:manager|admin');
         Route::resource('purchase', PurchaseController::class)->middleware('role:manager|admin');
-        
+
         Route::resource('sales', SaleController::class)->middleware('role:manager|admin');
         Route::resource('distributors', DistributorController::class)->middleware('role:manager|admin');
         Route::resource('users', UserController::class)->middleware('role:manager');
@@ -76,7 +76,7 @@ Route::middleware('auth')->group(function () {
             Route::get('/purchase', [ReturnPurchaseController::class, 'index'])->name('purchase');
             Route::get('/purchase/{purchase}', [ReturnPurchaseController::class, 'show'])->name('purchase.show');
             Route::post('/purchases/{id}/return', [ReturnPurchaseController::class, 'returnPurchase'])->name('purchase.create');
-            
+
             Route::get('/sale', [ReturnSaleController::class, 'index'])->name('sale');
             Route::get('/sale/{sale}', [ReturnSaleController::class, 'show'])->name('sale.show');
             Route::post('/sale/{id}/return', [ReturnSaleController::class, 'returnSale'])->name('sale.create');
@@ -115,6 +115,7 @@ Route::middleware('auth')->group(function () {
             Route::get('/purchase', [ReportController::class, 'purchase'])->name('purchase');
             Route::get('/sale', [ReportController::class, 'sale'])->name('sale');
             Route::get('/purchases/return', [ReportController::class, 'returnPurchaseView'])->name('purchase.return');
+            Route::get('/item-warehouse/{id}', [ReportController::class, 'itemWarehouse'])->name('item.warehouse');
 
             // REPORT
             // ITEMS AND INVOICE START
@@ -212,8 +213,9 @@ Route::get('/get-sales-item/{item_id}', function ($item_id) {
     ]);
 });
 
+// FUNGSI DELETE DATA ITEM PEMBELIAN AJAXXX
+Route::delete('/purchase-edit/{purchase}/item-delete/{item}', [PurchaseController::class, 'deleteItem']);
+
 Route::get('/incomingpayment-data', [incomingPaymentController::class, 'getSaleItem']);
-
-
 
 require __DIR__ . '/auth.php';
