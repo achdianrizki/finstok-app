@@ -102,7 +102,6 @@ class PurchaseController extends Controller
      */
     public function store(Request $request)
     {
-
         return DB::transaction(function () use ($request) {
             $total_qty = array_sum($request->qty);
 
@@ -172,11 +171,13 @@ class PurchaseController extends Controller
                     if ($existing) {
                         $item->item_warehouse()->updateExistingPivot($warehouse_id, [
                             'stock' => $existing->pivot->stock + $qty,
+                            'physical' => $existing->pivot->physical + $qty,
                             'price_per_item' => $price_per_item
                         ]);
                     } else {
                         $item->item_warehouse()->attach($warehouse_id, [
                             'stock'         => $qty,
+                            'physical'      => $qty,
                             'price_per_item' => $price_per_item,
                         ]);
                     }
@@ -216,10 +217,87 @@ class PurchaseController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Purchase $purchase)
+    public function update(Request $request, $id)
     {
-        //
+        return DB::transaction(function () use ($request, $id) {
+            $purchase = Purchase::findOrFail($id);
+            $total_qty = array_sum($request->qty);
+
+            $oldItems = $purchase->items()->get()->keyBy('id');
+
+            $purchase->update([
+                'purchase_date'    => $request->purchase_date,
+                'supplier_id'      => $request->supplier_id,
+                'tax'              => (float) str_replace(',', '.', str_replace('.', '', $request->tax)),
+                'tax_type'         => $request->tax_type,
+                'information'      => $request->information ?? '-',
+                'warehouse_id'     => $request->warehouse_id,
+                'sub_total'        => (float) str_replace(',', '.', str_replace('.', '', $request->sub_total)),
+                'total_discount1'  => (float) str_replace(',', '.', str_replace('.', '', $request->total_discount1 ?? 0)),
+                'total_discount2'  => (float) str_replace(',', '.', str_replace('.', '', $request->total_discount2 ?? 0)),
+                'total_discount3'  => (float) str_replace(',', '.', str_replace('.', '', $request->total_discount3 ?? 0)),
+                'total_price'      => (float) str_replace(',', '.', str_replace('.', '', $request->total_price)),
+                'total_qty'        => $total_qty,
+                'due_date_duration' => $request->due_date_duration,
+                'due_date' => $request->due_date,
+            ]);
+
+            $warehouse_id = $request->warehouse_id;
+
+            $purchase->items()->detach();
+
+            foreach ($request->items as $index => $item_id) {
+                $item = Item::find($item_id);
+
+                if ($item) {
+                    if ($oldItems->has($item_id)) {
+                        $oldQty = $oldItems[$item_id]->pivot->qty;
+                        $item->decrement('stock', $oldQty);
+                    }
+
+                    $item->increment('stock', $request->qty[$index]);
+
+                    $item->purchases()->attach($purchase->id, [
+                        'qty'            => $request->qty[$index],
+                        'price_per_item' => (float) str_replace(',', '.', str_replace('.', '', $request->price_per_item[$index])),
+                        'discount1'      => $request->discount1[$index] ?? 0,
+                        'discount2'      => $request->discount2[$index] ?? 0,
+                        'discount3'      => $request->discount3[$index] ?? 0,
+                        'ad'             => $request->ad[$index] ?? 0,
+                        'warehouse_id'   => $warehouse_id
+                    ]);
+                }
+            }
+
+            foreach ($request->items as $index => $item_id) {
+                $item = Item::find($item_id);
+                if ($item) {
+                    $qty = $request->qty[$index];
+                    $price_per_item = (float) str_replace(',', '.', str_replace('.', '', $request->price_per_item[$index]));
+
+                    $existing = $item->item_warehouse()
+                        ->wherePivot('warehouse_id', $warehouse_id)
+                        ->first();
+
+                    if ($existing) {
+                        $item->item_warehouse()->updateExistingPivot($warehouse_id, [
+                            'stock' => $existing->pivot->stock - ($oldItems[$item_id]->pivot->qty ?? 0) + $qty,
+                            'price_per_item' => $price_per_item
+                        ]);
+                    } else {
+                        $item->item_warehouse()->attach($warehouse_id, [
+                            'stock'         => $qty,
+                            'price_per_item' => $price_per_item,
+                        ]);
+                    }
+                }
+            }
+
+            toast('Data berhasil diperbarui', 'success');
+            return redirect()->route('manager.purchase.index');
+        });
     }
+
 
     /**
      * Remove the specified resource from storage.

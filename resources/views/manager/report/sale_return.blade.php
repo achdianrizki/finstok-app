@@ -2,7 +2,7 @@
     <x-slot name="header">
         <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
             <h2 class="text-xl font-semibold leading-tight">
-                {{ __($warehouse->name) }}
+                {{ __('Barang Retur') }}
             </h2>
         </div>
     </x-slot>
@@ -35,30 +35,46 @@
                 <input type="text" id="search" placeholder="Search items..."
                     class=" rounded w-full md:w-auto px-4 py-2 dark:bg-dark-eval-1" name="search">
             </div>
-
-            <input type="hidden" id="warehouseId" value="{{ $warehouse->id }}">
         </div>
 
         <div class="overflow-x-auto">
             <table id="export-table" class="min-w-full rounded-md">
                 <thead>
                     <tr class="bg-gray-200 text-gray-600 dark:bg-slate-900 dark:text-white text-sm leading-normal">
-                        <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Nama barang</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider hidden sm:table-cell">Kode</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider hidden sm:table-cell">Kategori</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider hidden md:table-cell">Harga/pcs</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider hidden md:table-cell">Stok</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider hidden md:table-cell">Fisik</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider hidden md:table-cell">Lebih</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider hidden md:table-cell">Selisih</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider hidden md:table-cell">Aksi</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Nomor Penjualan
+                        </th>
+                        <th
+                            class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider hidden md:table-cell">
+                            Tanggal Retur</th>
+                        <th
+                            class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider hidden md:table-cell">
+                            Kontak Pembeli</th>
+                        <th
+                            class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider hidden sm:table-cell">
+                            Jumlah Retur</th>
                     </tr>
                 </thead>
-                <tbody id="itemsByWarehouse" class="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-dark-eval-1">
-
+                <tbody id="purchaseTable"
+                    class="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-dark-eval-1">
+                    @foreach ($return as $data)
+                        <tr class="border dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-slate-900">
+                            <td class="px-6 py-4 whitespace-nowrap">{{ $data->sale_number }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap hidden md:table-cell">{{ $data->return_date }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap hidden md:table-cell">{{ $data->buyer_contact }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap hidden md:table-cell">{{ $data->qty }}</td>
+                            {{-- <td class="px-6 py-4 whitespace-nowrap">
+                                <x-button href="{{ route('manager.purchases.show', $data->id) }}" variant="primary"
+                                    class="justify-center max-w-sm gap-2">
+                                    <x-heroicon-o-eye class="w-3 h-3" aria-hidden="true" />
+                                </x-button>
+                            </td> --}}
+                        </tr>
+                    @endforeach
                 </tbody>
             </table>
         </div>
+
+
 
         <!-- Pagination Controls -->
         <div class="mt-4 flex items-center justify-center">
@@ -76,7 +92,7 @@
 
     </div>
 
-    @push('scripts')
+    {{-- @push('scripts')
         <script>
             function toggleDetails(index) {
                 const detailRow = document.getElementById(`details-${index}`);
@@ -87,7 +103,7 @@
                 }
             }
         </script>
-        @include('components.js.dtItemsByWarehouse')
-    @endpush
+        @include('components.js.dtReportPurchase')
+    @endpush --}}
 
 </x-app-layout>

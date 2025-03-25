@@ -24,7 +24,7 @@ class StoreSupplierRequest extends FormRequest
         return [
             'supplier_code' => ['required', 'string'],
             'name' => ['required', 'string'],
-            'npwp' => ['integer'],
+            'npwp' => ['integer', 'nullable'],
             'contact' => ['required', 'string'],
             'discount1' => ['nullable', 'numeric'],
             'discount2' => ['nullable', 'numeric'],
@@ -33,7 +33,6 @@ class StoreSupplierRequest extends FormRequest
             'address' => ['required', 'string'],
             'city' => ['required', 'string'],
             'province' => ['required', 'string'],
-            'payment_term' => ['nullable', 'integer'],
             'status' => ['required', 'boolean'],
         ];
     }

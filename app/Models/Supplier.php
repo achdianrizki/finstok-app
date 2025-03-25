@@ -19,8 +19,9 @@ class Supplier extends Model
         'address',
         'city',
         'province',
-        'payment_term',
-        'status'
+        // 'payment_term',
+        'status',
+        'npwp'
     ];
 
     public function item()

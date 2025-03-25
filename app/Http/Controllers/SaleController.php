@@ -165,7 +165,7 @@ class SaleController extends Controller
         }
 
         $warehouse_id = $request->warehouse_id;
-        
+
         foreach ($request->items as $data => $itemId) {
             $item = Item::find($itemId);
             if ($item) {
@@ -218,27 +218,91 @@ class SaleController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateSaleRequest $request, Sale $sale)
+    public function update(Request $request, $id)
     {
-        $validatedData = $request->validated();
+        $sale = Sale::findOrFail($id);
 
-        $additionalPayment = $validatedData['update_payment'];
+        foreach ($sale->items as $item) {
+            $pivot = $item->sales()->where('sale_id', $id)->first()->pivot;
+            $item->stock += $pivot->qty_sold;
+            $item->save();
 
-        $newDownPayment = $sale->down_payment + $additionalPayment;
+            $existing = $item->item_warehouse()->wherePivot('warehouse_id', $request->warehouse_id)->first();
+            if ($existing) {
+                $item->item_warehouse()->updateExistingPivot($request->warehouse_id, [
+                    'stock' => $existing->pivot->stock + $pivot->qty_sold,
+                ]);
+            }
+        }
 
-        $newRemainingPayment = max($sale->remaining_payment - $additionalPayment, 0);
-
-        $paymentStatus = ($newDownPayment >= $sale->total_price) ? 'lunas' : $sale->payment_status;
+        $qty_sold = array_sum($request->qty_sold);
+        $total_discount = str_replace(['Rp', '.', ','], ['', '', '.'], $request->total_discount1) +
+            str_replace(['Rp', '.', ','], ['', '', '.'], $request->total_discount2) +
+            str_replace(['Rp', '.', ','], ['', '', '.'], $request->total_discount3);
 
         $sale->update([
-            'down_payment' => $newDownPayment,
-            'remaining_payment' => $newRemainingPayment,
-            'payment_status' => $paymentStatus,
+            'buyer_id' => $request->buyer_id,
+            'salesman_id' => $request->salesman_id,
+            'total_price' => str_replace(['Rp', '.', ','], ['', '', '.'], $request->total_price),
+            'sub_total' => str_replace(['Rp', '.', ','], ['', '', '.'], $request->sub_total),
+            'discount1_value' => str_replace(['Rp', '.', ','], ['', '', '.'], $request->total_discount1),
+            'discount2_value' => str_replace(['Rp', '.', ','], ['', '', '.'], $request->total_discount2),
+            'discount3_value' => str_replace(['Rp', '.', ','], ['', '', '.'], $request->total_discount3),
+            'total_discount' => $total_discount,
+            'sale_date' => $request->sale_date,
+            'payment_method' => $request->payment_method,
+            'tax' => str_replace(['Rp', '.', ','], ['', '', '.'], $request->tax),
+            'status' => $request->status,
+            'information' => $request->information,
+            'qty_sold' => $qty_sold,
+            'due_date_duration' => $request->due_date_duration,
+            'due_date' => $request->due_date,
         ]);
 
-        // Redirect instead of returning a view directly
-        return redirect()->route('manager.sales.index')->with('success', 'Sale updated successfully.');
+        $sale->items()->detach();
+
+        foreach ($request->items as $index => $item_id) {
+            $item = Item::findOrFail($item_id);
+            $item->stock -= $request->qty_sold[$index];
+            $item->save();
+
+            $sale_price = str_replace(',', '.', str_replace('.', '', $request->sale_prices[$index]));
+
+            $item->sales()->attach($sale->id, [
+                'qty_sold' => $request->qty_sold[$index],
+                'discount1' => $request->discount1[$index],
+                'discount2' => $request->discount2[$index],
+                'discount3' => $request->discount3[$index],
+                'sale_price' => $sale_price,
+            ]);
+        }
+
+        foreach ($request->items as $index => $itemId) {
+            $item = Item::find($itemId);
+            if ($item) {
+                $qty = $request->qty_sold[$index];
+                $sale_price = (float) str_replace(',', '.', str_replace('.', '', $request->sale_prices[$index]));
+
+                $existing = $item->item_warehouse()->wherePivot('warehouse_id', $request->warehouse_id)->first();
+
+                if ($existing) {
+                    $item->item_warehouse()->updateExistingPivot($request->warehouse_id, [
+                        'stock' => $existing->pivot->stock - $qty,
+                        'price_per_item' => $sale_price
+                    ]);
+                } else {
+                    $item->item_warehouse()->attach($request->warehouse_id, [
+                        'stock' => $qty,
+                        'price_per_item' => $sale_price,
+                    ]);
+                }
+            }
+        }
+
+        toast('Data penjualan berhasil diperbarui', 'success');
+        return redirect()->route('manager.sales.index')->with('success', 'Data penjualan berhasil diperbarui');
     }
+
 
 
     /**

@@ -81,12 +81,12 @@
                         <span class="text-red-500 text-sm">{{ $message }}</span>
                     @enderror
 
-                    <x-form.label for="payment_term" :value="__('Jangka Waktu Pembayaran')" />
+                    {{-- <x-form.label for="payment_term" :value="__('Jangka Waktu Pembayaran')" />
                     <x-form.input id="payment_term" class="block w-full" type="text" name="payment_term"
                         :value="old('payment_term')" placeholder="{{ __('Masukan Jangka Waktu Pembayaran') }}" />
                     @error('payment_term')
                         <span class="text-red-500 text-sm">{{ $message }}</span>
-                    @enderror
+                    @enderror --}}
 
                     <x-form.label for="status" :value="__('Status')" />
                     <select id="status" name="status" class="block w-full py-2 border-gray-400 rounded-md">

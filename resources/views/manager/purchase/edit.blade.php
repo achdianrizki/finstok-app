@@ -42,6 +42,37 @@
                     <textarea id="information" name="information"
                         class="w-full border-gray-400 rounded-md focus:ring focus:ring-purple-500 focus:ring-offset-2 dark:border-gray-600 dark:bg-dark-eval-1 dark:text-gray-300"
                         rows="3" placeholder="Deskripsi barang">{{ old('information', $purchase->information) }}</textarea>
+
+                    <x-form.label for="due_date_duration" :value="__('Durasi Jatuh Tempo (hari)')" class="mb-2" />
+                    <div class="flex gap-2 mb-2">
+                        @foreach ([14, 30, 45] as $duration)
+                            <button type="button"
+                                class="px-4 py-2 bg-purple-500 text-white rounded-md duration-btn {{ $purchase->due_date_duration == $duration ? 'bg-purple-700 ring-2 ring-purple-300' : '' }}"
+                                data-value="{{ $duration }}">{{ $duration }}
+                            </button>
+                        @endforeach
+                        <input type="number" id="custom_due_date"
+                            class="w-20 border-gray-400 rounded-md focus:ring focus:ring-purple-500 focus:ring-offset-2 dark:border-gray-600 dark:bg-dark-eval-1 dark:text-gray-300"
+                            placeholder="Custom">
+                    </div>
+                    <p id="due_date_error" class="text-red-500 mt-2 hidden">Durasi jatuh tempo harus diisi</p>
+                    <p id="purchase_date_error" class="text-red-500 mt-2 hidden">Pilih tanggal terlebih dahulu!</p>
+
+                    <input type="hidden" id="due_date_duration" name="due_date_duration"
+                        value="{{ old('due_date_duration', $purchase->due_date_duration) }}">
+                    <input type="hidden" id="due_date" name="due_date"
+                        value="{{ old('due_date', $purchase->due_date) }}">
+
+
+                    <x-form.label for="warehouse_id" :value="__('Gudang')" />
+                    <x-form.select id="warehouse_id" class="block w-full" name="warehouse_id">
+                        @foreach ($warehouses as $warehouse)
+                            <option value="{{ $warehouse->id }}"
+                                {{ old('warehouse_id') == $warehouse->id ? 'selected' : '' }}>
+                                {{ $warehouse->name }}
+                            </option>
+                        @endforeach
+                    </x-form.select>
                 </div>
             </div>
         </div>
@@ -186,9 +217,75 @@
     @push('scripts')
         <script>
             $(document).ready(function() {
+                function updateDueDate(days) {
+                    let purchaseDateValue = $("#purchase_date").val();
+                    if (!purchaseDateValue) {
+                        $("#purchase_date_error").removeClass("hidden");
+                        return;
+                    }
+
+                    let dueDate = new Date(purchaseDateValue);
+                    dueDate.setDate(dueDate.getDate() + days);
+
+                    let formattedDueDate = dueDate.toISOString().split("T")[0]; // Format YYYY-MM-DD
+
+                    $("#due_date_duration").val(days);
+                    $("#due_date").val(formattedDueDate);
+
+                    $("#due_date_error, #purchase_date_error").addClass("hidden");
+                }
+
+                $(".duration-btn").on("click", function() {
+                    $(".duration-btn").removeClass("bg-purple-700 ring-2 ring-purple-300");
+                    $(this).addClass("bg-purple-700 ring-2 ring-purple-300");
+
+                    let days = parseInt($(this).data("value"));
+                    updateDueDate(days);
+
+                    $("#custom_due_date").val("");
+                });
+
+                $("#custom_due_date").on("input", function() {
+                    $(".duration-btn").removeClass("bg-purple-700 ring-2 ring-purple-300");
+
+                    let days = parseInt($(this).val());
+                    if (!isNaN(days)) {
+                        updateDueDate(days);
+                    }
+                });
+
                 $("#purchase_date").flatpickr({
                     dateFormat: "Y-m-d",
                     allowInput: true,
+                    onChange: function(selectedDates, dateStr) {
+                        let isDisabled = !dateStr;
+                        $(".duration-btn, #custom_due_date").prop("disabled", isDisabled)
+                            .toggleClass("bg-gray-400", isDisabled);
+                        $("#due_date_error, #purchase_date_error").addClass("hidden");
+                    }
+                });
+
+                $("#buttonSubmit").click(function(e) {
+                    let dueDateDuration = $("#due_date_duration").val();
+                    let purchaseDate = $("#purchase_date").val();
+
+                    if (!purchaseDate) {
+                        e.preventDefault();
+                        $("#purchase_date_error").removeClass("hidden");
+                    } else if (!dueDateDuration) {
+                        e.preventDefault();
+                        $("#due_date_error").removeClass("hidden");
+                    }
+                });
+
+                $("#buttonSubmit").click(function(event) {
+                    if ($(".item-select").length === 0) {
+                        event.preventDefault();
+                        $("#add-item").after(
+                            '<p id="error-message" class="text-red-500 mt-2">Barang tidak boleh kosong</p>');
+                    } else {
+                        $("#error-message").remove();
+                    }
                 });
 
                 $('#supplier_id').select2();

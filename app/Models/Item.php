@@ -52,7 +52,7 @@ class Item extends Model
 
     public function item_warehouse()
     {
-        return $this->belongsToMany(Warehouse::class, 'item_warehouse')->withPivot('stock', 'price_per_item');
+        return $this->belongsToMany(Warehouse::class, 'item_warehouse')->withPivot('stock', 'price_per_item', 'physical', 'difference', 'profit');
     }
 
     public function sales()

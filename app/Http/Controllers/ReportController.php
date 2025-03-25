@@ -34,6 +34,17 @@ class ReportController extends Controller
         return view('manager.report.purchase_return', compact('return'));
     }
 
+    public function returnSaleView()
+    {
+        $return = DB::table('return_sales')
+            ->join('sales', 'return_sales.sale_id', '=', 'sales.id')
+            ->join('buyers', 'return_sales.buyer_id', '=', 'buyers.id')
+            ->join('return_sale_items', 'return_sales.id', '=', 'return_sale_items.return_sale_id')
+            ->select('return_sales.*', 'sales.*', 'buyers.contact as buyer_contact', 'return_sale_items.*')
+            ->get();
+        return view('manager.report.sale_return', compact('return'));
+    }
+
     public function exportPurchaseInvoicePDF($id)
     {
         $purchase = Purchase::with('items')->findOrFail($id);
