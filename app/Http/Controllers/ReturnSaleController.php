@@ -136,7 +136,7 @@ class ReturnSaleController extends Controller
             $sale->decrement('tax', $total_tax_return);
 
             toast('Return berhasil dilakukan dan total harga serta PPN berkurang', 'success');
-            return redirect()->route('manager.purchase.index');
+            return redirect()->route('manager.return.sale');
         });
     }
 }

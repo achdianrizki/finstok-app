@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Item;
 use App\Models\Warehouse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Http\Requests\StoreWarehouseRequest;
 use App\Http\Requests\UpdateWarehouseRequest;
@@ -113,5 +114,24 @@ class WarehouseController extends Controller
 
         toast('Gudang berhasil dihapus', 'success');
         return redirect()->route('manager.warehouses.index')->with('success', 'Gudang berhasil dihapus');
+    }
+
+    public function adjustStock(Request $request)
+    {
+        $itemWarehouse = DB::table('item_warehouse')
+            ->where('item_id', $request->item_id)
+            ->where('warehouse_id', $request->warehouse_id)
+            ->update([
+                'physical' => $request->physical,
+                'difference' => $request->difference,
+                'profit' => $request->profit,
+                'updated_at' => now()
+            ]);
+
+        if ($itemWarehouse) {
+            return response()->json(['message' => 'Stock adjusted successfully'], 200);
+        }
+
+        return response()->json(['message' => 'Item not found in warehouse'], 404);
     }
 }

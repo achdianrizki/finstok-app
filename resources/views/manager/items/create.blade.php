@@ -110,7 +110,7 @@
                 let supplierOptions = '';
 
                 suppliers.forEach(supplier => {
-                    supplierOptions += `<option value="${supplier.id}">${supplier.name}</option>`;
+                    supplierOptions += `<option value="${supplier.id}">${supplier.contact}</option>`;
                 });
 
                 $('#addSupplierRow').click(function() {

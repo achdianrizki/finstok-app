@@ -102,7 +102,6 @@ class PurchaseController extends Controller
      */
     public function store(Request $request)
     {
-
         return DB::transaction(function () use ($request) {
             $total_qty = array_sum($request->qty);
 
@@ -173,12 +172,14 @@ class PurchaseController extends Controller
 
                     if ($existing) {
                         $item->item_warehouse()->updateExistingPivot($warehouse_id, [
-                            'stock' => $existing->pivot->stock + $qty + $ad,
+                            'stock' => $existing->pivot->stock + $qty,
+                            'physical' => $existing->pivot->physical + $qty,
                             'price_per_item' => $price_per_item
                         ]);
                     } else {
                         $item->item_warehouse()->attach($warehouse_id, [
-                            'stock'         => $qty + $ad,
+                            'stock'         => $qty,
+                            'physical'      => $qty,
                             'price_per_item' => $price_per_item,
                         ]);
                     }

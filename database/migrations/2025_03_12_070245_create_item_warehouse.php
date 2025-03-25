@@ -17,7 +17,11 @@ return new class extends Migration
             $table->unsignedBigInteger('warehouse_id');
             $table->integer('stock');
             $table->decimal('price_per_item', 15, 2);
-            
+            $table->bigInteger('physical')->nullable();
+            $table->bigInteger('profit')->nullable();
+            $table->decimal('difference', 15, 2)->default(0);
+
+
             $table->foreign('item_id')->references('id')->on('items')->onDelete('cascade');
             $table->foreign('warehouse_id')->references('id')->on('warehouses')->onDelete('cascade');
             $table->timestamps();

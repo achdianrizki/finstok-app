@@ -284,7 +284,7 @@
                     let row = $(this).closest('tr');
                     let itemId = $(this).val();
                     let supplierId = $('#supplier_id').val();
-                    row.find('.qty').val(1); // Set default qty to 1
+                    // row.find('.qty').val(1); // Set default qty to 1
                     updateItemData(row, itemId, supplierId);
                 });
 
@@ -418,10 +418,10 @@
 
                     let row = `
                         <tr class="border-b border-gray-300">
-                                <td class="px-1 py-1">
-                                    <input type="text" class="item-code w-32 px-2 py-1 border border-gray-300 rounded-md bg-gray-100 text-center" readonly>
+                                <td class="px-1 py-2">
+                                    <input type="text" class="item-code w-full px-2 py-1 border border-gray-300 rounded-md bg-gray-100 text-center" readonly>
                                 </td>
-                                <td class="px-1 py-1">
+                                <td class="px-1 py-2">
                                     <select name="items[]" class="item-select w-64 select2 px-1 py-1 border border-gray-300 rounded-md">
                                     <option value="">Pilih Barang</option>
                                     @foreach ($items as $item)
@@ -429,19 +429,19 @@
                                     @endforeach
                                     </select>
                                 </td>
-                                <td class="px-1 py-1">
+                                <td class="px-1 py-2">
                                     <input type="number" name="stock[]" class="stock w-20 px-2 py-1 border border-gray-300 rounded-md bg-gray-100 text-center" readonly>
                                 </td>
-                                <td class="px-1 py-1">
+                                <td class="px-1 py-2">
                                     <input type="text" name="unit[]" class="unit w-20 px-2 py-1 border border-gray-300 rounded-md bg-gray-100 text-center" readonly>
                                 </td>
-                                <td class="px-1 py-1">
+                                <td class="px-1 py-2">
                                     <input type="number" name="qty[]" class="qty w-20 px-2 py-1 border border-gray-300 rounded-md text-center" min="1" value="1" required data-parsley-required-message="Jumlah harus diisi">
                                 </td>
-                                <td class="px-1 py-1">
+                                <td class="px-1 py-2">
                                     <input type="text" name="price_per_item[]" class="price w-full px-2 py-1 border border-gray-300 rounded-md bg-gray-100 text-right" readonly>
                                 </td>
-                                <td class="px-1 py-1">
+                                <td class="px-1 py-2">
                                     <div class="flex space-x-1">
                                         <input type="text" name="discount1[]" class="discount1 w-8 px-1 py-1 border border-gray-300 rounded-md text-right" placeholder="D1">
                                         <input type="text" name="discount2[]" class="discount2 w-8 px-1 py-1 border border-gray-300 rounded-md text-right" placeholder="D2">
@@ -449,10 +449,10 @@
                                         <input type="text" name="ad[]" class="ad w-8 px-1 py-1 border border-gray-300 rounded-md text-right" placeholder="AD">
                                     </div>
                                 </td>
-                                <td class="px-1 py-1">
+                                <td class="px-1 py-2">
                                     <input type="text" name="prices[]" class="total-price w-40 px-2 py-1 border border-gray-300 rounded-md bg-gray-100 text-right" readonly>
                                 </td>
-                                <td class="px-1 py-1 text-center">
+                                <td class="px-1 py-2 text-center">
                                     <button type="button" class="remove-item px-3 py-1 bg-red-500 text-white rounded-md hover:bg-red-600 transition">
                                         Hapus
                                     </button>

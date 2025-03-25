@@ -45,14 +45,13 @@
                         </th>
                         <th
                             class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider hidden md:table-cell">
-                            Tanggal Pembelian</th>
+                            Tanggal Retur</th>
                         <th
                             class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider hidden md:table-cell">
                             Nama Pemasok</th>
                         <th
                             class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider hidden sm:table-cell">
-                            Status</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Aksi</th>
+                            Jumlah Retur</th>
                     </tr>
                 </thead>
                 <tbody id="purchaseTable"

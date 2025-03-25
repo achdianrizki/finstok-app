@@ -115,6 +115,7 @@ Route::middleware('auth')->group(function () {
             Route::get('/purchase', [ReportController::class, 'purchase'])->name('purchase');
             Route::get('/sale', [ReportController::class, 'sale'])->name('sale');
             Route::get('/purchases/return', [ReportController::class, 'returnPurchaseView'])->name('purchase.return');
+            Route::get('/sale/return', [ReportController::class, 'returnSaleView'])->name('sale.return');
             Route::get('/item-warehouse/{id}', [ReportController::class, 'itemWarehouse'])->name('item.warehouse');
 
             // REPORT
@@ -179,6 +180,8 @@ Route::get('/return-purchase-data', [ReturnPurchaseController::class, 'getPurcha
 Route::get('/return-sale-data', [ReturnSaleController::class, 'getSaleItem']);
 
 Route::get('/laporan/laba-rugi', [ChartController::class, 'getLabaRugi']);
+
+Route::post('/adjust-stock', [WarehouseController::class, 'adjustStock']);
 Route::get('/get-item/{item_id}/{supplier_id}', function ($item_id, $supplier_id) {
     $item = \App\Models\Item::find($item_id);
     $supplier = \App\Models\Supplier::find($supplier_id);
