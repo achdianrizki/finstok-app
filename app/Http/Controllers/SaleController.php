@@ -8,10 +8,11 @@ use Dompdf\Options;
 use App\Models\Item;
 use App\Models\Sale;
 use App\Models\Buyer;
+use App\Models\Category;
 use App\Models\Salesman;
 use App\Models\Warehouse;
-use App\Models\Distributor;
 
+use App\Models\Distributor;
 use Illuminate\Http\Request;
 use App\Models\IncomingPayment;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -124,7 +125,9 @@ class SaleController extends Controller
 
         $qty_sold = array_sum($request->qty_sold);
 
-        $total_discount = str_replace(['Rp', '.', ','], ['', '', '.'], $request->total_discount1) + str_replace(['Rp', '.', ','], ['', '', '.'], $request->total_discount2) + str_replace(['Rp', '.', ','], ['', '', '.'], $request->total_discount3);
+        $total_discount = str_replace(['Rp', '.', ','], ['', '', '.'], $request->discount1_value) +
+            str_replace(['Rp', '.', ','], ['', '', '.'], $request->discount2_value) +
+            str_replace(['Rp', '.', ','], ['', '', '.'], $request->discount3_value);
 
         $sale = Sale::create([
             'buyer_id' => $request->buyer_id,
@@ -132,13 +135,14 @@ class SaleController extends Controller
             'sale_number' => $saleNumber,
             'total_price' => str_replace(['Rp', '.', ','], ['', '', '.'], $request->total_price),
             'sub_total' => str_replace(['Rp', '.', ','], ['', '', '.'], $request->sub_total),
-            'discount1_value' => str_replace(['Rp', '.', ','], ['', '', '.'], $request->total_discount1),
-            'discount2_value' => str_replace(['Rp', '.', ','], ['', '', '.'], $request->total_discount2),
-            'discount3_value' => str_replace(['Rp', '.', ','], ['', '', '.'], $request->total_discount3),
+            'discount1_value' => str_replace(['Rp', '.', ','], ['', '', '.'], $request->discount1_value),
+            'discount2_value' => str_replace(['Rp', '.', ','], ['', '', '.'], $request->discount2_value),
+            'discount3_value' => str_replace(['Rp', '.', ','], ['', '', '.'], $request->discount3_value),
             'total_discount' => $total_discount,
             'sale_date' => $request->sale_date,
             'payment_method' => $request->payment_method,
             'tax' => str_replace(['Rp', '.', ','], ['', '', '.'], $request->tax),
+            'tax_type' => $request->tax_type,
             'status' => $request->status,
             'information' => $request->information,
             'qty_sold' => $qty_sold,
@@ -161,6 +165,8 @@ class SaleController extends Controller
                 'discount2' => $request->discount2[$index],
                 'discount3' => $request->discount3[$index],
                 'sale_price' => $sale_price,
+                'warehouse_id' => $request->warehouse_id,
+                'ad' => $request->ad[$index] || 0,
             ]);
         }
 
@@ -179,7 +185,7 @@ class SaleController extends Controller
                 if ($existing) {
                     $item->item_warehouse()->updateExistingPivot($warehouse_id, [
                         'stock' => $existing->pivot->stock - $qty,
-                        'price_per_item' => $sale_price
+                        'price_per_item' => $sale_price,
                     ]);
                 } else {
                     $item->item_warehouse()->attach($warehouse_id, [
@@ -206,13 +212,16 @@ class SaleController extends Controller
      */
     public function edit(Sale $sale)
     {
+        $sale->load('buyer', 'items');
+        $warehouses = Warehouse::all();
+        $buyers = Buyer::all();
+        $categories = Category::all();
         $items = Item::all();
-        $buyer = $sale->buyer;
-        $salesman = $sale->salesman;
+        $salesmans = Salesman::all();
 
+        $afterDiscount = $sale->total_price - $sale->total_discount;
 
-        // return view('manager.finance.sales', compact('sale'));
-        return view('manager.finance.sales.edit', compact('sale', 'items', 'buyer', 'salesman'));
+        return view('manager.finance.sales.edit', compact('sale', 'warehouses', 'afterDiscount', 'salesmans', 'buyers', 'categories', 'items'));
     }
 
     /**
@@ -236,22 +245,23 @@ class SaleController extends Controller
         }
 
         $qty_sold = array_sum($request->qty_sold);
-        $total_discount = str_replace(['Rp', '.', ','], ['', '', '.'], $request->total_discount1) +
-            str_replace(['Rp', '.', ','], ['', '', '.'], $request->total_discount2) +
-            str_replace(['Rp', '.', ','], ['', '', '.'], $request->total_discount3);
+        $total_discount = str_replace(['Rp', '.', ','], ['', '', '.'], $request->discount1_value) +
+            str_replace(['Rp', '.', ','], ['', '', '.'], $request->discount2_value) +
+            str_replace(['Rp', '.', ','], ['', '', '.'], $request->discount3_value);
 
         $sale->update([
             'buyer_id' => $request->buyer_id,
             'salesman_id' => $request->salesman_id,
             'total_price' => str_replace(['Rp', '.', ','], ['', '', '.'], $request->total_price),
             'sub_total' => str_replace(['Rp', '.', ','], ['', '', '.'], $request->sub_total),
-            'discount1_value' => str_replace(['Rp', '.', ','], ['', '', '.'], $request->total_discount1),
-            'discount2_value' => str_replace(['Rp', '.', ','], ['', '', '.'], $request->total_discount2),
-            'discount3_value' => str_replace(['Rp', '.', ','], ['', '', '.'], $request->total_discount3),
+            'discount1_value' => str_replace(['Rp', '.', ','], ['', '', '.'], $request->discount1_value),
+            'discount2_value' => str_replace(['Rp', '.', ','], ['', '', '.'], $request->discount2_value),
+            'discount3_value' => str_replace(['Rp', '.', ','], ['', '', '.'], $request->discount3_value),
             'total_discount' => $total_discount,
             'sale_date' => $request->sale_date,
             'payment_method' => $request->payment_method,
             'tax' => str_replace(['Rp', '.', ','], ['', '', '.'], $request->tax),
+            'tax_type' => $request->tax_type,
             'status' => $request->status,
             'information' => $request->information,
             'qty_sold' => $qty_sold,
@@ -274,6 +284,8 @@ class SaleController extends Controller
                 'discount2' => $request->discount2[$index],
                 'discount3' => $request->discount3[$index],
                 'sale_price' => $sale_price,
+                'warehouse_id' => $request->warehouse_id,
+                'ad' => $request->ad[$index] || 0,
             ]);
         }
 
@@ -323,22 +335,27 @@ class SaleController extends Controller
         return redirect()->route('manager.sales.index')->with('success', 'Data penjualan berhasil dihapus');
     }
 
-    // public function exportPDF(Sale $sale)
-    // {
-    //     // Ambil data sale beserta incomingPayments
-    //     $sale->load('incomingPayments');
+    public function deleteItem(Sale $sale, Item $item)
+    {
+        $pivot = $sale->items()->where('item_id', $item->id)->first()->pivot ?? null;
+        $qtyToRemove = $pivot ? $pivot->qty_sold : 0;
 
-    //     $options = new Options();
-    //     $options->set('defaultFont', 'Helvetica');
 
-    //     $dompdf = new Dompdf($options);
+        $warehouse_id = $pivot ? $pivot->warehouse_id : null;
+        // dd($warehouse_id);
 
-    //     // Render Blade dengan data
-    //     $html = View::make('exports.incomingPayment.pdf', compact('sale'))->render();
-    //     $dompdf->loadHtml($html);
-    //     $dompdf->setPaper('A4', 'portrait');
-    //     $dompdf->render();
+        $sale->items()->detach($item->id);
 
-    //     return $dompdf->stream('Pembayaran_' . $sale->sale_number . '.pdf');
-    // }
+        if ($warehouse_id) {
+            $item->item_warehouse()->wherePivot('warehouse_id', $warehouse_id)->detach();
+        }
+
+        $sale->decrement('qty_sold', $qtyToRemove);
+
+        if ($qtyToRemove > 0) {
+            $item->decrement('stock', $qtyToRemove);
+        }
+
+        return response()->json(['success' => true]);
+    }
 }

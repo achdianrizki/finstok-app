@@ -25,6 +25,7 @@ return new class extends Migration
             $table->date('sale_date');
             $table->enum('status', ['lunas', 'belum_lunas'])->default('belum_lunas');
             $table->decimal('tax', 15, 2);
+            $table->string('tax_type')->nullable();
             $table->text('information')->nullable();
             $table->integer('qty_sold');
             $table->integer('due_date_duration');

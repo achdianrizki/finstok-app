@@ -145,7 +145,7 @@ class PurchaseController extends Controller
 
                 if ($item) {
                     $item->increment('stock', $request->qty[$index]);
-                    $item->increment('stock', $request->ad[$index]);
+                    $item->increment('stock', (int) $request->ad[$index] ?? 0);
 
                     $item->purchases()->attach($purchase->id, [
                         'qty'            => $request->qty[$index],

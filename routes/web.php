@@ -218,6 +218,7 @@ Route::get('/get-sales-item/{item_id}', function ($item_id) {
 
 // FUNGSI DELETE DATA ITEM PEMBELIAN AJAXXX
 Route::delete('/purchase-edit/{purchase}/item-delete/{item}', [PurchaseController::class, 'deleteItem']);
+Route::delete('/sale-edit/{sale}/item-delete/{item}', [SaleController::class, 'deleteItem']);
 
 Route::get('/incomingpayment-data', [incomingPaymentController::class, 'getSaleItem']);
 

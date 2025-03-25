@@ -33,7 +33,7 @@
                     </x-form.select>
 
                     <x-form.label for="tax" :value="__('Pajak')" />
-                    <x-form.select id="tax" class="block w-full" name="tax" required
+                    <x-form.select id="tax" class="block w-full" name="tax_type" required
                         data-parsley-required-message="Pajak wajib diisi">
                         <option value="" disabled selected>Pilih</option>
                         <option value="ppn" {{ old('tax') == 'ppn' ? 'selected' : '' }}>PPN 11%</option>
@@ -67,18 +67,19 @@
                     <textarea id="information" name="information"
                         class="w-full border-gray-400 rounded-md focus:ring focus:ring-purple-500 focus:ring-offset-2 dark:border-gray-600 dark:bg-dark-eval-1 dark:text-gray-300"
                         rows="3" placeholder="Deskripsi penjualan">{{ old('information') }}</textarea>
+
+                    <x-form.label for="warehouse_id" :value="__('Gudang')" />
+                    <x-form.select id="warehouse_id" class="block w-full" name="warehouse_id">
+                        @foreach ($warehouses as $warehouse)
+                            <option value="{{ $warehouse->id }}"
+                                {{ old('warehouse_id') == $warehouse->id ? 'selected' : '' }}>
+                                {{ $warehouse->name }}
+                            </option>
+                        @endforeach
+                    </x-form.select>
+                    <x-input-error :messages="$errors->get('warehouse_id')" class="mt-2" />
                 </div>
 
-                <x-form.label for="warehouse_id" :value="__('Gudang')" />
-                <x-form.select id="warehouse_id" class="block w-full" name="warehouse_id">
-                    @foreach ($warehouses as $warehouse)
-                        <option value="{{ $warehouse->id }}"
-                            {{ old('warehouse_id') == $warehouse->id ? 'selected' : '' }}>
-                            {{ $warehouse->name }}
-                        </option>
-                    @endforeach
-                </x-form.select>
-                <x-input-error :messages="$errors->get('warehouse_id')" class="mt-2" />
             </div>
         </div>
         <div class="mt-6">
@@ -129,21 +130,21 @@
             </div>
 
             <div class="flex justify-between items-center w-full max-w-md">
-                <label for="total_discount1" class="mr-4">Diskon 1</label>
-                <input type="text" class="w-1/2 border-gray-500 rounded-md p-2 bg-gray-100" name="total_discount1"
-                    id="total_discount1" readonly>
+                <label for="discount1_value" class="mr-4">Diskon 1</label>
+                <input type="text" class="w-1/2 border-gray-500 rounded-md p-2 bg-gray-100" name="discount1_value"
+                    id="discount1_value" readonly>
             </div>
 
             <div class="flex justify-between items-center w-full max-w-md">
-                <label for="total_discount2" class="mr-4">Diskon 2</label>
-                <input type="text" class="w-1/2 border-gray-500 rounded-md p-2 bg-gray-100" name="total_discount2"
-                    id="total_discount2" readonly>
+                <label for="discount2_value" class="mr-4">Diskon 2</label>
+                <input type="text" class="w-1/2 border-gray-500 rounded-md p-2 bg-gray-100" name="discount2_value"
+                    id="discount2_value" readonly>
             </div>
 
             <div class="flex justify-between items-center w-full max-w-md">
-                <label for="total_discount3" class="mr-4">Diskon 3</label>
-                <input type="text" class="w-1/2 border-gray-500 rounded-md p-2 bg-gray-100" name="total_discount3"
-                    id="total_discount3" readonly>
+                <label for="discount3_value" class="mr-4">Diskon 3</label>
+                <input type="text" class="w-1/2 border-gray-500 rounded-md p-2 bg-gray-100" name="discount3_value"
+                    id="discount3_value" readonly>
             </div>
 
             <div class="flex justify-between items-center w-full max-w-md">
@@ -425,9 +426,9 @@
                     let totalPrice = subTotal - totalDiscount;
 
                     $('#sub_total').val('Rp ' + formatRupiah(subTotal.toFixed(2)));
-                    $('#total_discount1').val('Rp ' + formatRupiah(totalDiscount1.toFixed(2)));
-                    $('#total_discount2').val('Rp ' + formatRupiah(totalDiscount2.toFixed(2)));
-                    $('#total_discount3').val('Rp ' + formatRupiah(totalDiscount3.toFixed(2)));
+                    $('#discount1_value').val('Rp ' + formatRupiah(totalDiscount1.toFixed(2)));
+                    $('#discount2_value').val('Rp ' + formatRupiah(totalDiscount2.toFixed(2)));
+                    $('#discount3_value').val('Rp ' + formatRupiah(totalDiscount3.toFixed(2)));
                     $('#total_price').val('Rp ' + formatRupiah(totalPrice.toFixed(2)));
 
                     calculateTotalPrice();
@@ -451,6 +452,10 @@
                     $('#supplier_null').text(!supplierId ?
                         'Anda belum memilih sales, tetapi Anda tetap bisa menambahkan barang.' : '');
                     // if (!supplierId) return;
+
+                    let selectedItems = $('.item-select').map(function() {
+                        return $(this).val();
+                    }).get();
 
                     let row = `
                 <tr class="border-b border-gray-300">

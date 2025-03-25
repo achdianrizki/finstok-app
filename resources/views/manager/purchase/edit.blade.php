@@ -605,6 +605,12 @@
                     calculateSubTotal();
                     calculateTotalQty();
 
+                    if (!itemId) {
+                        row.remove(); // Remove the row if no item is selected
+                        disableSelectedItems(); // Update the item selection
+                        return;
+                    }
+
                     Swal.fire({
                         title: "Hapus Barang?",
                         text: "Apakah Anda yakin ingin menghapus barang ini?",

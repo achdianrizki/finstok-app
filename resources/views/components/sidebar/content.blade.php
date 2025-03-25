@@ -57,7 +57,7 @@
             <x-icons.sale-tag class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
         </x-slot>
 
-        <x-sidebar.sublink title="Penjualan Barang" href="{{ route('manager.sales.index') }}" :active="request()->routeIs('manager.sales.index')" />
+        <x-sidebar.sublink title="Penjualan Barang" href="{{ route('manager.sales.index') }}" :active="request()->routeIs('manager.sales.*')" />
 
         <x-sidebar.sublink title="Pelunasan Penjualan" href="{{ route('manager.incomingpayment.index') }}"
             :active="request()->routeIs('manager.incomingpayment*')" />
