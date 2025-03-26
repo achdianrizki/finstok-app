@@ -101,39 +101,48 @@
                                 <td class="px-1 py-2">
                                     <input type="text"
                                         class="item-price_per_item w-full px-2 py-1 border border-gray-300 rounded-md bg-gray-100 text-right"
-                                        value="{{ number_format($item->pivot->price_per_item, 2, ',', '.') }}"
-                                        readonly>
+                                        value="{{ number_format($item->pivot->price_per_item, 2, ',', '.') }}" readonly>
                                 </td>
                                 <td class="px-1 py-2">
                                     <div class="flex space-x-1">
                                         <input type="text"
                                             class="item-discount1 w-10 px-1 py-1 border border-gray-300 rounded-md bg-gray-100 text-center"
-                                            value="{{ $item->pivot->discount1 ? $item->pivot->discount1 : 0 }}"
-                                            readonly>
+                                            value="{{ $item->pivot->discount1 != 0.0 ? $item->pivot->discount1 : '' }}"
+                                            placeholder="D1" readonly>
                                         <input type="text"
                                             class="item-discount2 w-10 px-1 py-1 border border-gray-300 rounded-md bg-gray-100 text-center"
-                                            value="{{ $item->pivot->discount2 ? $item->pivot->discount2 : 0 }}"
-                                            readonly>
+                                            value="{{ $item->pivot->discount2 != 0.0 ? $item->pivot->discount2 : '' }}"
+                                            placeholder="D2" readonly>
                                         <input type="text"
                                             class="item-discount3 w-10 px-1 py-1 border border-gray-300 rounded-md bg-gray-100 text-center"
-                                            value="{{ $item->pivot->discount3 ? $item->pivot->discount3 : 0 }}"
-                                            readonly>
+                                            value="{{ $item->pivot->discount3 != 0.0 ? $item->pivot->discount3 : '' }}"
+                                            placeholder="D3" readonly>
                                         <input type="text"
                                             class="ad w-8 px-1 py-1 border border-gray-300 rounded-md text-center bg-gray-100"
-                                            placeholder="AD" readonly>
+                                            placeholder="AD"
+                                            value="{{ $item->pivot->ad != 0 ? $item->pivot->ad : '' }}" readonly>
                                     </div>
                                 </td>
                                 <td class="px-1 py-2">
                                     <input type="text"
                                         class="item-total-price w-full px-2 py-1 border border-gray-300 rounded-md bg-gray-100 text-right"
                                         readonly
-                                        value="{{ number_format($item->pivot->price_per_item, 2, ',', '.') }}">
+                                        @php
+                                            $subtotal = $item->pivot->price_per_item * $item->pivot->qty;
+
+                                            $discount1 = $subtotal * ($item->pivot->discount1 / 100);
+
+                                            $discount2 = $subtotal * ($item->pivot->discount2 / 100);
+
+                                            $discount3 = $subtotal * ($item->pivot->discount3 / 100);
+                                        @endphp
+                                        value="{{ number_format($subtotal - $discount1 - $discount2 - $discount3, 2, ',', '.') }}">
                                 </td>
                                 <td class="px-1 py-2">
                                     <input type="text"
                                         class="item-sub-total w-full px-2 py-1 border border-gray-300 rounded-md bg-gray-100 text-right"
                                         readonly
-                                        value="{{ number_format($item->pivot->price_per_item - $item->total_discount1 - $item->total_discount2 - $item->total_discount3, 2, ',', '.') }}">
+                                        value="{{ number_format($item->pivot->price_per_item * $item->pivot->qty, 2, ',', '.') }}">
                                 </td>
                             </tr>
                         @endforeach

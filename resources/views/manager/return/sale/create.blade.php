@@ -133,11 +133,22 @@
                                 <td class="px-1 py-2">
                                     <input type="text"
                                         class="item-total-price w-full px-2 py-1 border border-gray-300 rounded-md bg-gray-100 text-right"
+                                        @php
+                                            $subtotal = $item->pivot->sale_price * $item->pivot->qty_sold;
+
+                                            $discount1 = $subtotal * ($item->pivot->discount1 / 100);
+
+                                            $discount2 = $subtotal * ($item->pivot->discount2 / 100);
+
+                                            $discount3 = $subtotal * ($item->pivot->discount3 / 100);
+                                        @endphp
+                                        value="{{ number_format($subtotal - $discount1 - $discount2 - $discount3, 2, ',', '.') }}"
                                         readonly>
                                 </td>
                                 <td class="px-1 py-2">
                                     <input type="text"
                                         class="item-sub-total w-full px-2 py-1 border border-gray-300 rounded-md bg-gray-100 text-right"
+                                        value="{{ number_format($subtotal, 2, ',', '.') }}"
                                         readonly>
                                 </td>
                             </tr>

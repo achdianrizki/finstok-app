@@ -146,6 +146,14 @@ Route::middleware('auth')->group(function () {
             // Incoming Payment ( 1 by 1) (PURCHASE)
             Route::get('/outgoingPayment/export/onePdf/{outgoingPayment}', [outgoingPaymentController::class, 'exportOneInvoicePDF'])->name('outgoingPayment.export.onePdf');
             // PAYMENT END
+
+            // RETURN PURCHASE (all) START
+            Route::get('/return-purchase-items-report/export/pdf', [ReportController::class, 'exportReturnPurchaseItemsPDF'])->name('return-purchase-items-report.export.pdf');
+            // RETURN PURCHASE END
+
+            // RETURN SALE (all) START
+            Route::get('/return-sale-items-report/export/pdf', [ReportController::class, 'exportReturnSaleItemsPDF'])->name('return-sale-items-report.export.pdf');
+            // RETURN SALE END
         });
     });
 

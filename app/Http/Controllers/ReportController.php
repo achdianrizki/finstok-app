@@ -7,7 +7,9 @@ use Dompdf\Options;
 use App\Models\Sale;
 use App\Models\Purchase;
 use App\Models\Warehouse;
+use App\Models\ReturnSale;
 use Illuminate\Http\Request;
+use App\Models\ReturnPurchase;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\View;
@@ -30,7 +32,7 @@ class ReportController extends Controller
             ->join('purchases', 'return_purchases.purchase_id', '=', 'purchases.id')
             ->join('suppliers', 'return_purchases.supplier_id', '=', 'suppliers.id')
             ->join('return_purchase_items', 'return_purchases.id', '=', 'return_purchase_items.return_purchase_id')
-            ->select('return_purchases.*', 'purchases.*', 'suppliers.contact as supplier_name', 'return_purchase_items.*')
+            ->select('return_purchases.*', 'purchases.*', 'suppliers.name as supplier_name', 'return_purchase_items.*')
             ->get();
         return view('manager.report.purchase_return', compact('return'));
     }
@@ -171,6 +173,50 @@ class ReportController extends Controller
 
         // return $dompdf->stream('SEVENA/SALE/' . str_replace('/', '_', $sale->sale_number) . '.pdf');
         return $dompdf->stream('item-warehouse.pdf', ['Attachment' => false]);
+        // return view('exports.report.sale', compact('sale'));
+    }
+
+    public function exportReturnPurchaseItemsPDF()
+    {
+
+        $query = ReturnPurchase::with('items', 'purchase');
+
+        $returnPurchases = $query->get();
+
+        $options = new Options();
+        $options->set('defaultFont', 'Helvetica');
+
+        $dompdf = new Dompdf($options);
+
+        $html = View::make('exports.report.returnPurchase', compact('returnPurchases'))->render();
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper([0, 0, 595.28, 5000]); // 595.28px = A4 width, 2000px = custom height
+        $dompdf->render();
+
+        // return $dompdf->stream('SEVENA/SALE/' . str_replace('/', '_', $sale->sale_number) . '.pdf');
+        return $dompdf->stream('returnPurchases.pdf', ['Attachment' => false]);
+        // return view('exports.report.sale', compact('sale'));
+    }
+
+    public function exportReturnSaleItemsPDF()
+    {
+
+        $query = ReturnSale::with('items', 'sale', 'buyer', 'salesman');
+
+        $returnSales = $query->get();
+
+        $options = new Options();
+        $options->set('defaultFont', 'Helvetica');
+
+        $dompdf = new Dompdf($options);
+
+        $html = View::make('exports.report.returnSale', compact('returnSales'))->render();
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper([0, 0, 595.28, 5000]); // 595.28px = A4 width, 2000px = custom height
+        $dompdf->render();
+
+        // return $dompdf->stream('SEVENA/SALE/' . str_replace('/', '_', $sale->sale_number) . '.pdf');
+        return $dompdf->stream('returnSales.pdf', ['Attachment' => false]);
         // return view('exports.report.sale', compact('sale'));
     }
 }

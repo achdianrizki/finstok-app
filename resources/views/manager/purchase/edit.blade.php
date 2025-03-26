@@ -165,19 +165,19 @@
                                             <input type="text" name="discount1[]"
                                                 class="discount1 w-10 px-1 py-1 border border-gray-300 rounded-md text-right"
                                                 placeholder="D1"
-                                                value="{{ ($item->pivot->discount1 ?? 0) > 0 ? $item->pivot->discount1 : 0 }}">
+                                                value="{{ ($item->pivot->discount1 ?? 0) > 0 ? $item->pivot->discount1 : '' }}">
                                             <input type="text" name="discount2[]"
                                                 class="discount2 w-10 px-1 py-1 border border-gray-300 rounded-md text-right"
                                                 placeholder="D2"
-                                                value="{{ ($item->pivot->discount2 ?? 0) > 0 ? $item->pivot->discount2 : 0 }}">
+                                                value="{{ ($item->pivot->discount2 ?? 0) > 0 ? $item->pivot->discount2 : '' }}">
                                             <input type="text" name="discount3[]"
                                                 class="discount3 w-10 px-1 py-1 border border-gray-300 rounded-md text-right"
                                                 placeholder="D3"
-                                                value="{{ ($item->pivot->discount3 ?? 0) > 0 ? $item->pivot->discount3 : 0 }}">
+                                                value="{{ ($item->pivot->discount3 ?? 0) > 0 ? $item->pivot->discount3 : '' }}">
                                             <input type="text" name="ad[]"
                                                 class="ad w-8 px-1 py-1 border border-gray-300 rounded-md text-right"
                                                 placeholder="AD"
-                                                value="{{ ($item->pivot->ad ?? 0) > 0 ? $item->pivot->ad : 0 }}">
+                                                value="{{ ($item->pivot->ad ?? 0) > 0 ? $item->pivot->ad : '' }}">
                                         </div>
                                     </td>
                                     <td class="px-1 py-2">

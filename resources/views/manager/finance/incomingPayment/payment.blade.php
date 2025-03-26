@@ -114,19 +114,19 @@
                                     <div class="flex space-x-1">
                                         <input type="text"
                                             class="item-discount1 w-8 px-1 py-1 border border-gray-300 rounded-md bg-gray-100 text-center"
-                                            value="{{ $item->pivot->discount1 ? $item->pivot->discount1 : 0 }}"
+                                            value="{{ $item->pivot->discount1 != 0 ? $item->pivot->discount1 : '' }}"
                                             readonly>
                                         <input type="text"
                                             class="item-discount2 w-8 px-1 py-1 border border-gray-300 rounded-md bg-gray-100 text-center"
-                                            value="{{ $item->pivot->discount2 ? $item->pivot->discount2 : 0 }}"
+                                            value="{{ $item->pivot->discount2 != 0 ? $item->pivot->discount2 : '' }}"
                                             readonly>
                                         <input type="text"
                                             class="item-discount3 w-8 px-1 py-1 border border-gray-300 rounded-md bg-gray-100 text-center"
-                                            value="{{ $item->pivot->discount3 ? $item->pivot->discount3 : 0 }}"
+                                            value="{{ $item->pivot->discount3 != 0 ? $item->pivot->discount3 : '' }}"
                                             readonly>
                                         <input type="text"
                                             class="ad w-8 px-1 py-1 border border-gray-300 rounded-md text-center bg-gray-100"
-                                            placeholder="AD" readonly>
+                                            placeholder="AD" value="{{ $item->pivot->ad != 0 ? $item->pivot->ad : '' }}" readonly>
                                     </div>
                                 </td>
                                 <td class="px-1 py-2">
