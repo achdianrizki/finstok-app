@@ -218,10 +218,7 @@ class SaleController extends Controller
         $categories = Category::all();
         $items = Item::all();
         $salesmans = Salesman::all();
-
-        $afterDiscount = $sale->total_price - $sale->total_discount;
-
-        return view('manager.finance.sales.edit', compact('sale', 'warehouses', 'afterDiscount', 'salesmans', 'buyers', 'categories', 'items'));
+        return view('manager.finance.sales.edit', compact('sale', 'warehouses', 'salesmans', 'buyers', 'categories', 'items'));
     }
 
     /**
@@ -340,20 +337,23 @@ class SaleController extends Controller
         $pivot = $sale->items()->where('item_id', $item->id)->first()->pivot ?? null;
         $qtyToRemove = $pivot ? $pivot->qty_sold : 0;
 
-
         $warehouse_id = $pivot ? $pivot->warehouse_id : null;
-        // dd($warehouse_id);
 
         $sale->items()->detach($item->id);
 
         if ($warehouse_id) {
-            $item->item_warehouse()->wherePivot('warehouse_id', $warehouse_id)->detach();
+            $existing = $item->item_warehouse()->wherePivot('warehouse_id', $warehouse_id)->first();
+            if ($existing) {
+                $item->item_warehouse()->updateExistingPivot($warehouse_id, [
+                    'stock' => $existing->pivot->stock + $qtyToRemove,
+                ]);
+            }
         }
 
         $sale->decrement('qty_sold', $qtyToRemove);
 
         if ($qtyToRemove > 0) {
-            $item->decrement('stock', $qtyToRemove);
+            $item->increment('stock', $qtyToRemove);
         }
 
         return response()->json(['success' => true]);

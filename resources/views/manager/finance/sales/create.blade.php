@@ -70,6 +70,7 @@
 
                     <x-form.label for="warehouse_id" :value="__('Gudang')" />
                     <x-form.select id="warehouse_id" class="block w-full" name="warehouse_id">
+                        <option value="" disabled selected>Pilih Gudang</option>
                         @foreach ($warehouses as $warehouse)
                             <option value="{{ $warehouse->id }}"
                                 {{ old('warehouse_id') == $warehouse->id ? 'selected' : '' }}>
@@ -317,7 +318,14 @@
                     let supplierId = $('#salesman_id').val();
                     updateItemData(row, itemId);
 
-                    console.log($('.sale_price').length);
+                    let selectedItem = $(this).val();
+                    let stock = $(this).find(':selected').data('stock');
+
+                    row.find('.stock').val(stock);
+
+                    disableSelectedItems();
+
+                    // console.log($('.sale_price').length);
 
                     $('.sale_price').on('input', function(e) {
 
@@ -347,19 +355,7 @@
                     }).format(number);
                 }
 
-                function updateItemData(row, itemId) {
-                    if (itemId) {
-                        $.get(`/get-sales-item/${itemId}`, function(data) {
-                            row.find('.item-code').val(data.code);
-                            row.find('.item-name').val(data.name);
-                            row.find('.sale_price').val(formatRupiah(data.purchase_price));
-                            row.find('.unit').val(data.unit);
-                            row.find('.stock').val(data.stock);
-                            row.find('.qty').val();
-                            calculateTotal(row);
-                        });
-                    }
-                }
+
 
                 $(document).on('input', '.sale_price, .qty, .discount1, .discount2, .discount3', function() {
                     let row = $(this).closest('tr');
@@ -447,55 +443,137 @@
                     $('#total_price').val('Rp ' + formatRupiah(finalTotalPrice.toFixed(2)));
                 }
 
-                $('#add-item').click(function() {
-                    let supplierId = $('#salesman_id').val();
-                    $('#supplier_null').text(!supplierId ?
-                        'Anda belum memilih sales, tetapi Anda tetap bisa menambahkan barang.' : '');
-                    // if (!supplierId) return;
+                function updateItemData(row, itemId) {
+                    if (itemId) {
+                        $.get(`/get-sales-item/${itemId}`, function(data) {
+                            row.find('.item-code').val(data.code);
+                            row.find('.item-name').val(data.name);
+                            row.find('.sale_price').val(formatRupiah(data.purchase_price));
+                            row.find('.unit').val(data.unit);
+                            row.find('.stock').val(data.stock);
+                            row.find('.qty').val();
+                            calculateTotal(row);
+                        });
+                    }
+                }
 
-                    let selectedItems = $('.item-select').map(function() {
-                        return $(this).val();
-                    }).get();
-
-                    let row = `
-                <tr class="border-b border-gray-300">
-                    <td class="px-1 py-2">
-                    <input type="text" class="item-code w-full px-2 py-1 border border-gray-300 rounded-md bg-gray-100 text-center" readonly></td>
-                    <td class="px-1 py-2">
-                    <select name="items[]" class="item-select w-40 select2 px-2 py-1 border border-gray-300 rounded-md" required data-parsley-required-message="Barang harus diisi">
-                            <option value="">Pilih Barang</option>
-                            @foreach ($items as $item)
-                                <option value="{{ $item->id }}">{{ $item->name }}</option>
-                            @endforeach
-                    </select>
-                    </td> 
-                    <td class="px-1 py-2"><input type="number" name="stock[]" class="stock w-16 px-2 py-1 border border-gray-300 rounded-md bg-gray-100 text-center" readonly></td>
-                    <td class="px-1 py-2"><input type="text" name="unit[]" class="unit w-16 px-2 py-1 border border-gray-300 rounded-md bg-gray-100 text-center" readonly></td>
-                    <td class="px-1 py-2"><input type="number" name="qty_sold[]" class="qty w-16 px-2 py-1 border border-gray-300 rounded-md text-center" min="1" value="1" required data-parsley-required-message="Jumlah harus diisi"></td>
-                    <td class="px-1 py-2"><input type="text" name="sale_prices[]" class="sale_price w-full px-2 py-1 border border-gray-300 rounded-md text-right" required data-parsley-required-message="Harga jual harus diisi"></td>
-                    <td class="px-1 py-2">
-                    <div class="flex space-x-1">
-                    <input type="text" name="discount1[]" class="discount1 w-8 px-1 py-1 border border-gray-300 rounded-md text-right" placeholder="D1">
-                    <input type="text" name="discount2[]" class="discount2 w-8 px-1 py-1 border border-gray-300 rounded-md text-right" placeholder="D2">
-                    <input type="text" name="discount3[]" class="discount3 w-8 px-1 py-1 border border-gray-300 rounded-md text-right" placeholder="D3">
-                    <input type="text" name="ad[]" class="ad w-8 px-1 py-1 border border-gray-300 rounded-md text-right" placeholder="AD">
-                    </div>
-                    </td>
-                    <td class="px-1 py-2"><input type="text" name="total_prices[]" class="total-price w-full px-2 py-1 border border-gray-300 rounded-md bg-gray-100 text-right" readonly></td>
-                    <td class="px-1 py-2"><input type="text" name="real_prices[]" class="real_price w-full px-2 py-1 border border-gray-300 rounded-md bg-gray-100 text-right" readonly></td>
-                    <td class="px-1 py-2 text-center"><button type="button" class="remove-item px-3 py-1 bg-red-500 text-white rounded-md hover:bg-red-600 transition">Hapus</button></td>
-                </tr>
-                `;
-
-                    $('#items-table tbody').append(row);
-                    $('.item-select').each(function() {
-                        if (!$(this).data('locked')) {
-                            $(this).select2();
+                $(function() {
+                    $.ajaxSetup({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                         }
                     });
 
-                    disableSelectedItems();
+                    let itemOptions = '<option value="">Pilih Barang</option>';
+
+                    $('#warehouse_id').on('change', function() {
+                        let warehouseId = $(this).val();
+                        console.log('Warehouse ID:', warehouseId);
+
+                        $('#items-table tbody').empty(); // Reset tabel saat gudang diubah
+
+                        $.ajax({
+                            url: `/get-items/warehouse`,
+                            type: 'POST',
+                            data: {
+                                warehouse_id: warehouseId
+                            },
+                            dataType: 'json',
+                            cache: false,
+                            success: function(data) {
+                                console.log("Data dari server:", data);
+                                itemOptions = '<option value="">Pilih Barang</option>';
+
+                                $.each(data, function(index, item) {
+                                    let disabled = item.stock <= 0 ? 'disabled' :
+                                        '';
+                                    let name = item.stock <= 0 ?
+                                        `${item.name} (Habis)` : item.name;
+
+                                    itemOptions +=
+                                        `<option value="${item.id}" data-stock="${item.stock}" ${disabled}>${name}</option>`;
+                                });
+
+                                let result = $('#items-table').data('itemOptions',
+                                    itemOptions);
+                                console.log('Item Options:', result);
+
+
+                            },
+                            error: function(xhr) {
+                                console.log('Error:', xhr.responseText);
+                            }
+                        });
+                    });
+
+                    $('#add-item').click(function() {
+                        let warehouseId = $('#warehouse_id').val();
+                        if (!warehouseId) {
+                            alert('Silakan pilih gudang terlebih dahulu!');
+                            return;
+                        }
+
+                        let row = `
+                            <tr class="border-b border-gray-300">
+                                <td class="px-1 py-2">
+                                    <input type="text" class="item-code w-full px-2 py-1 border border-gray-300 rounded-md bg-gray-100 text-center" readonly>
+                                </td>
+                                <td class="px-1 py-2">
+                                    <select name="items[]" class="item-select w-40 select2 px-2 py-1 border border-gray-300 rounded-md" required>
+                                        ${$('#items-table').data('itemOptions')}
+                                    </select>
+                                </td> 
+                                <td class="px-1 py-2">
+                                    <input type="number" name="stock[]" class="stock w-16 px-2 py-1 border border-gray-300 rounded-md bg-gray-100 text-center" readonly>
+                                </td>
+                                <td class="px-1 py-2">
+                                    <input type="text" name="unit[]" class="unit w-16 px-2 py-1 border border-gray-300 rounded-md bg-gray-100 text-center" readonly>
+                                </td>
+                                <td class="px-1 py-2">
+                                    <input type="number" name="qty_sold[]" class="qty w-16 px-2 py-1 border border-gray-300 rounded-md text-center" min="1" value="1" required>
+                                </td>
+                                <td class="px-1 py-2">
+                                    <input type="text" name="sale_prices[]" class="sale_price w-full px-2 py-1 border border-gray-300 rounded-md text-right" required>
+                                </td>
+                                <td class="px-1 py-2">
+                                    <div class="flex space-x-1">
+                                        <input type="text" name="discount1[]" class="discount1 w-8 px-1 py-1 border border-gray-300 rounded-md text-right" placeholder="D1">
+                                        <input type="text" name="discount2[]" class="discount2 w-8 px-1 py-1 border border-gray-300 rounded-md text-right" placeholder="D2">
+                                        <input type="text" name="discount3[]" class="discount3 w-8 px-1 py-1 border border-gray-300 rounded-md text-right" placeholder="D3">
+                                        <input type="text" name="ad[]" class="ad w-8 px-1 py-1 border border-gray-300 rounded-md text-right" placeholder="AD">
+                                    </div>
+                                </td>
+                                <td class="px-1 py-2">
+                                    <input type="text" name="total_prices[]" class="total-price w-full px-2 py-1 border border-gray-300 rounded-md bg-gray-100 text-right" readonly>
+                                </td>
+                                <td class="px-1 py-2">
+                                    <input type="text" name="real_prices[]" class="real_price w-full px-2 py-1 border border-gray-300 rounded-md bg-gray-100 text-right" readonly>
+                                </td>
+                                <td class="px-1 py-2 text-center">
+                                    <button type="button" class="remove-item px-3 py-1 bg-red-500 text-white rounded-md hover:bg-red-600 transition">Hapus</button>
+                                </td>
+                            </tr>`;
+
+                        $('#items-table tbody').append(row);
+
+                        let $newSelect = $('.item-select').last();
+                        $newSelect.select2();
+
+                        $newSelect.find('option').each(function() {
+                            let stock = $(this).attr('data-stock');
+                            console.log(`ID: ${$(this).val()}, Stock: ${stock}`);
+
+                            if (stock <= 0) {
+                                $(this).prop('disabled', true);
+                            }
+                        });
+
+                        $newSelect.trigger('change');
+                    });
+
+
                 });
+
 
                 function disableSelectedItems() {
                     let selectedItems = $('.item-select').map(function() {
@@ -506,8 +584,12 @@
                         let select = $(this);
                         select.find('option').each(function() {
                             let optionValue = $(this).val();
+                            let stock = $(this).data('stock');
+
                             if (selectedItems.includes(optionValue) && optionValue !== '' &&
                                 optionValue !== select.val()) {
+                                $(this).prop('disabled', true);
+                            } else if (stock <= 0) {
                                 $(this).prop('disabled', true);
                             } else {
                                 $(this).prop('disabled', false);
@@ -535,20 +617,23 @@
 
                     $('#buyer_id').each(function() {
                         if ($(this).val() === null || $(this).val() === "") {
-                            $(this).next('.select2-container').find('.select2-selection').addClass(
-                                'error');
+                            $(this).next('.select2-container').find('.select2-selection')
+                                .addClass(
+                                    'error');
                             isValid = false;
                         } else {
-                            $(this).next('.select2-container').find('.select2-selection').removeClass(
-                                'error');
+                            $(this).next('.select2-container').find('.select2-selection')
+                                .removeClass(
+                                    'error');
                         }
                     });
                 });
 
                 $('#buyer_id').on('change', function() {
                     if ($(this).val() !== null && $(this).val() !== "") {
-                        $(this).siblings('.select2-container').find('.select2-selection').removeClass(
-                            'error');
+                        $(this).siblings('.select2-container').find('.select2-selection')
+                            .removeClass(
+                                'error');
                     }
                 });
             });

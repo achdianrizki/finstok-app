@@ -199,6 +199,8 @@ Route::get('/get-item/{item_id}/{supplier_id}', function ($item_id, $supplier_id
 Route::get('/buyers-data', [BuyerController::class, 'getBuyers']);
 Route::get('/salesmans-data', [SalesmanController::class, 'getSalesman']);
 Route::get('/laporan/laba-rugi', [ChartController::class, 'getLabaRugi']);
+
+Route::post('/get-items/warehouse', [WarehouseController::class, 'getItemsByWarehouses']);
 Route::get('/get-sales-item/{item_id}', function ($item_id) {
     $item = \App\Models\Item::find($item_id);
 
@@ -211,8 +213,6 @@ Route::get('/get-sales-item/{item_id}', function ($item_id) {
         'purchase_price' => $item->purchase_price,
         'discount1' => 0,
         'discount2' => 0,
-        // 'discount1' => $supplier ? $supplier->discount1 : 0,
-        // 'discount2' => $supplier ? $supplier->discount2 : 0,
     ]);
 });
 

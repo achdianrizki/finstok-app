@@ -134,4 +134,44 @@ class WarehouseController extends Controller
 
         return response()->json(['message' => 'Item not found in warehouse'], 404);
     }
+
+    public function getSalesItem($item_id, $warehouse_id)
+    {
+        $item = Item::whereHas('item_warehouse', function ($query) use ($warehouse_id) {
+            $query->where('warehouse_id', $warehouse_id);
+        })
+            ->with(['item_warehouse' => function ($query) use ($warehouse_id) {
+                $query->where('warehouse_id', $warehouse_id);
+            }])
+            ->find($item_id);
+
+        if (!$item || $item->item_warehouse->isEmpty()) {
+            return response()->json(['error' => 'Item not found in selected warehouse'], 404);
+        }
+
+        $warehouseData = $item->item_warehouse->first();
+
+        return response()->json([
+            'item_id' => $item->id,
+            'code' => $item->code,
+            'name' => $item->name,
+            'stock' => $warehouseData->pivot->stock,
+            'unit' => $item->unit,
+            'price' => $warehouseData->pivot->price_per_item,
+            'purchase_price' => $warehouseData->pivot->price_per_item,
+            'discount1' => $warehouseData->pivot->discount1 ?? 0,
+            'discount2' => $warehouseData->pivot->discount2 ?? 0,
+        ]);
+    }
+
+    public function getItemsByWarehouses(Request $request)
+    {
+        $items = DB::table('item_warehouse')
+            ->where('warehouse_id', $request->warehouse_id)
+            ->join('items', 'items.id', '=', 'item_warehouse.item_id')
+            ->select('items.id', 'items.name', 'item_warehouse.stock')
+            ->get();
+
+        return response()->json($items);
+    }
 }

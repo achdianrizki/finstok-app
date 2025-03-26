@@ -79,21 +79,23 @@
                     <textarea id="information" name="information"
                         class="w-full border-gray-400 rounded-md focus:ring focus:ring-purple-500 focus:ring-offset-2 dark:border-gray-600 dark:bg-dark-eval-1 dark:text-gray-300"
                         rows="3" placeholder="Deskripsi barang">{{ old('information', $sale->information) }}</textarea>
-                        
-                        <x-form.select id="warehouse_id" class="block w-full pointer-events-none bg-gray-200" name="warehouse_id">
-                            @foreach ($warehouses as $warehouse)
-                                @php
-                                    $selectedWarehouse = $sale->items
-                                        ->pluck('pivot.warehouse_id')
-                                        ->contains($warehouse->id);
-                                @endphp
-                                <option value="{{ $warehouse->id }}"
-                                    {{ old('warehouse_id', $selectedWarehouse ? $warehouse->id : null) == $warehouse->id ? 'selected' : '' }}>
-                                    {{ $warehouse->name }}
-                                </option>
-                            @endforeach
-                        </x-form.select>
-                        <x-input-error :messages="$errors->get('warehouse_id')" class="mt-2" />
+
+                    <x-form.label for="warehouse_id" :value="__('Gudang')" class="mb-2" />    
+                    <x-form.select id="warehouse_id" class="block w-full pointer-events-none bg-gray-200"
+                        name="warehouse_id">
+                        @foreach ($warehouses as $warehouse)
+                            @php
+                                $selectedWarehouse = $sale->items
+                                    ->pluck('pivot.warehouse_id')
+                                    ->contains($warehouse->id);
+                            @endphp
+                            <option value="{{ $warehouse->id }}"
+                                {{ old('warehouse_id', $selectedWarehouse ? $warehouse->id : null) == $warehouse->id ? 'selected' : '' }}>
+                                {{ $warehouse->name }}
+                            </option>
+                        @endforeach
+                    </x-form.select>
+                    <x-input-error :messages="$errors->get('warehouse_id')" class="mt-2" />
                 </div>
             </div>
         </div>
@@ -187,7 +189,7 @@
                                     </td>
                                     <td class="px-1 py-2"><input type="text" name="total_prices[]"
                                             class="total-price w-full px-2 py-1 border border-gray-300 rounded-md bg-gray-100 text-right"
-                                            readonly value="{{ number_format($afterDiscount, 2, ',', '.') }}"></td>
+                                            readonly value="{{ number_format(($item->pivot->sale_price * $item->pivot->qty_sold) - $sale->total_discount, 2, ',', '.') }}"></td>
                                     <td class="px-1 py-2"><input type="text" name="real_prices[]"
                                             class="real_price w-full px-2 py-1 border border-gray-300 rounded-md bg-gray-100 text-right"
                                             readonly
@@ -631,7 +633,6 @@
                     let row = $(this).closest('tr');
                     let itemId = row.find('.item-select').val();
                     let saleId = $('#sale_id').val();
-                    calculateSubTotal();
 
                     if (!itemId) {
                         row.remove();
@@ -662,6 +663,8 @@
                                         Swal.fire("Terhapus!", "Barang berhasil dihapus.",
                                             "success");
                                         row.remove();
+                                        calculateSubTotal();
+                                        calculateTotalPrice();
                                         disableSelectedItems();
                                     } else {
                                         Swal.fire("Gagal!", "Barang tidak dapat dihapus.",
