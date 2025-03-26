@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreSupplierRequest;
+use App\Models\Item;
 use App\Models\Supplier;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Http\Requests\StoreSupplierRequest;
 
 class SupplierController extends Controller
 {
@@ -101,5 +102,19 @@ class SupplierController extends Controller
             ->paginate(5);
 
         return view('manager.softdeletes.supplier.index', compact('deletedSuppliers'));
+    }
+
+    public function getItemsBySupplier($supplierId)
+    {
+        $allItems = Item::all(['id', 'name']);
+
+        $supplierItems = Item::whereHas('suppliers', function ($query) use ($supplierId) {
+            $query->where('supplier_id', $supplierId);
+        })->pluck('id');
+
+        return response()->json([
+            'allItems' => $allItems,
+            'supplierItems' => $supplierItems, 
+        ]);
     }
 }

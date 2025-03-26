@@ -18,8 +18,9 @@
                         value="{{ old('purchase_date', $purchase->purchase_date) }}" />
 
                     <x-form.label for="supplier_id" :value="__('Supplier')" />
-                    <select id="supplier_id" name="supplier_id" class="w-full select2"
-                        data-parsley-required-message="Pilih salah satu supplier">
+                    <input type="hidden" name="supplier_id" value="{{ old('supplier_id', $purchase->supplier_id) }}">
+                    <select id="supplier_id" class="w-full select2 pointer-events-none bg-gray-200"
+                        data-parsley-required-message="Pilih salah satu supplier" tabindex="-1" >
                         <option value="" selected disabled>Pilih</option>
                         @foreach ($suppliers as $supplier)
                             <option value="{{ $supplier->id }}"
@@ -45,7 +46,8 @@
                         rows="3" placeholder="Deskripsi barang">{{ old('information', $purchase->information) }}</textarea>
 
                     <x-form.label for="warehouse_id" :value="__('Gudang')" />
-                    <x-form.select id="warehouse_id" class="block w-full pointer-events-none bg-gray-200" name="warehouse_id">
+                    <x-form.select id="warehouse_id" class="block w-full pointer-events-none bg-gray-200"
+                        name="warehouse_id">
                         @foreach ($warehouses as $warehouse)
                             @php
                                 $selectedWarehouse = $purchase->items
@@ -129,7 +131,7 @@
                                         <select name="items[]"
                                             class="item-select w-full select2 px-2 py-1 border border-gray-300 rounded-md pointer-events-none bg-gray-200"
                                             data-locked="true">
-                                            <option value="">Pilih Barang</option>
+                                            <option value="">Pilih Barang berdasarkan Supplier</option>
                                             @foreach ($items as $availableItem)
                                                 <option value="{{ $availableItem->id }}"
                                                     {{ $item->id == $availableItem->id ? 'selected' : '' }}>
@@ -174,7 +176,8 @@
                                                 value="{{ ($item->pivot->discount3 ?? 0) > 0 ? $item->pivot->discount3 : 0 }}">
                                             <input type="text" name="ad[]"
                                                 class="ad w-8 px-1 py-1 border border-gray-300 rounded-md text-right"
-                                                placeholder="AD" value="{{ ($item->pivot->ad ?? 0) > 0 ? $item->pivot->ad : 0 }}">
+                                                placeholder="AD"
+                                                value="{{ ($item->pivot->ad ?? 0) > 0 ? $item->pivot->ad : 0 }}">
                                         </div>
                                     </td>
                                     <td class="px-1 py-2">
@@ -264,6 +267,8 @@
 
                 // $(".duration-btn").prop("disabled", true).addClass("bg-gray-400");
                 // $("#custom_due_date").prop("disabled", true).addClass("bg-gray-400");
+
+                $('#supplier_id').select2().prop('disabled', true);
 
                 $(".duration-btn").on("click", function() {
                     $(".duration-btn").removeClass("bg-purple-700 ring-2 ring-purple-300");
@@ -527,9 +532,14 @@
                                 </td>
                                 <td>
                                     <select name="items[]" class="item-select w-full select2 px-2 py-1 border border-gray-300 rounded-md">
-                                    <option value="">Pilih Barang</option>
+                                    <option value="">Pilih Barang berdasarkan Supplier</option>
                                     @foreach ($items as $item)
-                                        <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                        @php
+                                            $isRelated = $purchase->supplier->item->contains($item->id);
+                                        @endphp
+                                        <option value="{{ $item->id }}" data-related="{{ $isRelated ? 'yes' : 'no' }}" class="{{ $isRelated ? '' : 'disabled-option' }}">
+                                            {{ $item->name }}
+                                        </option>
                                     @endforeach
                                     </select>
                                 </td>
@@ -565,9 +575,25 @@
                         `;
 
                     $('#items-table tbody').append(row);
-                    $('.item-select').each(function() {
-                        if (!$(this).data('locked')) {
-                            $(this).select2();
+
+                    let $lastSelect = $('#items-table tbody .item-select').last();
+
+                    $lastSelect.select2({
+                        templateResult: function(data) {
+                            if (!data.id) return data.text;
+                            let $option = $(data.element);
+                            if ($option.hasClass('disabled-option')) {
+                                // return $('<span style="color: #aaa;">' + data.text +
+                                //     ' (Tidak Terkait)</span>');
+                                return $('<span style="color: #aaa;">' + data.text +
+                                    '</span>');
+                            }
+                            return data.text;
+                        }
+                    }).on('select2:selecting', function(e) {
+                        let $option = $(e.params.args.data.element);
+                        if ($option.hasClass('disabled-option')) {
+                            e.preventDefault(); 
                         }
                     });
 
@@ -627,7 +653,7 @@
                                 type: 'DELETE',
                                 data: {
                                     _token: $('meta[name="csrf-token"]').attr(
-                                        'content') 
+                                        'content')
                                 },
                                 success: function(response) {
                                     if (response.success) {
