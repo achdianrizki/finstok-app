@@ -182,6 +182,9 @@ Route::get('/return-sale-data', [ReturnSaleController::class, 'getSaleItem']);
 Route::get('/laporan/laba-rugi', [ChartController::class, 'getLabaRugi']);
 
 Route::post('/adjust-stock', [WarehouseController::class, 'adjustStock']);
+Route::get('/get-items/{supplier}', [SupplierController::class, 'getItemsBySupplier']);
+
+
 Route::get('/get-item/{item_id}/{supplier_id}', function ($item_id, $supplier_id) {
     $item = \App\Models\Item::find($item_id);
     $supplier = \App\Models\Supplier::find($supplier_id);
