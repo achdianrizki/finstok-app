@@ -124,16 +124,22 @@
     <table class="table">
         <tr>
             <th>Nama Barang</th>
-            <th>Jumlah Stok</th>
             <th>Satuan</th>
+            <th>Jumlah Stok</th>
+            <th>Jumlah Stok Fisik</th>
+            <th>Keuntungan</th>
+            <th>Selisih</th>
             <th>Harga</th>
         </tr>
 
         @forelse ($items as $item)
             <tr>
                 <td>{{ $item->name }}</td>
-                <td class="text-center">{{ $item->pivot->stock }}</td>
                 <td>{{ $item->unit }}</td>
+                <td class="text-center">{{ $item->pivot->stock }}</td>
+                <td class="text-center">{{ $item->pivot->physical }}</td>
+                <td class="text-center">{{ ($item->pivot->profit <= 0) ? 0 : $item->pivot->profit }}</td>
+                <td class="text-center">Rp {{ number_format($item->pivot->difference, 2, ',', '.') }}</td>
                 <td class="text-right">Rp {{ number_format($item->pivot->price_per_item, 2, ',', '.') }}</td>
             </tr>
         @empty

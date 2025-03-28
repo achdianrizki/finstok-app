@@ -317,12 +317,10 @@
                     let itemId = $(this).val();
                     let supplierId = $('#salesman_id').val();
                     updateItemData(row, itemId);
-
+                    
                     let selectedItem = $(this).val();
                     let stock = $(this).find(':selected').data('stock');
-
                     row.find('.stock').val(stock);
-
                     disableSelectedItems();
 
                     // console.log($('.sale_price').length);

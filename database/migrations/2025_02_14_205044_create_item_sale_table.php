@@ -22,7 +22,7 @@ return new class extends Migration
             $table->integer('discount2')->nullable();
             $table->integer('discount3')->nullable();
             $table->decimal('sale_price')->nullable();
-            $table->unsignedBigInteger('ad')->default(0);
+            $table->integer('ad');
 
             $table->foreign('item_id')->references('id')->on('items')->onDelete('cascade');
             $table->foreign('sale_id')->references('id')->on('sales')->onDelete('cascade');

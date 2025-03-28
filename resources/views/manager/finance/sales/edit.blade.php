@@ -80,7 +80,7 @@
                         class="w-full border-gray-400 rounded-md focus:ring focus:ring-purple-500 focus:ring-offset-2 dark:border-gray-600 dark:bg-dark-eval-1 dark:text-gray-300"
                         rows="3" placeholder="Deskripsi barang">{{ old('information', $sale->information) }}</textarea>
 
-                    <x-form.label for="warehouse_id" :value="__('Gudang')" class="mb-2" />    
+                    <x-form.label for="warehouse_id" :value="__('Gudang')" class="mb-2" />
                     <x-form.select id="warehouse_id" class="block w-full pointer-events-none bg-gray-200"
                         name="warehouse_id">
                         @foreach ($warehouses as $warehouse)
@@ -95,6 +95,7 @@
                             </option>
                         @endforeach
                     </x-form.select>
+                    <input type="hidden" name="" id="warehouse_id_selected" value="{{ $sale->items->first()->pivot->warehouse_id }}">
                     <x-input-error :messages="$errors->get('warehouse_id')" class="mt-2" />
                 </div>
             </div>
@@ -172,24 +173,26 @@
                                             <input type="text" name="discount1[]"
                                                 class="discount1 w-10 px-1 py-1 border border-gray-300 rounded-md text-right"
                                                 placeholder="D1"
-                                                value="{{ ($item->pivot->discount1 ?? 0) > 0 ? $item->pivot->discount1 : 0 }}">
+                                                value="{{ $item->pivot->discount1 }}">
                                             <input type="text" name="discount2[]"
                                                 class="discount2 w-10 px-1 py-1 border border-gray-300 rounded-md text-right"
                                                 placeholder="D2"
-                                                value="{{ ($item->pivot->discount2 ?? 0) > 0 ? $item->pivot->discount2 : 0 }}">
+                                                value="{{ $item->pivot->discount2 }}">
                                             <input type="text" name="discount3[]"
                                                 class="discount3 w-10 px-1 py-1 border border-gray-300 rounded-md text-right"
                                                 placeholder="D3"
-                                                value="{{ ($item->pivot->discount3 ?? 0) > 0 ? $item->pivot->discount3 : 0 }}">
+                                                value="{{ $item->pivot->discount3 }}">
                                             <input type="text" name="ad[]"
                                                 class="ad w-8 px-1 py-1 border border-gray-300 rounded-md text-right"
                                                 placeholder="AD"
-                                                value="{{ ($item->pivot->ad ?? 0) > 0 ? $item->pivot->ad : 0 }}">
+                                                value="{{ $item->pivot->ad }}">
                                         </div>
                                     </td>
                                     <td class="px-1 py-2"><input type="text" name="total_prices[]"
                                             class="total-price w-full px-2 py-1 border border-gray-300 rounded-md bg-gray-100 text-right"
-                                            readonly value="{{ number_format(($item->pivot->sale_price * $item->pivot->qty_sold) - $sale->total_discount, 2, ',', '.') }}"></td>
+                                            readonly
+                                            value="{{ number_format($item->pivot->sale_price * $item->pivot->qty_sold - $sale->total_discount, 2, ',', '.') }}">
+                                    </td>
                                     <td class="px-1 py-2"><input type="text" name="real_prices[]"
                                             class="real_price w-full px-2 py-1 border border-gray-300 rounded-md bg-gray-100 text-right"
                                             readonly
@@ -400,6 +403,11 @@
                     let itemId = $(this).val();
                     let supplierId = $('#salesman_id').val();
                     updateItemData(row, itemId);
+                    
+                    let selectedItem = $(this).val();
+                    let stock = $(this).find(':selected').data('stock');
+                    row.find('.stock').val(stock);
+                    disableSelectedItems();
 
                     $('.sale_price').on('input', function(e) {
                         let value = e.target.value.replace(/[^,\d]/g, '').toString();
@@ -528,81 +536,121 @@
                     $('#total_price').val('Rp ' + formatRupiah(finalTotalPrice.toFixed(2)));
                 }
 
-                $('#add-item').click(function() {
-                    let supplierId = $('#salesman_id').val();
-                    $('#supplier_null').text(!supplierId ?
-                        'Anda belum memilih sales, tetapi Anda tetap bisa menambahkan barang.' : '');
+                $(function() {
+                    $.ajaxSetup({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        }
+                    });
 
-                    let selectedItems = $('.item-select').map(function() {
-                        return $(this).val();
-                    }).get();
+                    let itemOptions = '<option value="">Pilih Barang</option>';
 
-                    let row = `
-                    <tr class="border-b border-gray-300">
-                        <td class="px-1 py-2">
-                            <input type="text"
-                                class="item-code w-full px-2 py-1 border border-gray-300 rounded-md bg-gray-100 text-center"
-                                readonly>
-                        </td>
-                        <td class="px-1 py-2">
-                            <select name="items[]"
-                                class="item-select w-full select2 px-2 py-1 border border-gray-300 rounded-md pointer-events-none bg-gray-200"
-                                data-locked="true">
-                                <option value="">Pilih Barang</option>
-                                @foreach ($items as $availableItem)
-                                    <option value="{{ $availableItem->id }}">
-                                        {{ $availableItem->name }}
-                                    </option>
-                                @endforeach
-                            </select>
-                        </td>
-                        <td class="px-1 py-2"><input type="number" name="stock[]"
-                                class="stock w-16 px-2 py-1 border border-gray-300 rounded-md bg-gray-100 text-center"
-                                readonly></td>
-                        <td class="px-1 py-2"><input type="text" name="unit[]"
-                                class="unit w-16 px-2 py-1 border border-gray-300 rounded-md bg-gray-100 text-center"
-                                readonly></td>
-                        <td class="px-1 py-2">
-                            <input type="number" name="qty_sold[]"
-                                class="qty_sold w-16 px-2 py-1 border border-gray-300 rounded-md text-center">
-                        </td>
-                        <td class="px-1 py-2"><input type="text" name="sale_prices[]"
-                                class="sale_price w-full px-2 py-1 border border-gray-300 rounded-md text-right"
-                                required data-parsley-required-message="Harga jual harus diisi">
-                        </td>
-                        <td class="px-1 py-2">
-                            <div class="flex space-x-1">
-                                <input type="text" name="discount1[]"
-                                    class="discount1 w-10 px-1 py-1 border border-gray-300 rounded-md text-right"
-                                    placeholder="D1">
-                                <input type="text" name="discount2[]"
-                                    class="discount2 w-10 px-1 py-1 border border-gray-300 rounded-md text-right"
-                                    placeholder="D2">
-                                <input type="text" name="discount3[]"
-                                    class="discount3 w-10 px-1 py-1 border border-gray-300 rounded-md text-right"
-                                    placeholder="D3">
-                                <input type="text" name="ad[]"
-                                    class="ad w-8 px-1 py-1 border border-gray-300 rounded-md text-right"
-                                    placeholder="AD">
-                            </div>
-                        </td>
-                        <td class="px-1 py-2"><input type="text" name="total_prices[]"
-                                class="total-price w-full px-2 py-1 border border-gray-300 rounded-md bg-gray-100 text-right"
-                                readonly></td>
-                        <td class="px-1 py-2"><input type="text" name="real_prices[]"
-                                class="real_price w-full px-2 py-1 border border-gray-300 rounded-md bg-gray-100 text-right"
-                                readonly>
-                        </td>
-                        <td class="px-1 py-2 text-center"><button type="button"
-                                class="remove-item px-3 py-1 bg-red-500 text-white rounded-md hover:bg-red-600 transition">Hapus</button>
-                        </td>
-                    </tr>
-                    `;
+                    $('#warehouse_id_selected', function() {
+                        let warehouseId = $('#warehouse_id_selected').val();
+                        console.log('Warehouse ID:', warehouseId);
 
-                    $('#items-table tbody').append(row);
-                    $('#items-table tbody tr:last .item-select').select2();
+                        // Reset tabel saat gudang diubah
 
-                    disableSelectedItems();
+                        $.ajax({
+                            url: `/get-items/warehouse`,
+                            type: 'POST',
+                            data: {
+                                warehouse_id: warehouseId
+                            },
+                            dataType: 'json',
+                            cache: false,
+                            success: function(data) {
+                                console.log("Data dari server:", data);
+                                itemOptions = '<option value="">Pilih Barang</option>';
+
+                                $.each(data, function(index, item) {
+                                    let disabled = item.stock <= 0 ? 'disabled' :
+                                        '';
+                                    let name = item.stock <= 0 ?
+                                        `${item.name} (Habis)` : item.name;
+
+                                    itemOptions +=
+                                        `<option value="${item.id}" data-stock="${item.stock}" ${disabled}>${name}</option>`;
+                                });
+
+                                let result = $('#items-table').data('itemOptions',
+                                    itemOptions);
+                                console.log('Item Options:', result);
+
+
+                            },
+                            error: function(xhr) {
+                                console.log('Error:', xhr.responseText);
+                            }
+                        });
+                    });
+
+                    $('#add-item').click(function() {
+                        let warehouseId = $('#warehouse_id').val();
+                        if (!warehouseId) {
+                            alert('Silakan pilih gudang terlebih dahulu!');
+                            return;
+                        }
+
+                        let row = `
+                            <tr class="border-b border-gray-300">
+                                <td class="px-1 py-2">
+                                    <input type="text" class="item-code w-full px-2 py-1 border border-gray-300 rounded-md bg-gray-100 text-center" readonly>
+                                </td>
+                                <td class="px-1 py-2">
+                                    <select name="items[]" class="item-select w-full select2 px-2 py-1 border border-gray-300 rounded-md" required>
+                                        ${$('#items-table').data('itemOptions')}
+                                    </select>
+                                </td> 
+                                <td class="px-1 py-2">
+                                    <input type="number" name="stock[]" class="stock w-16 px-2 py-1 border border-gray-300 rounded-md bg-gray-100 text-center" readonly>
+                                </td>
+                                <td class="px-1 py-2">
+                                    <input type="text" name="unit[]" class="unit w-16 px-2 py-1 border border-gray-300 rounded-md bg-gray-100 text-center" readonly>
+                                </td>
+                                <td class="px-1 py-2">
+                                    <input type="number" name="qty_sold[]" class="qty w-16 px-2 py-1 border border-gray-300 rounded-md text-center" min="1" value="1" required>
+                                </td>
+                                <td class="px-1 py-2">
+                                    <input type="text" name="sale_prices[]" class="sale_price w-full px-2 py-1 border border-gray-300 rounded-md text-right" required>
+                                </td>
+                                <td class="px-1 py-2">
+                                    <div class="flex space-x-1">
+                                        <input type="text" name="discount1[]" class="discount1 w-8 px-1 py-1 border border-gray-300 rounded-md text-right" placeholder="D1">
+                                        <input type="text" name="discount2[]" class="discount2 w-8 px-1 py-1 border border-gray-300 rounded-md text-right" placeholder="D2">
+                                        <input type="text" name="discount3[]" class="discount3 w-8 px-1 py-1 border border-gray-300 rounded-md text-right" placeholder="D3">
+                                        <input type="text" name="ad[]" class="ad w-8 px-1 py-1 border border-gray-300 rounded-md text-right" placeholder="AD">
+                                    </div>
+                                </td>
+                                <td class="px-1 py-2">
+                                    <input type="text" name="total_prices[]" class="total-price w-full px-2 py-1 border border-gray-300 rounded-md bg-gray-100 text-right" readonly>
+                                </td>
+                                <td class="px-1 py-2">
+                                    <input type="text" name="real_prices[]" class="real_price w-full px-2 py-1 border border-gray-300 rounded-md bg-gray-100 text-right" readonly>
+                                </td>
+                                <td class="px-1 py-2 text-center">
+                                    <button type="button" class="remove-item px-3 py-1 bg-red-500 text-white rounded-md hover:bg-red-600 transition">Hapus</button>
+                                </td>
+                            </tr>`;
+
+                        $('#items-table tbody').append(row);
+
+                        let $newSelect = $('.item-select').last();
+                        $newSelect.select2();
+
+                        $newSelect.find('option').each(function() {
+                            let stock = $(this).attr('data-stock');
+                            console.log(`ID: ${$(this).val()}, Stock: ${stock}`);
+
+                            if (stock <= 0) {
+                                $(this).prop('disabled', true);
+                            }
+                        });
+
+                        $newSelect.trigger('change');
+                    });
+
+
                 });
 
 
@@ -615,8 +663,12 @@
                         let select = $(this);
                         select.find('option').each(function() {
                             let optionValue = $(this).val();
+                            let stock = $(this).data('stock');
+
                             if (selectedItems.includes(optionValue) && optionValue !== '' &&
                                 optionValue !== select.val()) {
+                                $(this).prop('disabled', true);
+                            } else if (stock <= 0) {
                                 $(this).prop('disabled', true);
                             } else {
                                 $(this).prop('disabled', false);
