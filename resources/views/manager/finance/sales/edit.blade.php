@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="text-xl font-semibold leading-tight">{{ __('Tambah Penjualan') }}</h2>
+        <h2 class="text-xl font-semibold leading-tight">{{ __('Edit Data Penjualan') }}</h2>
     </x-slot>
 
     <form id="edit-form" action="{{ route('manager.sales.update', $sale->id) }}" method="POST" data-parsley-validate>
@@ -78,7 +78,7 @@
                     <x-form.label for="information" :value="__('Keterangan')" class="mb-2" />
                     <textarea id="information" name="information"
                         class="w-full border-gray-400 rounded-md focus:ring focus:ring-purple-500 focus:ring-offset-2 dark:border-gray-600 dark:bg-dark-eval-1 dark:text-gray-300"
-                        rows="3" placeholder="Deskripsi barang">{{ old('information', $sale->information) }}</textarea>
+                        rows="3" placeholder="Keterangan">{{ old('information', $sale->information) }}</textarea>
 
                     <x-form.label for="warehouse_id" :value="__('Gudang')" class="mb-2" />
                     <x-form.select id="warehouse_id" class="block w-full pointer-events-none bg-gray-200"
@@ -95,7 +95,8 @@
                             </option>
                         @endforeach
                     </x-form.select>
-                    <input type="hidden" name="" id="warehouse_id_selected" value="{{ $sale->items->first()->pivot->warehouse_id }}">
+                    <input type="hidden" name="" id="warehouse_id_selected"
+                        value="{{ $sale->items->first()->pivot->warehouse_id ?? '' }}">
                     <x-input-error :messages="$errors->get('warehouse_id')" class="mt-2" />
                 </div>
             </div>
@@ -164,28 +165,26 @@
                                             class="qty_sold w-16 px-2 py-1 border border-gray-300 rounded-md text-center"
                                             value="{{ $item->pivot->qty_sold }}">
                                     </td>
-                                    <td class="px-1 py-2"><input type="text" name="sale_prices[]"
+                                    <td class="px-1 py-2">
+                                        <input type="text" name="sale_prices[]"
                                             class="sale_price w-full px-2 py-1 border border-gray-300 rounded-md text-right"
                                             required data-parsley-required-message="Harga jual harus diisi"
-                                            value="{{ number_format($item->pivot->sale_price, 2, ',', '.') }}"></td>
+                                            value="{{ number_format($item->pivot->sale_price, 2, ',', '.') }}">
+                                    </td>
                                     <td class="px-1 py-2">
                                         <div class="flex space-x-1">
                                             <input type="text" name="discount1[]"
                                                 class="discount1 w-10 px-1 py-1 border border-gray-300 rounded-md text-right"
-                                                placeholder="D1"
-                                                value="{{ $item->pivot->discount1 }}">
+                                                placeholder="D1" value="{{ $item->pivot->discount1 }}">
                                             <input type="text" name="discount2[]"
                                                 class="discount2 w-10 px-1 py-1 border border-gray-300 rounded-md text-right"
-                                                placeholder="D2"
-                                                value="{{ $item->pivot->discount2 }}">
+                                                placeholder="D2" value="{{ $item->pivot->discount2 }}">
                                             <input type="text" name="discount3[]"
                                                 class="discount3 w-10 px-1 py-1 border border-gray-300 rounded-md text-right"
-                                                placeholder="D3"
-                                                value="{{ $item->pivot->discount3 }}">
+                                                placeholder="D3" value="{{ $item->pivot->discount3 }}">
                                             <input type="text" name="ad[]"
                                                 class="ad w-8 px-1 py-1 border border-gray-300 rounded-md text-right"
-                                                placeholder="AD"
-                                                value="{{ $item->pivot->ad }}">
+                                                placeholder="AD" value="{{ $item->pivot->ad }}">
                                         </div>
                                     </td>
                                     <td class="px-1 py-2"><input type="text" name="total_prices[]"
@@ -263,7 +262,7 @@
             </x-button>
         </div>
 
-        <input type="submit" value="Submit">
+        {{-- <input type="submit" value="Submit"> --}}
     </form>
 
     @push('scripts')
@@ -398,12 +397,30 @@
                     });
                 });
 
+                $('.sale_price').on('input', function(e) {
+                    let value = e.target.value.replace(/[^,\d]/g, '').toString();
+
+                    let split = value.split(',');
+                    let sisa = split[0].length % 3;
+                    let rupiah = split[0].substr(0, sisa);
+                    let ribuan = split[0].substr(sisa).match(/\d{3}/g);
+
+                    if (ribuan) {
+                        let separator = sisa ? '.' : '';
+                        rupiah += separator + ribuan.join('.');
+                    }
+
+                    rupiah = split[1] !== undefined ? rupiah + ',' + split[1] : rupiah;
+
+                    $(this).val(rupiah);
+                })
+
                 $(document).on('change', '.item-select', function() {
                     let row = $(this).closest('tr');
                     let itemId = $(this).val();
                     let supplierId = $('#salesman_id').val();
                     updateItemData(row, itemId);
-                    
+
                     let selectedItem = $(this).val();
                     let stock = $(this).find(':selected').data('stock');
                     row.find('.stock').val(stock);
@@ -430,7 +447,6 @@
 
                 function formatRupiah(number) {
                     return new Intl.NumberFormat('id-ID', {
-                        currency: 'IDR',
                         minimumFractionDigits: 2,
                         maximumFractionDigits: 2,
                     }).format(number);
@@ -453,6 +469,7 @@
                 $(document).on('input', '.sale_price, .qty_sold, .discount1, .discount2, .discount3', function() {
                     let row = $(this).closest('tr');
                     calculateTotal(row);
+
                 });
 
                 $(document).on('change', '#tax', function() {
@@ -466,8 +483,10 @@
                     let discount2 = parseFloat(row.find('.discount2').val()) || 0;
                     let discount3 = parseFloat(row.find('.discount3').val()) || 0;
 
-                    let originalTotal = salePrice * qty;
+                    console.log("Harga Jual:", salePrice); // Debugging
+                    console.log("Qty:", qty);
 
+                    let originalTotal = salePrice * qty;
                     let discountAmount1 = (originalTotal * discount1 / 100);
                     let discountAmount2 = (originalTotal * discount2 / 100);
                     let discountAmount3 = (originalTotal * discount3 / 100);
@@ -524,7 +543,7 @@
                 }
 
                 function calculateTotalPrice() {
-                    let totalPrice = parseFloat($('#total_price').val().replace(/Rp\s?/g, '').replace(/\./g, '')
+                    let totalPrice = parseFloat($('#total_price').val().replace(/\./g, '')
                         .replace(',', '.')) || 0;
                     let taxType = $('#tax').val();
                     let taxRate = (taxType === 'ppn') ? 0.11 : 0;
@@ -532,8 +551,8 @@
                     let taxAmount = totalPrice * taxRate;
                     let finalTotalPrice = totalPrice + taxAmount;
 
-                    $('#taxRate').val('Rp ' + formatRupiah(taxAmount.toFixed(2)));
-                    $('#total_price').val('Rp ' + formatRupiah(finalTotalPrice.toFixed(2)));
+                    $('#taxRate').val(formatRupiah(taxAmount.toFixed(2)));
+                    $('#total_price').val(formatRupiah(finalTotalPrice.toFixed(2)));
                 }
 
                 $(function() {
@@ -609,7 +628,7 @@
                                     <input type="text" name="unit[]" class="unit w-16 px-2 py-1 border border-gray-300 rounded-md bg-gray-100 text-center" readonly>
                                 </td>
                                 <td class="px-1 py-2">
-                                    <input type="number" name="qty_sold[]" class="qty w-16 px-2 py-1 border border-gray-300 rounded-md text-center" min="1" value="1" required>
+                                    <input type="number" name="qty_sold[]" class="qty_sold w-16 px-2 py-1 border border-gray-300 rounded-md text-center" min="1" value="1" required>
                                 </td>
                                 <td class="px-1 py-2">
                                     <input type="text" name="sale_prices[]" class="sale_price w-full px-2 py-1 border border-gray-300 rounded-md text-right" required>

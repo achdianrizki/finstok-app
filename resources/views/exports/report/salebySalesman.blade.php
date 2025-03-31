@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ITEM WAREHOUSE</title>
+    <title>SALE REPORT</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -36,6 +36,7 @@
             margin: 5px 0;
             font-size: 14px;
             font-weight: 500;
+            text-transform: uppercase;
         }
 
         .period {
@@ -97,20 +98,8 @@
             class="logo">
 
         <div class="title-container">
-            <p class="title">STOK BARANG di {{ $warehouse->name }}</p>
-            {{-- <p class="period">
-                Periode:
-                @if ($period === 'day')
-                    {{ now()->toFormattedDateString() }}
-                @elseif ($period === 'month')
-                    {{ now()->format('F Y') }}
-                @elseif ($period === 'custom' && request()->has('start_date') && request()->has('end_date'))
-                    {{ \Carbon\Carbon::parse(request()->start_date)->format('d M Y') }} -
-                    {{ \Carbon\Carbon::parse(request()->end_date)->format('d M Y') }}
-                @else
-                    Semua Data
-                @endif
-            </p> --}}
+            <p class="title">LAPORAN PENJUALAN SALES</p>
+            <p class="title">{{ $salesman->name ?? 'SEMUA SALES' }}</p>
             <p class="sevena">SEVENA</p>
         </div>
     </div>
@@ -123,34 +112,40 @@
 
     <table class="table">
         <tr>
-            <th>Nama Barang</th>
-            <th>Satuan</th>
-            <th>Jumlah Stok</th>
-            <th>Jumlah Stok Fisik</th>
-            <th>Keuntungan</th>
-            <th>Selisih</th>
-            <th>Harga</th>
+            <th>Tanggal Penjualan</th>
+            <th>Nomor Penjualan</th>
+            <th>Qty</th>
+            <th>Sub Total</th>
+            <th>Disc 1</th>
+            <th>Disc 2</th>
+            <th>Disc 3</th>
+            <th>Total Disc</th>
+            {{-- <th>Status</th> --}}
+            <th>Pajak</th>
+            <th>Total Price</th>
         </tr>
 
-        @forelse ($items as $item)
+        @forelse ($sales as $singleSale)
             <tr>
-                <td>{{ $item->name }}</td>
-                <td>{{ $item->unit }}</td>
-                <td class="text-center">{{ $item->pivot->stock }}</td>
-                <td class="text-center">{{ $item->pivot->physical }}</td>
-                <td class="text-center">{{ ($item->pivot->profit <= 0) ? 0 : $item->pivot->profit }}</td>
-                <td class="text-center">Rp {{ number_format($item->pivot->difference, 2, ',', '.') }}</td>
-                <td class="text-right">Rp {{ number_format($item->pivot->price_per_item, 2, ',', '.') }}</td>
+                <td class="text-center">{{ \Carbon\Carbon::parse($singleSale->sale_date)->format('d/m/Y') }}</td>
+                <td class="text-center">{{ $singleSale->sale_number }}</td>
+                <td class="text-center">{{ $singleSale->qty_sold }}</td>
+                <td>Rp {{ number_format($singleSale->sub_total, 2, '.') ?? '0.00' }}</td>
+                <td class="text-center">Rp {{ number_format($singleSale->discount1_value, 2, '.') ?? '0.00' }}</td>
+                <td class="text-center">Rp {{ number_format($singleSale->discount2_value, 2, '.') ?? '0.00' }}</td>
+                <td class="text-center">Rp {{ number_format($singleSale->discount3_value, 2, '.') ?? '0.00' }}</td>
+                <td class="text-center">Rp {{ number_format($singleSale->total_discount, 2, '.') ?? '0.00' }}</td>
+                {{-- <td class="text-right">{{$singleSale->status }}</td> --}}
+                <td class="text-right">Rp {{ number_format($singleSale->tax, 2, ',', '.') }}</td>
+                <td class="text-right">Rp {{ number_format($singleSale->total_price, 2, ',', '.') }}</td>
             </tr>
         @empty
             <tr>
-                <td colspan="4" style="font-weight: bold; font-style: italic; text-align: center;">
-                    Tidak ada data stok barang
-                </td>
+                <td colspan="9" style="font-weight: bold; font-style: italic; text-align: center;">Tidak ada data
+                    penjualan</td>
             </tr>
         @endforelse
     </table>
-
 
     {{-- <table class="table">
         <tr>

@@ -246,8 +246,6 @@
                     <option value="belum_lunas"
                         {{ old('status', $purchase->status ?? '') == 'belum_lunas' ? 'selected' : '' }}>Belum Lunas
                     </option>
-                    <option value="lunas" {{ old('status', $purchase->status ?? '') == 'lunas' ? 'selected' : '' }}>
-                        Lunas</option>
                 </select>
             </div>
         </div>

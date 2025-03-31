@@ -13,9 +13,9 @@
                 <input type="hidden" value="{{ $sale->id }}" name="sale_id">
 
                 <div class="space-y-2">
-                    <x-form.label for="invoice_number" :value="__('Nomor Resi')" />
+                    {{-- <x-form.label for="invoice_number" :value="__('Nomor Resi')" />
                     <x-form.input id="invoice_number" class="block w-full" type="text" name="invoice_number"
-                        :value="old('invoice_number')" required data-parsley-required-message="Nomor Resi wajib diisi" />
+                        :value="old('invoice_number')" required data-parsley-required-message="Nomor Resi wajib diisi" /> --}}
 
                     <x-form.label for="payment_date" :value="__('Tanggal Pembayaran')" />
                     <x-form.input id="payment_date" class="block w-full flatpickr-input" type="date"

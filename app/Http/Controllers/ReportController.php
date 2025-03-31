@@ -6,6 +6,7 @@ use Dompdf\Dompdf;
 use Dompdf\Options;
 use App\Models\Sale;
 use App\Models\Purchase;
+use App\Models\Salesman;
 use App\Models\Warehouse;
 use App\Models\ReturnSale;
 use Illuminate\Http\Request;
@@ -120,6 +121,33 @@ class ReportController extends Controller
         // return view('exports.report.sale', compact('sale'));
     }
 
+    public function exportSalesBySalesmanPDF(Request $request)
+    {
+        $salesman_id = $request->salesman_id;
+
+        $query = Sale::with('salesman', 'items');
+
+        if ($salesman_id) {
+            $query->where('salesman_id', $salesman_id);
+        }
+
+        $sales = $query->get();
+
+        $salesman = $salesman_id ? Salesman::findOrFail($salesman_id) : null;
+
+        $options = new Options();
+        $options->set('defaultFont', 'Helvetica');
+
+        $dompdf = new Dompdf($options);
+
+        $html = View::make('exports.report.salebySalesman', compact('sales', 'salesman'))->render();
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('A4', 'portrait'); // Menggunakan ukuran standar A4
+        $dompdf->render();
+
+        return $dompdf->stream('sale-by-salesman.pdf', ['Attachment' => false]);
+    }
+
     public function exportPurchaseItemsPDF(Request $request)
     {
         $period = $request->period;
@@ -154,6 +182,28 @@ class ReportController extends Controller
         // return view('exports.report.sale', compact('sale'));
     }
 
+    public function itemWarehouseOpname($id)
+    {
+        $warehouse = Warehouse::findOrFail($id);
+
+        // Ambil semua item yang ada di warehouse tersebut
+        $items = $warehouse->item_warehouse()->withPivot('stock', 'price_per_item')->get();
+
+        $options = new Options();
+        $options->set('defaultFont', 'Helvetica');
+
+        $dompdf = new Dompdf($options);
+
+        $html = View::make('exports.warehouse.itemWarehouseOpname', compact('items', 'warehouse'))->render();
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper([0, 0, 595.28, 5000]); // 595.28px = A4 width, 2000px = custom height
+        $dompdf->render();
+
+        // return $dompdf->stream('SEVENA/SALE/' . str_replace('/', '_', $sale->sale_number) . '.pdf');
+        return $dompdf->stream('item-warehouse-opname.pdf', ['Attachment' => false]);
+        // return view('exports.report.sale', compact('sale'));
+    }
+
     public function itemWarehouse($id)
     {
         $warehouse = Warehouse::findOrFail($id);
@@ -166,7 +216,7 @@ class ReportController extends Controller
 
         $dompdf = new Dompdf($options);
 
-        $html = View::make('exports.warehouse.item-warehouse', compact('items', 'warehouse'))->render();
+        $html = View::make('exports.warehouse.itemWarehouse', compact('items', 'warehouse'))->render();
         $dompdf->loadHtml($html);
         $dompdf->setPaper([0, 0, 595.28, 5000]); // 595.28px = A4 width, 2000px = custom height
         $dompdf->render();

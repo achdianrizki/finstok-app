@@ -64,4 +64,10 @@ class SalesmanController extends Controller
     toast('Sales berhasil dihapus', 'success');
     return redirect()->route('manager.salesman.index')->with('success', 'Sales berhasil dihapus');
   }
+
+  public function salesBySalesman()
+  {
+    $salesmans = Salesman::all();
+    return view('manager.report.sale_by_salesman', compact('salesmans'));
+  }
 }

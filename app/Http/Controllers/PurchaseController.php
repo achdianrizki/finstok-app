@@ -145,7 +145,7 @@ class PurchaseController extends Controller
 
                 if ($item) {
                     $qty = (int) ($request->qty[$index] ?? 0);
-                    $ad = (int) ($request->ad[$index] ?? 0); 
+                    $ad = (int) ($request->ad[$index] ?? 0);
 
                     if ($qty > 0) {
                         $item->increment('stock', $qty);
@@ -179,14 +179,14 @@ class PurchaseController extends Controller
 
                     if ($existing) {
                         $item->item_warehouse()->updateExistingPivot($warehouse_id, [
-                            'stock' => $existing->pivot->stock + $qty,
-                            'physical' => $existing->pivot->physical + $qty,
+                            'stock' => $existing->pivot->stock + $qty + $ad,
+                            'physical' => $existing->pivot->physical + $qty + $ad,
                             'price_per_item' => $price_per_item
                         ]);
                     } else {
                         $item->item_warehouse()->attach($warehouse_id, [
-                            'stock'         => $qty,
-                            'physical'      => $qty,
+                            'stock'         => $qty + $ad,
+                            'physical'      => $qty + $ad,
                             'price_per_item' => $price_per_item,
                         ]);
                     }
@@ -217,10 +217,11 @@ class PurchaseController extends Controller
 
             $newNumber = $lastNumber ? (int) substr($lastNumber, -7, 3) + 1 : 1;
 
-            $purchase_number = 'SEVENA/BUY/' . $month . '/' . str_pad($newNumber, 4, '0', STR_PAD_LEFT) . '/' . $year;
+            // $purchase_number = 'SEVENA/BUY/' . $month . '/' . str_pad($newNumber, 4, '0', STR_PAD_LEFT) . '/' . $year;
 
+            
             $purchase->update([
-                'purchase_number'  => $purchase_number,
+                // 'purchase_number'  => $purchase_number,
                 'purchase_date'    => $request->purchase_date,
                 'supplier_id'      => $request->supplier_id,
                 'tax'              => (float) str_replace(',', '.', str_replace('.', '', $request->tax)),
@@ -294,18 +295,23 @@ class PurchaseController extends Controller
                     if ($existingStock) {
                         if ($differenceQty > 0) {
                             $item->item_warehouse()->increment('stock', $differenceQty);
+                            $item->item_warehouse()->increment('physical', $differenceQty);
                         } elseif ($differenceQty < 0) {
                             $item->item_warehouse()->decrement('stock', abs($differenceQty));
+                            $item->item_warehouse()->decrement('physical', abs($differenceQty));
                         }
 
                         if ($differenceAd > 0) {
                             $item->item_warehouse()->increment('stock', $differenceAd);
+                            $item->item_warehouse()->increment('physical', $differenceAd);
                         } elseif ($differenceAd < 0) {
                             $item->item_warehouse()->decrement('stock', abs($differenceAd));
+                            $item->item_warehouse()->decrement('physical', abs($differenceAd));
                         }
                     } else {
                         $item->item_warehouse()->attach($warehouse_id, [
                             'stock'         => $qty,
+                            'physical'      => $qty + $ad,
                             'price_per_item' => $price_per_item,
                         ]);
                     }

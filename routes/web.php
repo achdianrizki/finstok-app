@@ -54,6 +54,8 @@ Route::middleware('auth')->group(function () {
         Route::resource('warehouses', WarehouseController::class)->parameters([
             'warehouses' => 'warehouse:slug'
         ])->middleware('role:manager|admin');
+        Route::get('/warehouse-opname/{warehouse:slug}', [WarehouseController::class, 'opname'])
+            ->middleware('role:manager|admin')->name('warehouses.opname');
         Route::resource('purchase', PurchaseController::class)->middleware('role:manager|admin');
 
         Route::resource('sales', SaleController::class)->middleware('role:manager|admin');
@@ -71,7 +73,7 @@ Route::middleware('auth')->group(function () {
             ->name('incomingpayment.payment');
 
 
-        //Return Purchase
+        //Return Purchase START
         Route::prefix('return')->name('return.')->group(function () {
             Route::get('/purchase', [ReturnPurchaseController::class, 'index'])->name('purchase');
             Route::get('/purchase/{purchase}', [ReturnPurchaseController::class, 'show'])->name('purchase.show');
@@ -80,6 +82,7 @@ Route::middleware('auth')->group(function () {
             Route::get('/sale', [ReturnSaleController::class, 'index'])->name('sale');
             Route::get('/sale/{sale}', [ReturnSaleController::class, 'show'])->name('sale.show');
             Route::post('/sale/{id}/return', [ReturnSaleController::class, 'returnSale'])->name('sale.create');
+            //Return Purchase END
         });
 
         Route::resource('buyer', BuyerController::class)->middleware('role:manager|admin');
@@ -116,17 +119,23 @@ Route::middleware('auth')->group(function () {
             Route::get('/sale', [ReportController::class, 'sale'])->name('sale');
             Route::get('/purchases/return', [ReportController::class, 'returnPurchaseView'])->name('purchase.return');
             Route::get('/sale/return', [ReportController::class, 'returnSaleView'])->name('sale.return');
+            Route::get('/item-warehouse-opname/{id}', [ReportController::class, 'itemWarehouseOpname'])->name('item.warehouse.opname');
             Route::get('/item-warehouse/{id}', [ReportController::class, 'itemWarehouse'])->name('item.warehouse');
+            
+            // Sale Data by salesman START (VIEW)
+            Route::get('/sales-by-salesman', [SalesmanController::class, 'salesBySalesman'])->name('sales-by-salesman');
+            // Sale Data by salesman END (VIEW)
+            
 
             // REPORT
             // ITEMS AND INVOICE START
-            // Purchase invoice PDF (1 by 1)
+            // Purchase invoice (FAKTUR) PDF (1 by 1)
             Route::get('/purchase-invoice/export/pdf/{id}', [ReportController::class, 'exportPurchaseInvoicePDF'])->name('purchase-invoice.export.pdf');
 
             // Purchase items PDF (all)
             Route::post('/purchase-items-report/export/pdf', [ReportController::class, 'exportPurchaseItemsPDF'])->name('purchase-items-report.export.pdf');
 
-            // Sale PDF invoice (1 by 1)
+            // Sale PDF invoice (FAKTUR) (1 by 1)
             Route::get('/sale-invoice/export/pdf/{id}', [ReportController::class, 'exportSaleInvoicePDF'])->name('sale-invoice.export.pdf');
 
             // Sale items PDF (all)
@@ -154,6 +163,10 @@ Route::middleware('auth')->group(function () {
             // RETURN SALE (all) START
             Route::get('/return-sale-items-report/export/pdf', [ReportController::class, 'exportReturnSaleItemsPDF'])->name('return-sale-items-report.export.pdf');
             // RETURN SALE END
+
+            // Sale Data by salesman START (PDF)
+            Route::post('/sales-by-salesman/export/pdf', [ReportController::class, 'exportSalesBySalesmanPDF'])->name('sales-by-salesman.export.pdf');
+            // Sale Data by salesman END (PDF)
         });
     });
 
@@ -179,6 +192,7 @@ Route::get('/items-data-sale', [SaleController::class, 'searchItem']);
 Route::get('/users-data', [UserController::class, 'getUsers'])->name('manager.users.data');
 Route::get('/supplier-data', [SupplierController::class, 'getSupplier'])->name('manager.users.data');
 Route::get('/sales-data', [SaleController::class, 'getSaleItems']);
+Route::get('/sales-by-salesman-data', [SaleController::class, 'getSaleItemsBySalesman']);
 
 Route::get('/assets-data', [AssetController::class, 'getAssets']);
 Route::get('/buyers-data', [BuyerController::class, 'getBuyers']);
@@ -192,6 +206,10 @@ Route::get('/laporan/laba-rugi', [ChartController::class, 'getLabaRugi']);
 Route::post('/adjust-stock', [WarehouseController::class, 'adjustStock']);
 Route::get('/get-items/{supplier}', [SupplierController::class, 'getItemsBySupplier']);
 
+// PEMBULATAN TOTAL PRICE DI PURCHASE PAYMENT (OUTGOING PAYMENT)
+Route::post('/purchase-round-total-price', [OutgoingPaymentController::class, 'roundTotalPrice']);
+// PEMBULATAN TOTAL PRICE DI SALE PAYMENT (INCOMING PAYMENT)
+Route::post('/sale-round-total-price', [IncomingPaymentController::class, 'roundTotalPrice']);
 
 Route::get('/get-item/{item_id}/{supplier_id}', function ($item_id, $supplier_id) {
     $item = \App\Models\Item::find($item_id);

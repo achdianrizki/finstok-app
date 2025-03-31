@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use Dompdf\Dompdf;
 use Dompdf\Options;
 use App\Models\Item;
 use App\Models\Sale;
 use Illuminate\Http\Request;
 use App\Models\IncomingPayment;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\View;
 use App\Http\Requests\StoreIncomingPaymentRequest;
 
@@ -75,9 +77,22 @@ class incomingPaymentController extends Controller
 
         $sale = Sale::find($request->sale_id);
 
+        $date = Carbon::parse($request->payment_date);
+        $year = $date->year;
+        $month = str_pad($date->month, 2, '0', STR_PAD_LEFT);
+
+        $lastNumber = incomingPayment::whereYear('payment_date', $year)
+            ->whereMonth('payment_date', $date->month)
+            ->latest('invoice_number')
+            ->value('invoice_number');
+
+        $newNumber = $lastNumber ? (int) substr($lastNumber, -7, 3) + 1 : 1;
+
+        $invoice_number = 'SEVENA' . $month . str_pad($newNumber, 4, '0', STR_PAD_LEFT) . $year;
+
         IncomingPayment::create([
             'sale_id' => $request->sale_id,
-            'invoice_number' => $request->invoice_number,
+            'invoice_number' => $invoice_number,
             'payment_date' => $request->payment_date,
             'payment_method' => $request->payment_method,
             'bank_account_number' => $request->bank_account_number,
@@ -113,7 +128,23 @@ class incomingPaymentController extends Controller
         $dompdf->setPaper('A4', 'portrait');
         $dompdf->render();
 
-        return $dompdf->stream('Pembayaran_' . $incomingPayment->invoice_number . '.pdf');
+        return $dompdf->stream('Pembayaran_' . $incomingPayment->invoice_number . '.pdf', ['Attachment' => false]);
+    }
+
+    public function roundTotalPrice(Request $request)
+    {
+        $updatePurchase = DB::table('sales')
+            ->where('id', $request->id)
+            ->update([
+                'total_price' => floatval(str_replace(['Rp', '.', ','], ['', '', '.'], $request->total_price)),
+                'updated_at' => now()
+            ]);
+
+        if ($updatePurchase) {
+            return response()->json(['message' => 'Total price berhasil diperbarui!'], 200);
+        }
+
+        return response()->json(['message' => 'Total price gagal diperbarui'], 404);
     }
 
     public function exportAllInvoicePDF(Sale $sale)
@@ -132,6 +163,6 @@ class incomingPaymentController extends Controller
         $dompdf->setPaper('A4', 'portrait');
         $dompdf->render();
 
-        return $dompdf->stream('Pembayaran_' . $sale->sale_number . '.pdf');
+        return $dompdf->stream('Pembayaran_' . $sale->sale_number . '.pdf', ['Attachment' => false]);
     }
 }

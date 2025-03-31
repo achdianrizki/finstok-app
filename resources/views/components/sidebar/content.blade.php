@@ -82,7 +82,25 @@
         @endforeach
     </x-sidebar.dropdown>
 
+    <x-sidebar.dropdown title="Opname Gudang" :active="request()->routeIs('manager.warehouses.opname')">
+        <x-slot name="icon">
+            <x-icons.warehouse class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
+        </x-slot>
+
+        @foreach ($warehouses as $warehouse)
+            <x-sidebar.sublink title="{{ $warehouse->name }}"
+                href="{{ route('manager.warehouses.opname', $warehouse->slug) }}" :active="request()->routeIs('manager.warehouses.opname') &&
+                    request()->route('warehouse') == $warehouse->slug" class="relative">
+            </x-sidebar.sublink>
+        @endforeach
+    </x-sidebar.dropdown>
+
     <x-sidebar.dropdown title="Report" :active="request()->routeIs('manager.report*')">
+        <x-sidebar.sublink title="Laporan Pembelian" href="{{ route('manager.report.purchase') }}"
+            :active="request()->routeIs('manager.report.purchase')" />
+
+        <x-sidebar.sublink title="Laporan Penjualan" href="{{ route('manager.report.sale') }}" :active="request()->routeIs('manager.report.sale')" />
+
         <x-slot name="icon">
             <x-icons.report class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
         </x-slot>
@@ -93,10 +111,8 @@
         <x-sidebar.sublink title="Laporan Retur Penjualan" href="{{ route('manager.report.sale.return') }}"
             :active="request()->routeIs('manager.report.sale.return')" />
 
-        <x-sidebar.sublink title="Laporan Pembelian" href="{{ route('manager.report.purchase') }}"
-            :active="request()->routeIs('manager.report.purchase')" />
-
-        <x-sidebar.sublink title="Laporan Penjualan" href="{{ route('manager.report.sale') }}" :active="request()->routeIs('manager.report.sale')" />
+        <x-sidebar.sublink title="Laporan Penjualan Sales" href="{{ route('manager.report.sales-by-salesman') }}"
+            :active="request()->routeIs('manager.report.sales-by-salesman')" />
     </x-sidebar.dropdown>
 
     {{-- @role('manager')

@@ -18,5 +18,17 @@ class SalesmanSeeder extends Seeder
             'phone' => '093284372',
             'address' => 'Jl. Palangkaraya',
         ]);
+
+        Salesman::create([
+            'name' => 'Robert',
+            'phone' => '093284372',
+            'address' => 'Jl. Pahlawan',
+        ]);
+
+        Salesman::create([
+            'name' => 'Salman',
+            'phone' => '093284372',
+            'address' => 'Jl. Kediri',
+        ]);
     }
 }

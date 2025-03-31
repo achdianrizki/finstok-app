@@ -116,7 +116,16 @@
 
             let profitQty = physical > stock ? physical - stock : 0;
             let differenceQty = stock - physical;
-            let differenceValue = Math.abs(differenceQty) * purchasePrice;
+            // let differenceValue = Math.abs(differenceQty) * purchasePrice;
+            let differenceValue;
+
+            if (stock > physical) {
+                differenceValue = Math.abs(differenceQty) * purchasePrice * -1;
+            } else if (stock < physical) {
+                differenceValue = Math.abs(differenceQty) * purchasePrice;
+            } else {
+                differenceValue = 0;
+            }
 
             let differenceField = $(`#difference-${itemId}`);
             let profitField = $(`#profit-${itemId}`);
@@ -136,37 +145,39 @@
             let physical = parseInt($(`#physical-${itemId}`).val()) || 0;
             let difference = parseFloat($(`#difference-${itemId}`).val().replace(/\./g, '').replace(',',
                 '.')) || 0;
+            let profit = parseInt($(`#profit-${itemId}`).val()) || 0;
 
-            $.ajax({
-                url: "/adjust-stock",
-                method: "POST",
-                data: {
-                    _token: $('meta[name="csrf-token"]').attr('content'),
-                    item_id: itemId,
-                    warehouse_id: warehouseId,
-                    physical: physical,
-                    difference: difference
-                },
-                success: function(response) {
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Success',
-                        text: 'Stock adjusted successfully!',
-                        timer: 2000,
-                        showConfirmButton: false
-                    });
-                    fetchItems(page, searchQuery);
-                },
-                error: function(xhr) {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Error',
-                        text: 'Failed to adjust stock!',
-                        timer: 2000,
-                        showConfirmButton: false
-                    });
-                }
-            });
+                $.ajax({
+                    url: "/adjust-stock",
+                    method: "POST",
+                    data: {
+                        _token: $('meta[name="csrf-token"]').attr('content'),
+                        item_id: itemId,
+                        warehouse_id: warehouseId,
+                        physical: physical,
+                        difference: difference,
+                        profit: profit
+                    },
+                    success: function(response) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Success',
+                            text: 'Stock adjusted successfully!',
+                            timer: 2000,
+                            showConfirmButton: false
+                        });
+                        fetchItems(page, searchQuery);
+                    },
+                    error: function(xhr) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: 'Failed to adjust stock!',
+                            timer: 2000,
+                            showConfirmButton: false
+                        });
+                    }
+                });
         });
     });
 </script>

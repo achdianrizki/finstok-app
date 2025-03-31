@@ -18,6 +18,7 @@
 
         <div class="grid grid-cols-2 gap-4">
             <div class="space-y-2">
+                <input type="hidden" name="sale_id" id="sale_id" value="{{ $sale->id }}">
                 <x-form.label for="sale_number" :value="__('Nomor Penjualan')" />
                 <x-form.input id="sale_number" class="block w-full" type="text" name="sale_number" :value="old('sale_number', $sale->sale_number)"
                     readonly :disabled="true" />
@@ -28,7 +29,7 @@
 
                 <x-form.label for="buyer_id" :value="__('Pelanggan')" />
                 <x-form.input id="buyer_id" class="block w-full flatpickr-input" type="text" name="buyer_id"
-                    :value="old('buyer_id', $buyer->name)" readonly :disabled="true" />
+                    :value="old('buyer_id', $buyer->contact)" readonly :disabled="true" />
 
                 <x-form.label for="salesman_id" :value="__('Sales')" />
                 <x-form.input id="salesman_id" class="block w-full flatpickr-input" type="text" name="salesman_id"
@@ -115,15 +116,15 @@
                                         <input type="text"
                                             class="item-discount1 w-8 px-1 py-1 border border-gray-300 rounded-md bg-gray-100 text-center"
                                             value="{{ $item->pivot->discount1 != 0 ? $item->pivot->discount1 : '' }}"
-                                            readonly>
+                                            readonly placeholder="D1">
                                         <input type="text"
                                             class="item-discount2 w-8 px-1 py-1 border border-gray-300 rounded-md bg-gray-100 text-center"
                                             value="{{ $item->pivot->discount2 != 0 ? $item->pivot->discount2 : '' }}"
-                                            readonly>
+                                            readonly placeholder="D2">
                                         <input type="text"
                                             class="item-discount3 w-8 px-1 py-1 border border-gray-300 rounded-md bg-gray-100 text-center"
                                             value="{{ $item->pivot->discount3 != 0 ? $item->pivot->discount3 : '' }}"
-                                            readonly>
+                                            readonly placeholder="D3">
                                         <input type="text"
                                             class="ad w-8 px-1 py-1 border border-gray-300 rounded-md text-center bg-gray-100"
                                             placeholder="AD" value="{{ $item->pivot->ad != 0 ? $item->pivot->ad : '' }}" readonly>
@@ -132,12 +133,22 @@
                                 <td class="px-1 py-2">
                                     <input type="text"
                                         class="item-total-price w-full px-2 py-1 border border-gray-300 rounded-md bg-gray-100 text-right"
-                                        readonly>
+                                        readonly
+                                        @php
+                                            $subtotal = $item->pivot->sale_price * $item->pivot->qty_sold;
+
+                                            $discount1 = $subtotal * ($item->pivot->discount1 / 100);
+
+                                            $discount2 = $subtotal * ($item->pivot->discount2 / 100);
+
+                                            $discount3 = $subtotal * ($item->pivot->discount3 / 100); 
+                                        @endphp
+                                        value="{{ number_format($subtotal - $discount1 - $discount2 - $discount3, 2, ',', '.') }}">
                                 </td>
                                 <td class="px-1 py-2">
                                     <input type="text"
                                         class="item-sub-total w-full px-2 py-1 border border-gray-300 rounded-md bg-gray-100 text-right"
-                                        readonly>
+                                        readonly value="{{ number_format($item->pivot->sale_price * $item->pivot->qty_sold, 2, ',', '.') }}">
                                 </td>
                             </tr>
                         @endforeach
@@ -177,6 +188,7 @@
                     </tr>
                 </thead>
                 <tbody class="bg-white divide-y divide-gray-300">
+                    <input type="hidden" id="total_paid" value="{{ $last_payment->total_paid ?? 0 }}">
                     @forelse ($incomingPayments as $incoming_payment)
                         <tr class="border-b border-gray-300">
                             <td class="px-1 py-2">
@@ -270,49 +282,123 @@
                 id="total_payed" value="Rp {{ number_format($total_payed, 2, ',', '.') }}" readonly>
         </div>
 
-        <div class="flex justify-between items-center w-full max-w-md">
+        {{-- <div class="flex justify-between items-center w-full max-w-md">
             <label for="remaining_payment" class="mr-4">Sisa Pembayaran</label>
             <input type="text" class="w-1/2 border-gray-500 bg-gray-100 rounded-md p-2" name="remaining_payment"
                 id="remaining_payment" value="Rp {{ number_format($remaining_payment, 2, ',', '.') }}" readonly>
-        </div>
+        </div> --}}
 
         <div class="flex justify-between items-center w-full max-w-md">
             <label for="total_price" class="mr-4">Total Price</label>
             <input type="text" class="w-1/2 border-gray-500 bg-gray-100 rounded-md p-2" name="total_price"
                 id="total_price" value="Rp {{ number_format($sale->total_price, 2, ',', '.') }}" readonly>
         </div>
+
+        <button type="button" class="round-btn px-4 py-2 bg-purple-500 text-white rounded-md duration-btn mb-2">
+            Bulatkan Total Price
+        </button>
     </div>
 
     @push('scripts')
         <script>
             $(document).ready(function() {
 
-                $('#items-table tbody tr').each(function() {
-                    calculateTotal($(this));
+                let originalPrice = $('#total_price').val();
+                let isRounded = false;
+
+                let subTotalText = $('#sub_total').val().replace('Rp ', '').replaceAll('.', '').replace(',',
+                    '.');
+                let totalDiscount1Text = $('#total_discount1').val().replace('Rp ', '').replaceAll('.', '').replace(',',
+                    '.');
+                let totalDiscount2Text = $('#total_discount2').val().replace('Rp ', '').replaceAll('.', '').replace(',',
+                    '.');
+                let totalDiscount3Text = $('#total_discount3').val().replace('Rp ', '').replaceAll('.', '').replace(',',
+                    '.');
+                let taxRateText = $('#taxRate').val().replace('Rp ', '').replaceAll('.', '').replace(',',
+                    '.');
+                let priceText = $('#total_price').val().replace('Rp ', '').replaceAll('.', '').replace(',',
+                    '.');
+                let subTotal = parseFloat(subTotalText);
+                let totalDiscount1 = parseFloat(totalDiscount1Text);
+                let totalDiscount2 = parseFloat(totalDiscount2Text);
+                let totalDiscount3 = parseFloat(totalDiscount3Text);
+                let taxRate = parseFloat(taxRateText);
+                let price = parseFloat(priceText);
+                let realPrice = parseFloat((subTotal - totalDiscount1 - totalDiscount2 - totalDiscount3) + taxRate);
+
+                console.log(price === realPrice);
+
+                if (price === realPrice) {
+                    $('.round-btn').text('Bulatkan Total Price');
+                } else if (price != realPrice) {
+                    $('.round-btn').text('Gunakan Harga Asli');
+                }
+
+                $('.round-btn').click(function() {
+                    let priceText = $('#total_price').val().replace('Rp ', '').replaceAll('.', '').replace(',',
+                        '.');
+                    let price = parseFloat(priceText);
+                    if (price === realPrice) {
+                        let remainder = price % 1000;
+                        let roundedPrice;
+
+                        if (remainder < 500) {
+                            roundedPrice = price - remainder + 500;
+                        } else if (remainder >= 500 && remainder < 750) {
+                            roundedPrice = price - remainder + 700;
+                        } else {
+                            roundedPrice = price - remainder + 1000;
+                        }
+
+                        $('#total_price').val('Rp ' + roundedPrice.toLocaleString('id-ID', {
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2
+                        }));
+
+                        $(this).text('Gunakan Harga Asli');
+
+                    } else if (price != realPrice) {
+                        $('#total_price').val('Rp ' + realPrice.toLocaleString('id-ID', {
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2
+                        }));
+
+                        $(this).text('Bulatkan Total Price');
+                    }
+
+                    isRounded = !isRounded;
+
+                    $.ajax({
+                        url: "/sale-round-total-price",
+                        method: "POST",
+                        data: {
+                            _token: $('meta[name="csrf-token"]').attr('content'),
+                            id: $('#sale_id').val(),
+                            total_price: $('#total_price').val(),
+                        },
+                        success: function(response) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Success',
+                                text: 'Total Price berhasil dibulatkan!',
+                                timer: 2000,
+                                showConfirmButton: false
+                            });
+                        },
+                        error: function(xhr) {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: 'Gagal membulatkan total price!',
+                                timer: 2000,
+                                showConfirmButton: false
+                            });
+                        }
+                    });
                 });
 
-                function calculateTotal(row) {
-                    let salePrice = parseFloat(row.find('.item-sale_price').val().replace(/\./g, '').replace(',',
-                        '.')) || 0;
-                    let qty = parseFloat(row.find('.item-qty-sold').val()) || 0;
-                    let discount1 = parseFloat(row.find('.item-discount1').val()) || 0;
-                    let discount2 = parseFloat(row.find('.item-discount2').val()) || 0;
-                    let discount3 = parseFloat(row.find('.item-discount3').val()) || 0;
-
-                    let originalTotal = salePrice * qty;
-                    let totalDiscount = originalTotal * (discount1 + discount2 + discount3) / 100;
-                    let finalTotal = originalTotal - totalDiscount;
-                    let subTotalPerItem = qty * salePrice;
-
-                    row.find('.item-total-price').val(finalTotal.toLocaleString('id-ID', {
-                        minimumFractionDigits: 2,
-                        maximumFractionDigits: 2
-                    }));
-                    row.find('.item-sub-total').val(subTotalPerItem.toLocaleString('id-ID', {
-                        minimumFractionDigits: 2,
-                        maximumFractionDigits: 2
-                    }));
-                }
+                let totalPaid = $('#total_paid').val();
+                console.log(totalPaid === price);
             });
         </script>
     @endpush

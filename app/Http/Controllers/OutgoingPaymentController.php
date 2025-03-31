@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use Dompdf\Dompdf;
 use Dompdf\Options;
 use App\Models\Item;
@@ -11,6 +12,7 @@ use App\Models\Supplier;
 use App\Models\Warehouse;
 use Illuminate\Http\Request;
 use App\Models\outgoingPayment;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\View;
 
 class outgoingPaymentController extends Controller
@@ -71,9 +73,22 @@ class outgoingPaymentController extends Controller
 
         $purchase = Purchase::find($request->purchase_id);
 
+        $date = Carbon::parse($request->payment_date);
+        $year = $date->year;
+        $month = str_pad($date->month, 2, '0', STR_PAD_LEFT);
+
+        $lastNumber = OutgoingPayment::whereYear('payment_date', $year)
+            ->whereMonth('payment_date', $date->month)
+            ->latest('receipt_number')
+            ->value('receipt_number');
+
+        $newNumber = $lastNumber ? (int) substr($lastNumber, -7, 3) + 1 : 1;
+
+        $receipt_number = 'SEVENA' . $month . str_pad($newNumber, 4, '0', STR_PAD_LEFT) . $year;
+
         OutgoingPayment::create([
             'purchase_id' => $request->purchase_id,
-            'receipt_number' => $request->receipt_number,
+            'receipt_number' => $receipt_number,
             'payment_date' => $request->payment_date,
             'payment_method' => $request->payment_method,
             'bank_account_number' => $request->bank_account_number,
@@ -86,12 +101,30 @@ class outgoingPaymentController extends Controller
         ]);
 
         if ($totalPaid >= $purchase->total_price) {
-            $purchase->update(['status' => 'Lunas']);
+            $purchase->update(['status' => 'lunas']);
+        } else {
+            $purchase->update(['status' => 'belum_lunas']);
         }
 
 
         toast('Pembayaran berhasil ditambahkan', 'success');
         return redirect()->route('manager.outgoingpayment.show', $request->purchase_id)->with('success', 'Pembayaran berhasil ditambahkan');
+    }
+
+    public function roundTotalPrice(Request $request)
+    {
+        $updatePurchase = DB::table('purchases')
+            ->where('id', $request->id)
+            ->update([
+                'total_price' => floatval(str_replace(['Rp', '.', ','], ['', '', '.'], $request->total_price)),
+                'updated_at' => now()
+            ]);
+
+        if ($updatePurchase) {
+            return response()->json(['message' => 'Total price berhasil diperbarui!'], 200);
+        }
+
+        return response()->json(['message' => 'Total price gagal diperbarui'], 404);
     }
 
 
@@ -158,7 +191,7 @@ class outgoingPaymentController extends Controller
         $dompdf->setPaper('A4', 'portrait');
         $dompdf->render();
 
-        return $dompdf->stream('Pembayaran_' . $outgoingPayment->invoice_number . '.pdf');
+        return $dompdf->stream('Pembayaran_' . $outgoingPayment->invoice_number . '.pdf', ['Attachment' => false]);
     }
 
     public function exportAllInvoicePDF(Purchase $purchase)
@@ -177,6 +210,6 @@ class outgoingPaymentController extends Controller
         $dompdf->setPaper('A4', 'portrait');
         $dompdf->render();
 
-        return $dompdf->stream('Pembayaran_' . $purchase->purchase_number . '.pdf');
+        return $dompdf->stream('Pembayaran_' . $purchase->purchase_number . '.pdf', ['Attachment' => false]);
     }
 }

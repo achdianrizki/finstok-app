@@ -60,7 +60,11 @@ class WarehouseController extends Controller
      */
     public function show(Warehouse $warehouse)
     {
-        return view('manager.warehouse.warehouse', compact('warehouse'));
+        return view('manager.warehouse.show', compact('warehouse'));
+    }
+
+    public function opname(Warehouse $warehouse){
+        return view('manager.warehouse.warehouseOpname', compact('warehouse'));
     }
 
     public function getItemsByWarehouse(Request $request, Warehouse $warehouse)

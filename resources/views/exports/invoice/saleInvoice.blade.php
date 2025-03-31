@@ -141,7 +141,7 @@
                     <tr>
                         <td style="width: 50%;">
                             <p style=" margin-top: -5px;">Tanggal</p>
-                            <p style="text-align: right;">{{ \Carbon\Carbon::parse($sale->date)->translatedFormat('d-F-Y') }}
+                            <p style="text-align: right;">{{ \Carbon\Carbon::parse($sale->sale_date)->translatedFormat('d-F-Y') }}
                             </p>
                         </td>
                         <td style="width: 50%;">
