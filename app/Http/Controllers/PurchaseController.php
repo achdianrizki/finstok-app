@@ -119,24 +119,22 @@ class PurchaseController extends Controller
             $purchase_number = 'SEVENA/BUY/' . $month . '/' . str_pad($newNumber, 3, '0', STR_PAD_LEFT) . '/' . $year;
 
             $purchase = Purchase::create([
-                'purchase_number'  => $purchase_number,
-                'purchase_date'    => $request->purchase_date,
-                'supplier_id'      => $request->supplier_id,
-                'tax'              => (float) str_replace(',', '.', str_replace('.', '', $request->tax)),
-                'tax_type'         => $request->tax_type,
-                'information'      => $request->information ?? '-',
-                'warehouse_id'     => $request->warehouse_id,
-                'sub_total'        => (float) str_replace(',', '.', str_replace('.', '', $request->sub_total)),
-                'total_discount1'  => (float) str_replace(',', '.', str_replace('.', '', $request->total_discount1 ?? 0)),
-                'total_discount2'  => (float) str_replace(',', '.', str_replace('.', '', $request->total_discount2 ?? 0)),
-                'total_discount3'  => (float) str_replace(',', '.', str_replace('.', '', $request->total_discount3 ?? 0)),
-                'total_price'      => (float) str_replace(',', '.', str_replace('.', '', $request->total_price)),
-                'total_qty'        => $total_qty,
+                'purchase_number'   => $purchase_number,
+                'purchase_date'     => $request->purchase_date,
+                'supplier_id'       => $request->supplier_id,
+                'tax'               => (float) str_replace(',', '.', str_replace('.', '', $request->tax)),
+                'tax_type'          => $request->tax_type,
+                'information'       => $request->information ?? '-',
+                'warehouse_id'      => $request->warehouse_id,
+                'sub_total'         => (float) str_replace(',', '.', str_replace('.', '', $request->sub_total)),
+                'total_discount1'   => (float) str_replace(',', '.', str_replace('.', '', $request->total_discount1 ?? 0)),
+                'total_discount2'   => (float) str_replace(',', '.', str_replace('.', '', $request->total_discount2 ?? 0)),
+                'total_discount3'   => (float) str_replace(',', '.', str_replace('.', '', $request->total_discount3 ?? 0)),
+                'total_price'       => (float) str_replace(',', '.', str_replace('.', '', $request->total_price)),
+                'total_qty'         => $total_qty,
                 'due_date_duration' => $request->due_date_duration,
-                'due_date' => $request->due_date,
+                'due_date'          => $request->due_date,
             ]);
-
-            // dd($request->all());
 
             $warehouse_id = $request->warehouse_id;
 
@@ -147,48 +145,54 @@ class PurchaseController extends Controller
                     $qty = (int) ($request->qty[$index] ?? 0);
                     $ad = (int) ($request->ad[$index] ?? 0);
 
-                    if ($qty > 0) {
-                        $item->increment('stock', $qty);
-                    }
-                    if ($ad > 0) {
-                        $item->increment('stock', $ad);
-                    }
-
                     $item->purchases()->attach($purchase->id, [
-                        'qty'            => $request->qty[$index],
+                        'qty'            => $qty,
                         'price_per_item' => (float) str_replace(',', '.', str_replace('.', '', $request->price_per_item[$index])),
                         'discount1'      => $request->discount1[$index] ?? 0,
                         'discount2'      => $request->discount2[$index] ?? 0,
                         'discount3'      => $request->discount3[$index] ?? 0,
-                        'ad'             => $request->ad[$index] ?? 0,
+                        'ad'             => $ad,
                         'warehouse_id'   => $warehouse_id
                     ]);
                 }
             }
 
-            foreach ($request->items as $data => $itemId) {
+            foreach ($request->items as $index => $itemId) {
                 $item = Item::find($itemId);
+
                 if ($item) {
-                    $qty = $request->qty[$data];
-                    $ad = $request->ad[$data] ?? 0;
-                    $price_per_item = (float) str_replace(',', '.', str_replace('.', '', $request->price_per_item[$data]));
+                    $qty = (int) ($request->qty[$index] ?? 0);
+                    $ad = (int) ($request->ad[$index] ?? 0);
+                    $price_per_item = (float) str_replace(',', '.', str_replace('.', '', $request->price_per_item[$index]));
 
                     $existing = $item->item_warehouse()
                         ->wherePivot('warehouse_id', $warehouse_id)
                         ->first();
 
                     if ($existing) {
+                        $newStock = $existing->pivot->stock + $qty + $ad + $existing->pivot->profit;
                         $item->item_warehouse()->updateExistingPivot($warehouse_id, [
-                            'stock' => $existing->pivot->stock + $qty + $ad,
-                            'physical' => $existing->pivot->physical + $qty + $ad,
-                            'price_per_item' => $price_per_item
-                        ]);
-                    } else {
-                        $item->item_warehouse()->attach($warehouse_id, [
-                            'stock'         => $qty + $ad,
-                            'physical'      => $qty + $ad,
+                            'stock'          => $newStock,
+                            'original_stock' => $newStock,
+                            'physical'       => $existing->pivot->physical + $qty + $ad + $existing->pivot->profit,
                             'price_per_item' => $price_per_item,
                         ]);
+
+                        $adjustment = $qty + $existing->pivot->profit;
+                        if ($adjustment > 0) {
+                            $item->increment('stock', $adjustment);
+                        }
+                    } else {
+                        $initialStock = $qty + $ad;
+                        $item->item_warehouse()->attach($warehouse_id, [
+                            'stock'          => $initialStock,
+                            'original_stock' => $initialStock,
+                            'physical'       => $initialStock,
+                            'price_per_item' => $price_per_item,
+                        ]);
+
+                        // Tambah ke total stock item utama
+                        $item->increment('stock', $initialStock);
                     }
                 }
             }
@@ -197,6 +201,7 @@ class PurchaseController extends Controller
             return redirect()->route('manager.purchase.index');
         });
     }
+
 
     /**
      * Update the specified resource in storage.
@@ -206,40 +211,23 @@ class PurchaseController extends Controller
         return DB::transaction(function () use ($request, $purchase) {
             $total_qty = array_sum($request->qty);
 
-            $date = Carbon::parse($request->purchase_date);
-            $year = $date->year;
-            $month = str_pad($date->month, 2, '0', STR_PAD_LEFT);
-
-            $lastNumber = Purchase::whereYear('purchase_date', $year)
-                ->whereMonth('purchase_date', $date->month)
-                ->latest('purchase_number')
-                ->value('purchase_number');
-
-            $newNumber = $lastNumber ? (int) substr($lastNumber, -7, 3) + 1 : 1;
-
-            // $purchase_number = 'SEVENA/BUY/' . $month . '/' . str_pad($newNumber, 4, '0', STR_PAD_LEFT) . '/' . $year;
-
-            
             $purchase->update([
-                // 'purchase_number'  => $purchase_number,
-                'purchase_date'    => $request->purchase_date,
-                'supplier_id'      => $request->supplier_id,
-                'tax'              => (float) str_replace(',', '.', str_replace('.', '', $request->tax)),
-                'tax_type'         => $request->tax_type,
-                'information'      => $request->information ?? '-',
-                'warehouse_id'     => $request->warehouse_id,
-                'sub_total'        => (float) str_replace(',', '.', str_replace('.', '', $request->sub_total)),
-                'total_discount1'  => (float) str_replace(',', '.', str_replace('.', '', $request->total_discount1 ?? 0)),
-                'total_discount2'  => (float) str_replace(',', '.', str_replace('.', '', $request->total_discount2 ?? 0)),
-                'total_discount3'  => (float) str_replace(',', '.', str_replace('.', '', $request->total_discount3 ?? 0)),
-                'total_price'      => (float) str_replace(',', '.', str_replace('.', '', $request->total_price)),
-                'total_qty'        => $total_qty,
+                'purchase_date'     => $request->purchase_date,
+                'supplier_id'       => $request->supplier_id,
+                'tax'               => (float) str_replace(',', '.', str_replace('.', '', $request->tax)),
+                'tax_type'          => $request->tax_type,
+                'information'       => $request->information ?? '-',
+                'warehouse_id'      => $request->warehouse_id,
+                'sub_total'         => (float) str_replace(',', '.', str_replace('.', '', $request->sub_total)),
+                'total_discount1'   => (float) str_replace(',', '.', str_replace('.', '', $request->total_discount1 ?? 0)),
+                'total_discount2'   => (float) str_replace(',', '.', str_replace('.', '', $request->total_discount2 ?? 0)),
+                'total_discount3'   => (float) str_replace(',', '.', str_replace('.', '', $request->total_discount3 ?? 0)),
+                'total_price'       => (float) str_replace(',', '.', str_replace('.', '', $request->total_price)),
+                'total_qty'         => $total_qty,
                 'due_date_duration' => $request->due_date_duration,
-                'due_date' => $request->due_date,
-                'status' => $request->status,
+                'due_date'          => $request->due_date,
+                'status'            => $request->status,
             ]);
-
-            // dd($request->all());
 
             $warehouse_id = $request->warehouse_id;
 
@@ -247,30 +235,27 @@ class PurchaseController extends Controller
                 $item = Item::find($item_id);
 
                 if ($item) {
-                    $qty = $request->qty[$index];
+                    $qty = (int) ($request->qty[$index] ?? 0);
+                    $ad = (int) ($request->ad[$index] ?? 0);
                     $price_per_item = (float) str_replace(',', '.', str_replace('.', '', $request->price_per_item[$index]));
-                    $ad = $request->ad[$index] ?? 0;
 
                     $existingPurchase = $item->purchases()
                         ->wherePivot('purchase_id', $purchase->id)
                         ->wherePivot('warehouse_id', $warehouse_id)
-                        ->get();
+                        ->first();
 
-                    $previousQty = $existingPurchase->sum(function ($purchase) {
-                        return $purchase->pivot->qty ?? 0;
-                    });
+                    $previousQty = $existingPurchase?->pivot->qty ?? 0;
+                    $previousAd  = $existingPurchase?->pivot->ad ?? 0;
 
-                    $previousAd = $existingPurchase->sum(fn($purchase) => $purchase->pivot->ad ?? 0);
-
-
-                    if ($existingPurchase->isNotEmpty()) {
+                    // Update pivot purchase-item
+                    if ($existingPurchase) {
                         $item->purchases()->updateExistingPivot($purchase->id, [
                             'qty'            => $qty,
                             'price_per_item' => $price_per_item,
                             'discount1'      => $request->discount1[$index] ?? 0,
                             'discount2'      => $request->discount2[$index] ?? 0,
                             'discount3'      => $request->discount3[$index] ?? 0,
-                            'ad'             => $request->ad[$index] ?? 0,
+                            'ad'             => $ad,
                             'warehouse_id'   => $warehouse_id
                         ]);
                     } else {
@@ -280,55 +265,55 @@ class PurchaseController extends Controller
                             'discount1'      => $request->discount1[$index] ?? 0,
                             'discount2'      => $request->discount2[$index] ?? 0,
                             'discount3'      => $request->discount3[$index] ?? 0,
-                            'ad'             => $request->ad[$index] ?? 0,
+                            'ad'             => $ad,
                             'warehouse_id'   => $warehouse_id
                         ]);
                     }
 
+                    // Update ke item_warehouse
                     $existingStock = $item->item_warehouse()
                         ->wherePivot('warehouse_id', $warehouse_id)
                         ->first();
 
-                    $differenceQty = $qty - $previousQty; // Hitung selisih stok
-                    $differenceAd = $ad - $previousAd; // Hitung selisih ad
+                    $differenceQty = $qty - $previousQty;
+                    $differenceAd  = $ad - $previousAd;
 
                     if ($existingStock) {
-                        if ($differenceQty > 0) {
-                            $item->item_warehouse()->increment('stock', $differenceQty);
-                            $item->item_warehouse()->increment('physical', $differenceQty);
-                        } elseif ($differenceQty < 0) {
-                            $item->item_warehouse()->decrement('stock', abs($differenceQty));
-                            $item->item_warehouse()->decrement('physical', abs($differenceQty));
-                        }
+                        $newStock = $existingStock->pivot->stock + $differenceQty + $differenceAd;
+                        $newPhysical = $existingStock->pivot->physical + $differenceQty + $differenceAd;
 
-                        if ($differenceAd > 0) {
-                            $item->item_warehouse()->increment('stock', $differenceAd);
-                            $item->item_warehouse()->increment('physical', $differenceAd);
-                        } elseif ($differenceAd < 0) {
-                            $item->item_warehouse()->decrement('stock', abs($differenceAd));
-                            $item->item_warehouse()->decrement('physical', abs($differenceAd));
-                        }
-                    } else {
-                        $item->item_warehouse()->attach($warehouse_id, [
-                            'stock'         => $qty,
-                            'physical'      => $qty + $ad,
+                        $item->item_warehouse()->updateExistingPivot($warehouse_id, [
+                            'stock'          => $newStock,
+                            'original_stock' => $newStock,
+                            'physical'       => $newPhysical,
                             'price_per_item' => $price_per_item,
                         ]);
-                    }
 
-                    // Perbarui total stok item
-                    if ($differenceQty > 0 || $differenceAd > 0) {
-                        $item->increment('stock', $differenceQty + $differenceAd);
-                    } elseif ($differenceQty < 0 || $differenceAd < 0) {
-                        $item->decrement('stock', abs($differenceQty) + abs($differenceAd));
+                        $totalDiff = $differenceQty + $differenceAd;
+                        if ($totalDiff > 0) {
+                            $item->increment('stock', $totalDiff);
+                        } elseif ($totalDiff < 0) {
+                            $item->decrement('stock', abs($totalDiff));
+                        }
+                    } else {
+                        $initialStock = $qty + $ad;
+                        $item->item_warehouse()->attach($warehouse_id, [
+                            'stock'          => $initialStock,
+                            'original_stock' => $initialStock,
+                            'physical'       => $initialStock,
+                            'price_per_item' => $price_per_item,
+                        ]);
+
+                        $item->increment('stock', $initialStock);
                     }
                 }
             }
 
-            toast('Data berhasil disimpan', 'success');
+            toast('Data berhasil diperbarui', 'success');
             return redirect()->route('manager.purchase.index');
         });
     }
+
 
     public function deleteItem(Purchase $purchase, Item $item)
     {

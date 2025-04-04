@@ -122,6 +122,7 @@ class WarehouseController extends Controller
 
     public function adjustStock(Request $request)
     {
+        // Update stock in the item_warehouse table
         $itemWarehouse = DB::table('item_warehouse')
             ->where('item_id', $request->item_id)
             ->where('warehouse_id', $request->warehouse_id)
@@ -129,8 +130,22 @@ class WarehouseController extends Controller
                 'physical' => $request->physical,
                 'difference' => $request->difference,
                 'profit' => $request->profit,
+                'stock' => $request->physical,
                 'updated_at' => now()
             ]);
+
+        if ($itemWarehouse) {
+                $totalStock = DB::table('item_warehouse')
+                ->where('item_id', $request->item_id)
+                ->sum('physical');
+
+                DB::table('items')
+                    ->where('id', $request->item_id)
+                    ->update([
+                        'stock' => $totalStock,
+                        'updated_at' => now()
+                ]);
+        }
 
         if ($itemWarehouse) {
             return response()->json(['message' => 'Stock adjusted successfully'], 200);
@@ -173,7 +188,7 @@ class WarehouseController extends Controller
         $items = DB::table('item_warehouse')
             ->where('warehouse_id', $request->warehouse_id)
             ->join('items', 'items.id', '=', 'item_warehouse.item_id')
-            ->select('items.id', 'items.name', 'item_warehouse.stock')
+            ->select('items.id', 'items.name', 'item_warehouse.stock', 'item_warehouse.profit', 'item_warehouse.original_stock')
             ->get();
 
         return response()->json($items);

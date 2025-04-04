@@ -32,13 +32,16 @@
                                 warehouseInfo.pivot.physical :
                                 stockQty;
 
-                            // Hitung Profit & Selisih
-                            let profitQty = physicalQty > stockQty ? physicalQty -
-                                stockQty : 0;
-                            let differenceQty = stockQty - physicalQty;
+                            // let profitQty = physicalQty > stockQty ? physicalQty -
+                            //     stockQty : 0;
+
+                            let profitQty = warehouseInfo.pivot.profit;
+                            let original_stock = warehouseInfo.pivot.original_stock;
+                            console.log(original_stock);
+                            
+                            let differenceQty = original_stock - physicalQty;
                             let differenceValue = Math.abs(differenceQty) * purchasePrice;
 
-                            // Warna Selisih
                             let differenceClass = differenceQty === 0 ?
                                 'text-green-500 bg-green-100' :
                                 (differenceQty < 0 ? 'text-blue-500 bg-blue-100' :
@@ -50,16 +53,18 @@
                                 <td class="px-4 py-4 whitespace-nowrap hidden sm:table-cell">${item.code}</td>
                                 <td class="px-4 py-4 whitespace-nowrap hidden md:table-cell">${item.category.name}</td>
                                 <td class="px-4 py-4 whitespace-nowrap hidden md:table-cell">${formatRupiah(purchasePrice)}</td>
-                                <td class="px-4 py-4 whitespace-nowrap hidden md:table-cell">${stockQty}</td>
+                                <td class="px-4 py-4 whitespace-nowrap hidden md:table-cell">${original_stock + '->' + stockQty}</td>
                                 <td class="px-4 py-4 whitespace-nowrap hidden md:table-cell">
-                                    <input type="number" id="physical-${item.id}" class="w-20 border rounded py-1 px-2 physical-input" 
-                                        value="${physicalQty}" data-id="${item.id}" data-stock="${stockQty}" data-price="${purchasePrice}">
+                                    <input type="number" id="physical-${item.id}" class="w-20 border rounded py-1 px-2 physical-input"
+                                        value="${physicalQty}" data-id="${item.id}" data-stock="${stockQty}" data-price="${purchasePrice}" 
+                                        data-original_stock="${original_stock}">
+
                                 </td>
                                 <td class="px-4 py-4 whitespace-nowrap hidden md:table-cell">
                                     <input type="text" id="profit-${item.id}" class="w-full border rounded py-1 px-2 text-blue-500 bg-blue-100" readonly value="${profitQty}">
                                 </td>
                                 <td class="px-4 py-4 whitespace-nowrap hidden md:table-cell">
-                                    <input type="text" id="difference-${item.id}" class="w-full border rounded py-1 px-2 ${differenceClass}" readonly value="${formatRupiah(differenceValue)}">
+                                    <input type="text" id="difference-${item.id}" class="w-full border rounded py-1 px-2 ${differenceClass}" readonly value="${formatRupiah(warehouseInfo && warehouseInfo.pivot.difference !== null ? warehouseInfo.pivot.difference : differenceValue)}">
                                 </td>
                                 <td class="px-4 py-4 whitespace-nowrap">
                                     <button class="adjust-btn px-4 py-2 bg-blue-500 text-white rounded"
@@ -109,35 +114,34 @@
         });
 
         $(document).on('input', '.physical-input', function() {
-            let itemId = $(this).data('id');
-            let stock = parseInt($(this).data('stock')) || 0;
-            let physical = parseInt($(this).val()) || 0;
-            let purchasePrice = parseInt($(this).data('price')) || 0;
+    let itemId = $(this).data('id');
+    let stock = parseInt($(this).data('stock')) || 0;
+    let originalStock = parseInt($(this).data('original_stock')) || 0;
+    let physical = parseInt($(this).val()) || 0;
+    let purchasePrice = parseInt($(this).data('price')) || 0;
+    
+    console.log('Original Stock:', originalStock);
+    console.log('Physical:', physical);
+    
+    let differenceQty = physical - originalStock;
+    console.log('Difference Quantity:', differenceQty); // Cek nilai differenceQty
+    
+    let differenceValue = differenceQty * purchasePrice;
+    
+    let differenceField = $(`#difference-${itemId}`);
+    let profitField = $(`#profit-${itemId}`);
 
-            let profitQty = physical > stock ? physical - stock : 0;
-            let differenceQty = stock - physical;
-            // let differenceValue = Math.abs(differenceQty) * purchasePrice;
-            let differenceValue;
+    let differenceClass = differenceQty === 0 ?
+        'text-green-500 bg-green-100' :
+        (differenceQty < 0 ? 'text-red-500 bg-red-100' : 'text-blue-500 bg-blue-100');
+    
+    profitField.val(differenceQty);
+    differenceField.val(formatRupiah(differenceValue)).removeClass().addClass(
+        `w-full border rounded py-1 px-2 ${differenceClass}`
+    );
+});
 
-            if (stock > physical) {
-                differenceValue = Math.abs(differenceQty) * purchasePrice * -1;
-            } else if (stock < physical) {
-                differenceValue = Math.abs(differenceQty) * purchasePrice;
-            } else {
-                differenceValue = 0;
-            }
 
-            let differenceField = $(`#difference-${itemId}`);
-            let profitField = $(`#profit-${itemId}`);
-
-            let differenceClass = differenceQty === 0 ?
-                'text-green-500 bg-green-100' :
-                (differenceQty < 0 ? 'text-blue-500 bg-blue-100' : 'text-red-500 bg-red-100');
-
-            profitField.val(profitQty);
-            differenceField.val(formatRupiah(differenceValue)).removeClass().addClass(
-                `w-full border rounded py-1 px-2 ${differenceClass}`);
-        });
 
         $(document).on('click', '.adjust-btn', function() {
             let itemId = $(this).data('id');

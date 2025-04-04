@@ -12,7 +12,7 @@
             <div class="flex gap-4">
                 <x-dropdown.dropdown>
                     <x-slot name="slot">
-                        <x-heroicon-o-download class="w-6 h-6 dark:text-white" aria-hidden="true" />
+                        <x-heroicon-o-arrow-down-on-square class="w-6 h-6 dark:text-white" aria-hidden="true" />
                     </x-slot>
 
                     <x-slot name="menu">

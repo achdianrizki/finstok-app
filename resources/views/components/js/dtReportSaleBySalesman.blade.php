@@ -34,7 +34,7 @@
                               <td class="px-6 py-4 whitespace-nowrap hidden md:table-cell">${sale.sale_date}</td>
                               <td class="px-6 py-4 whitespace-nowrap hidden md:table-cell">${sale.buyer.contact}</td>
                               <td class="px-6 py-4 whitespace-nowrap hidden md:table-cell">${sale.salesman.name}</td>
-                              <td class="px-6 py-4 whitespace-nowrap hidden md:table-cell">${sale.status}</td>
+                              <td class="px-6 py-4 whitespace-nowrap hidden md:table-cell">${sale.status === 'belum_lunas' ? 'Belum Lunas' : sale.status === 'lunas' ? 'Lunas' : sale.status}</td>
                               <td class="px-6 py-4 whitespace-nowrap">
                                   <div class="flex items-center gap-2">
                                       <a href="sale-invoice/export/pdf/${sale.id}"

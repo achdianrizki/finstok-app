@@ -84,7 +84,7 @@
 
     <x-sidebar.dropdown title="Opname Gudang" :active="request()->routeIs('manager.warehouses.opname')">
         <x-slot name="icon">
-            <x-icons.warehouse class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
+            <x-heroicon-o-adjustments-horizontal class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
         </x-slot>
 
         @foreach ($warehouses as $warehouse)
@@ -102,7 +102,8 @@
         <x-sidebar.sublink title="Laporan Penjualan" href="{{ route('manager.report.sale') }}" :active="request()->routeIs('manager.report.sale')" />
 
         <x-slot name="icon">
-            <x-icons.report class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
+            {{-- <x-icons.report class="flex-shrink-0 w-6 h-6" aria-hidden="true" /> --}}
+            <x-heroicon-o-document-chart-bar class="flex-shrink-0 w-6 h-6"  aria-hidden="true"/>
         </x-slot>
 
         <x-sidebar.sublink title="Laporan Retur Pembelian" href="{{ route('manager.report.purchase.return') }}"

@@ -16,9 +16,10 @@ return new class extends Migration
             $table->unsignedBigInteger('item_id');
             $table->unsignedBigInteger('warehouse_id');
             $table->integer('stock');
+            $table->integer('original_stock');
             $table->decimal('price_per_item', 15, 2);
             $table->bigInteger('physical')->nullable();
-            $table->bigInteger('profit')->nullable();
+            $table->bigInteger('profit')->nullable()->default(0);
             $table->decimal('difference', 15, 2)->default(0);
 
 

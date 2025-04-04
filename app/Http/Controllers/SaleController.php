@@ -11,7 +11,6 @@ use App\Models\Buyer;
 use App\Models\Category;
 use App\Models\Salesman;
 use App\Models\Warehouse;
-
 use App\Models\Distributor;
 use Illuminate\Http\Request;
 use App\Models\IncomingPayment;
@@ -199,11 +198,13 @@ class SaleController extends Controller
                 if ($qty > 0) {
                     $item->decrement('stock', $qty);
                     $item->item_warehouse()->wherePivot('warehouse_id', $request->warehouse_id)->decrement('stock', $qty);
+                    $item->item_warehouse()->wherePivot('warehouse_id', $request->warehouse_id)->decrement('original_stock', $qty);
                 }
 
                 if ($ad > 0) {
                     $item->decrement('stock', $ad);
                     $item->item_warehouse()->wherePivot('warehouse_id', $request->warehouse_id)->decrement('stock', $ad);
+                    $item->item_warehouse()->wherePivot('warehouse_id', $request->warehouse_id)->decrement('original_stock', $ad);
                 }
 
                 $sale_price = str_replace(',', '.', str_replace('.', '', $request->sale_prices[$index]));
@@ -237,18 +238,18 @@ class SaleController extends Controller
                 if ($existing) {
                     $item->item_warehouse()->updateExistingPivot($request->warehouse_id, [
                         // 'stock' => $existing->pivot->stock - $qty,
-                        'price_per_item' => $sale_price,
+                        // 'price_per_item' => $sale_price,
                         'physical' => $existing->pivot->physical - $qty - $ad,
-                        'profit' => $existing->pivot->profit + $qty,
-                        'difference' => $existing->pivot->difference + ($qty * $sale_price),
+                        // 'profit' => $existing->pivot->profit + $qty,
+                        // 'difference' => $existing->pivot->difference + ($qty * $sale_price),
                     ]);
                 } else {
                     $item->item_warehouse()->attach($request->warehouse_id, [
                         // 'stock' => $qty,
-                        'price_per_item' => $sale_price,
+                        // 'price_per_item' => $sale_price,
                         'physical' => $qty - $ad,
-                        'profit' => $qty,
-                        'difference' => $qty * $sale_price,
+                        // 'profit' => $qty,
+                        // 'difference' => $qty * $sale_price,
                     ]);
                 }
             }
@@ -382,21 +383,26 @@ class SaleController extends Controller
                         if ($differenceQty > 0) {
                             $item->item_warehouse()->decrement('stock', $differenceQty);
                             $item->item_warehouse()->decrement('physical', $differenceQty);
+                            $item->item_warehouse()->decrement('original_stock', $differenceQty);
                         } elseif ($differenceQty < 0) {
                             $item->item_warehouse()->increment('stock', abs($differenceQty));
                             $item->item_warehouse()->increment('physical', abs($differenceQty));
+                            $item->item_warehouse()->increment('original_stock', abs($differenceQty));
                         }
 
                         if ($differenceAd > 0) {
                             $item->item_warehouse()->decrement('stock', $differenceAd);
                             $item->item_warehouse()->decrement('physical', $differenceAd);
+                            $item->item_warehouse()->decrement('original_stock', $differenceAd);
                         } elseif ($differenceAd < 0) {
                             $item->item_warehouse()->increment('stock', abs($differenceAd));
                             $item->item_warehouse()->increment('physical', abs($differenceAd));
+                            $item->item_warehouse()->increment('original_stock', abs($differenceAd));
                         }
                     } else {
                         $item->item_warehouse()->attach($warehouse_id, [
                             'stock'         => $qty_sold,
+                            'original_stock' => $qty_sold,
                             'physical'         => $qty_sold - $ad,
                             'price_per_item' => $sale_price,
                         ]);

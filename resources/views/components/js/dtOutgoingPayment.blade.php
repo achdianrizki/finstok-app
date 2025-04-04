@@ -35,7 +35,7 @@
                                 <td class="px-6 py-4 whitespace-nowrap hidden md:table-cell">${purchase.purchase_date}</td>
                                 <td class="px-6 py-4 whitespace-nowrap hidden md:table-cell">${purchase.supplier.name}</td>
                                 <td class="px-6 py-4 whitespace-nowrap hidden md:table-cell">${formatRupiah(purchase.total_price)}</td>
-                                <td class="px-6 py-4 whitespace-nowrap hidden md:table-cell">${purchase.status}</td>
+                                <td class="px-6 py-4 whitespace-nowrap hidden md:table-cell">${purchase.status === 'belum_lunas' ? 'Belum Lunas' : purchase.status === 'lunas' ? 'Lunas' : purchase.status}</td>
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <x-button target="" href="/manager/purchase/${purchase.id}/edit" variant="warning" class="justify-center max-w-sm gap-2">
                                         <x-heroicon-o-pencil class="w-3 h-3" aria-hidden="true" />

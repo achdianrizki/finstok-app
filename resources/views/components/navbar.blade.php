@@ -64,7 +64,7 @@
         'translate-y-0': scrollingUp,
     }">
     <x-button type="button" icon-only variant="secondary" sr-text="Search">
-        <x-heroicon-o-search aria-hidden="true" class="w-6 h-6" />
+        <x-heroicon-o-magnifying-glass aria-hidden="true" class="w-6 h-6" />
     </x-button>
 
     <a href="{{ route('dashboard') }}">
@@ -75,8 +75,8 @@
 
     <x-button type="button" icon-only variant="secondary" sr-text="Open main menu"
         x-on:click="isSidebarOpen = !isSidebarOpen">
-        <x-heroicon-o-menu x-show="!isSidebarOpen" aria-hidden="true" class="w-6 h-6" />
+        <x-heroicon-o-list-bullet x-show="!isSidebarOpen" aria-hidden="true" class="w-6 h-6" />
 
-        <x-heroicon-o-x x-show="isSidebarOpen" aria-hidden="true" class="w-6 h-6" />
+        <x-heroicon-o-x-mark x-show="isSidebarOpen" aria-hidden="true" class="w-6 h-6" />
     </x-button>
 </div>
