@@ -2,7 +2,7 @@
     <x-slot name="header">
         <div class="flex justify-between items-center">
             <h2 class="text-xl font-semibold leading-tight">
-                {{ __('Pelunasan :sale_number', ['sale_number' => $sale->sale_number]) }}</h2>
+                {{ __('Retur Penjualan :sale_number', ['sale_number' => $sale->sale_number]) }}</h2>
 
             <a href="{{ route('manager.report.incomingPayment.export.allPdf', $sale->id) }}"
                 class="flex items-center text-sm text-white bg-red-500 hover:bg-red-600 px-2 py-1 border rounded-md"

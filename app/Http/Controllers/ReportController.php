@@ -17,13 +17,18 @@ use Illuminate\Http\Request;
 use App\Exports\BuyersExport;
 use App\Models\ReturnPurchase;
 use Barryvdh\DomPDF\Facade\Pdf;
+use App\Exports\SaleItemsExport;
 use App\Exports\SalesmansExport;
 use App\Exports\SuppliersExport;
 use App\Exports\WarehousesExport;
 use Illuminate\Support\Facades\DB;
+use App\Exports\PurchaseItemsExport;
 use Illuminate\Support\Facades\View;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\ItemsWarehouseExport;
+use App\Exports\ReturnSaleItemsExport;
+use App\Exports\SalesBySalesmanExport;
+use App\Exports\ReturnPurchaseItemsExport;
 use App\Exports\ItemsWarehouseOpnameExport;
 
 class ReportController extends Controller
@@ -242,31 +247,16 @@ class ReportController extends Controller
         // return view('exports.report.sale', compact('sale'));
     }
 
-    public function exportSalesBySalesmanPDF(Request $request)
+    public function exportSaleItemsExcel(Request $request)
     {
-        $salesman_id = $request->salesman_id;
+        $period = $request->period;
+        $startDate = $request->start_date;
+        $endDate = $request->end_date;
 
-        $query = Sale::with('salesman', 'items');
-
-        if ($salesman_id) {
-            $query->where('salesman_id', $salesman_id);
-        }
-
-        $sales = $query->get();
-
-        $salesman = $salesman_id ? Salesman::findOrFail($salesman_id) : null;
-
-        $options = new Options();
-        $options->set('defaultFont', 'Helvetica');
-
-        $dompdf = new Dompdf($options);
-
-        $html = View::make('exports.report.salebySalesman', compact('sales', 'salesman'))->render();
-        $dompdf->loadHtml($html);
-        $dompdf->setPaper('A4', 'portrait'); // Menggunakan ukuran standar A4
-        $dompdf->render();
-
-        return $dompdf->stream('sale-by-salesman.pdf', ['Attachment' => false]);
+        return Excel::download(
+            new SaleItemsExport($period, $startDate, $endDate),
+            'data_penjualan.xlsx'
+        );
     }
 
     public function exportPurchaseItemsPDF(Request $request)
@@ -299,8 +289,20 @@ class ReportController extends Controller
         $dompdf->render();
 
         // return $dompdf->stream('SEVENA/SALE/' . str_replace('/', '_', $sale->sale_number) . '.pdf');
-        return $dompdf->stream('purchase.pdf', ['Attachment' => false]);
+        return $dompdf->stream('data_pembelian.pdf', ['Attachment' => false]);
         // return view('exports.report.sale', compact('sale'));
+    }
+
+    public function exportPurchaseItemsExcel(Request $request)
+    {
+        $period = $request->period;
+        $startDate = $request->start_date;
+        $endDate = $request->end_date;
+
+        return Excel::download(
+            new PurchaseItemsExport($period, $startDate, $endDate),
+            'data_pembelian.xlsx'
+        );
     }
 
     public function exportItemsWarehouseOpnamePDF($id)
@@ -328,7 +330,7 @@ class ReportController extends Controller
     public function exportitemsWarehouseOpnameExcel($id)
     {
         $warehouse = Warehouse::findOrFail($id);
-        
+
         return Excel::download(new ItemsWarehouseOpnameExport($id), 'stok_barang_opname_di_' . $warehouse->name . '.xlsx');
     }
 
@@ -382,6 +384,15 @@ class ReportController extends Controller
         // return view('exports.report.sale', compact('sale'));
     }
 
+    public function exportReturnPurchaseItemsExcel(Request $request)
+    {
+        // $period = $request->period;
+        // $startDate = $request->start_date;
+        // $endDate = $request->end_date;
+
+        return Excel::download(new ReturnPurchaseItemsExport,'data_retur_pembelian.xlsx');
+    }
+
     public function exportReturnSaleItemsPDF()
     {
 
@@ -402,5 +413,48 @@ class ReportController extends Controller
         // return $dompdf->stream('SEVENA/SALE/' . str_replace('/', '_', $sale->sale_number) . '.pdf');
         return $dompdf->stream('returnSales.pdf', ['Attachment' => false]);
         // return view('exports.report.sale', compact('sale'));
+    }
+
+    public function exportReturnSaleItemsExcel(Request $request)
+    {
+        // $period = $request->period;
+        // $startDate = $request->start_date;
+        // $endDate = $request->end_date;
+
+        return Excel::download(new ReturnSaleItemsExport,'data_retur_penjualan.xlsx');
+    }
+
+    public function exportSalesBySalesmanPDF(Request $request)
+    {
+        $salesman_id = $request->salesman_id;
+
+        $query = Sale::with('salesman', 'items');
+
+        if ($salesman_id) {
+            $query->where('salesman_id', $salesman_id);
+        }
+
+        $sales = $query->get();
+
+        $salesman = $salesman_id ? Salesman::findOrFail($salesman_id) : null;
+
+        $options = new Options();
+        $options->set('defaultFont', 'Helvetica');
+
+        $dompdf = new Dompdf($options);
+
+        $html = View::make('exports.report.salebySalesman', compact('sales', 'salesman'))->render();
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('A4', 'portrait'); // Menggunakan ukuran standar A4
+        $dompdf->render();
+
+        return $dompdf->stream('sale-by-salesman.pdf', ['Attachment' => false]);
+    }
+
+    public function exportSalesBySalesmanExcel(Request $request)
+    {
+        $salesman_id = $request->salesman_id_excel;
+
+        return Excel::download(new SalesBySalesmanExport($salesman_id),'data_penjualan_sales.xlsx');
     }
 }

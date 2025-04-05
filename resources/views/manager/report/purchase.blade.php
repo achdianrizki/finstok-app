@@ -28,12 +28,18 @@
                                 <span>Download PDF</span>
                             </button>
                         </form>
-                        <a href=""
-                            class="flex items-center gap-2 px-4 py-2 text-sm text-white bg-green-600 hover:bg-green-700"
-                            role="menuitem" tabindex="-1" id="menu-item-1">
-                            <x-icons.excel class="w-5 h-5" aria-hidden="true" />
-                            <span>Download Excel</span>
-                        </a>
+                        <form id="excelForm" action="{{ route('manager.report.purchase-items-report.export.excel') }}"
+                            method="POST">
+                            @csrf
+                            <input type="hidden" name="period" id="excelPeriod">
+                            <input type="hidden" name="start_date" id="excelStartDate">
+                            <input type="hidden" name="end_date" id="excelEndDate">
+                            <button type="submit"
+                                class="flex items-center gap-2 px-4 py-2 text-sm text-white bg-green-600 hover:bg-green-700 w-full">
+                                <x-icons.excel class="w-5 h-5" aria-hidden="true" />
+                                <span>Download Excel</span>
+                            </button>
+                        </form>
                     </x-slot>
                 </x-dropdown.dropdown>
 
@@ -139,6 +145,27 @@
 
                     let endDate = $('#end_date').val();
                     $('#pdfEndDate').val(endDate);
+                });
+
+                $('#period').change(function() {
+                    if ($(this).val() === 'custom') {
+                        $('.custom').removeClass('hidden');
+                    } else {
+                        $('.custom').addClass('hidden');
+                        $('#start_date').val("")
+                        $('#end_date').val("")
+                    }
+                });
+
+                $('#excelForm').on('submit', function(event) {
+                    let period = $('#period').val();
+                    $('#excelPeriod').val(period);
+
+                    let startDate = $('#start_date').val();
+                    $('#excelStartDate').val(startDate);
+
+                    let endDate = $('#end_date').val();
+                    $('#excelEndDate').val(endDate);
                 });
 
                 $('#period').change(function() {

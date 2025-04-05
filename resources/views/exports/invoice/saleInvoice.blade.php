@@ -112,7 +112,7 @@
                 <table class="table information" style="width: 400px">
                     <tr>
                         <td colspan="2">
-                            <p style="font-size: 10px; padding: 0; margin: 0;">{{ $sale->buyer->contact }}</p>
+                            <p style="font-size: 10px; padding: 0; margin: 0;">{{ $sale->buyer->name }}</p>
                         </td>
                     </tr>
                     <tr>
@@ -185,7 +185,7 @@
                     <tr>
                         <td>
                             <p style="margin-top: -5px;">jl. Katapang</p>
-                            <p>Hari {{ \Carbon\Carbon::parse($sale->date)->translatedFormat('l') }}
+                            <p>Hari {{ \Carbon\Carbon::parse($sale->sale_date)->translatedFormat('l') }}
                             </p>
                         </td>
                     </tr>

@@ -133,7 +133,7 @@
                 <tr>
                     <td class="text-center">{{ \Carbon\Carbon::parse($singleSale->return_date)->format('d/m/Y') }}</td>
                     <td class="text-center">{{ $singleSale->sale->sale_number }}</td>
-                    <td class="text-center">{{ $singleSale->buyer->contact }}</td>
+                    <td class="text-center">{{ $singleSale->buyer->name }}</td>
                     <td>{{ $item->name }}</td>
                     <td class="text-center">{{ $item->pivot->qty }}</td>
                     <td>{{ $item->unit }}</td>

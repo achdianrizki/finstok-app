@@ -160,12 +160,14 @@ Route::middleware('auth')->group(function () {
 
             // Purchase items PDF (all)
             Route::post('/purchase-items-report/export/pdf', [ReportController::class, 'exportPurchaseItemsPDF'])->name('purchase-items-report.export.pdf');
+            Route::post('/purchase-items-report/export/excel', [ReportController::class, 'exportPurchaseItemsExcel'])->name('purchase-items-report.export.excel');
 
             // Sale PDF invoice (FAKTUR) (1 by 1)
             Route::get('/sale-invoice/export/pdf/{id}', [ReportController::class, 'exportSaleInvoicePDF'])->name('sale-invoice.export.pdf');
 
             // Sale items PDF (all)
             Route::post('/sale-items-report/export/pdf', [ReportController::class, 'exportSaleItemsPDF'])->name('sale-items-report.export.pdf');
+            Route::post('/sale-items-report/export/excel', [ReportController::class, 'exportSaleItemsExcel'])->name('sale-items-report.export.excel');
             // ITEMS AND INVOICE END
 
             // PAYMENT START
@@ -184,14 +186,17 @@ Route::middleware('auth')->group(function () {
 
             // RETURN PURCHASE (all) START
             Route::get('/return-purchase-items-report/export/pdf', [ReportController::class, 'exportReturnPurchaseItemsPDF'])->name('return-purchase-items-report.export.pdf');
+            Route::get('/return-purchase-items-report/export/excel', [ReportController::class, 'exportReturnPurchaseItemsExcel'])->name('return-purchase-items-report.export.excel');
             // RETURN PURCHASE END
 
             // RETURN SALE (all) START
             Route::get('/return-sale-items-report/export/pdf', [ReportController::class, 'exportReturnSaleItemsPDF'])->name('return-sale-items-report.export.pdf');
+            Route::get('/return-sale-items-report/export/excel', [ReportController::class, 'exportReturnSaleItemsExcel'])->name('return-sale-items-report.export.excel');
             // RETURN SALE END
 
             // Sale Data by salesman START (PDF)
             Route::post('/sales-by-salesman/export/pdf', [ReportController::class, 'exportSalesBySalesmanPDF'])->name('sales-by-salesman.export.pdf');
+            Route::post('/sales-by-salesman/export/excel', [ReportController::class, 'exportSalesBySalesmanExcel'])->name('sales-by-salesman.export.excel');
             // Sale Data by salesman END (PDF)
         });
     });

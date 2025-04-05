@@ -187,7 +187,7 @@
                     <tr>
                         <td>
                             <p style="margin-top: -5px;">jl. Katapang</p>
-                            <p>Hari {{ $purchase->date ? \Carbon\Carbon::parse($purchase->date)->translatedFormat('l') : '' }}
+                            <p>Hari {{ \Carbon\Carbon::parse($purchase->purchase_date)->translatedFormat('l') }}
                             </p>
                         </td>
                     </tr>
