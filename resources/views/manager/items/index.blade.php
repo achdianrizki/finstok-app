@@ -20,13 +20,13 @@
                 </x-slot>
 
                 <x-slot name="menu">
-                    <a href="{{ route('items.export.pdf') }}"
+                    <a href="{{ route('manager.report.items.export.pdf') }}"
                         class="flex items-center gap-2 px-4 py-2 mb-2 text-sm text-white bg-red-500 hover:bg-red-600"
                         role="menuitem" tabindex="-1" id="menu-item-0">
                         <x-icons.pdf class="w-5 h-5" aria-hidden="true" />
                         <span>Download PDF</span>
                     </a>
-                    <a href="{{ route('items.export.excel') }}"
+                    <a href="{{ route('manager.report.items.export.excel') }}"
                         class="flex items-center gap-2 px-4 py-2 text-sm text-white bg-green-600 hover:bg-green-700"
                         role="menuitem" tabindex="-1" id="menu-item-1">
                         <x-icons.excel class="w-5 h-5" aria-hidden="true" />

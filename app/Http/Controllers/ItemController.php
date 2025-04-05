@@ -44,9 +44,6 @@ class ItemController extends Controller
                     ->orWhere('code', 'like', "%{$search}%")
                     ->orWhereHas('category', function ($query) use ($search) {
                         $query->where('name', 'like', "%{$search}%");
-                    })
-                    ->orWhereHas('warehouse', function ($query) use ($search) {
-                        $query->where('name', 'like', "%{$search}%");
                     });
             });
         }
@@ -139,21 +136,6 @@ class ItemController extends Controller
 
         $item->with('purchase')->where('item_id', $item)->delete();
         return redirect()->back();
-    }
-
-
-
-
-    public function exportPDF()
-    {
-        $items = Item::all();
-        $pdf = Pdf::loadView('exports.items.pdf', compact('items'));
-        return $pdf->download('item.pdf');
-    }
-
-    public function exportExcel()
-    {
-        return Excel::download(new ItemsExport, 'products.xlsx');
     }
 
     public function importExcel(Request $request)

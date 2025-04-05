@@ -32,7 +32,7 @@
                                 <td class="px-6 py-4 whitespace-nowrap">${sale.sale_number}</td>
                                 <td class="px-6 py-4 whitespace-nowrap hidden md:table-cell">${sale.sale_date}</td>
                                 <td class="px-6 py-4 whitespace-nowrap hidden md:table-cell">${sale.due_date}</td>
-                                <td class="px-6 py-4 whitespace-nowrap hidden md:table-cell">${sale.buyer.contact}</td>
+                                <td class="px-6 py-4 whitespace-nowrap hidden md:table-cell">${sale.buyer.name}</td>
                                 <td class="px-6 py-4 whitespace-nowrap hidden md:table-cell">${sale.status === 'belum_lunas' ? 'Belum Lunas' : sale.status === 'lunas' ? 'Lunas' : sale.status}</td>
                                 <td class="px-6 py-4 whitespace-nowrap">
 

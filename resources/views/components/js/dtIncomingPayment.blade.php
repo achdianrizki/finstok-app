@@ -33,7 +33,7 @@
                                   <a href="/manager/incomingpayment/${sale.id}" class="text-blue-500 hover:underline">${sale.sale_number}</a>
                               </td>
                               <td class="px-6 py-4 whitespace-nowrap hidden md:table-cell">${sale.sale_date}</td>
-                              <td class="px-6 py-4 whitespace-nowrap hidden md:table-cell">${sale.buyer.contact}</td>
+                              <td class="px-6 py-4 whitespace-nowrap hidden md:table-cell">${sale.buyer.name}</td>
                               <td class="px-6 py-4 whitespace-nowrap hidden md:table-cell">${formatRupiah(sale.total_price)}</td>
                               <td class="px-6 py-4 whitespace-nowrap hidden md:table-cell">${sale.status === 'belum_lunas' ? 'Belum Lunas' : sale.status === 'lunas' ? 'Lunas' : sale.status}</td>
                               <td class="px-6 py-4 whitespace-nowrap">

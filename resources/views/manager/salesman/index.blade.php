@@ -14,7 +14,28 @@
 
     <div class="p-6 overflow-hidden bg-white rounded-md shadow-md dark:bg-dark-eval-1">
 
-        <div class="flex flex-col md:flex-row md:justify-end gap-4 my-3">
+        <div class="flex flex-col md:flex-row md:justify-between gap-4 my-3">
+
+            <x-dropdown.dropdown>
+                <x-slot name="slot">
+                    <x-heroicon-o-arrow-down-on-square class="w-6 h-6 dark:text-white" aria-hidden="true" />
+                </x-slot>
+
+                <x-slot name="menu">
+                    <a href="{{ route('manager.report.salesmans.export.pdf') }}"
+                        class="flex items-center gap-2 px-4 py-2 mb-2 text-sm text-white bg-red-500 hover:bg-red-600"
+                        role="menuitem" tabindex="-1" id="menu-item-0">
+                        <x-icons.pdf class="w-5 h-5" aria-hidden="true" />
+                        <span>Download PDF</span>
+                    </a>
+                    <a href="{{ route('manager.report.salesmans.export.excel') }}"
+                        class="flex items-center gap-2 px-4 py-2 text-sm text-white bg-green-600 hover:bg-green-700"
+                        role="menuitem" tabindex="-1" id="menu-item-1">
+                        <x-icons.excel class="w-5 h-5" aria-hidden="true" />
+                        <span>Download Excel</span>
+                    </a>
+                </x-slot>
+            </x-dropdown.dropdown>
 
             <!-- Search Input-->
             <div class="w-full md:w-auto">

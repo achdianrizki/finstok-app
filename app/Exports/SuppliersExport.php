@@ -2,7 +2,7 @@
 
 namespace App\Exports;
 
-use App\Models\Item;
+use App\Models\Supplier;
 use Maatwebsite\Excel\Events\AfterSheet;
 use PhpOffice\PhpSpreadsheet\Style\Fill;
 use Maatwebsite\Excel\Concerns\WithEvents;
@@ -12,29 +12,30 @@ use PhpOffice\PhpSpreadsheet\Style\Alignment;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
-class ItemsExport implements FromCollection, WithHeadings, WithStyles, WithEvents
+class SuppliersExport implements FromCollection, WithHeadings, WithStyles, WithEvents
 {
     public function collection()
     {
-        return Item::with(['category', 'warehouse'])
-            ->get(['code', 'name', 'description', 'unit', 'purchase_price', 'category_id', 'stock'])
-            ->map(function ($item) {
+        return Supplier::select()
+            ->get(['supplier_code', 'name', 'phone', 'fax_nomor', 'address', 'npwp', 'city', 'province', 'status'])
+            ->map(function ($supplier) {
                 return [
-                    'code'           => $item->code,
-                    'name'           => $item->name,
-                    'description'    => $item->description,
-                    'unit'           => $item->unit,
-                    'purchase_price' => 'Rp ' . number_format($item->purchase_price, 2, ',', '.'),
-                    'category_id'    => $item->category->name ?? '-',
-                    'stock'          => (string) $item->stock,
+                    'supplier_code'  => $supplier->supplier_code,
+                    'name'           => $supplier->name,
+                    'phone'          => $supplier->phone,
+                    'fax_nomor'      => $supplier->fax_nomor ?? '-',
+                    'address'        => $supplier->address,
+                    'npwp'           => $supplier->npwp ?? '-',
+                    'city'           => $supplier->city ?? '-',
+                    'province'       => $supplier->province ?? '-',
+                    'status'         => $supplier->status == 1 ? 'Aktif' : 'Tidak Aktif'
                 ];
             });
     }
 
     public function headings(): array
     {
-        // Judul kolom ditaruh di baris ke-2 karena baris pertama untuk "DATA BARANG"
-        return ['Kode', 'Nama Barang', 'Deskripsi', 'Satuan', 'Harga', 'Kategori', 'Stok'];
+        return ['Kode', 'Nama Supplier', 'No Telepon', 'No Fax', 'Alamat', 'NPWP', 'Kota', 'Provinsi', 'Status'];
     }
 
     public function styles(Worksheet $sheet)
@@ -61,7 +62,7 @@ class ItemsExport implements FromCollection, WithHeadings, WithStyles, WithEvent
 
                 // Sisipkan judul besar di baris pertama
                 $sheet->insertNewRowBefore(1, 1); // Menyisipkan baris kosong di atas headings
-                $sheet->setCellValue('A1', 'DATA BARANG');
+                $sheet->setCellValue('A1', 'DATA SUPPLIER / PEMASOK BARANG');
 
                 // Merge dan style judul besar
                 $highestColumn = $sheet->getHighestColumn();
@@ -83,6 +84,20 @@ class ItemsExport implements FromCollection, WithHeadings, WithStyles, WithEvent
                 $sheet->getStyle($cellRange)->getBorders()->getAllBorders()->setBorderStyle(
                     \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN
                 );
+
+                $sheet->getStyle('F2:F' . $highestRow)
+                    ->getNumberFormat()
+                    ->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_TEXT);
+
+                $sheet->getColumnDimension('F')->setWidth(20); 
+                $sheet->getStyle($cellRange)->getAlignment()->setWrapText(true);
+
+                $sheet->getStyle('D2:F' . $highestRow)
+                    ->getNumberFormat()
+                    ->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_TEXT);
+
+                $sheet->getColumnDimension('D')->setWidth(20); 
+                $sheet->getStyle($cellRange)->getAlignment()->setWrapText(true);
 
                 // Auto size tiap kolom
                 foreach (range('A', $highestColumn) as $col) {

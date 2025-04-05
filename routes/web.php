@@ -119,15 +119,41 @@ Route::middleware('auth')->group(function () {
             Route::get('/sale', [ReportController::class, 'sale'])->name('sale');
             Route::get('/purchases/return', [ReportController::class, 'returnPurchaseView'])->name('purchase.return');
             Route::get('/sale/return', [ReportController::class, 'returnSaleView'])->name('sale.return');
-            Route::get('/item-warehouse-opname/{id}', [ReportController::class, 'itemWarehouseOpname'])->name('item.warehouse.opname');
-            Route::get('/item-warehouse/{id}', [ReportController::class, 'itemWarehouse'])->name('item.warehouse');
-            
+
+            Route::get('/item-warehouse-opname/{id}/export/pdf', [ReportController::class, 'exportItemsWarehouseOpnamePDF'])->name('items.warehouse.opname.export.pdf');
+            Route::get('/item-warehouse-opname/{id}/export/excel', [ReportController::class, 'exportItemsWarehouseOpnameExcel'])->name('items.warehouse.opname.export.excel');
+
+            Route::get('/item-warehouse/{id}/export/pdf', [ReportController::class, 'exportItemsWarehousePDF'])->name('items.warehouse.export.pdf');
+            Route::get('/item-warehouse/{id}/export/excel', [ReportController::class, 'exportItemsWarehouseExcel'])->name('items.warehouse.export.excel');
+
             // Sale Data by salesman START (VIEW)
             Route::get('/sales-by-salesman', [SalesmanController::class, 'salesBySalesman'])->name('sales-by-salesman');
             // Sale Data by salesman END (VIEW)
-            
+
 
             // REPORT
+            // MASTER START
+            // ITEMS
+            Route::get('/items/export/pdf', [ReportController::class, 'exportItemsPDF'])->name('items.export.pdf');
+            Route::get('/items/export/excel', [ReportController::class, 'exportItemsExcel'])->name('items.export.excel');
+
+            // SUPPLIERS
+            Route::get('/suppliers/export/pdf', [ReportController::class, 'exportSuppliersPDF'])->name('suppliers.export.pdf');
+            Route::get('/suppliers/export/excel', [ReportController::class, 'exportSuppliersExcel'])->name('suppliers.export.excel');
+
+            // BUYERS
+            Route::get('/buyers/export/pdf', [ReportController::class, 'exportBuyersPDF'])->name('buyers.export.pdf');
+            Route::get('/buyers/export/excel', [ReportController::class, 'exportBuyersExcel'])->name('buyers.export.excel');
+
+            // SALESMAN
+            Route::get('/salesmans/export/pdf', [ReportController::class, 'exportSalesmansPDF'])->name('salesmans.export.pdf');
+            Route::get('/salesmans/export/excel', [ReportController::class, 'exportSalesmansExcel'])->name('salesmans.export.excel');
+
+            // WAREHOUSE
+            Route::get('/warehouses/export/pdf', [ReportController::class, 'exportWarehousesPDF'])->name('warehouses.export.pdf');
+            Route::get('/warehouses/export/excel', [ReportController::class, 'exportWarehousesExcel'])->name('warehouses.export.excel');
+            // MASTER END
+
             // ITEMS AND INVOICE START
             // Purchase invoice (FAKTUR) PDF (1 by 1)
             Route::get('/purchase-invoice/export/pdf/{id}', [ReportController::class, 'exportPurchaseInvoicePDF'])->name('purchase-invoice.export.pdf');
@@ -169,10 +195,6 @@ Route::middleware('auth')->group(function () {
             // Sale Data by salesman END (PDF)
         });
     });
-
-    //printPdf & ExportExcel
-    Route::get('/items/export/pdf', [ItemController::class, 'exportPDF'])->name('items.export.pdf');
-    Route::get('/items/export/excel', [ItemController::class, 'exportExcel'])->name('items.export.excel');
 
     //Testing total modal
     Route::get('/manager/finance/primaryModal', [ModalController::class, 'primaryModal'])->name('manager.finance.modal.primaryModal');

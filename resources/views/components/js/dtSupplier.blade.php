@@ -3,7 +3,7 @@
         let page = 1;
         let lastPage = 1;
         let searchQuery = '';
-        let csrfToken = $('meta[name="csrf-token"]').attr('content'); 
+        let csrfToken = $('meta[name="csrf-token"]').attr('content');
 
         function fetchitems(page, searchQuery = '') {
             $.ajax({
@@ -29,19 +29,16 @@
                                     <td class="px-6 py-4 whitespace-nowrap hidden sm:table-cell">${supplier.province}</td>
                                     <td class="px-6 py-4 whitespace-nowrap hidden md:table-cell">${(supplier.phone == null) ? '-' : supplier.phone}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">
-                                        <div class="flex items-center space-x-1">
-                                            <a href="/manager/supplier/${supplier.id}/edit" class="bg-yellow-500 text-white px-2 py-1 rounded text-xs">
-                                                <i class="fas fa-pencil-alt"></i> Edit
-                                            </a>
-                                            <button onclick="confirmDelete(${supplier.id}, '${supplier.name}')" class="bg-red-500 text-white px-2 py-1 rounded text-xs">
-                                                <i class="fas fa-trash-alt"></i> Hapus
-                                            </button>
-                                            <div class="relative group">
-                                                <button class="toggle-details bg-green-800 text-white p-2 rounded sm:hidden" data-index="${index}">
-                                                    <x-heroicon-o-chevron-down class="w-2 h-2" aria-hidden="true" />
-                                                </button>
-                                            </div>
-                                        </div>
+                                        <x-button target="" href="/manager/supplier/${supplier.id}/edit" variant="warning" class="justify-center max-w-sm gap-2">
+                                        <x-heroicon-o-pencil class="w-3 h-3" aria-hidden="true" />
+                                        </x-button>
+                                        <form method="POST" action="/manager/supplier/${supplier.id}" style="display:inline;">
+                                            @csrf
+                                            <input type="hidden" name="_method" value="DELETE">
+                                            <x-button type="submit" class="bg-red-500 text-white py-1 px-3 rounded hover:bg-red-600">
+                                                <x-heroicon-o-trash class="w-3 h-3" aria-hidden="true" />
+                                            </x-button>
+                                        </form>
                                     </td>
                                 </tr>
                                 <tr id="details-${index}" class="hidden sm:hidden">

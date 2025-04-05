@@ -13,8 +13,8 @@
     </x-slot>
 
     <div class="p-6 overflow-hidden bg-white rounded-md shadow-md dark:bg-dark-eval-1">
-        <div class="flex flex-col md:flex-row md:justify-between gap-4 my-3">
-            <x-dropdown.dropdown>
+        <div class="flex flex-col md:flex-row md:justify-end gap-4 my-3">
+            {{-- <x-dropdown.dropdown>
                 <x-slot name="slot">
                     <x-heroicon-o-arrow-down-on-square class="w-6 h-6 dark:text-white" aria-hidden="true" />
                 </x-slot>
@@ -33,7 +33,7 @@
                         <span>Download Excel</span>
                     </a>
                 </x-slot>
-            </x-dropdown.dropdown>
+            </x-dropdown.dropdown> --}}
 
             <!-- Search Input-->
             <div class="w-full md:w-auto">

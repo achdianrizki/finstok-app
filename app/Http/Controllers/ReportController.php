@@ -4,16 +4,27 @@ namespace App\Http\Controllers;
 
 use Dompdf\Dompdf;
 use Dompdf\Options;
+use App\Models\Item;
 use App\Models\Sale;
+use App\Models\Buyer;
 use App\Models\Purchase;
 use App\Models\Salesman;
+use App\Models\Supplier;
 use App\Models\Warehouse;
 use App\Models\ReturnSale;
+use App\Exports\ItemsExport;
 use Illuminate\Http\Request;
+use App\Exports\BuyersExport;
 use App\Models\ReturnPurchase;
 use Barryvdh\DomPDF\Facade\Pdf;
+use App\Exports\SalesmansExport;
+use App\Exports\SuppliersExport;
+use App\Exports\WarehousesExport;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\View;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\ItemsWarehouseExport;
+use App\Exports\ItemsWarehouseOpnameExport;
 
 class ReportController extends Controller
 {
@@ -47,6 +58,116 @@ class ReportController extends Controller
             ->select('return_sales.*', 'sales.*', 'buyers.contact as buyer_contact', 'return_sale_items.*')
             ->get();
         return view('manager.report.sale_return', compact('return'));
+    }
+
+    public function exportItemsPDF()
+    {
+        $items = Item::all();
+
+        $options = new Options();
+        $options->set('defaultFont', 'Helvetica');
+
+        $dompdf = new Dompdf($options);
+
+        $html = View::make('exports.items.pdf', compact('items'))->render();
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper([0, 0, 595.28, 5000]); // 595.28px = A4 width, 2000px = custom height
+        $dompdf->render();
+
+        return $dompdf->stream('data_barang.pdf', ['Attachment' => false]);
+    }
+
+    public function exportItemsExcel()
+    {
+        return Excel::download(new ItemsExport, 'data_barang.xlsx');
+    }
+
+    public function exportSuppliersPDF()
+    {
+        $suppliers = Supplier::all();
+
+        $options = new Options();
+        $options->set('defaultFont', 'Helvetica');
+
+        $dompdf = new Dompdf($options);
+
+        $html = View::make('exports.suppliers.pdf', compact('suppliers'))->render();
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper([0, 0, 595.28, 5000]); // 595.28px = A4 width, 2000px = custom height
+        $dompdf->render();
+
+        return $dompdf->stream('data_pemasok_barang.pdf', ['Attachment' => false]);
+    }
+
+    public function exportSuppliersExcel()
+    {
+        return Excel::download(new SuppliersExport, 'data_pemasok_barang.xlsx');
+    }
+
+    public function exportBuyersPDF()
+    {
+        $buyers = Buyer::all();
+
+        $options = new Options();
+        $options->set('defaultFont', 'Helvetica');
+
+        $dompdf = new Dompdf($options);
+
+        $html = View::make('exports.buyers.pdf', compact('buyers'))->render();
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper([0, 0, 595.28, 5000]); // 595.28px = A4 width, 2000px = custom height
+        $dompdf->render();
+
+        return $dompdf->stream('data_pelanggan.pdf', ['Attachment' => false]);
+    }
+
+    public function exportBuyersExcel()
+    {
+        return Excel::download(new BuyersExport, 'data_pelanggan.xlsx');
+    }
+
+    public function exportSalesmansPDF()
+    {
+        $salesmans = Salesman::all();
+
+        $options = new Options();
+        $options->set('defaultFont', 'Helvetica');
+
+        $dompdf = new Dompdf($options);
+
+        $html = View::make('exports.salesmans.pdf', compact('salesmans'))->render();
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper([0, 0, 595.28, 5000]); // 595.28px = A4 width, 2000px = custom height
+        $dompdf->render();
+
+        return $dompdf->stream('data_sales.pdf', ['Attachment' => false]);
+    }
+
+    public function exportSalesmansExcel()
+    {
+        return Excel::download(new SalesmansExport, 'data_sales.xlsx');
+    }
+
+    public function exportWarehousesPDF()
+    {
+        $warehouses = Warehouse::all();
+
+        $options = new Options();
+        $options->set('defaultFont', 'Helvetica');
+
+        $dompdf = new Dompdf($options);
+
+        $html = View::make('exports.warehouse.pdf', compact('warehouses'))->render();
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper([0, 0, 595.28, 5000]); // 595.28px = A4 width, 2000px = custom height
+        $dompdf->render();
+
+        return $dompdf->stream('data_gudang.pdf', ['Attachment' => false]);
+    }
+
+    public function exportWarehousesExcel()
+    {
+        return Excel::download(new WarehousesExport, 'data_gudang.xlsx');
     }
 
     public function exportPurchaseInvoicePDF($id)
@@ -182,7 +303,7 @@ class ReportController extends Controller
         // return view('exports.report.sale', compact('sale'));
     }
 
-    public function itemWarehouseOpname($id)
+    public function exportItemsWarehouseOpnamePDF($id)
     {
         $warehouse = Warehouse::findOrFail($id);
 
@@ -204,7 +325,14 @@ class ReportController extends Controller
         // return view('exports.report.sale', compact('sale'));
     }
 
-    public function itemWarehouse($id)
+    public function exportitemsWarehouseOpnameExcel($id)
+    {
+        $warehouse = Warehouse::findOrFail($id);
+        
+        return Excel::download(new ItemsWarehouseOpnameExport($id), 'stok_barang_opname_di_' . $warehouse->name . '.xlsx');
+    }
+
+    public function exportItemsWarehousePDF($id)
     {
         $warehouse = Warehouse::findOrFail($id);
 
@@ -224,6 +352,12 @@ class ReportController extends Controller
         // return $dompdf->stream('SEVENA/SALE/' . str_replace('/', '_', $sale->sale_number) . '.pdf');
         return $dompdf->stream('item-warehouse.pdf', ['Attachment' => false]);
         // return view('exports.report.sale', compact('sale'));
+    }
+
+    public function exportitemsWarehouseExcel($id)
+    {
+        $warehouse = Warehouse::findOrFail($id);
+        return Excel::download(new ItemsWarehouseExport($id), 'stok_barang_di_' . $warehouse->name . '.xlsx');
     }
 
     public function exportReturnPurchaseItemsPDF()

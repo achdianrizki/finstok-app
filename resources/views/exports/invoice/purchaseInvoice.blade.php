@@ -112,7 +112,7 @@
                 <table class="table information" style="width: 400px">
                     <tr>
                         <td colspan="2">
-                            <p style="font-size: 10px; padding: 0; margin: 0;">{{ $purchase->supplier->contact }}</p>
+                            <p style="font-size: 10px; padding: 0; margin: 0;">{{ $purchase->supplier->name }}</p>
                         </td>
                     </tr>
                     <tr>

@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ITEM WAREHOUSE</title>
+    <title>DATA PELANGGAN</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -49,7 +49,7 @@
             width: 100%;
             border-collapse: collapse;
             margin-top: 20px;
-            font-size: 10px;
+            font-size: 8px;
         }
 
         .table th,
@@ -98,7 +98,7 @@
             class="logo">
 
         <div class="title-container">
-            <p class="title">STOK BARANG di {{ $warehouse->name }}</p>
+            <p class="title">DATA PELANGGAN</p>
             {{-- <p class="period">
                 Periode:
                 @if ($period === 'day')
@@ -116,50 +116,33 @@
         </div>
     </div>
 
-    @php
-        $totalQtySold = 0;
-        $totalSalePrice = 0;
-        $totalDiscount = 0;
-    @endphp
-
     <table class="table">
         <tr>
-            <th>Nama Barang</th>
-            <th>Kategori</th>
-            <th>Harga</th>
-            <th>Satuan</th>
-            <th>Jumlah Stok</th>
+            <th>Nama</th>
+            <th>Nama Kontak</th>
+            <th>No Telepon</th>
+            <th>NPWP</th>
+            <th>Alamat</th>
+            <th>Tipe</th>
         </tr>
 
-        @forelse ($items as $item)
+        @forelse ($buyers as $buyer)
             <tr>
-                <td>{{ $item->name }}</td>
-                <td>{{ $item->category->name }}</td>
-                <td class="text-right">Rp {{ number_format($item->pivot->price_per_item, 2, ',', '.') }}</td>
-                <td>{{ $item->unit }}</td>
-                <td class="text-center">{{ $item->pivot->stock }}</td>
+                <td>{{ $buyer->name }}</td>
+                <td>{{ $buyer->contact }}</td>
+                <td>{{ $buyer->phone }}</td>
+                <td>{{ $buyer->NPWP ?? '-' }}</td>
+                <td>{{ $buyer->address }}</td>
+                <td>{{ $buyer->type}}</td>
             </tr>
         @empty
             <tr>
                 <td colspan="4" style="font-weight: bold; font-style: italic; text-align: center;">
-                    Tidak ada data stok barang
+                    Tidak ada data pelanggan
                 </td>
             </tr>
         @endforelse
     </table>
-
-
-    {{-- <table class="table">
-        <tr>
-            <td>
-                <p style="font-weight: 500;">TOTAL PENJUALAN</p>
-            </td>
-            <td style=" width: 240px;">{{ $totalQtySold }}</td>
-            <td style="width: 100px;">
-                <p>Rp {{ number_format($totalSalePrice - $totalDiscount, 2, ',', '.') }}</p>
-            </td>
-        </tr>
-    </table> --}}
 
 </body>
 

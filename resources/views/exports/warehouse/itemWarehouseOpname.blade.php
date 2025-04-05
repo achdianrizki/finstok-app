@@ -104,19 +104,6 @@
 
         <div class="title-container">
             <p class="title">STOK OPNAME di {{ $warehouse->name }}</p>
-            {{-- <p class="period">
-                Periode:
-                @if ($period === 'day')
-                {{ now()->toFormattedDateString() }}
-                @elseif ($period === 'month')
-                {{ now()->format('F Y') }}
-                @elseif ($period === 'custom' && request()->has('start_date') && request()->has('end_date'))
-                {{ \Carbon\Carbon::parse(request()->start_date)->format('d M Y') }} -
-                {{ \Carbon\Carbon::parse(request()->end_date)->format('d M Y') }}
-                @else
-                Semua Data
-                @endif
-            </p> --}}
             <p class="sevena">SEVENA</p>
         </div>
     </div>
@@ -125,35 +112,38 @@
         <tr>
             <th>Nama Barang</th>
             <th>Harga/pcs</th>
-            <th>Jumlah Stok</th>
             <th>Satuan</th>
+            <th>Jumlah Stok Awal</th>
             <th>Jumlah Stok Fisik</th>
+            <th>Jumlah Stok Akhir</th>
             <th>Keuntungan</th>
             <th>Selisih</th>
         </tr>
 
         @php
-        $totalDifference = $items->sum(fn($item) => $item->pivot->difference);
+            $totalDifference = $items->sum(fn($item) => $item->pivot->difference);
         @endphp
 
         @forelse ($items as $item)
-        <tr>
-            <td>{{ $item->name }}</td>
-            <td class="text-right">Rp {{ number_format($item->pivot->price_per_item, 2, ',', '.') }}</td>
-            <td class="text-center">{{ $item->pivot->stock }}</td>
-            <td>{{ $item->unit }}</td>
-            <td class="text-center">{{ $item->pivot->physical }}</td>
-            <td class="text-center">{{ ($item->pivot->profit <= 0) ? 0 : $item->pivot->profit }}</td>
-            <td class="text-center" style="width: 100px; color: {{ $item->pivot->difference < 0 ? 'red' : 'green' }};">
-                Rp {{ number_format($item->pivot->difference, 2, ',', '.') }}
-            </td>
-        </tr>
+            <tr>
+                <td>{{ $item->name }}</td>
+                <td class="text-right">Rp {{ number_format($item->pivot->price_per_item, 2, ',', '.') }}</td>
+                <td>{{ $item->unit }}</td>
+                <td class="text-center">{{ $item->pivot->original_stock }}</td>
+                <td class="text-center">{{ $item->pivot->physical }}</td>
+                <td class="text-center">{{ $item->pivot->stock }}</td>
+                <td class="text-center">{{ $item->pivot->profit }}</td>
+                <td class="text-center"
+                    style="width: 100px; color: {{ $item->pivot->difference < 0 ? 'red' : 'green' }};">
+                    Rp {{ number_format($item->pivot->difference, 2, ',', '.') }}
+                </td>
+            </tr>
         @empty
-        <tr>
-            <td colspan="4" style="font-weight: bold; font-style: italic; text-align: center;">
-                Tidak ada data stok barang
-            </td>
-        </tr>
+            <tr>
+                <td colspan="4" style="font-weight: bold; font-style: italic; text-align: center;">
+                    Tidak ada data stok barang
+                </td>
+            </tr>
         @endforelse
     </table>
 

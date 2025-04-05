@@ -15,7 +15,7 @@ use App\Models\outgoingPayment;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\View;
 
-class outgoingPaymentController extends Controller
+class OutgoingPaymentController extends Controller
 {
     /**
      * Display a listing of the resource.

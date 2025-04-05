@@ -25,7 +25,7 @@
                         @foreach ($buyers as $buyer)
                             <option value="{{ $buyer->id }}"
                                 {{ old('buyer_id', $sale->buyer_id) == $buyer->id ? 'selected' : '' }}>
-                                {{ $buyer->contact }}</option>
+                                {{ $buyer->name }}</option>
                         @endforeach
                     </select>
 
@@ -635,9 +635,9 @@
                                 </td>
                                 <td class="px-1 py-2">
                                     <div class="flex space-x-1">
-                                        <input type="text" name="discount1[]" class="discount1 w-8 px-1 py-1 border border-gray-300 rounded-md text-right" placeholder="D1">
-                                        <input type="text" name="discount2[]" class="discount2 w-8 px-1 py-1 border border-gray-300 rounded-md text-right" placeholder="D2">
-                                        <input type="text" name="discount3[]" class="discount3 w-8 px-1 py-1 border border-gray-300 rounded-md text-right" placeholder="D3">
+                                        <input type="text" name="discount1[]" class="discount1 w-10 px-1 py-1 border border-gray-300 rounded-md text-right" placeholder="D1">
+                                        <input type="text" name="discount2[]" class="discount2 w-10 px-1 py-1 border border-gray-300 rounded-md text-right" placeholder="D2">
+                                        <input type="text" name="discount3[]" class="discount3 w-10 px-1 py-1 border border-gray-300 rounded-md text-right" placeholder="D3">
                                         <input type="text" name="ad[]" class="ad w-8 px-1 py-1 border border-gray-300 rounded-md text-right" placeholder="AD">
                                     </div>
                                 </td>

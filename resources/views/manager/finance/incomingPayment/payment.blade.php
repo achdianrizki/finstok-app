@@ -29,7 +29,7 @@
 
                 <x-form.label for="buyer_id" :value="__('Pelanggan')" />
                 <x-form.input id="buyer_id" class="block w-full flatpickr-input" type="text" name="buyer_id"
-                    :value="old('buyer_id', $buyer->contact)" readonly :disabled="true" />
+                    :value="old('buyer_id', $buyer->name)" readonly :disabled="true" />
 
                 <x-form.label for="salesman_id" :value="__('Sales')" />
                 <x-form.input id="salesman_id" class="block w-full flatpickr-input" type="text" name="salesman_id"

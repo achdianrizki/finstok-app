@@ -35,7 +35,7 @@
                             <tr class="border dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-slate-900 ${sale.status === 'belum_lunas' ? 'bg-red-100' : ''}">
                                 <td class="px-6 py-4 whitespace-nowrap">${sale.sale_number}</td>
                                 <td class="px-6 py-4 whitespace-nowrap hidden md:table-cell">${sale.sale_date}</td>
-                                <td class="px-6 py-4 whitespace-nowrap hidden md:table-cell">${sale.buyer.contact}</td>
+                                <td class="px-6 py-4 whitespace-nowrap hidden md:table-cell">${sale.buyer.name}</td>
                                 <td class="px-6 py-4 whitespace-nowrap hidden md:table-cell">${sale.status === 'belum_lunas' ? 'Belum Lunas' : sale.status === 'lunas' ? 'Lunas' : sale.status}</td>
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="flex items-center gap-2">

@@ -14,8 +14,8 @@ class BuyerSeeder extends Seeder
     public function run(): void
     {
         Buyer::create([
-            'name' => 'Jack',
-            'contact' => 'PT Sentosa Jaya Abadi',
+            'name' => 'PT Sentosa Jaya Abadi',
+            'contact' => 'Jack',
             'phone' => '0384789347',
             'address' => 'Jl Pahlawan',
             'NPWP' => '2342346',
@@ -23,16 +23,16 @@ class BuyerSeeder extends Seeder
         ]);
 
         Buyer::create([
-            'name' => 'John',
-            'contact' => 'PT Mitra Global Sejahtera',
+            'name' => 'PT Mitra Global Sejahtera',
+            'contact' => 'John',
             'phone' => '03243478',
             'address' => 'Jl Ahmad Yani',
             'type' => 'Modern Trade',
         ]);
 
         Buyer::create([
-            'name' => 'Max',
-            'contact' => 'PT Sukses Makmur Bersama',
+            'name' => 'PT Sukses Makmur Bersama',
+            'contact' => 'Max',
             'phone' => '03487423987',
             'address' => 'Jl Keberuntungan',
             'NPWP' => '832478',
@@ -40,8 +40,8 @@ class BuyerSeeder extends Seeder
         ]);
 
         Buyer::create([
-            'name' => 'Ahmad',
-            'contact' => 'PT Indo Perkasa Mandiri',
+            'name' => 'PT Indo Perkasa Mandiri',
+            'contact' => 'Ahmad',
             'phone' => '042747623',
             'address' => 'Jl Cijeruk',
             'type' => 'General Trade',

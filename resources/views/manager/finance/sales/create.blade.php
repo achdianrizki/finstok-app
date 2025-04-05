@@ -20,7 +20,7 @@
                         data-parsley-required-message="Pilih salah satu pelanggan">
                         <option value="" selected disabled>{{ __('Pilih Pelanggan') }}</option>
                         @foreach ($buyers as $buyer)
-                            <option value="{{ $buyer->id }}">{{ $buyer->contact }}</option>
+                            <option value="{{ $buyer->id }}">{{ $buyer->name }}</option>
                         @endforeach
                     </x-form.select>
 

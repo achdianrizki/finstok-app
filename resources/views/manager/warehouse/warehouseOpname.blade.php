@@ -9,26 +9,26 @@
 
     <div class="p-6 overflow-hidden bg-white rounded-md shadow-md dark:bg-dark-eval-1">
         <div class="flex flex-col md:flex-row md:justify-between gap-4 my-3">
-            <a href="{{ route('manager.report.item.warehouse.opname', $warehouse->id) }}"
-                class="flex items-center gap-2 px-4 py-2 mb-2 text-sm text-white bg-red-500 hover:bg-red-600"
-                role="menuitem" tabindex="-1" id="menu-item-0">
-                <x-icons.pdf class="w-5 h-5" aria-hidden="true" />
-                <span>Download PDF</span>
-            </a>
-            {{-- <x-dropdown.dropdown>
+            <x-dropdown.dropdown>
                 <x-slot name="slot">
                     <x-heroicon-o-arrow-down-on-square class="w-6 h-6 dark:text-white" aria-hidden="true" />
                 </x-slot>
 
                 <x-slot name="menu">
-                    <a href="{{ route('items.export.excel') }}"
+                    <a href="{{ route('manager.report.items.warehouse.opname.export.pdf', $warehouse->id) }}"
+                        class="flex items-center gap-2 px-4 py-2 mb-2 text-sm text-white bg-red-500 hover:bg-red-600"
+                        role="menuitem" tabindex="-1" id="menu-item-0">
+                        <x-icons.pdf class="w-5 h-5" aria-hidden="true" />
+                        <span>Download PDF</span>
+                    </a>
+                    <a href="{{ route('manager.report.items.warehouse.opname.export.excel', $warehouse->id) }}"
                         class="flex items-center gap-2 px-4 py-2 text-sm text-white bg-green-600 hover:bg-green-700"
                         role="menuitem" tabindex="-1" id="menu-item-1">
                         <x-icons.excel class="w-5 h-5" aria-hidden="true" />
                         <span>Download Excel</span>
                     </a>
                 </x-slot>
-            </x-dropdown.dropdown> --}}
+            </x-dropdown.dropdown>
 
             <!-- Search Input-->
             <div class="w-full md:w-auto">
@@ -44,17 +44,34 @@
                 <thead>
                     <tr class="bg-gray-200 text-gray-600 dark:bg-slate-900 dark:text-white text-sm leading-normal">
                         <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Nama barang</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider hidden sm:table-cell">Kode</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider hidden sm:table-cell">Kategori</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider hidden md:table-cell">Harga/pcs</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider hidden md:table-cell">Stok</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider hidden md:table-cell">Fisik</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider hidden md:table-cell">Lebih</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider hidden md:table-cell">Selisih</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider hidden md:table-cell">Aksi</th>
+                        <th
+                            class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider hidden sm:table-cell">
+                            Kode</th>
+                        <th
+                            class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider hidden sm:table-cell">
+                            Kategori</th>
+                        <th
+                            class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider hidden md:table-cell">
+                            Harga/pcs</th>
+                        <th
+                            class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider hidden md:table-cell">
+                            Stok</th>
+                        <th
+                            class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider hidden md:table-cell">
+                            Fisik</th>
+                        <th
+                            class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider hidden md:table-cell">
+                            Lebih</th>
+                        <th
+                            class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider hidden md:table-cell">
+                            Selisih</th>
+                        <th
+                            class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider hidden md:table-cell">
+                            Aksi</th>
                     </tr>
                 </thead>
-                <tbody id="itemsByWarehouse" class="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-dark-eval-1">
+                <tbody id="itemsByWarehouse"
+                    class="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-dark-eval-1">
 
                 </tbody>
             </table>
