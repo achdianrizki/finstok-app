@@ -16,6 +16,7 @@ use App\Exports\ItemsExport;
 use Illuminate\Http\Request;
 use App\Exports\BuyersExport;
 use App\Models\ReturnPurchase;
+use App\Models\OutgoingPayment;
 use Barryvdh\DomPDF\Facade\Pdf;
 use App\Exports\SaleItemsExport;
 use App\Exports\SalesmansExport;
@@ -26,6 +27,8 @@ use App\Exports\PurchaseItemsExport;
 use Illuminate\Support\Facades\View;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\ItemsWarehouseExport;
+use App\Exports\IncomingPaymentExport;
+use App\Exports\OutgoingPaymentExport;
 use App\Exports\ReturnSaleItemsExport;
 use App\Exports\SalesBySalesmanExport;
 use App\Exports\ReturnPurchaseItemsExport;
@@ -390,7 +393,7 @@ class ReportController extends Controller
         // $startDate = $request->start_date;
         // $endDate = $request->end_date;
 
-        return Excel::download(new ReturnPurchaseItemsExport,'data_retur_pembelian.xlsx');
+        return Excel::download(new ReturnPurchaseItemsExport, 'data_retur_pembelian.xlsx');
     }
 
     public function exportReturnSaleItemsPDF()
@@ -421,7 +424,7 @@ class ReportController extends Controller
         // $startDate = $request->start_date;
         // $endDate = $request->end_date;
 
-        return Excel::download(new ReturnSaleItemsExport,'data_retur_penjualan.xlsx');
+        return Excel::download(new ReturnSaleItemsExport, 'data_retur_penjualan.xlsx');
     }
 
     public function exportSalesBySalesmanPDF(Request $request)
@@ -455,6 +458,50 @@ class ReportController extends Controller
     {
         $salesman_id = $request->salesman_id_excel;
 
-        return Excel::download(new SalesBySalesmanExport($salesman_id),'data_penjualan_sales.xlsx');
+        return Excel::download(new SalesBySalesmanExport($salesman_id), 'data_penjualan_sales.xlsx');
+    }
+
+    public function exportOutgoingPaymentPDF()
+    {
+        $purchases = Purchase::with(['outgoingPayments', 'supplier'])->get();
+
+        $options = new Options();
+        $options->set('defaultFont', 'Helvetica');
+
+        $dompdf = new Dompdf($options);
+
+        $html = View::make('exports.outgoingPayment.pdf', compact('purchases'))->render();
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper([0, 0, 595.28, 5000]); // 595.28px = A4 width, 2000px = custom height
+        $dompdf->render();
+
+        return $dompdf->stream('data_pelunasan_pembelian.pdf', ['Attachment' => false]);
+    }
+
+    public function exportOutgoingPaymentExcel()
+    {
+        return Excel::download(new OutgoingPaymentExport, 'data_pelunasan_pembelian.xlsx');
+    }
+
+    public function exportIncomingPaymentPDF()
+    {
+        $sales = Sale::with(['incomingPayments', 'buyer', 'salesman'])->get();
+
+        $options = new Options();
+        $options->set('defaultFont', 'Helvetica');
+
+        $dompdf = new Dompdf($options);
+
+        $html = View::make('exports.incomingPayment.pdf', compact('sales'))->render();
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper([0, 0, 595.28, 5000]); // 595.28px = A4 width, 2000px = custom height
+        $dompdf->render();
+
+        return $dompdf->stream('data_pelunasan_penjualan.pdf', ['Attachment' => false]);
+    }
+
+    public function exportIncomingPaymentExcel()
+    {
+        return Excel::download(new IncomingPaymentExport, 'data_pelunasan_penjualan.xlsx');
     }
 }

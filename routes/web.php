@@ -174,13 +174,21 @@ Route::middleware('auth')->group(function () {
             // Incoming Payment all (SALE)
             Route::get('/incomingPayment/export/allPdf/{sale}', [incomingPaymentController::class, 'exportAllInvoicePDF'])->name('incomingPayment.export.allPdf');
 
+            // REPORT INCOMING PAYMENT ALL (SALE)
+            Route::get('/incomingPayment/export/pdf', [ReportController::class, 'exportIncomingPaymentPDF'])->name('incomingPayment.export.pdf');
+            Route::get('/incomingPayment/export/excel', [ReportController::class, 'exportIncomingPaymentExcel'])->name('incomingPayment.export.excel');
+
             // Incoming Payment ( 1 by 1) (SALE)
             Route::get('/incomingPayment/export/onePdf/{incomingPayment}', [incomingPaymentController::class, 'exportOneInvoicePDF'])->name('incomingPayment.export.onePdf');
 
             // Outgoing Payment all (PURCHASE)
             Route::get('/outgoingPayment/export/allPdf/{purchase}', [outgoingPaymentController::class, 'exportAllInvoicePDF'])->name('outgoingPayment.export.allPdf');
 
-            // Incoming Payment ( 1 by 1) (PURCHASE)
+            // REPORT OUTGOING PAYMENT ALL (PURCHASE)
+            Route::get('/outgoingPayment/export/pdf', [ReportController::class, 'exportOutgoingPaymentPDF'])->name('outgoingPayment.export.pdf');
+            Route::get('/outgoingPayment/export/excel', [ReportController::class, 'exportOutgoingPaymentExcel'])->name('outgoingPayment.export.excel');
+
+            // IOutgoing Payment ( 1 by 1) (PURCHASE)
             Route::get('/outgoingPayment/export/onePdf/{outgoingPayment}', [outgoingPaymentController::class, 'exportOneInvoicePDF'])->name('outgoingPayment.export.onePdf');
             // PAYMENT END
 
