@@ -26,12 +26,16 @@
                                 <span>Download PDF</span>
                             </button>
                         </form>
-                        <a href="{{ route('items.export.excel') }}"
-                            class="flex items-center gap-2 px-4 py-2 text-sm text-white bg-green-600 hover:bg-green-700"
-                            role="menuitem" tabindex="-1" id="menu-item-1">
-                            <x-icons.excel class="w-5 h-5" aria-hidden="true" />
-                            <span>Download Excel</span>
-                        </a>
+                        <form id="excelForm" action="{{ route('manager.report.sales-by-salesman.export.excel') }}"
+                            method="POST">
+                            @csrf
+                            <input type="hidden" name="salesman_id_excel" id="salesman_id_excel">
+                            <button type="submit"
+                                class="flex items-center gap-2 px-4 py-2 text-sm text-white bg-green-600 hover:bg-green-700 w-full">
+                                <x-icons.excel class="w-5 h-5" aria-hidden="true" />
+                                <span>Download Excel</span>
+                            </button>
+                        </form>
                     </x-slot>
                 </x-dropdown.dropdown>
 
@@ -104,11 +108,17 @@
             $(document).ready(function() {
                 $('#salesman_id_select2').on('change', function() {
                     $('#salesman_id').val($(this).val());
-                    console.log($('#salesman_id').val()); 
+                    $('#salesman_id_excel').val($(this).val());
                 });
 
                 $('#pdfForm').on('submit', function(event) {
                     let salesman_id = $('#salesman_id').val() || null;
+                });
+
+                $('#excelForm').on('submit', function(event) {
+                    let salesman_id_excel = $('#salesman_id_excel').val() || null;
+                    console.log(salesman_id_excel);
+                    
                 });
 
                 $('#salesman_id_select2').select2();

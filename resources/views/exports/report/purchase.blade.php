@@ -135,26 +135,32 @@
         </tr>
 
         @forelse ($purchases as $singlePurchase)
-            @php
-                $purchaseDiscount =
-                    $singlePurchase->total_discount1 + $singlePurchase->total_discount2 + $singlePurchase->total_discount3;
-                $totalDiscount += $purchaseDiscount;
-            @endphp
             @foreach ($singlePurchase->items as $item)
                 @php
-                    $subtotal = $item->pivot->qty * $item->purchase_price;
-                    $totalQty += $item->pivot->qty;
+                    $quantity = $item->pivot->qty;
+                    $price = $item->purchase_price;
+
+                    $discount1Amount = ($item->pivot->discount1 / 100) * $price;
+                    $discount2Amount = ($item->pivot->discount2 / 100) * $price;
+                    $discount3Amount = ($item->pivot->discount3 / 100) * $price;
+                    $totalItemDiscount = $discount1Amount + $discount2Amount + $discount3Amount;
+                    $priceAfterDiscount = $price - $totalItemDiscount;
+
+                    $subtotal = $quantity * $priceAfterDiscount;
+                    $totalQty += $quantity;
                     $totalPurchasePrice += $subtotal;
+                    $totalDiscount += $totalItemDiscount * $quantity;
                 @endphp
                 <tr>
-                    <td class="text-center">{{ \Carbon\Carbon::parse($singlePurchase->purchase_date)->format('d/m/Y') }}</td>
+                    <td class="text-center">{{ \Carbon\Carbon::parse($singlePurchase->purchase_date)->format('d/m/Y') }}
+                    </td>
                     <td>{{ $item->name }}</td>
                     <td class="text-center">{{ $item->pivot->qty }}</td>
                     <td>{{ $item->unit }}</td>
                     <td class="text-center">{{ number_format($item->pivot->discount1, 2, '.') ?? '0.00' }}</td>
                     <td class="text-center">{{ number_format($item->pivot->discount2, 2, '.') ?? '0.00' }}</td>
                     <td class="text-center">{{ number_format($item->pivot->discount3, 2, '.') ?? '0.00' }}</td>
-                    <td>0</td>
+                    <td class="text-center">{{ $item->pivot->ad }}</td>
                     <td class="text-right">Rp {{ number_format($item->purchase_price, 2, ',', '.') }}</td>
                 </tr>
             @endforeach
@@ -171,9 +177,9 @@
             <td>
                 <p style="font-weight: 500;">TOTAL PEMBELIAN</p>
             </td>
-            <td style=" width: 240px;">{{ $totalQty }}</td>
+            <td style=" width: 260px;">{{ $totalQty }}</td>
             <td style="width: 100px;">
-                <p>Rp {{ number_format($totalPurchasePrice - $totalDiscount, 2, ',', '.') }}</p>
+                <p>Rp {{ number_format($totalPurchasePrice, 2, ',', '.') }}</p>
             </td>
         </tr>
     </table>

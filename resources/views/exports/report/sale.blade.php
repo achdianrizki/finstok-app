@@ -116,7 +116,7 @@
     </div>
 
     @php
-        $totalQtySold = 0;
+        $totalQty = 0;
         $totalSalePrice = 0;
         $totalDiscount = 0;
     @endphp
@@ -135,16 +135,21 @@
         </tr>
 
         @forelse ($sales as $singleSale)
-            @php
-                $saleDiscount =
-                    $singleSale->discount1_value + $singleSale->discount2_value + $singleSale->discount3_value;
-                $totalDiscount += $saleDiscount;
-            @endphp
             @foreach ($singleSale->items as $item)
                 @php
-                    $subtotal = $item->pivot->qty_sold * $item->pivot->sale_price;
-                    $totalQtySold += $item->pivot->qty_sold;
+                    $quantity = $item->pivot->qty_sold;
+                    $price = $item->pivot->sale_price;
+
+                    $discount1Amount = ($item->pivot->discount1 / 100) * $price;
+                    $discount2Amount = ($item->pivot->discount2 / 100) * $price;
+                    $discount3Amount = ($item->pivot->discount3 / 100) * $price;
+                    $totalItemDiscount = $discount1Amount + $discount2Amount + $discount3Amount;
+                    $priceAfterDiscount = $price - $totalItemDiscount;
+
+                    $subtotal = $quantity * $priceAfterDiscount;
+                    $totalQty += $quantity;
                     $totalSalePrice += $subtotal;
+                    $totalDiscount += $totalItemDiscount * $quantity;
                 @endphp
                 <tr>
                     <td class="text-center">{{ \Carbon\Carbon::parse($singleSale->sale_date)->format('d/m/Y') }}</td>
@@ -154,7 +159,7 @@
                     <td class="text-center">{{ number_format($item->pivot->discount1, 2, '.') ?? '0.00' }}</td>
                     <td class="text-center">{{ number_format($item->pivot->discount2, 2, '.') ?? '0.00' }}</td>
                     <td class="text-center">{{ number_format($item->pivot->discount3, 2, '.') ?? '0.00' }}</td>
-                    <td>0</td>
+                    <td class="text-center">{{ $item->pivot->ad }}</td>
                     <td class="text-right">Rp {{ number_format($item->pivot->sale_price, 2, ',', '.') }}</td>
                 </tr>
             @endforeach
@@ -171,9 +176,9 @@
             <td>
                 <p style="font-weight: 500;">TOTAL PENJUALAN</p>
             </td>
-            <td style=" width: 240px;">{{ $totalQtySold }}</td>
+            <td style=" width: 240px;">{{ $totalQty }}</td>
             <td style="width: 100px;">
-                <p>Rp {{ number_format($totalSalePrice - $totalDiscount, 2, ',', '.') }}</p>
+                <p>Rp {{ number_format($totalSalePrice, 2, ',', '.') }}</p>
             </td>
         </tr>
     </table>

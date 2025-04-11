@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SALE REPORT</title>
+    <title>DATA PELUNASAN PENJUALAN</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -36,6 +36,7 @@
             margin: 5px 0;
             font-size: 14px;
             font-weight: 500;
+            text-transform: uppercase;
         }
 
         .period {
@@ -97,7 +98,7 @@
             class="logo">
 
         <div class="title-container">
-            <p class="title">LAPORAN RETUR PENJUALAN</p>
+            <p class="title">DATA PELUNASAN PENJUALAN</p>
             {{-- <p class="period">
                 Periode:
                 @if ($period === 'day')
@@ -117,50 +118,31 @@
 
     <table class="table">
         <tr>
-            <th>Tanggal</th>
             <th>Nomor Penjualan</th>
-            <th>Nama Pembeli</th>
-            <th>Nama Barang</th>
-            <th>Jumlah Retur</th>
-            <th>Satuan</th>
-            <th>Alasan</th>
-            <th>Harga Jual</th>
-            <th>Total</th>
+            <th>Tanggal Penjualan</th>
+            <th>Pelanggan</th>
+            <th>Sales</th>
+            <th>Jumlah yang Harus Dibayar</th>
+            <th>Status</th>
         </tr>
 
-        @forelse ($returnSales as $singleSale)
-            @foreach ($singleSale->items as $item)
-                <tr>
-                    <td class="text-center">{{ \Carbon\Carbon::parse($singleSale->return_date)->format('d/m/Y') }}</td>
-                    <td class="text-center">{{ $singleSale->sale->sale_number }}</td>
-                    <td class="text-center">{{ $singleSale->buyer->name }}</td>
-                    <td>{{ $item->name }}</td>
-                    <td class="text-center">{{ $item->pivot->qty }}</td>
-                    <td>{{ $item->unit }}</td>
-                    <td>{{ $singleSale->reason }}</td>
-                    <td class="text-right">Rp {{ number_format($item->pivot->price_per_item, 2, ',', '.') }}</td>
-                    <td class="text-right">Rp {{ number_format($singleSale->total_return, 2, ',', '.') }}</td>
-                </tr>
-            @endforeach
+        @forelse ($sales as $sale)
+            <tr>
+                <td>{{ $sale->sale_number }}</td>
+                <td>{{ $sale->sale_date }}</td>
+                <td>{{ $sale->buyer->name }}</td>
+                <td>{{ $sale->salesman->name }}</td>
+                <td>{{ 'Rp. ' . number_format($sale->total_price, 2, ',', '.') }}</td>
+                <td>{{ $sale->status == 'belum_lunas' ? 'Belum Lunas' : 'Lunas' }}</td>
+            </tr>
         @empty
             <tr>
-                <td colspan="9" style="font-weight: bold; font-style: italic; text-align: center;">Tidak ada data
-                    retur pembelian</td>
+                <td colspan="4" style="font-weight: bold; font-style: italic; text-align: center;">
+                    Tidak ada data pelunasan penjualan
+                </td>
             </tr>
         @endforelse
     </table>
-
-    {{-- <table class="table">
-        <tr>
-            <td>
-                <p style="font-weight: 500;">TOTAL PEMBELIAN</p>
-            </td>
-            <td style=" width: 240px;">{{ $totalQty }}</td>
-            <td style="width: 100px;">
-                <p>Rp {{ number_format($totalPurchasePrice - $totalDiscount, 2, ',', '.') }}</p>
-            </td>
-        </tr>
-    </table> --}}
 
 </body>
 
