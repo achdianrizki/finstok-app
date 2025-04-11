@@ -194,7 +194,16 @@
                                 <td class="px-1 py-2"><input type="text" name="total_prices[]"
                                         class="total-price w-full px-2 py-1 border border-gray-300 rounded-md bg-gray-100 text-right"
                                         readonly
-                                        value="{{ number_format($item->pivot->sale_price * $item->pivot->qty_sold - $sale->total_discount, 2, ',', '.') }}">
+                                        @php
+                                            $subtotal = $item->pivot->sale_price * $item->pivot->qty_sold;
+
+                                            $discount1 = $subtotal * ($item->pivot->discount1 / 100);
+
+                                            $discount2 = $subtotal * ($item->pivot->discount2 / 100);
+
+                                            $discount3 = $subtotal * ($item->pivot->discount3 / 100); 
+                                        @endphp
+                                        value="{{ number_format($subtotal - $discount1 - $discount2 - $discount3, 2, ',', '.') }}">
                                 </td>
                                 <td class="px-1 py-2"><input type="text" name="real_prices[]"
                                         class="real_price w-full px-2 py-1 border border-gray-300 rounded-md bg-gray-100 text-right"
@@ -423,7 +432,8 @@
                     let row = $(this).closest('tr');
                     let itemId = $(this).val();
                     let supplierId = $('#salesman_id').val();
-                    updateItemData(row, itemId);
+                    let warehouseId = $('#warehouse_id_selected').val();
+                    updateItemData(row, itemId, warehouseId);
 
                     let selectedItem = $(this).val();
                     let stock = $(this).find(':selected').data('stock');
@@ -456,9 +466,9 @@
                     }).format(number);
                 }
 
-                function updateItemData(row, itemId) {
+                function updateItemData(row, itemId, warehouseId) {
                     if (itemId) {
-                        $.get(`/get-sales-item/${itemId}`, function(data) {
+                        $.get(`/get-sales-item/${itemId}/${warehouseId}`, function(data) {
                             row.find('.item-code').val(data.code);
                             row.find('.item-name').val(data.name);
                             row.find('.sale_price').val(formatRupiah(data.purchase_price));

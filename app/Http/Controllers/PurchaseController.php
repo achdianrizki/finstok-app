@@ -315,8 +315,9 @@ class PurchaseController extends Controller
     }
 
 
-    public function deleteItem(Purchase $purchase, Item $item)
+    public function deleteItem(Purchase $purchase, $item_id)
     {
+        $item = Item::withTrashed()->findOrFail($item_id);
         $pivot = $purchase->items()->where('item_id', $item->id)->first()->pivot ?? null;
         $qtyToRemove = $pivot ? $pivot->qty : 0;
 
@@ -355,9 +356,9 @@ class PurchaseController extends Controller
     {
         $purchase->load('supplier', 'items');
         $warehouses = Warehouse::all();
-        $suppliers = Supplier::all();
+        $suppliers = Supplier::withTrashed()->get();
         $categories = Category::all();
-        $items = Item::all();
+        $items = Item::withTrashed()->get();
 
         return view('manager.purchase.edit', compact('purchase', 'warehouses', 'suppliers', 'categories', 'items'));
     }
@@ -400,6 +401,6 @@ class PurchaseController extends Controller
         // }
 
         toast('Data berhasil dipulihkan', 'success');
-        return redirect()->route('manager.purchase.deleted');
+        return redirect()->route('manager.purchase.index');
     }
 }

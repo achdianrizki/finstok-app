@@ -44,17 +44,17 @@ class Sale extends Model
 
     public function items()
     {
-        return $this->belongsToMany(Item::class)->withPivot('qty_sold', 'sale_price', 'discount1', 'discount2', 'discount3', 'warehouse_id', 'ad');;
+        return $this->belongsToMany(Item::class)->withPivot('qty_sold', 'sale_price', 'discount1', 'discount2', 'discount3', 'warehouse_id', 'ad')->withTimestamps()->withTrashed();
     }
 
     public function buyer()
     {
-        return $this->belongsTo(Buyer::class);
+        return $this->belongsTo(Buyer::class)->withTrashed();
     }
 
     public function salesman()
     {
-        return $this->belongsTo(Salesman::class);
+        return $this->belongsTo(Salesman::class)->withTrashed();
     }
 
     public function distributor()

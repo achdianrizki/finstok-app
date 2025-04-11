@@ -428,24 +428,30 @@ class SaleController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($id)
+    public function destroy(Sale $sale)
     {
-        $sale = Sale::findOrFail($id);
+        // $sale = Sale::findOrFail($id);
 
-        // Hapus relasi dengan items sebelum menghapus sale
-        $sale->items()->detach();
+        // // Hapus relasi dengan items sebelum menghapus sale
+        // $sale->items()->detach();
 
-        // Hapus sale
+        // // Hapus sale
+        // $sale->delete();
+
+        // toast('Data penjualan berhasil dihapus', 'success');
+        // return redirect()->route('manager.sales.index')->with('success', 'Data penjualan berhasil dihapus');
+
         $sale->delete();
 
-        toast('Data penjualan berhasil dihapus', 'success');
-        return redirect()->route('manager.sales.index')->with('success', 'Data penjualan berhasil dihapus');
+        toast('Data berhasil dihapus', 'success');
+        return redirect()->route('manager.sales.index');
     }
 
     public function deleteItem(Sale $sale, Item $item)
     {
         $pivot = $sale->items()->where('item_id', $item->id)->first()->pivot ?? null;
         $qtyToRemove = $pivot ? $pivot->qty_sold : 0;
+        $adToRemove = $pivot ? $pivot->ad : 0;
 
         $warehouse_id = $pivot ? $pivot->warehouse_id : null;
 
@@ -455,7 +461,7 @@ class SaleController extends Controller
             $existing = $item->item_warehouse()->wherePivot('warehouse_id', $warehouse_id)->first();
             if ($existing) {
                 $item->item_warehouse()->updateExistingPivot($warehouse_id, [
-                    'stock' => $existing->pivot->stock + $qtyToRemove,
+                    'stock' => $existing->pivot->stock + $qtyToRemove + $adToRemove,
                 ]);
             }
         }
@@ -464,8 +470,28 @@ class SaleController extends Controller
 
         if ($qtyToRemove > 0) {
             $item->increment('stock', $qtyToRemove);
+            $item->increment('stock', $adToRemove);
         }
 
         return response()->json(['success' => true]);
+    }
+
+    public function deletedView()
+    {
+        $deletedSales = Sale::onlyTrashed()->with(['buyer', 'items'])->get();
+
+        return view('manager.finance.sales.deleted', compact('deletedSales'));
+    }
+
+    /**
+     * Restore the specified resource from storage.
+     */
+    public function restore($id)
+    {
+        $sale = Sale::onlyTrashed()->findOrFail($id);
+        $sale->restore();
+
+        toast('Data berhasil dipulihkan', 'success');
+        return redirect()->route('manager.sales.index');
     }
 }

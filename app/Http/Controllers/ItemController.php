@@ -135,9 +135,9 @@ class ItemController extends Controller
     {
         $item->delete();
 
-        $item->whereHas('purchase', function ($query) {
-            $query->where('item_id', $item->id);
-        })->delete();
+        // $item->whereHas('purchase', function ($query) {
+        //     $query->where('item_id', $item->id);
+        // })->delete();
         
         toast('Delete Success!', 'success');
         return redirect()->back();

@@ -15,7 +15,7 @@
     <div class="p-6 overflow-hidden bg-white rounded-md shadow-md dark:bg-dark-eval-1">
         <div class="flex flex-col md:flex-row md:justify-between gap-4 my-3">
             <div class="flex items-center gap-4">
-            <x-dropdown.dropdown>
+            {{-- <x-dropdown.dropdown>
                 <x-slot name="slot">
                 <x-heroicon-o-arrow-down-on-square class="w-6 h-6 dark:text-white" aria-hidden="true" />
                 </x-slot>
@@ -34,7 +34,7 @@
                     <span>Download Excel</span>
                 </a>
                 </x-slot>
-            </x-dropdown.dropdown>
+            </x-dropdown.dropdown> --}}
 
             <a href="/manager/trash/purchase" class="flex items-center gap-2 px-4 py-2 text-sm text-white bg-gray-500 hover:bg-gray-600 rounded">
                 <x-heroicon-o-trash class="w-5 h-5" aria-hidden="true" />

@@ -232,6 +232,10 @@ Route::middleware('auth')->group(function () {
             
 
             Route::get('/purchase', [PurchaseController::class, 'deletedView'])->name('purchase');
+            Route::post('/purchase/{id}', [PurchaseController::class, 'restore'])->name('purchase.restore');
+
+            Route::get('/sale', [SaleController::class, 'deletedView'])->name('sale');
+            Route::post('/sale/{id}', [SaleController::class, 'restore'])->name('sale.restore');
 
         });
     });
@@ -280,7 +284,7 @@ Route::post('/purchase-round-total-price', [OutgoingPaymentController::class, 'r
 Route::post('/sale-round-total-price', [IncomingPaymentController::class, 'roundTotalPrice']);
 
 Route::get('/get-item/{item_id}/{supplier_id}', function ($item_id, $supplier_id) {
-    $item = \App\Models\Item::find($item_id);
+    $item = \App\Models\Item::withTrashed()->find($item_id);
     $supplier = \App\Models\Supplier::find($supplier_id);
 
     return response()->json([

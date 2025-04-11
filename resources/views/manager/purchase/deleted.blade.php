@@ -36,16 +36,29 @@
                     @else
                         @foreach ($deletedPurchases as $purchase)
                             <tr class="border dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-slate-900">
-                                <td class="px-6 py-4 whitespace-nowrap">
+                                {{-- <td class="px-6 py-4 whitespace-nowrap">
                                     <a href="/manager/purchase/{{ $purchase->id }}" class="text-blue-500 hover:underline">{{ $purchase->purchase_number }}</a>
+                                </td> --}}
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    {{ $purchase->purchase_number }}
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap hidden md:table-cell">{{ $purchase->purchase_date }}</td>
                                 <td class="px-6 py-4 whitespace-nowrap hidden md:table-cell">{{ $purchase->supplier->name }}</td>
-                                {{-- <td class="px-6 py-4 whitespace-nowrap hidden md:table-cell">{{ $purchase->status === 'belum_lunas' ? 'Belum Lunas' : $purchase->status === 'lunas' ? 'Lunas' : $purchase->status }}</td> --}}
+                                <td class="px-6 py-4 whitespace-nowrap hidden md:table-cell">{{ $purchase->status === 'belum_lunas' ? 'Belum Lunas' : 'Lunas' }}</td>
                                 <td class="px-6 py-4 whitespace-nowrap">
-                                    <x-button target="" href="/manager/purchase/{{ $purchase->id }}" variant="primary" size="sm" class="justify-center max-w-sm gap-2">
-                                        Lihat
-                                    </x-button>
+                                    <form action="{{ route('manager.trash.purchase.restore', $purchase->id) }}" method="POST" class="inline">
+                                        @csrf
+                                        <x-button type="submit" size="sm" class="text-blue-600 hover:underline">Restore</x-button>
+                                    </form>
+                                    {{-- <form action="{{ route('manager.buyer.forceDelete', $buyer->id) }}" method="POST" class="inline">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="text-red-600 hover:underline">Hapus Permanen</button>
+                                    </form> --}}
+
+                                    {{-- <x-button target="" href="/manager/purchase/{{ $purchase->id }}" variant="primary" size="sm" class="justify-center max-w-sm gap-2">
+                                        Restore
+                                    </x-button> --}}
 
                                     {{-- <form action="{{ route('manager.purchase.restore', ['id' => $purchase->id]) }}" method="POST" class="inline">
                                         @csrf

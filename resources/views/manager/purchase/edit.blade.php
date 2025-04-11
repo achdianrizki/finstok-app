@@ -668,6 +668,7 @@
                                     Swal.fire("Error!",
                                         "Terjadi kesalahan saat menghapus barang.",
                                         "error");
+                                        
                                 }
                             });
                         }

@@ -33,7 +33,7 @@ class Purchase extends Model
 
     public function supplier()
     {
-        return $this->belongsTo(Supplier::class);
+        return $this->belongsTo(Supplier::class)->withTrashed();
     }
 
     public function user()
@@ -55,7 +55,7 @@ class Purchase extends Model
     {
         return $this->belongsToMany(Item::class, 'item_purchase')
             ->withPivot('qty', 'price_per_item', 'discount1', 'discount2', 'discount3', 'ad', 'warehouse_id')
-            ->withTimestamps();
+            ->withTimestamps()->withTrashed();
     }
 
 
