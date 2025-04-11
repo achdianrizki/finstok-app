@@ -48,12 +48,12 @@
                                    <!-- <x-button target="" href="/manager/purchase/${purchase.id}/edit" variant="warning" class="justify-center max-w-sm gap-2">
                                         <x-heroicon-o-pencil class="w-3 h-3" aria-hidden="true" />
                                     </x-button> --!>
-                                    <form method="POST" action="/manager/purchases/${purchase.id}" style="display:inline;">
+                                    <!-- <form method="POST" action="/manager/purchases/${purchase.id}" style="display:inline;">
                                         @csrf
                                         <input type="hidden" name="_method" value="DELETE">
                                         <x-button type="submit" class="bg-red-500 text-white py-1 px-3 rounded hover:bg-red-600">
                                             <x-heroicon-o-trash class="w-3 h-3" aria-hidden="true" />
-                                        </x-button>
+                                        </x-button> --!>
                                     </form>
                                     </div>
 

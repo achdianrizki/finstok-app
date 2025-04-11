@@ -31,7 +31,7 @@ class incomingPaymentController extends Controller
 
     public function getSaleItem(Request $request)
     {
-        $query = Sale::with(['buyer']);
+        $query = Sale::with(['buyer'])->latest();
 
         if ($request->filled('search')) {
             $search = $request->search;

@@ -47,7 +47,7 @@
                                         <x-heroicon-o-pencil class="w-3 h-3" aria-hidden="true" />
                                     </x-button>
 
-                                    <form method="POST" action="/manager/purchases/${purchase.id}" style="display:inline;">
+                                    <form method="POST" action="/manager/purchases/${purchase.id}" style="display:inline;" onsubmit="return confirmDelete(event)">
                                         @csrf
                                         <input type="hidden" name="_method" value="DELETE">
                                         <x-button type="submit" class="bg-red-500 text-white py-1 px-3 rounded hover:bg-red-600">
@@ -106,4 +106,22 @@
             fetchitems(page, searchQuery);
         });
     });
+
+    function confirmDelete(event) {
+        event.preventDefault();
+        Swal.fire({
+            title: 'Apakah Anda yakin?',
+            text: "Data yang dihapus tidak dapat dikembalikan!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Ya, hapus!',
+            cancelButtonText: 'Batal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                event.target.submit();
+            }
+        });
+    }
 </script>

@@ -120,6 +120,27 @@ class WarehouseController extends Controller
         return redirect()->route('manager.warehouses.index')->with('success', 'Gudang berhasil dihapus');
     }
 
+    /**
+     * Display a listing of deleted resources.
+     */
+    public function deletedView()
+    {
+        $deletedWarehouse = Warehouse::onlyTrashed()->get();
+
+        return view('manager.warehouse.deleted', compact('deletedWarehouse'));
+    }
+    /**
+     * Restore the specified resource from storage.
+     */
+    public function restore($id)
+    {
+        $item = Warehouse::onlyTrashed()->findOrFail($id);
+        $item->restore();
+
+        toast('Restore Success!', 'success');
+        return redirect()->route('manager.warehouses.index');
+    }
+
     public function adjustStock(Request $request)
     {
         // Update stock in the item_warehouse table
@@ -193,4 +214,16 @@ class WarehouseController extends Controller
 
         return response()->json($items);
     }
+
+    public function checkItems($warehouse_id)
+    {
+        $items = DB::table('item_warehouse')
+            ->where('warehouse_id', $warehouse_id)
+            ->pluck('item_id');
+
+        return response()->json([
+            'items' => $items,
+        ]);
+    }
+
 }

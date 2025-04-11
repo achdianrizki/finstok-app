@@ -18,7 +18,7 @@ class ReturnSaleController extends Controller
 
     public function getSaleItem(Request $request)
     {
-        $query = Sale::with(['buyer']);
+        $query = Sale::with(['buyer'])->latest();
 
         if ($request->filled('search')) {
             $search = $request->search;
@@ -72,36 +72,37 @@ class ReturnSaleController extends Controller
                 $ppn_return = ($sale->tax_type == 'ppn') ? $return_value * 0.11 : 0;
 
                 $total_return += $return_value;
+                $total_price = $return_value + $ppn_return;
                 $total_tax_return += $ppn_return;
 
+                // dd($total_return, $total_tax_return, $qty * $price_per_item, $ppn_return);
+
                 if ($item) {
-                    // Tambahkan stok kembali ke item
                     $item->increment('stock', $qty);
 
-                    // Update pivot item_purchase (penjualan)
                     $pivotData = $sale->items()->wherePivot('item_id', $item->id)->first();
                     if ($pivotData) {
-                        $newQty = $pivotData->pivot->qty - $qty; // Mengurangi qty yang sudah terjual
+                        $newQty = $pivotData->pivot->qty_sold - $qty;
+                        // dd($newQty);
                         if ($newQty > 0) {
                             $sale->items()->updateExistingPivot($item->id, [
-                                'qty' => $newQty,
+                                'qty_sold' => $newQty,
                             ]);
                         } else {
-                            // Jika setelah return qty jadi nol atau negatif, hapus relasi dari pivot
-                            $sale->items()->detach($item->id);
+                            dd('Item sold out');
                         }
                     }
 
-                    // Update stok di gudang
                     $pivotWarehouse = $item->item_warehouse()->wherePivot('item_id', $item->id)->first();
                     if ($pivotWarehouse) {
                         $newStockWarehouse = $pivotWarehouse->pivot->stock + $qty;
                         $item->item_warehouse()->updateExistingPivot($pivotWarehouse->pivot->warehouse_id, [
                             'stock' => max($newStockWarehouse, 0),
+                            'original_stock' => max($newStockWarehouse, 0),
+                            'physical' => max($newStockWarehouse, 0),
                         ]);
                     }
 
-                    // Simpan ke return_items
                     $return->items()->attach($item->id, [
                         'qty'            => $qty,
                         'price_per_item' => $price_per_item,
@@ -109,11 +110,9 @@ class ReturnSaleController extends Controller
                 }
             }
 
-            // Update total return ke return sale
             $return->update(['total_return' => $total_return]);
 
-            // Kurangi total price, subtotal, dan tax pada penjualan
-            $sale->decrement('total_price', $total_return);
+            $sale->decrement('total_price', $total_price);
             $sale->decrement('sub_total', $total_return);
             $sale->decrement('tax', $total_tax_return);
 

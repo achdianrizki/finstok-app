@@ -65,6 +65,27 @@ class SalesmanController extends Controller
     return redirect()->route('manager.salesman.index')->with('success', 'Sales berhasil dihapus');
   }
 
+  /**
+     * Display a listing of deleted resources.
+     */
+    public function deletedView()
+    {
+        $deletedSalesman = Salesman::onlyTrashed()->get();
+
+        return view('manager.salesman.deleted', compact('deletedSalesman'));
+    }
+    /**
+     * Restore the specified resource from storage.
+     */
+    public function restore($id)
+    {
+        $item = Salesman::onlyTrashed()->findOrFail($id);
+        $item->restore();
+
+        toast('Restore Success!', 'success');
+        return redirect()->route('manager.salesman.index');
+    }
+
   public function salesBySalesman()
   {
     $salesmans = Salesman::all();

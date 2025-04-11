@@ -1,120 +1,180 @@
 <script>
-  $(document).ready(function() {
-      let page = 1;
-      let lastPage = 1;
-      let searchQuery = '';
-      let warehouseId = $('#warehouseId').val();
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+    $(document).ready(function () {
+    let page = 1;
+    let lastPage = 1;
+    let searchQuery = '';
+    let warehouseId = $('#warehouseId').val();
 
-      function formatRupiah(number) {
-          return new Intl.NumberFormat('id-ID', {
-              minimumFractionDigits: 2,
-              maximumFractionDigits: 2
-          }).format(number);
-      }
+    function formatRupiah(number) {
+        return new Intl.NumberFormat('id-ID', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        }).format(number);
+    }
 
-      function fetchItems(page, searchQuery = '') {
-          $.ajax({
-              url: `/manager/warehouses/${warehouseId}/items?page=${page}&search=${searchQuery}`,
-              method: 'GET',
-              success: function(response) {
-                  let rows = '';
-                  if (response.data.length === 0) {
-                      rows =
-                          `<tr><td colspan="8" class="py-3 px-6 text-center">Not Found</td></tr>`;
-                  } else {
-                      $.each(response.data, function(index, item) {
-                          let warehouseInfo = item.item_warehouse.find(w => w.id ==
-                              warehouseId);
-                          let stockQty = warehouseInfo ? warehouseInfo.pivot.stock : 0;
-                          let purchasePrice = item.purchase_price;
-                          let physicalQty = warehouseInfo && warehouseInfo.pivot
-                              .physical !== null ?
-                              warehouseInfo.pivot.physical :
-                              stockQty;
+    function fetchItems(page, searchQuery = '') {
+        $.ajax({
+            url: `/manager/warehouses/${warehouseId}/items?page=${page}&search=${searchQuery}`,
+            method: 'GET',
+            success: function (response) {
+                let rows = '';
+                if (response.data.length === 0) {
+                    rows = `<tr><td colspan="8" class="py-3 px-6 text-center">Data tidak ditemukan</td></tr>`;
+                } else {
+                    $.each(response.data, function (index, item) {
+                        let warehouseInfo = item.item_warehouse.find(w => w.id ==
+                                warehouseId);
+                        let stockQty = warehouseInfo ? warehouseInfo.pivot.stock : 0;
 
-                          // Hitung Profit & Selisih
-                          let profitQty = physicalQty > stockQty ? physicalQty -
-                              stockQty : 0;
-                          let differenceQty = stockQty - physicalQty;
-                          let differenceValue = Math.abs(differenceQty) * purchasePrice;
+                        rows += `
+                        <tr class="border dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-slate-900">
+                          <td class="px-4 py-4 whitespace-nowrap">${item.name}</td>
+                          <td class="px-4 py-4 whitespace-nowrap hidden sm:table-cell">${item.code}</td>
+                          <td class="px-4 py-4 whitespace-nowrap hidden sm:table-cell">${item.unit}</td>
+                          <td class="px-4 py-4 whitespace-nowrap hidden md:table-cell">${stockQty}</td>
+                          <td class="px-4 py-4 whitespace-nowrap hidden md:table-cell">${item.category.name}</td>
+                          <td class="px-4 py-4 whitespace-nowrap hidden md:table-cell">${formatRupiah(item.purchase_price)}</td>
+                          <td class="px-4 py-4 whitespace-nowrap">
+                              <button 
+                                class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+                                onclick="openMutationModal(${item.id}, ${stockQty}, ${item.purchase_price})">
+                                Mutasi
+                            </button>
+                          </td>
+                        </tr>`;
+                    });
+                }
 
-                          // Warna Selisih
-                          let differenceClass = differenceQty === 0 ?
-                              'text-green-500 bg-green-100' :
-                              (differenceQty < 0 ? 'text-blue-500 bg-blue-100' :
-                                  'text-red-500 bg-red-100');
+                $('#itemsByWarehouse').html(rows);
+                lastPage = response.last_page;
+                $('#currentPage').text(page);
+                $('#nextPage').attr('disabled', page >= lastPage);
+                $('#prevPage').attr('disabled', page <= 1);
+            }
+        });
+    }
 
-                          rows += `
-                          <tr class="border dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-slate-900">
-                              <td class="px-4 py-4 whitespace-nowrap">${item.name}</td>
-                              <td class="px-4 py-4 whitespace-nowrap hidden sm:table-cell">${item.code}</td>
-                              <td class="px-4 py-4 whitespace-nowrap hidden sm:table-cell">${item.unit}</td>
-                              <td class="px-4 py-4 whitespace-nowrap hidden md:table-cell">${item.category.name}</td>
-                              <td class="px-4 py-4 whitespace-nowrap hidden md:table-cell">${formatRupiah(purchasePrice)}</td>
-                              <td class="px-4 py-4 whitespace-nowrap hidden md:table-cell">${stockQty}</td>
-                          </tr>`;
-                      });
-                  }
+    fetchItems(page);
 
-                  $('#itemsByWarehouse').html(rows);
-                  lastPage = response.last_page;
-                  $('#currentPage').text(page);
-                  $('#nextPage').attr('disabled', page >= lastPage);
-                  $('#prevPage').attr('disabled', page <= 1);
-              }
-          });
-      }
+    $('#nextPage').on('click', function () {
+        if (page < lastPage) {
+            page++;
+            fetchItems(page, searchQuery);
+        }
+    });
 
-      fetchItems(page);
+    $('#prevPage').on('click', function () {
+        if (page > 1) {
+            page--;
+            fetchItems(page, searchQuery);
+        }
+    });
 
-      $('#nextPage').on('click', function() {
-          if (page < lastPage) {
-              page++;
-              fetchItems(page, searchQuery);
-          }
-      });
+    $('#search').on('keyup', function () {
+        searchQuery = $(this).val();
+        page = 1;
+        fetchItems(page, searchQuery);
+    });
 
-      $('#prevPage').on('click', function() {
-          if (page > 1) {
-              page--;
-              fetchItems(page, searchQuery);
-          }
-      });
+    $('#warehouseId').on('change', function () {
+        warehouseId = $(this).val();
+        page = 1;
+        fetchItems(page);
+    });
 
-      $('#search').on('keyup', function() {
-          searchQuery = $(this).val();
-          page = 1;
-          fetchItems(page, searchQuery);
-      });
+    window.openMutationModal = function (itemId, stockNow, purchasePrice) {
+        $('#mutationModal').removeClass('hidden').addClass('flex');
+        $('#itemId').val(itemId);
+        $('#stock_now').val(stockNow);
+        $('#purchasePrice').val(purchasePrice);
 
-      $('#warehouseId').on('change', function() {
-          warehouseId = $(this).val();
-          page = 1;
-          fetchItems(page);
-      });
+        $('#toWarehouse').empty().append('<option value="">Pilih Gudang Tujuan</option>');
+        loadWarehouses();
 
-      $(document).on('input', '.physical-input', function() {
-          let itemId = $(this).data('id');
-          let stock = parseInt($(this).data('stock')) || 0;
-          let physical = parseInt($(this).val()) || 0;
-          let purchasePrice = parseInt($(this).data('price')) || 0;
+        $('#toWarehouse').select2({
+            dropdownParent: $('#mutationModal'),
+            width: '100%'
+        });
+    }
 
-          let profitQty = physical > stock ? physical - stock : 0;
-          let differenceQty = stock - physical;
-          let differenceValue = Math.abs(differenceQty) * purchasePrice;
 
-          let differenceField = $(`#difference-${itemId}`);
-          let profitField = $(`#profit-${itemId}`);
+    window.closeMutationModal = function () {
+        $('#mutationModal').removeClass('flex').addClass('hidden');
+        $('#mutationForm')[0].reset();
+        $('#toWarehouse').val(null).trigger('change');
+    }
 
-          let differenceClass = differenceQty === 0 ?
-              'text-green-500 bg-green-100' :
-              (differenceQty < 0 ? 'text-blue-500 bg-blue-100' : 'text-red-500 bg-red-100');
+    function loadWarehouses() {
+        $.ajax({
+            url: '/mutation/get-warehouse',
+            method: 'GET',
+            success: function (data) {
+                let currentFromWarehouse = $('#fromWarehouse').val();
 
-          profitField.val(profitQty);
-          differenceField.val(formatRupiah(differenceValue)).removeClass().addClass(
-              `w-full border rounded py-1 px-2 ${differenceClass}`);
-      });
+                data.forEach(function (warehouse) {
+                    if (warehouse.id != currentFromWarehouse) {
+                        $('#toWarehouse').append(`<option value="${warehouse.id}">${warehouse.name}</option>`);
+                    }
+                });
+            }
+        });
+    }
 
-      
-  });
+    $('#mutationForm').on('submit', function (e) {
+        e.preventDefault();
+
+        const data = {
+            item_id: $('#itemId').val(),
+            from_warehouse_id: $('#fromWarehouse').val(),
+            to_warehouse_id: $('#toWarehouse').val(),
+            price_per_item: $('#purchasePrice').val(),
+            qty: $('#quantity').val(),
+            note: $('#note').val()
+        };
+
+        console.log(data);
+
+        if (!data.to_warehouse_id) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Gudang tujuan harus dipilih!'
+            });
+            return;
+        }
+
+        if (parseInt(data.qty) > parseInt($('#stock_now').val())) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Jumlah mutasi tidak boleh melebihi stok saat ini!'
+            });
+            return;
+        }
+        
+        $.ajax({
+            url: '/mutation/store',
+            method: 'POST',
+            data: data,
+            success: function (response) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Berhasil',
+                    text: 'Mutasi berhasil dilakukan!'
+                });
+                closeMutationModal();
+                fetchItems(page, searchQuery);
+            },
+            error: function (xhr) {
+                alert('Gagal melakukan mutasi!');
+                console.log(xhr.responseJSON || xhr.responseText);
+            }
+        });
+    });
+});
 </script>

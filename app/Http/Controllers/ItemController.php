@@ -123,7 +123,7 @@ class ItemController extends Controller
             $item->suppliers()->detach();
         }
 
-        toast('Update Success', 'success');
+        toast('Update Success!', 'success');
         return redirect()->route('manager.items.index');
     }
 
@@ -133,9 +133,35 @@ class ItemController extends Controller
      */
     public function destroy(Item $item)
     {
+        $item->delete();
 
-        $item->with('purchase')->where('item_id', $item)->delete();
+        $item->whereHas('purchase', function ($query) {
+            $query->where('item_id', $item->id);
+        })->delete();
+        
+        toast('Delete Success!', 'success');
         return redirect()->back();
+    }
+
+    /**
+     * Display a listing of deleted resources.
+     */
+    public function deletedView()
+    {
+        $deletedItem = Item::onlyTrashed()->with(['category'])->get();
+
+        return view('manager.items.deleted', compact('deletedItem'));
+    }
+    /**
+     * Restore the specified resource from storage.
+     */
+    public function restore($id)
+    {
+        $item = Item::onlyTrashed()->findOrFail($id);
+        $item->restore();
+
+        toast('Restore Success!', 'success');
+        return redirect()->route('manager.items.index');
     }
 
     public function importExcel(Request $request)

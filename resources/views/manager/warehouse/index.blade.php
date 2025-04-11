@@ -2,7 +2,7 @@
     <x-slot name="header">
         <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
             <h2 class="font-semibold text-xl leading-tight">
-                {{ __('Gudang') }}
+                {{ __('Data Gudang') }}
             </h2>
             <x-button target="" href="{{ route('manager.warehouses.create') }}" variant="success"
                 class="justify-center max-w-xl gap-2">
@@ -14,7 +14,8 @@
 
     <div class="p-6 overflow-hidden bg-white rounded-md shadow-md dark:bg-dark-eval-1">
 
-        <div class="flex flex-col md:flex-row md:justify-between gap-4 my-3">
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 my-3">
+            <div class="flex gap-4">
             <x-dropdown.dropdown>
                 <x-slot name="slot">
                     <x-heroicon-o-arrow-down-on-square class="w-6 h-6 dark:text-white" aria-hidden="true" />
@@ -35,6 +36,12 @@
                     </a>
                 </x-slot>
             </x-dropdown.dropdown>
+                <a href="/manager/trash/warehouse"
+                    class="flex items-center gap-2 px-4 py-2 text-sm text-white bg-gray-500 hover:bg-gray-600 rounded">
+                    <x-heroicon-o-trash class="w-5 h-5" aria-hidden="true" />
+                    {{-- <span>Deleted</span> --}}
+                </a>
+            </div>
 
             <!-- Search Input-->
             <div class="w-full md:w-auto">
@@ -44,12 +51,6 @@
         </div>
 
         <div class="overflow-x-auto">
-            @if (session('success'))
-                <div class="p-4 mb-4 text-sm text-green-700 bg-green-100 rounded-lg dark:bg-green-200 dark:text-green-800"
-                    role="alert">
-                    {{ session('success') }}
-                </div>
-            @endif
             <table id="export-table" class="min-w-full rounded-md">
                 <thead>
                     <tr class="bg-gray-200 text-gray-600 dark:bg-slate-900 dark:text-white text-sm leading-normal">

@@ -23,7 +23,7 @@
                   if (response.data.length === 0) {
                       rows = `
                 <tr>
-                    <td colspan="6" class="py-3 text-center">Not Found</td>
+                    <td colspan="6" class="py-3 text-center">Data tidak ditemukan</td>
                 </tr>
                 `;
                   } else {

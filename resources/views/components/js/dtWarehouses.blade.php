@@ -15,7 +15,7 @@
                     if (response.data.length === 0) {
                         rows = `
                   <tr>
-                      <td colspan="6" class="py-3 px-6 text-center">Not Found</td>
+                      <td colspan="6" class="py-3 px-6 text-center">Data tidak ditemukan</td>
                   </tr>
                   `;
                     } else {
@@ -29,7 +29,7 @@
                                         <x-heroicon-o-pencil class="w-3 h-3" aria-hidden="true" />
                                     </x-button>
                                     <!-- Destroy form -->
-                                        <form action="/manager/warehouses/${warehouse.id}" method="POST" class="inline-block">
+                                        <form action="/manager/warehouses/${warehouse.slug}" method="POST" class="inline-block delete-form">
                                             @csrf
                                             @method('DELETE')
                                             <x-button variant="danger" type="submit" class="justify-center max-w-sm gap-2">
@@ -70,6 +70,56 @@
                     } else {
                         $('#prevPage').attr('disabled', false);
                     }
+
+                    // Tambahkan event listener untuk konfirmasi SweetAlert
+                    $('.delete-form').on('submit', function(e) {
+                        e.preventDefault();
+                        let form = this;
+                        let warehouseId = $(form).attr('action').split('/').pop();
+
+                        $.ajax({
+                            url: '/check-warehouse-items/' + warehouseId,
+                            method: 'GET',
+                            success: function(response) {
+                                if (response.items.length > 0) {
+                                    Swal.fire({
+                                        title: 'Peringatan!',
+                                        text: 'Gudang masih memiliki item terkait. Terdapat ' + response.items.length + ' item. Anda tidak dapat menghapus gudang ini.',
+                                        icon: 'warning',
+                                        confirmButtonColor: '#3085d6',
+                                        confirmButtonText: 'OK'
+                                    }).then((result) => {
+                                        if (result.isConfirmed) {
+                                            form.submit();
+                                        }
+                                    });
+                                } else {
+                                    Swal.fire({
+                                        title: 'Apakah Anda yakin?',
+                                        text: "Data yang dihapus tidak dapat dikembalikan!",
+                                        icon: 'warning',
+                                        showCancelButton: true,
+                                        confirmButtonColor: '#3085d6',
+                                        cancelButtonColor: '#d33',
+                                        confirmButtonText: 'Ya, hapus!',
+                                        cancelButtonText: 'Batal'
+                                    }).then((result) => {
+                                        if (result.isConfirmed) {
+                                            form.submit();
+                                        }
+                                    });
+                                }
+                            },
+                            error: function() {
+                                Swal.fire({
+                                    title: 'Error',
+                                    text: 'Gagal memeriksa data terkait.',
+                                    icon: 'error',
+                                    confirmButtonText: 'OK'
+                                });
+                            }
+                        });
+                    });
                 }
             });
         }

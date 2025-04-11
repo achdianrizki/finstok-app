@@ -47,16 +47,6 @@
                         data-parsley-required-message="Harga beli barang wajib diisi" />
                     <x-input-error :messages="$errors->get('purchase_price')" class="mt-2" />
 
-                    <x-form.label for="warehouse_id" :value="__('Gudang')" />
-                    <x-form.select id="warehouse_id" class="block w-full" name="warehouse_id">
-                        @foreach ($warehouses as $warehouse)
-                            <option value="{{ $warehouse->id }}"
-                                {{ $item->warehouse_id == $warehouse->id ? 'selected' : '' }}>{{ $warehouse->name }}
-                            </option>
-                        @endforeach
-                    </x-form.select>
-                    <x-input-error :messages="$errors->get('warehouse_id')" class="mt-2" />
-
                     <x-form.label for="category_id" :value="__('Kategori')" />
                     <x-form.select id="category_id" class="block w-full" name="category_id">
                         <option value="" disabled selected>Pilih</option>

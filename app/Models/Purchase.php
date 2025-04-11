@@ -8,7 +8,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Purchase extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory;
+    use SoftDeletes;
 
     protected $primaryKey = 'id';
 
@@ -52,8 +53,11 @@ class Purchase extends Model
 
     public function items()
     {
-        return $this->belongsToMany(Item::class, 'item_purchase')->withPivot('qty', 'price_per_item', 'discount1', 'discount2', 'discount3', 'ad', 'warehouse_id');
+        return $this->belongsToMany(Item::class, 'item_purchase')
+            ->withPivot('qty', 'price_per_item', 'discount1', 'discount2', 'discount3', 'ad', 'warehouse_id')
+            ->withTimestamps();
     }
+
 
     public function payments()
     {

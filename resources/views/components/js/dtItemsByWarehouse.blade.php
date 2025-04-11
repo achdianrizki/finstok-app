@@ -20,7 +20,7 @@
                     let rows = '';
                     if (response.data.length === 0) {
                         rows =
-                            `<tr><td colspan="8" class="py-3 px-6 text-center">Not Found</td></tr>`;
+                            `<tr><td colspan="8" class="py-3 px-6 text-center">Data tidak ditemukan</td></tr>`;
                     } else {
                         $.each(response.data, function(index, item) {
                             let warehouseInfo = item.item_warehouse.find(w => w.id ==
@@ -37,7 +37,7 @@
 
                             let profitQty = warehouseInfo.pivot.profit;
                             let original_stock = warehouseInfo.pivot.original_stock;
-                            console.log(original_stock);
+                            // console.log(original_stock);
                             
                             let differenceQty = original_stock - physicalQty;
                             let differenceValue = Math.abs(differenceQty) * purchasePrice;
@@ -120,11 +120,11 @@
     let physical = parseInt($(this).val()) || 0;
     let purchasePrice = parseInt($(this).data('price')) || 0;
     
-    console.log('Original Stock:', originalStock);
-    console.log('Physical:', physical);
+    // console.log('Original Stock:', originalStock);
+    // console.log('Physical:', physical);
     
     let differenceQty = physical - originalStock;
-    console.log('Difference Quantity:', differenceQty); // Cek nilai differenceQty
+    // console.log('Difference Quantity:', differenceQty); // Cek nilai differenceQty
     
     let differenceValue = differenceQty * purchasePrice;
     

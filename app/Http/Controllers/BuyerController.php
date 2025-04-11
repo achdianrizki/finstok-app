@@ -90,4 +90,19 @@ class BuyerController extends Controller
         toast('Pelanggan berhasil dihapus', 'success');
         return redirect()->route('manager.buyer.index')->with('success', 'Pelanggan berhasil dihapus');
     }
+
+    public function deletedView()
+    {
+        $deletedBuyer = Buyer::onlyTrashed()->get();
+        return view('manager.buyer.deleted', compact('deletedBuyer'));
+    }
+
+    public function restore($id)
+    {
+        $buyer = Buyer::withTrashed()->findOrFail($id);
+        $buyer->restore();
+
+        toast('Pelanggan berhasil dipulihkan', 'success');
+        return redirect()->route('manager.buyer.index');
+    }
 }

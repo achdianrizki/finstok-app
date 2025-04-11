@@ -43,22 +43,25 @@
             <table id="export-table" class="min-w-full rounded-md">
                 <thead>
                     <tr class="bg-gray-200 text-gray-600 dark:bg-slate-900 dark:text-white text-sm leading-normal">
-                        <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Nama barang</th>
+                        <th class="px-4 py-2 text-left text-xs font-medium uppercase tracking-wider">Nama barang</th>
                         <th
-                            class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider hidden sm:table-cell">
+                            class="px-4 py-2 text-left text-xs font-medium uppercase tracking-wider hidden sm:table-cell">
                             Kode</th>
                         <th
-                            class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider hidden sm:table-cell">
+                            class="px-4 py-2 text-left text-xs font-medium uppercase tracking-wider hidden sm:table-cell">
                             Satuan</th>
                         <th
-                            class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider hidden sm:table-cell">
+                            class="px-4 py-2 text-left text-xs font-medium uppercase tracking-wider hidden md:table-cell">
+                            Stok</th>
+                        <th
+                            class="px-4 py-2 text-left text-xs font-medium uppercase tracking-wider hidden sm:table-cell">
                             Kategori</th>
                         <th
-                            class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider hidden md:table-cell">
+                            class="px-4 py-2 text-left text-xs font-medium uppercase tracking-wider hidden md:table-cell">
                             Harga/pcs</th>
                         <th
-                            class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider hidden md:table-cell">
-                            Stok</th>
+                            class="px-4 py-2 text-left text-xs font-medium uppercase tracking-wider hidden md:table-cell">
+                            Aksi</th>
                     </tr>
                 </thead>
                 <tbody id="itemsByWarehouse"
@@ -83,9 +86,58 @@
 
     </div>
 
+    <!-- Modal Mutasi Barang -->
+    <div id="mutationModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black bg-opacity-50">
+        <div class="bg-white rounded-lg shadow-lg w-full max-w-lg p-6 relative">
+            <h2 class="text-xl font-semibold mb-4">Form Mutasi Barang</h2>
+
+            <form id="mutationForm">
+                <input type="hidden" id="itemId" name="item_id">
+                <input type="hidden" id="purchasePrice" name="price_per_item">
+
+                <div class="mb-4">
+                    <label for="fromWarehouse" class="block mb-1">Gudang Asal</label>
+                    <input type="text" class="w-full px-3 py-1 border border-gray-300 rounded bg-gray-100" value="{{ $warehouse->name }}" readonly
+                        placeholder="">
+                    <input type="text" id="fromWarehouse" name="from_warehouse_id" value="{{ $warehouse->id }}" hidden>
+                </div>
+
+                <div class="mb-4">
+                    <label for="stock_now" class="block mb-1">Stok Saat ini</label>
+                    <input type="number" id="stock_now" name="stock_now" class="w-full px-3 py-1 border border-gray-300 rounded bg-gray-100" min="1">
+                </div>
+
+                <div class="mb-4">
+                    <label for="toWarehouse" class="block mb-1">Gudang Tujuan</label>
+                    <select id="toWarehouse" name="toWarehouse" class="w-full select2">
+                        <option value="">Pilih Gudang Tujuan</option>
+                    </select>
+                </div>
+
+                <div class="mb-4">
+                    <label for="quantity" class="block mb-1">Jumlah</label>
+                    <input type="number" id="quantity" name="quantity" class="w-full px-3 py-1 border rounded" min="1">
+                </div>
+
+                <div class="mb-4">
+                    <label for="note" class="block mb-1">Keterangan</label>
+                    <textarea id="note" name="note" class="w-full px-3 py-1 border rounded" rows="3"
+                        placeholder="Keterangan"></textarea>
+                </div>
+
+                <div class="flex justify-end mt-6">
+                    <button type="button" onclick="closeMutationModal()"
+                        class="mr-3 px-4 py-2 bg-gray-300 rounded">Batal</button>
+                    <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded">Simpan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
     @push('scripts')
-        <script>
-            function toggleDetails(index) {
+    <script>
+        function toggleDetails(index) {
                 const detailRow = document.getElementById(`details-${index}`);
                 if (detailRow.classList.contains('hidden')) {
                     detailRow.classList.remove('hidden');
@@ -93,8 +145,8 @@
                     detailRow.classList.add('hidden');
                 }
             }
-        </script>
-        @include('components.js.dtItemsByWarehousePure')
+    </script>
+    @include('components.js.dtItemsByWarehousePure')
     @endpush
 
 </x-app-layout>

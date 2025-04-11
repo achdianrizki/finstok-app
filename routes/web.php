@@ -20,6 +20,7 @@ use App\Http\Controllers\ReturnSaleController;
 use App\Http\Controllers\DistributorController;
 use App\Http\Controllers\ReturnPurchaseController;
 use App\Http\Controllers\incomingPaymentController;
+use App\Http\Controllers\MutationController;
 use App\Http\Controllers\OutgoingPaymentController;
 
 /*
@@ -57,6 +58,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/warehouse-opname/{warehouse:slug}', [WarehouseController::class, 'opname'])
             ->middleware('role:manager|admin')->name('warehouses.opname');
         Route::resource('purchase', PurchaseController::class)->middleware('role:manager|admin');
+        
 
         Route::resource('sales', SaleController::class)->middleware('role:manager|admin');
         Route::resource('distributors', DistributorController::class)->middleware('role:manager|admin');
@@ -194,7 +196,38 @@ Route::middleware('auth')->group(function () {
             Route::post('/sales-by-salesman/export/pdf', [ReportController::class, 'exportSalesBySalesmanPDF'])->name('sales-by-salesman.export.pdf');
             // Sale Data by salesman END (PDF)
         });
+        
+        Route::prefix('trash')->name('trash.')->group(function () {
+            Route::get('/items', [ItemController::class, 'deletedView'])->name('items');
+            Route::post('/items/{id}', [ItemController::class, 'restore'])->name('items.restore');
+
+            Route::get('/supplier', [SupplierController::class, 'deletedView'])->name('supplier');
+            Route::post('/supplier/{id}', [SupplierController::class, 'restore'])->name('supplier.restore');
+            
+            Route::get('/buyer', [BuyerController::class, 'deletedView'])->name('buyer');
+            Route::post('/buyer/{id}', [BuyerController::class, 'restore'])->name('buyer.restore');
+
+            Route::get('/salesman', [SalesmanController::class, 'deletedView'])->name('salesman');
+            Route::post('/salesman/{id}', [SalesmanController::class, 'restore'])->name('salesman.restore');
+
+            Route::get('/warehouse', [WarehouseController::class, 'deletedView'])->name('warehouse');
+            Route::post('/warehouse/{id}', [WarehouseController::class, 'restore'])->name('warehouse.restore');
+
+            Route::get('/category', [CategoryController::class, 'deletedView'])->name('category');
+            Route::post('/category/{id}', [CategoryController::class, 'restore'])->name('category.restore');
+
+            
+
+            Route::get('/purchase', [PurchaseController::class, 'deletedView'])->name('purchase');
+
+        });
     });
+
+    Route::prefix('mutation')->name('mutation.')->group(function () {
+        Route::get('/get-warehouse', [MutationController::class, 'getWarehouse'])->name('get-warehouses');
+        Route::post('/store', [MutationController::class, 'store'])->name('store');
+    });
+
 
     //Testing total modal
     Route::get('/manager/finance/primaryModal', [ModalController::class, 'primaryModal'])->name('manager.finance.modal.primaryModal');
@@ -212,7 +245,7 @@ Route::get('/outgoingpayment-data', [OutgoingPaymentController::class, 'getPurch
 Route::get('/sales-data', [SaleController::class, 'getSaleItem']);
 Route::get('/items-data-sale', [SaleController::class, 'searchItem']);
 Route::get('/users-data', [UserController::class, 'getUsers'])->name('manager.users.data');
-Route::get('/supplier-data', [SupplierController::class, 'getSupplier'])->name('manager.users.data');
+Route::get('/supplier-data', [SupplierController::class, 'getSupplier']);
 Route::get('/sales-data', [SaleController::class, 'getSaleItems']);
 Route::get('/sales-by-salesman-data', [SaleController::class, 'getSaleItemsBySalesman']);
 
@@ -252,13 +285,18 @@ Route::get('/salesmans-data', [SalesmanController::class, 'getSalesman']);
 Route::get('/laporan/laba-rugi', [ChartController::class, 'getLabaRugi']);
 
 Route::post('/get-items/warehouse', [WarehouseController::class, 'getItemsByWarehouses']);
-Route::get('/get-sales-item/{item_id}', function ($item_id) {
+Route::get('/check-warehouse-items/{warehouse_id}', [WarehouseController::class, 'checkItems']);
+Route::get('/get-sales-item/{item_id}/{warehouse_id}', function ($item_id, $warehouse_id) {
     $item = \App\Models\Item::find($item_id);
+    $warehouseStock = \DB::table('item_warehouse')
+        ->where('item_id', $item_id)
+        ->where('warehouse_id', $warehouse_id)
+        ->value('stock') ?? 0;
 
     return response()->json([
         'code' => $item->code,
         'name' => $item->name,
-        'stock' => $item->stock,
+        'stock' => $warehouseStock,
         'unit' => $item->unit,
         'price' => $item->price,
         'purchase_price' => $item->purchase_price,
@@ -266,6 +304,7 @@ Route::get('/get-sales-item/{item_id}', function ($item_id) {
         'discount2' => 0,
     ]);
 });
+
 
 // FUNGSI DELETE DATA ITEM PEMBELIAN AJAXXX
 Route::delete('/purchase-edit/{purchase}/item-delete/{item}', [PurchaseController::class, 'deleteItem']);

@@ -57,7 +57,7 @@ class PurchaseController extends Controller
         $startDate = $request->query('start_date');
         $endDate = $request->query('end_date');
 
-        $purchaseQuery = Purchase::with(['supplier']);
+        $purchaseQuery = Purchase::with(['supplier'])->latest();
 
         // Filter berdasarkan pencarian
         if ($request->filled('search')) {
@@ -109,9 +109,9 @@ class PurchaseController extends Controller
             $year = $date->year;
             $month = str_pad($date->month, 2, '0', STR_PAD_LEFT);
 
-            $lastNumber = Purchase::whereYear('purchase_date', $year)
+            $lastNumber = Purchase::withTrashed()
+                ->whereYear('purchase_date', $year)
                 ->whereMonth('purchase_date', $date->month)
-                ->latest('purchase_number')
                 ->value('purchase_number');
 
             $newNumber = $lastNumber ? (int) substr($lastNumber, -7, 3) + 1 : 1;
@@ -367,6 +367,39 @@ class PurchaseController extends Controller
      */
     public function destroy(Purchase $purchase)
     {
-        //
+        $purchase->delete();
+
+        // foreach ($purchase->items as $item) {
+        //     $item->item_warehouse()->detach($purchase->warehouse_id);
+        // }
+
+        toast('Data berhasil dihapus', 'success');
+        return redirect()->route('manager.purchase.index');
+    }
+
+    /**
+     * Display a listing of deleted resources.
+     */
+    public function deletedView()
+    {
+        $deletedPurchases = Purchase::onlyTrashed()->with(['supplier', 'items'])->get();
+
+        return view('manager.purchase.deleted', compact('deletedPurchases'));
+    }
+
+    /**
+     * Restore the specified resource from storage.
+     */
+    public function restore($id)
+    {
+        $purchase = Purchase::onlyTrashed()->findOrFail($id);
+        $purchase->restore();
+
+        // foreach ($purchase->items as $item) {
+        //     $item->item_warehouse()->attach($purchase->warehouse_id);
+        // }
+
+        toast('Data berhasil dipulihkan', 'success');
+        return redirect()->route('manager.purchase.deleted');
     }
 }

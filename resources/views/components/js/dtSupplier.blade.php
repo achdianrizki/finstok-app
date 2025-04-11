@@ -30,9 +30,10 @@
                                     <td class="px-6 py-4 whitespace-nowrap hidden md:table-cell">${(supplier.phone == null) ? '-' : supplier.phone}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <x-button target="" href="/manager/supplier/${supplier.id}/edit" variant="warning" class="justify-center max-w-sm gap-2">
-                                        <x-heroicon-o-pencil class="w-3 h-3" aria-hidden="true" />
+                                            <x-heroicon-o-pencil class="w-3 h-3" aria-hidden="true" />
                                         </x-button>
-                                        <form method="POST" action="/manager/supplier/${supplier.id}" style="display:inline;">
+                                        
+                                        <form method="POST" action="/manager/supplier/${supplier.id}" style="display:inline;" onsubmit="return confirmDelete(event)">
                                             @csrf
                                             <input type="hidden" name="_method" value="DELETE">
                                             <x-button type="submit" class="bg-red-500 text-white py-1 px-3 rounded hover:bg-red-600">
@@ -97,38 +98,23 @@
         });
 
 
-        window.confirmDelete = function(id, name) {
-            Swal.fire({
-                title: `Hapus Supplier ${name}?`,
-                text: "Data akan dihapus, tetapi masih bisa dikembalikan!",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#d33",
-                cancelButtonColor: "#3085d6",
-                confirmButtonText: "Ya, Hapus!",
-                cancelButtonText: "Batal"
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    deleteSupplier(id);
-                }
-            });
-        };
-
-        function deleteSupplier(id) {
-            $.ajax({
-                url: `/manager/supplier/${id}`,
-                method: 'DELETE',
-                headers: {
-                    'X-CSRF-TOKEN': csrfToken
-                },
-                success: function(response) {
-                    Swal.fire("Berhasil!", "Supplier telah dihapus.", "success");
-                    fetchitems(page, searchQuery);
-                },
-                error: function(xhr) {
-                    Swal.fire("Gagal!", "Terjadi kesalahan saat menghapus.", "error");
-                }
-            });
-        }
     });
+
+    function confirmDelete(event) {
+        event.preventDefault();
+        Swal.fire({
+            title: 'Apakah Anda yakin?',
+            text: "Data yang dihapus tidak dapat dikembalikan!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Ya, hapus!',
+            cancelButtonText: 'Batal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                event.target.submit();
+            }
+        });
+    }
 </script>

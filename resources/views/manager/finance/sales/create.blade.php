@@ -8,7 +8,8 @@
         <div class="p-6 bg-white rounded-md shadow-md">
             <div class="grid grid-cols-2 gap-4">
                 <div class="space-y-2">
-                    {{-- <x-form.label for="sale_number" :value="__('Nomor Penjualan')" />
+                    {{--
+                    <x-form.label for="sale_number" :value="__('Nomor Penjualan')" />
                     <x-form.input id="sale_number" class="block w-full" type="text" name="sale_number" /> --}}
 
                     <x-form.label for="sale_date" :value="__('Tanggal Penjualan')" />
@@ -20,7 +21,7 @@
                         data-parsley-required-message="Pilih salah satu pelanggan">
                         <option value="" selected disabled>{{ __('Pilih Pelanggan') }}</option>
                         @foreach ($buyers as $buyer)
-                            <option value="{{ $buyer->id }}">{{ $buyer->name }}</option>
+                        <option value="{{ $buyer->id }}">{{ $buyer->name }}</option>
                         @endforeach
                     </x-form.select>
 
@@ -28,7 +29,7 @@
                     <x-form.select id="salesman_id" name="salesman_id" class="w-full select2">
                         <option value="" selected disabled>{{ __('Pilih Sales') }}</option>
                         @foreach ($salesmans as $salesman)
-                            <option value="{{ $salesman->id }}">{{ $salesman->name }}</option>
+                        <option value="{{ $salesman->id }}">{{ $salesman->name }}</option>
                         @endforeach
                     </x-form.select>
 
@@ -36,8 +37,8 @@
                     <x-form.select id="tax" class="block w-full" name="tax_type" required
                         data-parsley-required-message="Pajak wajib diisi">
                         <option value="" disabled selected>Pilih</option>
-                        <option value="ppn" {{ old('tax') == 'ppn' ? 'selected' : '' }}>PPN 11%</option>
-                        <option value="non_ppn" {{ old('tax') == 'non_ppn' ? 'selected' : '' }}>NON-PPN</option>
+                        <option value="ppn" {{ old('tax')=='ppn' ? 'selected' : '' }}>PPN 11%</option>
+                        <option value="non_ppn" {{ old('tax')=='non_ppn' ? 'selected' : '' }}>NON-PPN</option>
                     </x-form.select>
 
                     <div>
@@ -72,10 +73,10 @@
                     <x-form.select id="warehouse_id" class="block w-full" name="warehouse_id">
                         <option value="" disabled selected>Pilih Gudang</option>
                         @foreach ($warehouses as $warehouse)
-                            <option value="{{ $warehouse->id }}"
-                                {{ old('warehouse_id') == $warehouse->id ? 'selected' : '' }}>
-                                {{ $warehouse->name }}
-                            </option>
+                        <option value="{{ $warehouse->id }}" {{ old('warehouse_id')==$warehouse->id ? 'selected' : ''
+                            }}>
+                            {{ $warehouse->name }}
+                        </option>
                         @endforeach
                     </x-form.select>
                     <x-input-error :messages="$errors->get('warehouse_id')" class="mt-2" />
@@ -150,8 +151,8 @@
 
             <div class="flex justify-between items-center w-full max-w-md">
                 <label for="tax" class="mr-4">PPN 11%</label>
-                <input type="text" class="w-1/2 border-gray-500 rounded-md p-2 bg-gray-100" name="tax"
-                    id="taxRate" readonly>
+                <input type="text" class="w-1/2 border-gray-500 rounded-md p-2 bg-gray-100" name="tax" id="taxRate"
+                    readonly>
             </div>
 
             <div class="flex justify-between items-center w-full max-w-md">
@@ -180,8 +181,8 @@
     </form>
 
     @push('scripts')
-        <script>
-            $(document).ready(function() {
+    <script>
+        $(document).ready(function() {
 
                 $(".duration-btn").prop("disabled", true).addClass("bg-gray-400");
                 $("#custom_due_date").prop("disabled", true).addClass("bg-gray-400");
@@ -316,7 +317,8 @@
                     let row = $(this).closest('tr');
                     let itemId = $(this).val();
                     let supplierId = $('#salesman_id').val();
-                    updateItemData(row, itemId);
+                    let warehouseId = $('#warehouse_id').val();
+                    updateItemData(row, itemId, warehouseId);
                     
                     let selectedItem = $(this).val();
                     let stock = $(this).find(':selected').data('stock');
@@ -441,9 +443,11 @@
                     $('#total_price').val('Rp ' + formatRupiah(finalTotalPrice.toFixed(2)));
                 }
 
-                function updateItemData(row, itemId) {
-                    if (itemId) {
-                        $.get(`/get-sales-item/${itemId}`, function(data) {
+                function updateItemData(row, itemId, warehouseId) {
+                    if (itemId && warehouseId) {
+                        // console.log('Item ID:', itemId);
+                        console.log('Warehouse ID:', warehouseId);
+                        $.get(`/get-sales-item/${itemId}/${warehouseId}`, function(data) {
                             row.find('.item-code').val(data.code);
                             row.find('.item-name').val(data.name);
                             row.find('.sale_price').val(formatRupiah(data.purchase_price));
@@ -466,9 +470,9 @@
 
                     $('#warehouse_id').on('change', function() {
                         let warehouseId = $(this).val();
-                        console.log('Warehouse ID:', warehouseId);
+                        // console.log('Warehouse ID:', warehouseId);
 
-                        $('#items-table tbody').empty(); // Reset tabel saat gudang diubah
+                        $('#items-table tbody').empty();
 
                         $.ajax({
                             url: `/get-items/warehouse`,
@@ -479,7 +483,7 @@
                             dataType: 'json',
                             cache: false,
                             success: function(data) {
-                                console.log("Data dari server:", data);
+                                // console.log("Data dari server:", data);
                                 itemOptions = '<option value="">Pilih Barang</option>';
 
                                 $.each(data, function(index, item) {
@@ -494,12 +498,12 @@
 
                                 let result = $('#items-table').data('itemOptions',
                                     itemOptions);
-                                console.log('Item Options:', result);
+                                // console.log('Item Options:', result);
 
 
                             },
                             error: function(xhr) {
-                                console.log('Error:', xhr.responseText);
+                                // console.log('Error:', xhr.responseText);
                             }
                         });
                     });
@@ -507,7 +511,11 @@
                     $('#add-item').click(function() {
                         let warehouseId = $('#warehouse_id').val();
                         if (!warehouseId) {
-                            alert('Silakan pilih gudang terlebih dahulu!');
+                            Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'Silakan pilih gudang terlebih dahulu!',
+                        });
                             return;
                         }
 
@@ -559,7 +567,7 @@
 
                         $newSelect.find('option').each(function() {
                             let stock = $(this).attr('data-stock');
-                            console.log(`ID: ${$(this).val()}, Stock: ${stock}`);
+                            // console.log(`ID: ${$(this).val()}, Stock: ${stock}`);
 
                             if (stock <= 0) {
                                 $(this).prop('disabled', true);
@@ -595,6 +603,21 @@
                         });
                     });
                 }
+
+                $(document).on('input', '.qty', function() {
+                    let row = $(this).closest('tr');
+                    let stock = parseInt(row.find('.stock').val()) || 0;
+                    let qty = parseInt($(this).val()) || 0;
+                    
+                    if (qty > stock) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'Stok tidak mencukupi',
+                        });
+                        $(this).val('');
+                    }
+                });
 
                 $(document).on('change', '.item-select', function() {
                     disableSelectedItems();
@@ -635,44 +658,44 @@
                     }
                 });
             });
-        </script>
+    </script>
     @endpush
 
     @push('styles')
-        <style>
-            .select2-container .select2-selection--single {
-                height: 37px !important;
-                border-radius: 5px;
-                border: 1px solid #9CA3AF;
-                padding-left: 0.30rem;
-                padding-top: 0.25rem;
-                padding-bottom: 0.25rem;
-            }
+    <style>
+        .select2-container .select2-selection--single {
+            height: 37px !important;
+            border-radius: 5px;
+            border: 1px solid #9CA3AF;
+            padding-left: 0.30rem;
+            padding-top: 0.25rem;
+            padding-bottom: 0.25rem;
+        }
 
-            .select2-container .select2-selection--single .select2-selection__rendered {
-                font-size: 16px;
-                color: #374151;
-            }
+        .select2-container .select2-selection--single .select2-selection__rendered {
+            font-size: 16px;
+            color: #374151;
+        }
 
-            .select2-container .select2-selection--single .select2-selection__arrow {
-                height: 37px !important;
-            }
+        .select2-container .select2-selection--single .select2-selection__arrow {
+            height: 37px !important;
+        }
 
-            .select2-container--default .select2-results__option--highlighted[aria-selected] {
-                background-color: #3b82f6 !important;
-                color: white !important;
-            }
+        .select2-container--default .select2-results__option--highlighted[aria-selected] {
+            background-color: #3b82f6 !important;
+            color: white !important;
+        }
 
-            .select2-container--default .select2-results__option {
-                font-size: 14px;
-                padding: 10px;
-            }
+        .select2-container--default .select2-results__option {
+            font-size: 14px;
+            padding: 10px;
+        }
 
-            .duration-btn:disabled {
-                background-color: #a0aec0;
-                cursor: not-allowed;
-                opacity: 0.6;
-            }
-        </style>
+        .duration-btn:disabled {
+            background-color: #a0aec0;
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+    </style>
     @endpush
 </x-app-layout>

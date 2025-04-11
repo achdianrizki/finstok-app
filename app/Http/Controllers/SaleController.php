@@ -77,7 +77,7 @@ class SaleController extends Controller
         $startDate = $request->query('start_date');
         $endDate = $request->query('end_date');
 
-        $salesQuery = Sale::with(['buyer']);
+        $salesQuery = Sale::with(['buyer'])->latest();
 
         // Filter berdasarkan pencarian
         if ($request->filled('search')) {

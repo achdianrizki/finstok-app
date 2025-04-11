@@ -58,7 +58,6 @@ class ReturnPurchaseController extends Controller
             $purchase = Purchase::findOrFail($id);
             $total_return = 0;
             $total_tax_return = 0;
-            $ppn_per_item = $purchase->tax / $purchase->total_qty;
 
             $return = ReturnPurchase::create([
                 'purchase_id'  => $purchase->id,
@@ -74,50 +73,41 @@ class ReturnPurchaseController extends Controller
                 $price_per_item = $request->price_per_item[$index];
 
                 $return_value = $qty * $price_per_item;
-                if ($purchase->tax_type == 'ppn') {
-                    $ppn_return = $return_value * 0.11;
-                } else {
-                    $ppn_return = 0;
-                }
+                $ppn_return = ($purchase->tax_type == 'ppn') ? $return_value * 0.11 : 0;
+
                 $total_return += $return_value;
+                $total_price = $return_value + $ppn_return;
                 $total_tax_return += $ppn_return;
 
-                // dd("Qty: $qty", "Price per item: $price_per_item", "Return Value: $return_value", "PPN Return: $ppn_return");
+                // dd($total_return, $total_tax_return, $qty, $ppn_return);
 
                 if ($item) {
                     $item->decrement('stock', $qty);
+                    $purchase->decrement('total_qty', $qty);
+                    
 
                     $pivotData = $purchase->items()->wherePivot('item_id', $item->id)->first();
-                    $pivotWarehouse = $item->item_warehouse()->wherePivot('item_id', $item->id)->first();
-
                     if ($pivotData) {
                         $newQty = $pivotData->pivot->qty - $qty;
-
+                        // dd($newQty);
                         if ($newQty > 0) {
                             $purchase->items()->updateExistingPivot($item->id, [
                                 'qty' => $newQty,
                             ]);
                         } else {
-                            $purchase->items()->detach($item->id);
+                            dd('Item sold out');
                         }
-                    } else {
-                        dd("Item tidak ditemukan di pivot item_purchase", $item->id, $purchase->id);
                     }
 
+                    $pivotWarehouse = $item->item_warehouse()->wherePivot('item_id', $item->id)->first();
                     if ($pivotWarehouse) {
                         $newStockWarehouse = $pivotWarehouse->pivot->stock - $qty;
 
-                        if ($newStockWarehouse > 0) {
-                            $item->item_warehouse()->updateExistingPivot($pivotWarehouse->pivot->warehouse_id, [
-                                'stock' => $newStockWarehouse,
-                            ]);
-                        } else {
-                            $item->item_warehouse()->updateExistingPivot($pivotWarehouse->pivot->warehouse_id, [
-                                'stock' => 0,
-                            ]);
-                        }
-                    } else {
-                        dd("Item tidak ditemukan di pivot item_warehouse", $item->id, $purchase->id);
+                        $item->item_warehouse()->updateExistingPivot($pivotWarehouse->pivot->warehouse_id, [
+                            'stock' => max($newStockWarehouse, 0),
+                            'original_stock' => max($newStockWarehouse, 0),
+                            'physical' => max($newStockWarehouse, 0),
+                        ]);
                     }
 
                     $return->items()->attach($item->id, [
@@ -127,18 +117,14 @@ class ReturnPurchaseController extends Controller
                 }
             }
 
-
-
-            $subtotal = $purchase->subtotal - $return_value;
-            // dd($total_return, $subtotal);
             $return->update(['total_return' => $total_return]);
 
-            $purchase->decrement('total_price', $total_return);
-            $purchase->decrement('sub_total', $subtotal);
+            $purchase->decrement('total_price', $total_price);
+            $purchase->decrement('sub_total', $total_return);
             $purchase->decrement('tax', $total_tax_return);
 
             toast('Return berhasil dilakukan dan total harga serta PPN berkurang', 'success');
-            return redirect()->route('manager.purchase.index');
+            return redirect()->route('manager.return.purchase');
         });
     }
 }

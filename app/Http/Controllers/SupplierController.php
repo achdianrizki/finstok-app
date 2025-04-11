@@ -90,18 +90,26 @@ class SupplierController extends Controller
     public function destroy(Request $request, Supplier $supplier)
     {
         $supplier->delete();
-        // return redirect()->route('manager.supplier.index')->with('success', "Supplier {$supplier->name} telah dihapus secara permanen.");
+
+        toast('Delete Success!', 'success');
+        return redirect()->back();
 
     }
 
-    public function deletedData()
+    public function deletedView()
     {
-        $deletedSuppliers = DB::table('suppliers')
-            ->select('id', 'supplier_code', 'name', 'npwp', 'phone', 'fax_nomor', 'address', 'city', 'province', 'status', 'deleted_at')
-            ->whereNotNull('deleted_at')
-            ->paginate(5);
+        $deletedSupplier = Supplier::onlyTrashed()->get();
 
-        return view('manager.softdeletes.supplier.index', compact('deletedSuppliers'));
+        return view('manager.supplier.deleted', compact('deletedSupplier'));
+    }
+
+    public function restore($id)
+    {
+        $supplier = Supplier::onlyTrashed()->findOrFail($id);
+        $supplier->restore();
+
+        toast('Restore Success!', 'success');
+        return redirect()->route('manager.supplier.index');
     }
 
     public function getItemsBySupplier($supplierId)

@@ -22,7 +22,7 @@
                     if (response.data.length === 0) {
                         rows = `
                     <tr>
-                        <td colspan="6" class="py-3 px-6 text-center">Not Found</td>
+                        <td colspan="6" class="py-3 px-6 text-center">Data tidak ditemukan</td>
                     </tr>
                     `;
                     } else {
@@ -38,10 +38,10 @@
                                     <x-button target="" href="/manager/items/${item.id}/edit" variant="warning" class="justify-center max-w-sm gap-2">
                                         <x-heroicon-o-pencil class="w-3 h-3" aria-hidden="true" />
                                     </x-button>
-                                    <form method="POST" action="/manager/items/${item.id}" style="display:inline;">
+                                    <form method="POST" action="/manager/items/${item.id}" class="delete-form" style="display:inline;">
                                         @csrf
                                         <input type="hidden" name="_method" value="DELETE">
-                                        <x-button type="submit" class="bg-red-500 text-white py-1 px-3 rounded hover:bg-red-600">
+                                        <x-button type="button" class="bg-red-500 text-white py-1 px-3 rounded hover:bg-red-600 delete-button">
                                             <x-heroicon-o-trash class="w-3 h-3" aria-hidden="true" />
                                         </x-button>
                                     </form>
@@ -71,6 +71,26 @@
 
                     $('#nextPage').attr('disabled', page >= lastPage);
                     $('#prevPage').attr('disabled', page <= 1);
+
+                    // Tambahkan event listener untuk tombol delete
+                    $('.delete-button').on('click', function(e) {
+                        e.preventDefault();
+                        let form = $(this).closest('form');
+                        Swal.fire({
+                            title: 'Apakah Anda yakin?',
+                            text: "Data yang dihapus tidak dapat dikembalikan!",
+                            icon: 'warning',
+                            showCancelButton: true,
+                            confirmButtonColor: '#3085d6',
+                            cancelButtonColor: '#d33',
+                            confirmButtonText: 'Ya, hapus!',
+                            cancelButtonText: 'Batal'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                form.submit();
+                            }
+                        });
+                    });
                 }
             });
         }
@@ -97,6 +117,4 @@
             fetchitems(page, searchQuery);
         });
     });
-
-    
 </script>
