@@ -1,6 +1,8 @@
 <x-app-layout>
     <x-slot name="header">
         <div class="flex items-center gap-4">
+            @section('title', __('Edit Barang'))
+
             <x-button href="{{ route('manager.items.index') }}" variant="primary" size="sm"
                 class="justify-center gap-2">
                 <x-heroicon-o-arrow-left class="w-4 h-4" aria-hidden="true" />

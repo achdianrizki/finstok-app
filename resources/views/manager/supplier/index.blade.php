@@ -2,6 +2,7 @@
     <x-slot name="header">
         <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
             <h2 class="font-semibold text-xl leading-tight">
+                @section('title', __('Data Pemasok'))
                 {{ __('Data Pemasok') }}
             </h2>
             <x-button target="" href="{{ route('manager.supplier.create') }}" variant="success"

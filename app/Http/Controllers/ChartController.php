@@ -19,18 +19,18 @@ class ChartController extends Controller
         $labaKotor = $totalPenjualan - $totalPembelian;
 
         // Ambil Modal Awal
-        $modalAwal = DB::table('modals')->whereNull('deleted_at')->sum('initial_amount');
+        // $modalAwal = DB::table('modals')->whereNull('deleted_at')->sum('initial_amount');
 
         // Hitung Modal Akhir (Modal Awal + Laba Kotor)
-        $modalAkhir = $modalAwal + $labaKotor;
+        // $modalAkhir = $modalAwal + $labaKotor;
 
         // Kirim data dalam format JSON untuk Chart.js
         return response()->json([
             'total_penjualan' => $totalPenjualan,
             'total_pembelian' => $totalPembelian,
             'laba_kotor' => $labaKotor,
-            'modal_awal' => $modalAwal,
-            'modal_akhir' => $modalAkhir
+            // 'modal_awal' => $modalAwal,
+            // 'modal_akhir' => $modalAkhir
         ]);
     }
 }

@@ -1,6 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="text-xl font-semibold leading-tight">{{ __('Tambah Penjualan') }}</h2>
+        @section('title', __('Tambah Data Penjualan'))
+        <h2 class="text-xl font-semibold leading-tight">{{ __('Tambah Data Penjualan') }}</h2>
     </x-slot>
 
     <form id="sales-form" action="{{ route('manager.sales.store') }}" method="POST" data-parsley-validate>

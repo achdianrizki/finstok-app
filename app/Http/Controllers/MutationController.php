@@ -14,6 +14,34 @@ class MutationController extends Controller
         return response()->json($warehouses);
     }
 
+    public function getMutationData(Request $request)
+    {
+        $search = $request->input('search');
+
+        $mutations = DB::table('mutations')
+            ->join('warehouses as source', 'mutations.from_warehouse_id', '=', 'source.id')
+            ->join('warehouses as destination', 'mutations.to_warehouse_id', '=', 'destination.id')
+            ->select(
+            'mutations.id',
+            'mutations.mutated_at as mutation_date',
+            'source.name as source_warehouse',
+            'destination.name as destination_warehouse',
+            DB::raw('SUM(mutations.qty) as total_items')
+            )
+            ->whereNull('mutations.deleted_at') // Ensure only non-deleted records are fetched
+            ->when($search, function ($query, $search) {
+            $query->where(function ($q) use ($search) {
+                $q->where('source.name', 'like', "%$search%")
+                ->orWhere('destination.name', 'like', "%$search%")
+                ->orWhere('mutations.mutated_at', 'like', "%$search%");
+            });
+            })
+            ->groupBy('mutations.id', 'mutations.mutated_at', 'source.name', 'destination.name')
+            ->paginate(10); // Pagination active
+
+        return response()->json($mutations);
+    }
+
 
     public function store(Request $request)
     {
@@ -105,4 +133,27 @@ class MutationController extends Controller
         }
     }
 
+    public function destroy(Mutation $mutation)
+    {
+        $mutation->delete();
+        
+        toast('Delete Success!', 'success');
+        return redirect()->back();
+
+    }
+
+    public function restore($id)
+    {
+        $mutation = Mutation::withTrashed()->findOrFail($id);
+        $mutation->restore();
+
+        toast('Restore Success!', 'success');
+        return redirect()->route('manager.report.mutation');
+    }
+
+    public function deletedView()
+    {
+        $mutations = Mutation::onlyTrashed()->get();
+        return view('manager.mutation.deleted', compact('mutations'));
+    }
 }

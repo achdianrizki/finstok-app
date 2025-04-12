@@ -2,6 +2,7 @@
     <x-slot name="header">
         <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
             <h2 class="text-xl font-semibold leading-tight">
+                @section('title', __('Sampah Data Barang'))
                 {{ __('Sampah Data Barang') }}
             </h2>
         </div>
@@ -77,7 +78,16 @@
     </div>
 
     @push('scripts')
-
+    <script>
+        $(document).ready(function () {
+            $('#search').on('keyup', function () {
+                var value = $(this).val().toLowerCase();
+                $('#itemTable tr').filter(function () {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+                });
+            });
+        });
+    </script>
     @endpush
 
 </x-app-layout>

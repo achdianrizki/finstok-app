@@ -19,6 +19,7 @@ return new class extends Migration
             $table->integer('qty');
             $table->text('note')->nullable();
             $table->timestamp('mutated_at')->useCurrent();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

@@ -1,5 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
+        @section('title', __('Tambah Data Pembelian'))
+
         <h2 class="text-xl font-semibold leading-tight">{{ __('Tambah Data Pembelian') }}</h2>
     </x-slot>
 

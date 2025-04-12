@@ -6,6 +6,7 @@
                 <x-heroicon-o-arrow-left class="w-4 h-4" aria-hidden="true" />
             </x-button>
             <h2 class="text-xl font-semibold leading-tight">
+                @section('title', __('Tambah Gudang'))
                 {{ __('Tambah gudang') }}
             </h2>
         </div>

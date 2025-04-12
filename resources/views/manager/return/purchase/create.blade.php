@@ -1,5 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
+        @section('title', __('Retur Pembelian'. $purchase->purchase_number))
         <h2 class="text-xl font-semibold leading-tight">{{ __('Retur Pembelian ' . $purchase->purchase_number) }}</h2>
     </x-slot>
 

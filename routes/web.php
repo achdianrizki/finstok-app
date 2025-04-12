@@ -121,6 +121,7 @@ Route::middleware('auth')->group(function () {
             Route::get('/sale', [ReportController::class, 'sale'])->name('sale');
             Route::get('/purchases/return', [ReportController::class, 'returnPurchaseView'])->name('purchase.return');
             Route::get('/sale/return', [ReportController::class, 'returnSaleView'])->name('sale.return');
+            Route::get('/mutation', [ReportController::class, 'mutation'])->name('mutation');
 
             Route::get('/item-warehouse-opname/{id}/export/pdf', [ReportController::class, 'exportItemsWarehouseOpnamePDF'])->name('items.warehouse.opname.export.pdf');
             Route::get('/item-warehouse-opname/{id}/export/excel', [ReportController::class, 'exportItemsWarehouseOpnameExcel'])->name('items.warehouse.opname.export.excel');
@@ -208,9 +209,15 @@ Route::middleware('auth')->group(function () {
             Route::post('/sales-by-salesman/export/pdf', [ReportController::class, 'exportSalesBySalesmanPDF'])->name('sales-by-salesman.export.pdf');
             Route::post('/sales-by-salesman/export/excel', [ReportController::class, 'exportSalesBySalesmanExcel'])->name('sales-by-salesman.export.excel');
             // Sale Data by salesman END (PDF)
+
+            //MUTATION START
+            Route::post('/mutation/export/pdf', [ReportController::class, 'exportMutationPDF'])->name('mutation.export.pdf');
+            Route::post('/mutation/export/excel', [ReportController::class, 'exportMutationExcel'])->name('mutation.export.excel');
+            //MUTATION END
         });
         
         Route::prefix('trash')->name('trash.')->group(function () {
+            
             Route::get('/items', [ItemController::class, 'deletedView'])->name('items');
             Route::post('/items/{id}', [ItemController::class, 'restore'])->name('items.restore');
 
@@ -229,13 +236,14 @@ Route::middleware('auth')->group(function () {
             Route::get('/category', [CategoryController::class, 'deletedView'])->name('category');
             Route::post('/category/{id}', [CategoryController::class, 'restore'])->name('category.restore');
 
-            
-
             Route::get('/purchase', [PurchaseController::class, 'deletedView'])->name('purchase');
             Route::post('/purchase/{id}', [PurchaseController::class, 'restore'])->name('purchase.restore');
 
             Route::get('/sale', [SaleController::class, 'deletedView'])->name('sale');
             Route::post('/sale/{id}', [SaleController::class, 'restore'])->name('sale.restore');
+
+            Route::get('/mutation', [MutationController::class, 'deletedView'])->name('mutation');
+            Route::post('/mutation/{id}', [MutationController::class, 'restore'])->name('mutation.restore');
 
         });
     });
@@ -243,6 +251,7 @@ Route::middleware('auth')->group(function () {
     Route::prefix('mutation')->name('mutation.')->group(function () {
         Route::get('/get-warehouse', [MutationController::class, 'getWarehouse'])->name('get-warehouses');
         Route::post('/store', [MutationController::class, 'store'])->name('store');
+        Route::delete('/delete/{mutation_id}', [MutationController::class, 'destroy'])->name('delete');
     });
 
 
@@ -265,6 +274,7 @@ Route::get('/users-data', [UserController::class, 'getUsers'])->name('manager.us
 Route::get('/supplier-data', [SupplierController::class, 'getSupplier']);
 Route::get('/sales-data', [SaleController::class, 'getSaleItems']);
 Route::get('/sales-by-salesman-data', [SaleController::class, 'getSaleItemsBySalesman']);
+Route::get('/mutation-data', [MutationController::class, 'getMutationData'])->name('mutation');
 
 Route::get('/assets-data', [AssetController::class, 'getAssets']);
 Route::get('/buyers-data', [BuyerController::class, 'getBuyers']);

@@ -28,15 +28,15 @@
                     var myChart = new Chart(ctx, {
                         type: 'bar',
                         data: {
-                            labels: ['Total Penjualan', 'Total Pembelian', 'Laba Kotor', 'Modal Awal', 'Modal Akhir'],
+                            labels: ['Total Penjualan', 'Total Pembelian', 'Laba Kotor'],
                             datasets: [{
                                 label: 'Laporan Laba Rugi',
                                 data: [
                                     data.total_penjualan, 
                                     data.total_pembelian, 
                                     data.laba_kotor, 
-                                    data.modal_awal, 
-                                    data.modal_akhir
+                                    // data.modal_awal, 
+                                    // data.modal_akhir
                                 ],
                                 backgroundColor: [
                                     'rgba(54, 162, 235, 0.2)', // Biru (Penjualan)

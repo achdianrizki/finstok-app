@@ -3,6 +3,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="text-xl font-semibold leading-tight">
+            @section('title', __('Tambah Pembayaran :purchase_number', ['purchase_number' => $purchase->purchase_number]))
             {{ __('Tambah Pembayaran :purchase_number', ['purchase_number' => $purchase->purchase_number]) }}</h2>
     </x-slot>
 

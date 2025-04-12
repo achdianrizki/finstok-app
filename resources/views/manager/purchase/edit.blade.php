@@ -1,5 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
+        @section('title', __('Edit Data Pembelian'))
         <h2 class="text-xl font-semibold leading-tight">{{ __('Edit Data Pembelian') }}</h2>
     </x-slot>
 

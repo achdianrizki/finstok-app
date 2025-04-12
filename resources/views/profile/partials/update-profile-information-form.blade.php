@@ -22,6 +22,20 @@
         @method('patch')
 
         <div class="space-y-2">
+            <x-form.label for="username" :value="__('Username')" />
+            <x-form.input
+                id="username"
+                name="username"
+                type="text"
+                class="block w-full"
+                :value="old('username', $user->username)"
+                required
+                autocomplete="username"
+            />
+            <x-form.error :messages="$errors->get('username')" />
+        </div>
+
+        <div class="space-y-2">
             <x-form.label
                 for="name"
                 :value="__('Name')"

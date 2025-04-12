@@ -1,6 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <div class="flex justify-between items-center">
+            @section('title', __('Pembayaran'))
             <h2 class="text-xl font-semibold leading-tight">{{ 'Pelunasan ' . $purchase->purchase_number }}</h2>
 
             <a href="{{ route('manager.report.outgoingPayment.export.allPdf', $purchase->id) }}"

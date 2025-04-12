@@ -2,6 +2,7 @@
     <x-slot name="header">
         <div class="flex justify-between items-center">
             <h2 class="text-xl font-semibold leading-tight">
+                @section('title', __('Retur Penjualan'. $sale->sale_number))
                 {{ __('Retur Penjualan :sale_number', ['sale_number' => $sale->sale_number]) }}</h2>
 
             <a href="{{ route('manager.report.incomingPayment.export.allPdf', $sale->id) }}"

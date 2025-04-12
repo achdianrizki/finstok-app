@@ -127,6 +127,9 @@
 
         <x-sidebar.sublink title="Laporan Penjualan Sales" href="{{ route('manager.report.sales-by-salesman') }}"
             :active="request()->routeIs('manager.report.sales-by-salesman')" />
+
+        <x-sidebar.sublink title="Laporan Riwayat Mutasi" href="{{ route('manager.report.mutation') }}"
+            :active="request()->routeIs('manager.report.mutation')" />
     </x-sidebar.dropdown>
 
     {{-- @role('manager')

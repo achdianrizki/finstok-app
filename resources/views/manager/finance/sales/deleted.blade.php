@@ -2,6 +2,7 @@
   <x-slot name="header">
       <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
           <h2 class="text-xl font-semibold leading-tight">
+                @section('title', __('Sampah Penjualan Barang'))
               {{ __('Sampah Penjualan Barang') }}
           </h2>
       </div>
@@ -26,7 +27,7 @@
                       <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Aksi</th>
                   </tr>
               </thead>
-              <tbody class="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-dark-eval-1">
+              <tbody class="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-dark-eval-1" id="itemTable">
                   @if ($deletedSales->isEmpty())
                       <tr>
                           <td colspan="5" class="px-6 py-4 text-center">
@@ -82,7 +83,16 @@
   </div>
 
   @push('scripts')
-
+  <script>
+    $(document).ready(function () {
+        $('#search').on('keyup', function () {
+            var value = $(this).val().toLowerCase();
+            $('#itemTable tr').filter(function () {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+            });
+        });
+    });
+</script>
   @endpush
 
 </x-app-layout>

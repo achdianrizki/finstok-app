@@ -2,8 +2,8 @@
     <x-slot name="header">
         <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
             <h2 class="text-xl font-semibold leading-tight">
-                @section('title', __('Laporan Penjualan Berdasarkan Sales'))
-                {{ __('Laporan Penjualan Berdasarkan Sales') }}
+                @section('title', __('Laporan Riwayat Mutasi'))
+                {{ __('Laporan Riwayat Mutasi') }}
             </h2>
         </div>
     </x-slot>
@@ -17,20 +17,18 @@
                     </x-slot>
 
                     <x-slot name="menu">
-                        <form id="pdfForm" action="{{ route('manager.report.sales-by-salesman.export.pdf') }}"
-                            method="POST">
+                        <form id="pdfForm" action="{{ route('manager.report.mutation.export.pdf') }}" method="POST">
                             @csrf
-                            <input type="hidden" name="salesman_id" id="salesman_id">
+                            <input type="hidden" name="mutation_id" id="mutation_id">
                             <button type="submit"
                                 class="flex items-center gap-2 px-4 py-2 mb-2 text-sm text-white bg-red-500 hover:bg-red-600 w-full">
                                 <x-icons.pdf class="w-5 h-5" aria-hidden="true" />
                                 <span>Download PDF</span>
                             </button>
                         </form>
-                        <form id="excelForm" action="{{ route('manager.report.sales-by-salesman.export.excel') }}"
-                            method="POST">
+                        <form id="excelForm" action="{{ route('manager.report.mutation.export.excel') }}" method="POST">
                             @csrf
-                            <input type="hidden" name="salesman_id_excel" id="salesman_id_excel">
+                            <input type="hidden" name="mutation_id_excel" id="mutation_id_excel">
                             <button type="submit"
                                 class="flex items-center gap-2 px-4 py-2 text-sm text-white bg-green-600 hover:bg-green-700 w-full">
                                 <x-icons.excel class="w-5 h-5" aria-hidden="true" />
@@ -40,12 +38,10 @@
                     </x-slot>
                 </x-dropdown.dropdown>
 
-                <select id="salesman_id_select2" name="salesman_id_select2" class="block w-60 rounded select2">
-                    <option value="" selected disabled>Pilih Sales</option>
-                    @foreach ($salesmans as $salesman)
-                        <option value="{{ $salesman->id }}">{{ $salesman->name }}</option>
-                    @endforeach
-                </select>
+                <a href="/manager/trash/mutation" class="flex items-center gap-2 px-4 py-2 text-sm text-white bg-gray-500 hover:bg-gray-600 rounded">
+                    <x-heroicon-o-trash class="w-5 h-5" aria-hidden="true" />
+                    {{-- <span>Deleted</span> --}}
+                </a>
             </div>
 
             <!-- Search Input-->
@@ -55,37 +51,27 @@
             </div>
         </div>
 
-        <!-- Form to submit selected items -->
-        <form action="{{ route('manager.sales.create') }}" method="post">
-            @csrf
             <div class="overflow-x-auto">
                 <table id="export-table" class="min-w-full rounded-md">
                     <thead>
                         <tr class="bg-gray-200 text-gray-600 dark:bg-slate-900 dark:text-white text-sm leading-normal">
-                            <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Nomor Penjualan
-                            </th>
-                            <th
-                                class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider hidden md:table-cell">
-                                Tanggal Penjualan</th>
-                            <th
-                                class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider hidden md:table-cell">
-                                Nama Pelanggan</th>
-                            <th
-                                class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider hidden md:table-cell">
-                                Nama Sales</th>
-                            <th
-                                class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider hidden sm:table-cell">
-                                Status</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">No</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider hidden md:table-cell">
+                                Tanggal Mutasi</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider hidden md:table-cell">
+                                Dari Gudang</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider hidden sm:table-cell">
+                                Ke Gudang</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider hidden sm:table-cell">
+                                Jumlah </th>
                             <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Aksi</th>
                         </tr>
                     </thead>
                     <tbody id="itemTable"
                         class="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-dark-eval-1">
-                        <!-- Dynamic rows will be added here -->
                     </tbody>
                 </table>
             </div>
-        </form>
 
         <!-- Pagination Controls -->
         <div class="mt-4 flex items-center justify-center">
@@ -103,29 +89,7 @@
     </div>
 
     @push('scripts')
-        @include('components.js.dtReportSaleBySalesman')
-
-        <script>
-            $(document).ready(function() {
-                $('#salesman_id_select2').on('change', function() {
-                    $('#salesman_id').val($(this).val());
-                    $('#salesman_id_excel').val($(this).val());
-                });
-
-                $('#pdfForm').on('submit', function(event) {
-                    let salesman_id = $('#salesman_id').val() || null;
-                });
-
-                $('#excelForm').on('submit', function(event) {
-                    let salesman_id_excel = $('#salesman_id_excel').val() || null;
-                    console.log(salesman_id_excel);
-                    
-                });
-
-                $('#salesman_id_select2').select2();
-
-            });
-        </script>
+        @include('components.js.dtReportMutation')
     @endpush
 
     @push('styles')

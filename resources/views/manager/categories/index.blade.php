@@ -2,7 +2,8 @@
     <x-slot name="header">
         <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
             <h2 class="font-semibold text-xl leading-tight">
-                {{ __('Category') }}
+                @section('title', __('Kategori'))
+                {{ __('Kategori') }}
             </h2>
             <x-button href="{{ route('manager.other.categories.create') }}" variant="success"
                 class="justify-center max-w-xl gap-2">

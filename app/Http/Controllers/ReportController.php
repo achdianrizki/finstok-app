@@ -33,6 +33,7 @@ use App\Exports\ReturnSaleItemsExport;
 use App\Exports\SalesBySalesmanExport;
 use App\Exports\ReturnPurchaseItemsExport;
 use App\Exports\ItemsWarehouseOpnameExport;
+use App\Exports\MutationExport;
 
 class ReportController extends Controller
 {
@@ -503,5 +504,51 @@ class ReportController extends Controller
     public function exportIncomingPaymentExcel()
     {
         return Excel::download(new IncomingPaymentExport, 'data_pelunasan_penjualan.xlsx');
+    }
+
+    public function mutation()
+    {
+        return view('manager.report.mutation');
+    }
+
+    public function exportMutationPDF(Request $request)
+    {
+        $period = $request->period;
+        $startDate = $request->start_date;
+        $endDate = $request->end_date;
+
+        $query = DB::table('mutations')
+            ->join('items', 'mutations.item_id', '=', 'items.id')
+            ->join('warehouses as from_warehouse', 'mutations.from_warehouse_id', '=', 'from_warehouse.id')
+            ->join('warehouses as to_warehouse', 'mutations.to_warehouse_id', '=', 'to_warehouse.id')
+            ->select('mutations.*', 'items.name as item_name', 'from_warehouse.name as from_warehouse_name', 'to_warehouse.name as to_warehouse_name');
+
+        if ($period === 'day') {
+            $query->whereDate('mutation_date', now()->toDateString());
+        } elseif ($period === 'month') {
+            $query->whereMonth('mutation_date', now()->month)
+                ->whereYear('mutation_date', now()->year);
+        } elseif ($period === 'custom' && $startDate && $endDate) {
+            $query->whereBetween('mutation_date', [$startDate, $endDate]);
+        }
+
+        $mutations = $query->get();
+
+        $options = new Options();
+        $options->set('defaultFont', 'Helvetica');
+
+        $dompdf = new Dompdf($options);
+
+        $html = View::make('exports.report.mutation', compact('mutations'))->render();
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper([0, 0, 595.28, 5000]); // 595.28px = A4 width, 2000px = custom height
+        $dompdf->render();
+
+        return $dompdf->stream('data_mutasi_barang.pdf', ['Attachment' => false]);
+    }
+
+    public function exportMutationExcel()
+    {
+        return Excel::download(new MutationExport, 'data_mutasi_barang.xlsx');
     }
 }
