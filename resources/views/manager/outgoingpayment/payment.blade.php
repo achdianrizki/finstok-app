@@ -196,7 +196,7 @@
                             <td class="px-1 py-2">
                                 <input type="text"
                                     class="w-full px-2 py-1 border border-gray-300 rounded-md bg-gray-100 text-center"
-                                    value="{{ $outgoing_payment->payment_date }}" readonly>
+                                    value="{{ \Carbon\Carbon::parse($outgoing_payment->payment_date)->format('d-m-Y') }}" readonly>
                             </td>
                             <td class="px-1 py-2">
                                 <input type="text"

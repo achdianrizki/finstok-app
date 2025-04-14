@@ -1,37 +1,44 @@
 <script>
-  $(document).ready(function() {
-      let page = 1;
-      let lastPage = 1;
-      let searchQuery = '';
-      let salesman_id = '';
+    $(document).ready(function() {
+        let page = 1;
+        let lastPage = 1;
+        let searchQuery = '';
+        let salesman_id = '';
 
-      function fetchItems(page, searchQuery = '', salesman_id = '') {
+        function fetchItems(page, searchQuery = '', salesman_id = '') {
 
-          function formatRupiah(number) {
-              return new Intl.NumberFormat('id-ID', {
-                  style: 'currency',
-                  currency: 'IDR'
-              }).format(number);
-          }
+            function formatRupiah(number) {
+                return new Intl.NumberFormat('id-ID', {
+                    style: 'currency',
+                    currency: 'IDR'
+                }).format(number);
+            }
 
-          $.ajax({
-              url: '/sales-by-salesman-data?page=' + page + '&search=' + searchQuery + '&salesman_id=' + salesman_id,
-              method: 'GET',
-              success: function(response) {
-                  let rows = '';
+            $.ajax({
+                url: '/sales-by-salesman-data?page=' + page + '&search=' + searchQuery +
+                    '&salesman_id=' + salesman_id,
+                method: 'GET',
+                success: function(response) {
+                    let rows = '';
 
-                  if (response.data.length === 0) {
-                      rows = `
+                    if (response.data.length === 0) {
+                        rows = `
                 <tr>
                     <td colspan="6" class="py-3 text-center">Data tidak ditemukan</td>
                 </tr>
                 `;
-                  } else {
-                      $.each(response.data, function(index, sale) {
-                          rows += `
+                    } else {
+                        $.each(response.data, function(index, sale) {
+                            let date = new Date(sale.sale_date);
+                            let formattedDate = date.getDate().toString().padStart(2, '0') +
+                                '-' +
+                                (date.getMonth() + 1).toString().padStart(2, '0') + '-' +
+                                date.getFullYear();
+
+                            rows += `
                           <tr class="border dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-slate-900 ${sale.status === 'belum_lunas' ? 'bg-red-100' : ''}">
                               <td class="px-6 py-4 whitespace-nowrap">${sale.sale_number}</td>
-                              <td class="px-6 py-4 whitespace-nowrap hidden md:table-cell">${sale.sale_date}</td>
+                              <td class="px-6 py-4 whitespace-nowrap hidden md:table-cell">${formattedDate}</td>
                               <td class="px-6 py-4 whitespace-nowrap hidden md:table-cell">${sale.buyer.name}</td>
                               <td class="px-6 py-4 whitespace-nowrap hidden md:table-cell">${sale.salesman.name}</td>
                               <td class="px-6 py-4 whitespace-nowrap hidden md:table-cell">${sale.status === 'belum_lunas' ? 'Belum Lunas' : sale.status === 'lunas' ? 'Lunas' : sale.status}</td>
@@ -69,46 +76,46 @@
                               </td>
                           </tr>
                       `;
-                      });
-                  }
+                        });
+                    }
 
-                  $('#itemTable').html(rows);
+                    $('#itemTable').html(rows);
 
-                  lastPage = response.last_page;
-                  $('#currentPage').text(page);
+                    lastPage = response.last_page;
+                    $('#currentPage').text(page);
 
-                  $('#nextPage').attr('disabled', page >= lastPage);
-                  $('#prevPage').attr('disabled', page <= 1);
-              }
-          });
-      }
+                    $('#nextPage').attr('disabled', page >= lastPage);
+                    $('#prevPage').attr('disabled', page <= 1);
+                }
+            });
+        }
 
-      fetchItems(page);
+        fetchItems(page);
 
-      $('#nextPage').on('click', function() {
-          if (page < lastPage) {
-              page++;
-              fetchItems(page, searchQuery, salesman_id);
-          }
-      });
+        $('#nextPage').on('click', function() {
+            if (page < lastPage) {
+                page++;
+                fetchItems(page, searchQuery, salesman_id);
+            }
+        });
 
-      $('#prevPage').on('click', function() {
-          if (page > 1) {
-              page--;
-              fetchItems(page, searchQuery, salesman_id);
-          }
-      });
+        $('#prevPage').on('click', function() {
+            if (page > 1) {
+                page--;
+                fetchItems(page, searchQuery, salesman_id);
+            }
+        });
 
-      $('#search').on('keyup', function() {
-          searchQuery = $(this).val();
-          page = 1;
-          fetchItems(page, searchQuery, salesman_id);
-      });
+        $('#search').on('keyup', function() {
+            searchQuery = $(this).val();
+            page = 1;
+            fetchItems(page, searchQuery, salesman_id);
+        });
 
-      $('#salesman_id_select2').on('change', function() {
-          salesman_id = $(this).val();
-          page = 1;
-          fetchItems(page, searchQuery, salesman_id);
-      });
-  });
+        $('#salesman_id_select2').on('change', function() {
+            salesman_id = $(this).val();
+            page = 1;
+            fetchItems(page, searchQuery, salesman_id);
+        });
+    });
 </script>

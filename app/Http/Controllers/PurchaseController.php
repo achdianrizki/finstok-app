@@ -118,9 +118,11 @@ class PurchaseController extends Controller
 
             $purchase_number = 'SEVENA/BUY/' . $month . '/' . str_pad($newNumber, 3, '0', STR_PAD_LEFT) . '/' . $year;
 
+            $purchase_date = \Carbon\Carbon::createFromFormat('d-m-Y', $request->purchase_date)->format('Y-m-d');
+
             $purchase = Purchase::create([
                 'purchase_number'   => $purchase_number,
-                'purchase_date'     => $request->purchase_date,
+                'purchase_date'     => $purchase_date,
                 'supplier_id'       => $request->supplier_id,
                 'tax'               => (float) str_replace(',', '.', str_replace('.', '', $request->tax)),
                 'tax_type'          => $request->tax_type,
@@ -211,8 +213,10 @@ class PurchaseController extends Controller
         return DB::transaction(function () use ($request, $purchase) {
             $total_qty = array_sum($request->qty);
 
+            $purchase_date = \Carbon\Carbon::createFromFormat('d-m-Y', $request->purchase_date)->format('Y-m-d');
+
             $purchase->update([
-                'purchase_date'     => $request->purchase_date,
+                'purchase_date'     => $purchase_date,
                 'supplier_id'       => $request->supplier_id,
                 'tax'               => (float) str_replace(',', '.', str_replace('.', '', $request->tax)),
                 'tax_type'          => $request->tax_type,

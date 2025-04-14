@@ -118,7 +118,7 @@
                     let row = `
                     <tr>
                         <td class="p-2">
-                            <select name="suppliers[]" class="w-full p-2 border border-gray-300 rounded" required>
+                            <select name="suppliers[]" class="w-full p-2 border border-gray-300 rounded" required data-parsley-required-message="Pemasok Barang barang wajib diisi">
                                 <option value="">Pilih Supplier</option>
                                 ${supplierOptions}
                             </select>
@@ -162,6 +162,22 @@
                     let purchasePrice = parseFloat($(this).val().replace(/\./g, '').replace(',', '.')) || 0;
 
                     purchasePrice = parseFloat(purchasePrice.toFixed(2));
+                });
+
+                $('#buttonSubmit').on('click', function(e) {
+                    const supplierCount = $('#supplierTable tbody tr').length;
+                    console.log(supplierCount);
+
+                    if (supplierCount === 0) {
+                        e.preventDefault();
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'Minimal satu pemasok barang harus dipilih!',
+                        });
+                        return;
+
+                    }
                 });
             });
         </script>

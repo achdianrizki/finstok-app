@@ -16,17 +16,17 @@
                         :value="old('name', $sale->sale_number)" readonly />
 
                     <x-form.label for="sale_date" :value="__('Tanggal Penjualan')" />
-                    <x-form.input id="sale_date" class="block w-full flatpickr-input" type="date" name="sale_date"
-                        :value="old('name', $sale->sale_date)" readonly />
+                    <x-form.input id="sale_date" class="block w-full flatpickr-input" type="text" name="sale_date"
+                        :value="old('name', \Carbon\Carbon::parse($sale->sale_date)->format('d-m-Y'))" readonly />
 
                     <x-form.label for="buyer_id" :value="__('Pembeli')" />
                     <select id="buyer_id" name="buyer_id" class="w-full select2"
                         data-parsley-required-message="Pilih salah satu buyer">
                         <option value="" selected disabled>Pilih</option>
                         @foreach ($buyers as $buyer)
-                        <option value="{{ $buyer->id }}" {{ old('buyer_id', $sale->buyer_id) == $buyer->id ? 'selected'
-                            : '' }}>
-                            {{ $buyer->name }}</option>
+                            <option value="{{ $buyer->id }}"
+                                {{ old('buyer_id', $sale->buyer_id) == $buyer->id ? 'selected' : '' }}>
+                                {{ $buyer->name }}</option>
                         @endforeach
                     </select>
 
@@ -34,9 +34,9 @@
                     <x-form.select id="salesman_id" name="salesman_id" class="w-full select2">
                         <option value="" selected disabled>{{ __('Pilih Sales') }}</option>
                         @foreach ($salesmans as $salesman)
-                        <option value="{{ $salesman->id }}" {{ old('salesman_id', $sale->salesman_id) == $salesman->id ?
-                            'selected' : '' }}>
-                            {{ $salesman->name }}</option>
+                            <option value="{{ $salesman->id }}"
+                                {{ old('salesman_id', $sale->salesman_id) == $salesman->id ? 'selected' : '' }}>
+                                {{ $salesman->name }}</option>
                         @endforeach
                     </x-form.select>
 
@@ -85,15 +85,15 @@
                     <x-form.select id="warehouse_id" class="block w-full pointer-events-none bg-gray-200"
                         name="warehouse_id">
                         @foreach ($warehouses as $warehouse)
-                        @php
-                        $selectedWarehouse = $sale->items
-                        ->pluck('pivot.warehouse_id')
-                        ->contains($warehouse->id);
-                        @endphp
-                        <option value="{{ $warehouse->id }}" {{ old('warehouse_id', $selectedWarehouse ? $warehouse->id
-                            : null) == $warehouse->id ? 'selected' : '' }}>
-                            {{ $warehouse->name }}
-                        </option>
+                            @php
+                                $selectedWarehouse = $sale->items
+                                    ->pluck('pivot.warehouse_id')
+                                    ->contains($warehouse->id);
+                            @endphp
+                            <option value="{{ $warehouse->id }}"
+                                {{ old('warehouse_id', $selectedWarehouse ? $warehouse->id : null) == $warehouse->id ? 'selected' : '' }}>
+                                {{ $warehouse->name }}
+                            </option>
                         @endforeach
                     </x-form.select>
                     <input type="hidden" name="" id="warehouse_id_selected"
@@ -136,85 +136,84 @@
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-300">
                             @foreach ($sale->items as $index => $item)
-                            <tr class="border-b border-gray-300">
-                                <td class="px-1 py-2">
-                                    <input type="text"
-                                        class="item-code w-full px-2 py-1 border border-gray-300 rounded-md bg-gray-100 text-center"
-                                        readonly value="{{ $item->code }}">
-                                </td>
-                                <td class="px-1 py-2">
-                                    <select name="items[]"
-                                        class="item-select w-full select2 px-2 py-1 border border-gray-300 rounded-md pointer-events-none bg-gray-200"
-                                        data-locked="true">
-                                        <option value="">Pilih Barang</option>
-                                        @foreach ($items as $availableItem)
-                                        <option value="{{ $availableItem->id }}" {{ $item->id == $availableItem->id ?
-                                            'selected' : '' }}>
-                                            {{ $availableItem->name }}
-                                        </option>
-                                        @endforeach
-                                    </select>
-                                </td>
-                                <td class="px-1 py-2"><input type="number" name="stock[]"
-                                        class="stock w-16 px-2 py-1 border border-gray-300 rounded-md bg-gray-100 text-center"
-                                        readonly value="{{ $item->stock }}"></td>
-                                <td class="px-1 py-2"><input type="text" name="unit[]"
-                                        class="unit w-16 px-2 py-1 border border-gray-300 rounded-md bg-gray-100 text-center"
-                                        readonly value="{{ $item->unit }}"></td>
-                                <td class="px-1 py-2">
-                                    <input type="number" name="qty_sold[]"
-                                        class="qty_sold w-16 px-2 py-1 border border-gray-300 rounded-md text-center"
-                                        value="{{ $item->pivot->qty_sold }}">
-                                </td>
-                                <td class="px-1 py-2">
-                                    <input type="text" name="sale_prices[]"
-                                        class="sale_price w-full px-2 py-1 border border-gray-300 rounded-md text-right"
-                                        required data-parsley-required-message="Harga jual harus diisi"
-                                        value="{{ number_format($item->pivot->sale_price, 2, ',', '.') }}">
-                                </td>
-                                <td class="px-1 py-2">
-                                    <div class="flex space-x-1">
-                                        <input type="text" name="discount1[]"
-                                            class="discount1 w-10 px-1 py-1 border border-gray-300 rounded-md text-right"
-                                            placeholder="D1"
-                                            value="{{ $item->pivot->discount1 == 0 ? '' : $item->pivot->discount1 }}">
-                                        <input type="text" name="discount2[]"
-                                            class="discount2 w-10 px-1 py-1 border border-gray-300 rounded-md text-right"
-                                            placeholder="D2"
-                                            value="{{ $item->pivot->discount2 == 0 ? '' : $item->pivot->discount2 }}">
-                                        <input type="text" name="discount3[]"
-                                            class="discount3 w-10 px-1 py-1 border border-gray-300 rounded-md text-right"
-                                            placeholder="D3"
-                                            value="{{ $item->pivot->discount3 == 0 ? '' : $item->pivot->discount3 }}">
-                                        <input type="text" name="ad[]"
-                                            class="ad w-8 px-1 py-1 border border-gray-300 rounded-md text-right"
-                                            placeholder="AD"
-                                            value="{{ $item->pivot->ad == 0 ? '' : $item->pivot->ad }}">
-                                    </div>
-                                </td>
-                                <td class="px-1 py-2"><input type="text" name="total_prices[]"
-                                        class="total-price w-full px-2 py-1 border border-gray-300 rounded-md bg-gray-100 text-right"
-                                        readonly
-                                        @php
-                                            $subtotal = $item->pivot->sale_price * $item->pivot->qty_sold;
+                                <tr class="border-b border-gray-300">
+                                    <td class="px-1 py-2">
+                                        <input type="text"
+                                            class="item-code w-full px-2 py-1 border border-gray-300 rounded-md bg-gray-100 text-center"
+                                            readonly value="{{ $item->code }}">
+                                    </td>
+                                    <td class="px-1 py-2">
+                                        <select name="items[]"
+                                            class="item-select w-full select2 px-2 py-1 border border-gray-300 rounded-md pointer-events-none bg-gray-200"
+                                            data-locked="true">
+                                            <option value="">Pilih Barang</option>
+                                            @foreach ($items as $availableItem)
+                                                <option value="{{ $availableItem->id }}"
+                                                    {{ $item->id == $availableItem->id ? 'selected' : '' }}>
+                                                    {{ $availableItem->name }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </td>
+                                    <td class="px-1 py-2"><input type="number" name="stock[]"
+                                            class="stock w-16 px-2 py-1 border border-gray-300 rounded-md bg-gray-100 text-center"
+                                            readonly value="{{ $item->stock }}"></td>
+                                    <td class="px-1 py-2"><input type="text" name="unit[]"
+                                            class="unit w-16 px-2 py-1 border border-gray-300 rounded-md bg-gray-100 text-center"
+                                            readonly value="{{ $item->unit }}"></td>
+                                    <td class="px-1 py-2">
+                                        <input type="number" name="qty_sold[]"
+                                            class="qty_sold w-16 px-2 py-1 border border-gray-300 rounded-md text-center"
+                                            value="{{ $item->pivot->qty_sold }}">
+                                    </td>
+                                    <td class="px-1 py-2">
+                                        <input type="text" name="sale_prices[]"
+                                            class="sale_price w-full px-2 py-1 border border-gray-300 rounded-md text-right"
+                                            required data-parsley-required-message="Harga jual harus diisi"
+                                            value="{{ number_format($item->pivot->sale_price, 2, ',', '.') }}">
+                                    </td>
+                                    <td class="px-1 py-2">
+                                        <div class="flex space-x-1">
+                                            <input type="text" name="discount1[]"
+                                                class="discount1 w-10 px-1 py-1 border border-gray-300 rounded-md text-right"
+                                                placeholder="D1"
+                                                value="{{ $item->pivot->discount1 == 0 ? '' : $item->pivot->discount1 }}">
+                                            <input type="text" name="discount2[]"
+                                                class="discount2 w-10 px-1 py-1 border border-gray-300 rounded-md text-right"
+                                                placeholder="D2"
+                                                value="{{ $item->pivot->discount2 == 0 ? '' : $item->pivot->discount2 }}">
+                                            <input type="text" name="discount3[]"
+                                                class="discount3 w-10 px-1 py-1 border border-gray-300 rounded-md text-right"
+                                                placeholder="D3"
+                                                value="{{ $item->pivot->discount3 == 0 ? '' : $item->pivot->discount3 }}">
+                                            <input type="text" name="ad[]"
+                                                class="ad w-8 px-1 py-1 border border-gray-300 rounded-md text-right"
+                                                placeholder="AD"
+                                                value="{{ $item->pivot->ad == 0 ? '' : $item->pivot->ad }}">
+                                        </div>
+                                    </td>
+                                    <td class="px-1 py-2"><input type="text" name="total_prices[]"
+                                            class="total-price w-full px-2 py-1 border border-gray-300 rounded-md bg-gray-100 text-right"
+                                            readonly
+                                            @php
+$subtotal = $item->pivot->sale_price * $item->pivot->qty_sold;
 
                                             $discount1 = $subtotal * ($item->pivot->discount1 / 100);
 
                                             $discount2 = $subtotal * ($item->pivot->discount2 / 100);
 
-                                            $discount3 = $subtotal * ($item->pivot->discount3 / 100); 
-                                        @endphp
-                                        value="{{ number_format($subtotal - $discount1 - $discount2 - $discount3, 2, ',', '.') }}">
-                                </td>
-                                <td class="px-1 py-2"><input type="text" name="real_prices[]"
-                                        class="real_price w-full px-2 py-1 border border-gray-300 rounded-md bg-gray-100 text-right"
-                                        readonly
-                                        value="{{ number_format($item->pivot->sale_price * $item->pivot->qty_sold, 2, ',', '.') }}">
-                                </td>
-                                <td class="px-1 py-2 text-center"><button type="button"
-                                        class="remove-item px-3 py-1 bg-red-500 text-white rounded-md hover:bg-red-600 transition">Hapus</button>
-                                </td>
-                            </tr>
+                                            $discount3 = $subtotal * ($item->pivot->discount3 / 100); @endphp
+                                            value="{{ number_format($subtotal - $discount1 - $discount2 - $discount3, 2, ',', '.') }}">
+                                    </td>
+                                    <td class="px-1 py-2"><input type="text" name="real_prices[]"
+                                            class="real_price w-full px-2 py-1 border border-gray-300 rounded-md bg-gray-100 text-right"
+                                            readonly
+                                            value="{{ number_format($item->pivot->sale_price * $item->pivot->qty_sold, 2, ',', '.') }}">
+                                    </td>
+                                    <td class="px-1 py-2 text-center"><button type="button"
+                                            class="remove-item px-3 py-1 bg-red-500 text-white rounded-md hover:bg-red-600 transition">Hapus</button>
+                                    </td>
+                                </tr>
                             @endforeach
                         </tbody>
                     </table>
@@ -249,8 +248,8 @@
 
             <div class="flex justify-between items-center w-full max-w-md">
                 <label for="tax" class="mr-4">PPN 11%</label>
-                <input type="text" class="w-1/2 border-gray-500 rounded-md p-2 bg-gray-100" name="tax" id="taxRate"
-                    readonly value="{{ number_format($sale->tax, 2, ',', '.') }}">
+                <input type="text" class="w-1/2 border-gray-500 rounded-md p-2 bg-gray-100" name="tax"
+                    id="taxRate" readonly value="{{ number_format($sale->tax, 2, ',', '.') }}">
             </div>
 
             <div class="flex justify-between items-center w-full max-w-md">
@@ -280,8 +279,8 @@
     </form>
 
     @push('scripts')
-    <script>
-        $(document).ready(function() {
+        <script>
+            $(document).ready(function() {
 
                 // $(".duration-btn").prop("disabled", true).addClass("bg-gray-400");
                 // $("#custom_due_date").prop("disabled", true).addClass("bg-gray-400");
@@ -296,7 +295,8 @@
 
                     let saleDateValue = $("#sale_date").val();
 
-                    let dueDate = new Date(saleDateValue);
+                    let [pDay, pMonth, pYear] = saleDateValue.split("-");
+                    let dueDate = new Date(pYear, pMonth - 1, pDay);
                     dueDate.setDate(dueDate.getDate() + days);
 
                     let year = dueDate.getFullYear();
@@ -324,7 +324,8 @@
 
                         let saleDateValue = $("#sale_date").val();
 
-                        let dueDate = new Date(saleDateValue);
+                        let [pDay, pMonth, pYear] = saleDateValue.split("-");
+                        let dueDate = new Date(pYear, pMonth - 1, pDay);
                         dueDate.setDate(dueDate.getDate() + days);
 
                         let year = dueDate.getFullYear();
@@ -342,7 +343,7 @@
                 });
 
                 $("#sale_date").flatpickr({
-                    dateFormat: "Y-m-d",
+                    dateFormat: "d-m-Y",
                     allowInput: true,
                     onChange: function(selectedDates, dateStr) {
                         if (dateStr) {
@@ -794,44 +795,44 @@
                     }
                 });
             });
-    </script>
+        </script>
     @endpush
 
     @push('styles')
-    <style>
-        .select2-container .select2-selection--single {
-            height: 37px !important;
-            border-radius: 5px;
-            border: 1px solid #9CA3AF;
-            padding-left: 0.30rem;
-            padding-top: 0.25rem;
-            padding-bottom: 0.25rem;
-        }
+        <style>
+            .select2-container .select2-selection--single {
+                height: 37px !important;
+                border-radius: 5px;
+                border: 1px solid #9CA3AF;
+                padding-left: 0.30rem;
+                padding-top: 0.25rem;
+                padding-bottom: 0.25rem;
+            }
 
-        .select2-container .select2-selection--single .select2-selection__rendered {
-            font-size: 16px;
-            color: #374151;
-        }
+            .select2-container .select2-selection--single .select2-selection__rendered {
+                font-size: 16px;
+                color: #374151;
+            }
 
-        .select2-container .select2-selection--single .select2-selection__arrow {
-            height: 37px !important;
-        }
+            .select2-container .select2-selection--single .select2-selection__arrow {
+                height: 37px !important;
+            }
 
-        .select2-container--default .select2-results__option--highlighted[aria-selected] {
-            background-color: #3b82f6 !important;
-            color: white !important;
-        }
+            .select2-container--default .select2-results__option--highlighted[aria-selected] {
+                background-color: #3b82f6 !important;
+                color: white !important;
+            }
 
-        .select2-container--default .select2-results__option {
-            font-size: 14px;
-            padding: 10px;
-        }
+            .select2-container--default .select2-results__option {
+                font-size: 14px;
+                padding: 10px;
+            }
 
-        .duration-btn:disabled {
-            background-color: #a0aec0;
-            cursor: not-allowed;
-            opacity: 0.6;
-        }
-    </style>
+            .duration-btn:disabled {
+                background-color: #a0aec0;
+                cursor: not-allowed;
+                opacity: 0.6;
+            }
+        </style>
     @endpush
 </x-app-layout>

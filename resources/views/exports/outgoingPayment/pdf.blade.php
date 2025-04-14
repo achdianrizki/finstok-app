@@ -128,7 +128,7 @@
         @forelse ($purchases as $purchase)
             <tr>
                 <td>{{ $purchase->purchase_number }}</td>
-                <td>{{ $purchase->purchase_date }}</td>
+                <td>{{ \Carbon\Carbon::parse($purchase->purchase_date)->format('d-m-Y') }}</td>
                 <td>{{ $purchase->supplier->name }}</td>
                 <td>{{ 'Rp. ' . number_format($purchase->total_price, 2, ',', '.') }}</td>
                 <td>{{ $purchase->status == 'belum_lunas' ? 'Belum Lunas' : 'Lunas' }}</td>

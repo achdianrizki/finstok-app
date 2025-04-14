@@ -86,10 +86,12 @@ class OutgoingPaymentController extends Controller
 
         $receipt_number = 'SEVENA' . $month . str_pad($newNumber, 4, '0', STR_PAD_LEFT) . $year;
 
+        $payment_date = \Carbon\Carbon::createFromFormat('d-m-Y', $request->payment_date)->format('Y-m-d');
+
         OutgoingPayment::create([
             'purchase_id' => $request->purchase_id,
             'receipt_number' => $receipt_number,
-            'payment_date' => $request->payment_date,
+            'payment_date' => $payment_date,
             'payment_method' => $request->payment_method,
             'bank_account_number' => $request->bank_account_number,
             'payment_code' => $request->payment_code,

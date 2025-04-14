@@ -22,7 +22,7 @@
                         data-parsley-required-message="Pilih salah satu pelanggan">
                         <option value="" selected disabled>{{ __('Pilih Pelanggan') }}</option>
                         @foreach ($buyers as $buyer)
-                        <option value="{{ $buyer->id }}">{{ $buyer->name }}</option>
+                            <option value="{{ $buyer->id }}">{{ $buyer->name }}</option>
                         @endforeach
                     </x-form.select>
 
@@ -30,7 +30,7 @@
                     <x-form.select id="salesman_id" name="salesman_id" class="w-full select2">
                         <option value="" selected disabled>{{ __('Pilih Sales') }}</option>
                         @foreach ($salesmans as $salesman)
-                        <option value="{{ $salesman->id }}">{{ $salesman->name }}</option>
+                            <option value="{{ $salesman->id }}">{{ $salesman->name }}</option>
                         @endforeach
                     </x-form.select>
 
@@ -38,8 +38,8 @@
                     <x-form.select id="tax" class="block w-full" name="tax_type" required
                         data-parsley-required-message="Pajak wajib diisi">
                         <option value="" disabled selected>Pilih</option>
-                        <option value="ppn" {{ old('tax')=='ppn' ? 'selected' : '' }}>PPN 11%</option>
-                        <option value="non_ppn" {{ old('tax')=='non_ppn' ? 'selected' : '' }}>NON-PPN</option>
+                        <option value="ppn" {{ old('tax') == 'ppn' ? 'selected' : '' }}>PPN 11%</option>
+                        <option value="non_ppn" {{ old('tax') == 'non_ppn' ? 'selected' : '' }}>NON-PPN</option>
                     </x-form.select>
 
                     <div>
@@ -74,10 +74,10 @@
                     <x-form.select id="warehouse_id" class="block w-full" name="warehouse_id">
                         <option value="" disabled selected>Pilih Gudang</option>
                         @foreach ($warehouses as $warehouse)
-                        <option value="{{ $warehouse->id }}" {{ old('warehouse_id')==$warehouse->id ? 'selected' : ''
-                            }}>
-                            {{ $warehouse->name }}
-                        </option>
+                            <option value="{{ $warehouse->id }}"
+                                {{ old('warehouse_id') == $warehouse->id ? 'selected' : '' }}>
+                                {{ $warehouse->name }}
+                            </option>
                         @endforeach
                     </x-form.select>
                     <x-input-error :messages="$errors->get('warehouse_id')" class="mt-2" />
@@ -152,8 +152,8 @@
 
             <div class="flex justify-between items-center w-full max-w-md">
                 <label for="tax" class="mr-4">PPN 11%</label>
-                <input type="text" class="w-1/2 border-gray-500 rounded-md p-2 bg-gray-100" name="tax" id="taxRate"
-                    readonly>
+                <input type="text" class="w-1/2 border-gray-500 rounded-md p-2 bg-gray-100" name="tax"
+                    id="taxRate" readonly>
             </div>
 
             <div class="flex justify-between items-center w-full max-w-md">
@@ -182,8 +182,8 @@
     </form>
 
     @push('scripts')
-    <script>
-        $(document).ready(function() {
+        <script>
+            $(document).ready(function() {
 
                 $(".duration-btn").prop("disabled", true).addClass("bg-gray-400");
                 $("#custom_due_date").prop("disabled", true).addClass("bg-gray-400");
@@ -197,7 +197,8 @@
 
                     let saleDateValue = $("#sale_date").val();
 
-                    let dueDate = new Date(saleDateValue);
+                    let [pDay, pMonth, pYear] = saleDateValue.split("-");
+                    let dueDate = new Date(pYear, pMonth - 1, pDay);
                     dueDate.setDate(dueDate.getDate() + days);
 
                     let year = dueDate.getFullYear();
@@ -225,7 +226,8 @@
 
                         let saleDateValue = $("#sale_date").val();
 
-                        let dueDate = new Date(saleDateValue);
+                        let [pDay, pMonth, pYear] = saleDateValue.split("-");
+                        let dueDate = new Date(pYear, pMonth - 1, pDay);
                         dueDate.setDate(dueDate.getDate() + days);
 
                         let year = dueDate.getFullYear();
@@ -245,7 +247,7 @@
 
 
                 $("#sale_date").flatpickr({
-                    dateFormat: "Y-m-d",
+                    dateFormat: "d-m-Y",
                     allowInput: true,
                     onChange: function(selectedDates, dateStr) {
                         if (dateStr) {
@@ -320,7 +322,7 @@
                     let supplierId = $('#salesman_id').val();
                     let warehouseId = $('#warehouse_id').val();
                     updateItemData(row, itemId, warehouseId);
-                    
+
                     let selectedItem = $(this).val();
                     let stock = $(this).find(':selected').data('stock');
                     row.find('.stock').val(stock);
@@ -513,10 +515,10 @@
                         let warehouseId = $('#warehouse_id').val();
                         if (!warehouseId) {
                             Swal.fire({
-                            icon: 'error',
-                            title: 'Oops...',
-                            text: 'Silakan pilih gudang terlebih dahulu!',
-                        });
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: 'Silakan pilih gudang terlebih dahulu!',
+                            });
                             return;
                         }
 
@@ -609,7 +611,7 @@
                     let row = $(this).closest('tr');
                     let stock = parseInt(row.find('.stock').val()) || 0;
                     let qty = parseInt($(this).val()) || 0;
-                    
+
                     if (qty > stock) {
                         Swal.fire({
                             icon: 'error',
@@ -659,44 +661,44 @@
                     }
                 });
             });
-    </script>
+        </script>
     @endpush
 
     @push('styles')
-    <style>
-        .select2-container .select2-selection--single {
-            height: 37px !important;
-            border-radius: 5px;
-            border: 1px solid #9CA3AF;
-            padding-left: 0.30rem;
-            padding-top: 0.25rem;
-            padding-bottom: 0.25rem;
-        }
+        <style>
+            .select2-container .select2-selection--single {
+                height: 37px !important;
+                border-radius: 5px;
+                border: 1px solid #9CA3AF;
+                padding-left: 0.30rem;
+                padding-top: 0.25rem;
+                padding-bottom: 0.25rem;
+            }
 
-        .select2-container .select2-selection--single .select2-selection__rendered {
-            font-size: 16px;
-            color: #374151;
-        }
+            .select2-container .select2-selection--single .select2-selection__rendered {
+                font-size: 16px;
+                color: #374151;
+            }
 
-        .select2-container .select2-selection--single .select2-selection__arrow {
-            height: 37px !important;
-        }
+            .select2-container .select2-selection--single .select2-selection__arrow {
+                height: 37px !important;
+            }
 
-        .select2-container--default .select2-results__option--highlighted[aria-selected] {
-            background-color: #3b82f6 !important;
-            color: white !important;
-        }
+            .select2-container--default .select2-results__option--highlighted[aria-selected] {
+                background-color: #3b82f6 !important;
+                color: white !important;
+            }
 
-        .select2-container--default .select2-results__option {
-            font-size: 14px;
-            padding: 10px;
-        }
+            .select2-container--default .select2-results__option {
+                font-size: 14px;
+                padding: 10px;
+            }
 
-        .duration-btn:disabled {
-            background-color: #a0aec0;
-            cursor: not-allowed;
-            opacity: 0.6;
-        }
-    </style>
+            .duration-btn:disabled {
+                background-color: #a0aec0;
+                cursor: not-allowed;
+                opacity: 0.6;
+            }
+        </style>
     @endpush
 </x-app-layout>

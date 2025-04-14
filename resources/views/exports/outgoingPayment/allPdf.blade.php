@@ -57,7 +57,7 @@
         </tr>
         <tr>
             <td>Tanggal Pembelian</td>
-            <td>: {{ $purchase->purchase_date }}</td>
+            <td>: {{ \Carbon\Carbon::parse($purchase->purchase_date)->format('d-m-Y') }}</td>
         </tr>
         <tr>
             <td>Supplier</td>
@@ -91,7 +91,7 @@
         @forelse ($purchase->outgoingPayments as $outgoingPayment)
             <tr>
                 <td>{{ $outgoingPayment->receipt_number }}</td>
-                <td>{{ $outgoingPayment->payment_date }}</td>
+                <td>{{ \Carbon\Carbon::parse($outgoingPayment->payment_date)->format('d-m-Y') }}</td>
                 <td>{{ $outgoingPayment->payment_method }}</td>
                 <td>Rp {{ number_format($outgoingPayment->amount_paid, 2, ',', '.') }}</td>
                 <td>Rp {{ number_format($outgoingPayment->total_unpaid, 2, ',', '.') }}</td>

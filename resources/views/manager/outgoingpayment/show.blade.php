@@ -115,7 +115,7 @@
                 calculateRemainingPayment();
 
                 $("#payment_date").flatpickr({
-                    dateFormat: "Y-m-d",
+                    dateFormat: "d-m-Y",
                     allowInput: true,
                 });
 

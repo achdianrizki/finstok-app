@@ -27,10 +27,16 @@
                     `;
                     } else {
                         $.each(response.data, function(index, item) {
+                            let date = new Date(item.mutation_date);
+                            let formattedDate = date.getDate().toString().padStart(2, '0') +
+                                '-' +
+                                (date.getMonth() + 1).toString().padStart(2, '0') + '-' +
+                                date.getFullYear();
+
                             rows += `
                             <tr class="border dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-slate-900">
                                 <td class="px-6 py-4 whitespace-nowrap">${item.id}</td>
-                                <td class="px-6 py-4 whitespace-nowrap">${item.mutation_date}</td>
+                                <td class="px-6 py-4 whitespace-nowrap">${formattedDate}</td>
                                 <td class="px-6 py-4 whitespace-nowrap">${item.source_warehouse}</td>
                                 <td class="px-6 py-4 whitespace-nowrap">${item.destination_warehouse}</td>
                                 <td class="px-6 py-4 whitespace-nowrap">${item.total_items}</td>

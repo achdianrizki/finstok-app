@@ -31,10 +31,16 @@
                   `;
                     } else {
                         $.each(response.data, function(index, sale) {
+                            let date = new Date(sale.sale_date);
+                            let formattedDate = date.getDate().toString().padStart(2, '0') +
+                                '-' +
+                                (date.getMonth() + 1).toString().padStart(2, '0') + '-' +
+                                date.getFullYear();
+
                             rows += `
                             <tr class="border dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-slate-900 ${sale.status === 'belum_lunas' ? 'bg-red-100' : ''}">
                                 <td class="px-6 py-4 whitespace-nowrap">${sale.sale_number}</td>
-                                <td class="px-6 py-4 whitespace-nowrap hidden md:table-cell">${sale.sale_date}</td>
+                                <td class="px-6 py-4 whitespace-nowrap hidden md:table-cell">${formattedDate}</td>
                                 <td class="px-6 py-4 whitespace-nowrap hidden md:table-cell">${sale.buyer.name}</td>
                                 <td class="px-6 py-4 whitespace-nowrap hidden md:table-cell">${sale.status === 'belum_lunas' ? 'Belum Lunas' : sale.status === 'lunas' ? 'Lunas' : sale.status}</td>
                                 <td class="px-6 py-4 whitespace-nowrap">

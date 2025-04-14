@@ -13,15 +13,15 @@
             <div class="grid grid-cols-2 gap-4">
                 <div class="space-y-2">
                     <x-form.label for="purchase_date" :value="__('Tanggal Pembelian')" />
-                    <x-form.input id="purchase_date" class="block w-full flatpickr-input" type="date"
+                    <x-form.input id="purchase_date" class="block w-full flatpickr-input" type="text"
                         name="purchase_date" autocomplete="off" required
                         data-parsley-required-message="Tanggal Penjualan wajib diisi"
-                        value="{{ old('purchase_date', $purchase->purchase_date) }}" />
+                        value="{{ old('purchase_date', \Carbon\Carbon::parse($purchase->purchase_date)->format('d-m-Y')) }}" />
 
                     <x-form.label for="supplier_id" :value="__('Supplier')" />
                     <input type="hidden" name="supplier_id" value="{{ old('supplier_id', $purchase->supplier_id) }}">
                     <select id="supplier_id" class="w-full select2 pointer-events-none bg-gray-200"
-                        data-parsley-required-message="Pilih salah satu supplier" tabindex="-1" >
+                        data-parsley-required-message="Pilih salah satu supplier" tabindex="-1">
                         <option value="" selected disabled>Pilih</option>
                         @foreach ($suppliers as $supplier)
                             <option value="{{ $supplier->id }}"
@@ -279,7 +279,9 @@
 
                     let purchaseDateValue = $("#purchase_date").val();
 
-                    let dueDate = new Date(purchaseDateValue);
+                    let [pDay, pMonth, pYear] = purchaseDateValue.split("-");
+                    let dueDate = new Date(pYear, pMonth - 1, pDay);
+
                     dueDate.setDate(dueDate.getDate() + days);
 
                     let year = dueDate.getFullYear();
@@ -307,7 +309,9 @@
 
                         let purchaseDateValue = $("#purchase_date").val();
 
-                        let dueDate = new Date(purchaseDateValue);
+                        let [pDay, pMonth, pYear] = purchaseDateValue.split("-");
+                        let dueDate = new Date(pYear, pMonth - 1, pDay);
+
                         dueDate.setDate(dueDate.getDate() + days);
 
                         let year = dueDate.getFullYear();
@@ -325,7 +329,7 @@
                 });
 
                 $("#purchase_date").flatpickr({
-                    dateFormat: "Y-m-d",
+                    dateFormat: "d-m-Y",
                     allowInput: true,
                     onChange: function(selectedDates, dateStr) {
                         if (dateStr) {
@@ -592,7 +596,7 @@
                     }).on('select2:selecting', function(e) {
                         let $option = $(e.params.args.data.element);
                         if ($option.hasClass('disabled-option')) {
-                            e.preventDefault(); 
+                            e.preventDefault();
                         }
                     });
 
@@ -669,7 +673,7 @@
                                     Swal.fire("Error!",
                                         "Terjadi kesalahan saat menghapus barang.",
                                         "error");
-                                        
+
                                 }
                             });
                         }

@@ -25,11 +25,12 @@
             <x-heroicon-o-rectangle-stack class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
         </x-slot>
 
+        <x-sidebar.sublink title="Pemasok Barang" href="{{ route('manager.supplier.index') }}"
+            :active="request()->routeIs('manager.supplier*')" />
+            
         <x-sidebar.sublink title="Barang" href="{{ route('manager.items.index') }}"
             :active="request()->routeIs('manager.items*')" />
 
-        <x-sidebar.sublink title="Pemasok Barang" href="{{ route('manager.supplier.index') }}"
-            :active="request()->routeIs('manager.supplier*')" />
 
         <x-sidebar.sublink title="Pelanggan" href="{{ route('manager.buyer.index') }}"
             :active="request()->routeIs('manager.buyer*')" />

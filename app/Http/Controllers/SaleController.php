@@ -128,10 +128,11 @@ class SaleController extends Controller
             });
         });
 
-        // Filter berdasarkan supplier_id (jika diperlukan)
         $salesQuery->when($salesman_id, function ($query, $salesman_id) {
             $query->where('salesman_id', $salesman_id);
         });
+
+        $salesQuery->whereNotNull('salesman_id');
 
         // Ambil data dengan pagination
         $sales = $salesQuery->paginate(5)->appends($request->query());
@@ -167,6 +168,8 @@ class SaleController extends Controller
             str_replace(['Rp', '.', ','], ['', '', '.'], $request->discount2_value) +
             str_replace(['Rp', '.', ','], ['', '', '.'], $request->discount3_value);
 
+        $sale_date = \Carbon\Carbon::createFromFormat('d-m-Y', $request->sale_date)->format('Y-m-d');
+
         $sale = Sale::create([
             'buyer_id' => $request->buyer_id,
             'salesman_id' => $request->salesman_id,
@@ -177,7 +180,7 @@ class SaleController extends Controller
             'discount2_value' => str_replace(['Rp', '.', ','], ['', '', '.'], $request->discount2_value),
             'discount3_value' => str_replace(['Rp', '.', ','], ['', '', '.'], $request->discount3_value),
             'total_discount' => $total_discount,
-            'sale_date' => $request->sale_date,
+            'sale_date' => $sale_date,
             'payment_method' => $request->payment_method,
             'tax' => str_replace(['Rp', '.', ','], ['', '', '.'], $request->tax),
             'tax_type' => $request->tax_type,
@@ -305,6 +308,8 @@ class SaleController extends Controller
                 str_replace(['Rp', '.', ','], ['', '', '.'], $request->discount2_value) +
                 str_replace(['Rp', '.', ','], ['', '', '.'], $request->discount3_value);
 
+            $sale_date = \Carbon\Carbon::createFromFormat('d-m-Y', $request->sale_date)->format('Y-m-d');
+
             $sale->update([
                 'buyer_id' => $request->buyer_id,
                 'salesman_id' => $request->salesman_id,
@@ -315,7 +320,7 @@ class SaleController extends Controller
                 'discount2_value' => str_replace(['Rp', '.', ','], ['', '', '.'], $request->discount2_value),
                 'discount3_value' => str_replace(['Rp', '.', ','], ['', '', '.'], $request->discount3_value),
                 'total_discount' => $total_discount,
-                'sale_date' => $request->sale_date,
+                'sale_date' => $sale_date,
                 'payment_method' => $request->payment_method,
                 'tax' => str_replace(['Rp', '.', ','], ['', '', '.'], $request->tax),
                 'tax_type' => $request->tax_type,

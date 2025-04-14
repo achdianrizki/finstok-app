@@ -19,7 +19,7 @@ class OutgoingPaymentExport implements FromCollection, WithHeadings, WithStyles,
         return Purchase::with(['outgoingPayments', 'supplier'])->get()->map(function ($purchase) {
             return [
                 $purchase->purchase_number ?? '',   
-                $purchase->purchase_date ?? '',      
+                \Carbon\Carbon::parse($purchase->purchase_date)->format('d-m-Y') ?? '',      
                 $purchase->supplier->name ?? '',       
                 'Rp. ' . number_format($purchase->total_price ?? '', 2, ',', '.'),             
                 $purchase->status == 'belum_lunas' ? 'Belum Lunas' : 'Lunas',             

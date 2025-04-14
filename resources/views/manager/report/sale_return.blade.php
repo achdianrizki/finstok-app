@@ -27,7 +27,7 @@
                         role="menuitem" tabindex="-1" id="menu-item-1">
                         <x-icons.excel class="w-5 h-5" aria-hidden="true" />
                         <span>Download Excel</span>
-                    </a> --}}
+                    </a>
                 </x-slot>
             </x-dropdown.dropdown>
 
@@ -60,7 +60,7 @@
                     @foreach ($return as $data)
                         <tr class="border dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-slate-900">
                             <td class="px-6 py-4 whitespace-nowrap">{{ $data->sale_number }}</td>
-                            <td class="px-6 py-4 whitespace-nowrap hidden md:table-cell">{{ $data->return_date }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap hidden md:table-cell">{{ \Carbon\Carbon::parse($data->return_date)->format('d-m-Y') }}</td>
                             <td class="px-6 py-4 whitespace-nowrap hidden md:table-cell">{{ $data->buyer_contact }}</td>
                             <td class="px-6 py-4 whitespace-nowrap hidden md:table-cell">{{ $data->qty }}</td>
                             {{-- <td class="px-6 py-4 whitespace-nowrap">

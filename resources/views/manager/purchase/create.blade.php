@@ -185,7 +185,9 @@
 
                     let purchaseDateValue = $("#purchase_date").val();
 
-                    let dueDate = new Date(purchaseDateValue);
+                    let [pDay, pMonth, pYear] = purchaseDateValue.split("-");
+                    let dueDate = new Date(pYear, pMonth - 1, pDay);
+
                     dueDate.setDate(dueDate.getDate() + days);
 
                     let year = dueDate.getFullYear();
@@ -213,7 +215,9 @@
 
                         let purchaseDateValue = $("#purchase_date").val();
 
-                        let dueDate = new Date(purchaseDateValue);
+                        let [pDay, pMonth, pYear] = purchaseDateValue.split("-");
+                        let dueDate = new Date(pYear, pMonth - 1, pDay);
+                        
                         dueDate.setDate(dueDate.getDate() + days);
 
                         let year = dueDate.getFullYear();
@@ -231,7 +235,7 @@
                 });
 
                 $("#purchase_date").flatpickr({
-                    dateFormat: "Y-m-d",
+                    dateFormat: "d-m-Y",
                     allowInput: true,
                     onChange: function(selectedDates, dateStr) {
                         if (dateStr) {
@@ -294,7 +298,8 @@
                             let allItems = response.allItems;
                             let supplierItems = response.supplierItems;
 
-                            let options = '<option value="">Pilih Barang berdasarkan Supplier</option>';
+                            let options =
+                                '<option value="">Pilih Barang berdasarkan Supplier</option>';
                             allItems.forEach(item => {
                                 let isRelated = supplierItems.includes(item
                                     .id);
@@ -494,7 +499,8 @@
                                 let allItems = response.allItems;
                                 let supplierItems = response.supplierItems;
 
-                                let options = '<option value="">Pilih Barang berdasarkan Supplier</option>';
+                                let options =
+                                    '<option value="">Pilih Barang berdasarkan Supplier</option>';
                                 allItems.forEach(item => {
                                     let isRelated = supplierItems.includes(item.id);
                                     options +=

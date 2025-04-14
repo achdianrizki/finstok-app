@@ -19,7 +19,7 @@ class IncomingPaymentExport implements FromCollection, WithHeadings, WithStyles,
         return Sale::with(['incomingPayments', 'buyer', 'salesman'])->get()->map(function ($sale) {
             return [
                 $sale->sale_number ?? '',
-                $sale->sale_date ?? '',
+                \Carbon\Carbon::parse($sale->sale_date)->format('d-m-Y') ?? '',  
                 $sale->buyer->name ?? '',
                 $sale->salesman->name ?? '',
                 'Rp. ' . number_format($sale->total_price ?? '', 2, ',', '.'),

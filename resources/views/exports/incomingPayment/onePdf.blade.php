@@ -57,7 +57,7 @@
         </tr>
         <tr>
             <td>Tanggal Penjualan</td>
-            <td>: {{ $incomingPayment->sale->sale_date }}</td>
+            <td>: {{ \Carbon\Carbon::parse($incomingPayment->sale->sale_date)->format('d-m-Y') }}</td>
         </tr>
         <tr>
             <td>Pelanggan</td>
@@ -90,7 +90,7 @@
         </tr>
         <tr>
             <td>{{ $incomingPayment->invoice_number }}</td>
-            <td>{{ $incomingPayment->payment_date }}</td>
+            <td>{{ \Carbon\Carbon::parse($incomingPayment->payment_date)->format('d-m-Y') }}</td>
             <td>{{ $incomingPayment->payment_method }}</td>
             <td>Rp {{ number_format($incomingPayment->pay_amount, 2, ',', '.') }}</td>
             <td>Rp {{ number_format($incomingPayment->remaining_payment, 2, ',', '.') }}</td>

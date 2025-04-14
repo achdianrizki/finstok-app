@@ -129,9 +129,9 @@
         @forelse ($sales as $sale)
             <tr>
                 <td>{{ $sale->sale_number }}</td>
-                <td>{{ $sale->sale_date }}</td>
+                <td>{{ \Carbon\Carbon::parse($sale->sale_date)->format('d-m-Y') }}</td>
                 <td>{{ $sale->buyer->name }}</td>
-                <td>{{ $sale->salesman->name }}</td>
+                <td>{{ $sale->salesman->name ?? '' }}</td>
                 <td>{{ 'Rp. ' . number_format($sale->total_price, 2, ',', '.') }}</td>
                 <td>{{ $sale->status == 'belum_lunas' ? 'Belum Lunas' : 'Lunas' }}</td>
             </tr>

@@ -27,12 +27,18 @@
                             `;
                     } else {
                         $.each(response.data, function(index, purchase) {
+                            let date = new Date(purchase.purchase_date);
+                            let formattedDate = date.getDate().toString().padStart(2, '0') +
+                                '-' +
+                                (date.getMonth() + 1).toString().padStart(2, '0') + '-' +
+                                date.getFullYear();
+
                             rows += `
                             <tr class="border dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-slate-900">
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <a href="/manager/return/purchase/${purchase.id}" class="text-blue-500 hover:underline">${purchase.purchase_number}</a>
                                 </td>
-                                <td class="px-6 py-4 whitespace-nowrap hidden md:table-cell">${purchase.purchase_date}</td>
+                                <td class="px-6 py-4 whitespace-nowrap hidden md:table-cell">${formattedDate}</td>
                                 <td class="px-6 py-4 whitespace-nowrap hidden md:table-cell">${purchase.supplier.name}</td>
                                 <td class="px-6 py-4 whitespace-nowrap hidden md:table-cell">${formatRupiah(purchase.total_price)}</td>
                                 <td class="px-6 py-4 whitespace-nowrap hidden md:table-cell">${purchase.status === 'belum_lunas' ? 'Belum Lunas' : purchase.status === 'lunas' ? 'Lunas' : purchase.status}</td>

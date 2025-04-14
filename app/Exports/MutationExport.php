@@ -25,7 +25,10 @@ class MutationExport implements FromCollection, WithHeadings, WithStyles, WithEv
                 'destination.name as destination_warehouse',
                 'mutations.qty as total_items'
             )
-            ->get();
+            ->get()->map(function ($item) {
+                $item->mutation_date = \Carbon\Carbon::parse($item->mutation_date)->format('d-m-Y');
+                return $item;
+            });
     }
 
     public function headings(): array
