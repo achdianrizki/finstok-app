@@ -47,29 +47,29 @@ class RoleSeeder extends Seeder
         //     'password' => bcrypt('password')
         // ]);
 
-        $supplier = Supplier::create([
-            'supplier_code' => 'SUP001',
-            'name' => 'PT.JULIANA',
-            'npwp' => '09030910293',
-            'phone' => '08123456789',
-            'fax_nomor' => null,
-            'address' => 'Jl. Supplier No. 1',
-            'city' => 'Jakarta',
-            'province' => 'DKI Jakarta',
-            'status' => true,
-        ]);
+        // $supplier = Supplier::create([
+        //     'supplier_code' => 'SUP001',
+        //     'name' => 'PT.JULIANA',
+        //     'npwp' => '09030910293',
+        //     'phone' => '08123456789',
+        //     'fax_nomor' => null,
+        //     'address' => 'Jl. Supplier No. 1',
+        //     'city' => 'Jakarta',
+        //     'province' => 'DKI Jakarta',
+        //     'status' => true,
+        // ]);
 
-        $supplier = Supplier::create([
-            'supplier_code' => 'SUP002',
-            'name' => 'PT.FERUPA',
-            'npwp' => '123456789',
-            'phone' => '08123456789',
-            'fax_nomor' => null,
-            'address' => 'Jl. Supplier No. 1',
-            'city' => 'Jakarta',
-            'province' => 'DKI Jakarta',
-            'status' => true,
-        ]);
+        // $supplier = Supplier::create([
+        //     'supplier_code' => 'SUP002',
+        //     'name' => 'PT.FERUPA',
+        //     'npwp' => '123456789',
+        //     'phone' => '08123456789',
+        //     'fax_nomor' => null,
+        //     'address' => 'Jl. Supplier No. 1',
+        //     'city' => 'Jakarta',
+        //     'province' => 'DKI Jakarta',
+        //     'status' => true,
+        // ]);
 
         $userOwner->assignRole($managerRole);
         // $userFinance->assignRole($financeRole);
