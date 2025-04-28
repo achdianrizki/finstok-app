@@ -94,9 +94,7 @@ class ReturnPurchaseController extends Controller
                             $purchase->items()->updateExistingPivot($item->id, [
                                 'qty' => $newQty,
                             ]);
-                        } else {
-                            dd('Item sold out');
-                        }
+                        } 
                     }
 
                     $pivotWarehouse = $item->item_warehouse()->wherePivot('item_id', $item->id)->first();
