@@ -60,6 +60,9 @@
                     $('#supplierTable').html(rows);
                     lastPage = response.last_page || 1;
                     $('#currentPage').text(page);
+
+                    generatePaginationButtons(page, lastPage);
+
                     $('#nextPage').attr('disabled', page >= lastPage);
                     $('#prevPage').attr('disabled', page <= 1);
                 }
@@ -97,6 +100,42 @@
             }, 500);
         });
 
+        function generatePaginationButtons(page, lastPage) {
+            let paginationButtons = '';
+            let maxButtons = window.innerWidth <= 640 ? 5 : 10; 
+            let half = Math.floor(maxButtons / 2);
+
+            let startPage = Math.max(1, page - half);
+            let endPage = Math.min(lastPage, page + half);
+
+            if (endPage - startPage + 1 < maxButtons) {
+                if (startPage === 1) {
+                    endPage = Math.min(lastPage, startPage + maxButtons - 1);
+                } else if (endPage === lastPage) {
+                    startPage = Math.max(1, endPage - maxButtons + 1);
+                }
+            }
+
+            for (let i = startPage; i <= endPage; i++) {
+                paginationButtons += `
+            <button class="pagination-btn ${i === page ? 'bg-purple-500 text-white' : 'bg-gray-200 text-gray-700'} px-3 py-1 rounded hover:bg-purple-500 hover:text-white" data-page="${i}">
+                ${i}
+            </button>
+        `;
+            }
+
+            $('#paginationNumbers').html(paginationButtons);
+        }
+
+
+        $(document).on('click', '.pagination-btn', function() {
+            page = parseInt($(this).data('page'));
+            fetchitems(page, searchQuery);
+        });
+
+        $(window).on('resize', function() {
+            generatePaginationButtons(page, lastPage);
+        });
 
     });
 

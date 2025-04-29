@@ -273,6 +273,8 @@ Route::get('/items-data-sale', [SaleController::class, 'searchItem']);
 Route::get('/users-data', [UserController::class, 'getUsers'])->name('manager.users.data');
 Route::get('/supplier-data', [SupplierController::class, 'getSupplier']);
 Route::get('/sales-data', [SaleController::class, 'getSaleItems']);
+Route::get('/report-return-purchase-items', [ReportController::class, 'getReturnPurchaseItems']);
+Route::get('/report-return-sale-items', [ReportController::class, 'getReturnSaleItems']);
 Route::get('/sales-by-salesman-data', [SaleController::class, 'getSaleItemsBySalesman']);
 Route::get('/mutation-data', [MutationController::class, 'getMutationData'])->name('mutation');
 

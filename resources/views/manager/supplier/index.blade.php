@@ -92,11 +92,13 @@
             </x-button>
         </div>
 
+        <div id="paginationNumbers" class="flex items-center justify-center gap-2 mt-4"></div>
+        
     </div>
 
     @push('scripts')
-    <script>
-        function toggleDetails(index) {
+        <script>
+            function toggleDetails(index) {
                 const detailRow = document.getElementById(`details-${index}`);
                 if (detailRow.classList.contains('hidden')) {
                     detailRow.classList.remove('hidden');
@@ -104,8 +106,8 @@
                     detailRow.classList.add('hidden');
                 }
             }
-    </script>
-    @include('components.js.dtSupplier')
+        </script>
+        @include('components.js.dtSupplier')
     @endpush
 
 </x-app-layout>

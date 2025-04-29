@@ -37,7 +37,8 @@
                     </x-slot>
                 </x-dropdown.dropdown>
 
-                <a href="/manager/trash/items" class="flex items-center gap-2 px-4 py-2 text-sm text-white bg-gray-500 hover:bg-gray-600 rounded">
+                <a href="/manager/trash/items"
+                    class="flex items-center gap-2 px-4 py-2 text-sm text-white bg-gray-500 hover:bg-gray-600 rounded">
                     <x-heroicon-o-trash class="w-5 h-5" aria-hidden="true" />
                     {{-- <span>Deleted</span> --}}
                 </a>
@@ -55,19 +56,28 @@
                 <thead>
                     <tr class="bg-gray-200 text-gray-600 dark:bg-slate-900 dark:text-white text-sm leading-normal">
                         <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Kode</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider hidden sm:table-cell">Nama barang</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider hidden sm:table-cell">Kategori</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider hidden md:table-cell">Satuan</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider hidden md:table-cell">Harga</th>
+                        <th
+                            class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider hidden sm:table-cell">
+                            Nama barang</th>
+                        <th
+                            class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider hidden sm:table-cell">
+                            Kategori</th>
+                        <th
+                            class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider hidden md:table-cell">
+                            Satuan</th>
+                        <th
+                            class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider hidden md:table-cell">
+                            Harga</th>
                         <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Aksi</th>
                     </tr>
                 </thead>
-                <tbody id="itemTable" class="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-dark-eval-1">
+                <tbody id="itemTable"
+                    class="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-dark-eval-1">
 
                 </tbody>
             </table>
         </div>
-        
+
 
 
         <!-- Pagination Controls -->
@@ -79,11 +89,14 @@
             <span id="currentPage"
                 class="mx-4 p-2 border min-w-[40px] text-center rounded bg-gray-100 dark:bg-dark-eval-1 dark:border-dark-eval-1 ">1</span>
 
+
             <x-button id="nextPage" variant="primary" class="">
                 <x-heroicon-o-chevron-double-right class="w-4 h-4" aria-hidden="true" />
             </x-button>
         </div>
 
+        <div id="paginationNumbers" class="flex items-center justify-center gap-2 mt-4"></div>
+        
     </div>
 
     @push('scripts')

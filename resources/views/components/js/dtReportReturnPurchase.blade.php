@@ -4,53 +4,44 @@
         let lastPage = 1;
         let searchQuery = '';
 
-        function fetchsalesman(page, searchQuery = '') {
+        function fetchitems(page, searchQuery = '') {
 
             $.ajax({
-                url: '/salesmans-data?page=' + page + '&search=' + searchQuery,
+                url: '/report-return-purchase-items?page=' + page + '&search=' + searchQuery,
                 method: 'GET',
                 success: function(response) {
                     let rows = '';
 
                     if (response.data.length === 0) {
                         rows = `
-                <tr>
-                    <td colspan="6" class="py-3 px-6 text-center">Data tidak ditemukan</td>
-                </tr>
-                `;
+                              <tr>
+                                      <td colspan="6" class="py-3 px-6 text-center">Data tidak ditemukan</td>
+                              </tr>
+                              `;
                     } else {
-                        $.each(response.data, function(index, salesman) {
+                        $.each(response.data, function(index, returnPurchase) {
+                            const returnDate = new Date(returnPurchase.return_date);
+                            const formattedDate = returnDate.toLocaleDateString('id-ID', {
+                                day: '2-digit',
+                                month: '2-digit',
+                                year: 'numeric'
+                            });
                             rows += `
-                        <tr class="border dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-slate-900">
-                              <td class="px-6 py-4 whitespace-nowrap">${salesman.name}</td>
-                              <td class="px-6 py-4 whitespace-nowrap hidden sm:table-cell">${salesman.phone}</td>
-                              <td class="px-6 py-4 whitespace-nowrap hidden sm:table-cell">${salesman.address}</td>
-                              <td class="px-6 py-4 whitespace-nowrap">
-                                  <x-button target="" href="/manager/salesman/${salesman.id}/edit" variant="warning" class="justify-center max-w-sm gap-2">
-                                      <x-heroicon-o-pencil class="w-3 h-3" aria-hidden="true" />
-                                  </x-button>
-                                  <!-- Destroy form -->
-                                      <form action="/manager/salesman/${salesman.id}" method="POST" class="inline-block delete-form">
-                                          @csrf
-                                          @method('DELETE')
-                                          <x-button variant="danger" type="button" class="justify-center max-w-sm gap-2 delete-button">
-                                              <x-heroicon-o-trash class="w-3 h-3" aria-hidden="true" />
-                                          </x-button>
-                                      </form>
-                                  <button onclick="toggleDetails(${index})" class="bg-green-800 text-white  p-2 rounded sm:hidden">
-                                      <x-heroicon-o-chevron-down class="w-2 h-2" aria-hidden="true" />    
-                                  </button>
-                              </td>
-                          </tr>
-                          <tr id="details-${index}" class="hidden sm:hidden">
-                              <td colspan="6" class="px-6 py-4">
-                                  <div>
-                                      <p><strong>Alamat:</strong> ${salesman.address}</p>
-                                      <p><strong>Nomor telepon:</strong> ${salesman.phone}</p>
-                                  </div>
-                              </td>
-                          </tr>
-                    `;
+                              <tr class="border dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-slate-900">
+                                <td class="px-6 py-4 whitespace-nowrap">${ returnPurchase.purchase_number }</td>
+                                <td class="px-6 py-4 whitespace-nowrap hidden md:table-cell">${formattedDate}</td>
+                                <td class="px-6 py-4 whitespace-nowrap hidden md:table-cell">${ returnPurchase.supplier_name }</td>
+                                <td class="px-6 py-4 whitespace-nowrap hidden md:table-cell">${ returnPurchase.qty }</td>
+                              </tr>
+                                  <tr id="details-${index}" class="hidden sm:hidden">
+                                          <td colspan="6" class="px-6 py-4">
+                                                  <div>
+                                                          <p><strong>No Pembelian:</strong> ${returnPurchase.purchase_number}</p>
+                                                          <p><strong>Jumlah Retur:</strong> ${returnPurchase.qty}</p>
+                                                  </div>
+                                          </td>
+                                  </tr>
+                                      `;
                         });
 
 
@@ -75,7 +66,7 @@
                         $('#prevPage').attr('disabled', false);
                     }
 
-                    // Tambahkan event listener untuk tombol delete
+                    // Tambahkan event listener untuk tombol hapus
                     $('.delete-button').on('click', function(e) {
                         e.preventDefault();
                         let form = $(this).closest('form');
@@ -98,26 +89,26 @@
             });
         }
 
-        fetchsalesman(page);
+        fetchitems(page);
 
         $('#nextPage').on('click', function() {
             if (page < lastPage) {
                 page++;
-                fetchsalesman(page, searchQuery);
+                fetchitems(page, searchQuery);
             }
         });
 
         $('#prevPage').on('click', function() {
             if (page > 1) {
                 page--;
-                fetchsalesman(page, searchQuery);
+                fetchitems(page, searchQuery);
             }
         });
 
         $('#search').on('keyup', function() {
             searchQuery = $(this).val();
             page = 1;
-            fetchsalesman(page, searchQuery);
+            fetchitems(page, searchQuery);
         });
 
         function generatePaginationButtons(page, lastPage) {
@@ -138,10 +129,10 @@
 
             for (let i = startPage; i <= endPage; i++) {
                 paginationButtons += `
-            <button class="pagination-btn ${i === page ? 'bg-purple-500 text-white' : 'bg-gray-200 text-gray-700'} px-3 py-1 rounded hover:bg-purple-500 hover:text-white" data-page="${i}">
-                ${i}
-            </button>
-        `;
+          <button class="pagination-btn ${i === page ? 'bg-purple-500 text-white' : 'bg-gray-200 text-gray-700'} px-3 py-1 rounded hover:bg-purple-500 hover:text-white" data-page="${i}">
+              ${i}
+          </button>
+      `;
             }
 
             $('#paginationNumbers').html(paginationButtons);
@@ -150,7 +141,7 @@
 
         $(document).on('click', '.pagination-btn', function() {
             page = parseInt($(this).data('page'));
-            fetchsalesman(page, searchQuery);
+            fetchitems(page, searchQuery);
         });
 
         $(window).on('resize', function() {

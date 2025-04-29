@@ -49,24 +49,34 @@ class ReportController extends Controller
 
     public function returnPurchaseView()
     {
-        $return = DB::table('return_purchases')
+        return view('manager.report.purchase_return');
+    }
+
+    public function getReturnPurchaseItems()
+    {
+        $returnPurchase = DB::table('return_purchases')
             ->join('purchases', 'return_purchases.purchase_id', '=', 'purchases.id')
             ->join('suppliers', 'return_purchases.supplier_id', '=', 'suppliers.id')
             ->join('return_purchase_items', 'return_purchases.id', '=', 'return_purchase_items.return_purchase_id')
             ->select('return_purchases.*', 'purchases.*', 'suppliers.name as supplier_name', 'return_purchase_items.*')
-            ->get();
-        return view('manager.report.purchase_return', compact('return'));
+            ->paginate(5);
+        return response()->json($returnPurchase);
     }
 
     public function returnSaleView()
     {
-        $return = DB::table('return_sales')
+        return view('manager.report.sale_return');
+    }
+
+    public function getReturnSaleItems()
+    {
+        $returnSale = DB::table('return_sales')
             ->join('sales', 'return_sales.sale_id', '=', 'sales.id')
             ->join('buyers', 'return_sales.buyer_id', '=', 'buyers.id')
             ->join('return_sale_items', 'return_sales.id', '=', 'return_sale_items.return_sale_id')
-            ->select('return_sales.*', 'sales.*', 'buyers.contact as buyer_contact', 'return_sale_items.*')
-            ->get();
-        return view('manager.report.sale_return', compact('return'));
+            ->select('return_sales.*', 'sales.*', 'buyers.name as buyer_name', 'return_sale_items.*')
+            ->paginate(5);
+        return response()->json($returnSale);
     }
 
     public function exportItemsPDF()
