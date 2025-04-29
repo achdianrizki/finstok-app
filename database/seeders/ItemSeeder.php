@@ -33,5 +33,15 @@ class ItemSeeder extends Seeder
                 'category_id' => 1,
             ]);
         }
+
+        // $json_item_supplier = File::get('database/json/data_barang_supplier.json');
+        // $items_supplier = json_decode($json_item_supplier);
+        // foreach ($items_supplier as $item) {
+        //     \DB::table('item_supplier')->insert([
+        //     'id' => $item->id,
+        //     'item_id' => $item->item_id,
+        //     'supplier_id' => $item->supplier_id,
+        //     ]);
+        // }
     }
 }
