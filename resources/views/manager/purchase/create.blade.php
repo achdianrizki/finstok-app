@@ -217,7 +217,7 @@
 
                         let [pDay, pMonth, pYear] = purchaseDateValue.split("-");
                         let dueDate = new Date(pYear, pMonth - 1, pDay);
-                        
+
                         dueDate.setDate(dueDate.getDate() + days);
 
                         let year = dueDate.getFullYear();
@@ -453,7 +453,7 @@
                 <input type="text" class="item-code w-full px-2 py-1 border border-gray-300 rounded-md bg-gray-100 text-center" readonly>
             </td>
             <td class="px-1 py-2">
-                <select name="items[]" class="item-select w-64 select2 px-1 py-1 border border-gray-300 rounded-md">
+                <select name="items[]" class="item-select w-64 select2 px-1 py-1 border border-gray-300 rounded-md" required data-parsley-required-message="Barang harus diisi">
                     <option value="">Pilih Barang berdasarkan Supplier</option>
                 </select>
             </td>
@@ -490,6 +490,8 @@
 
                     $('#items-table tbody').append(row);
                     let newItemSelect = $('#items-table tbody tr:last .item-select');
+                    $('#purchase-form').parsley().destroy(); // hapus semua instance Parsley sebelumnya
+                    $('#purchase-form').parsley();
 
                     if (supplierId) {
                         $.ajax({
@@ -554,21 +556,31 @@
 
                 $('#purchase-form').parsley();
 
+                $('#purchase-form').on('submit', function(e) {
+                    e.preventDefault(); // cegah submit default
+
+                    // Trigger ulang validasi untuk semua field (termasuk yang baru)
+                    let isValid = $(this).parsley().validate();
+
+                    if (isValid) {
+                        // Lanjutkan submit via Ajax atau biasa
+                        this.submit(); // atau custom Ajax call
+                    }
+                });
+
                 $('#supplier_id').select2();
 
                 $('#buttonSubmit').on('click', function(event) {
-                    let isValid = true;
+                    event.preventDefault(); // Cegah submit default dulu
 
-                    $('#supplier_id').each(function() {
-                        if ($(this).val() === null || $(this).val() === "") {
-                            $(this).next('.select2-container').find('.select2-selection').addClass(
-                                'error');
-                            isValid = false;
-                        } else {
-                            $(this).next('.select2-container').find('.select2-selection').removeClass(
-                                'error');
-                        }
-                    });
+                    let form = $('#purchase-form');
+                    let parsley = form.parsley();
+
+                    // Validasi Parsley untuk seluruh form
+                    if (parsley.validate()) {
+                        // Jika valid, baru submit
+                        form.submit(); // Atau jalankan AJAX di sini
+                    }
                 });
 
                 function calculateTotalQty() {
