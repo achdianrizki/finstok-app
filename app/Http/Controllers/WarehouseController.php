@@ -63,7 +63,8 @@ class WarehouseController extends Controller
         return view('manager.warehouse.show', compact('warehouse'));
     }
 
-    public function opname(Warehouse $warehouse){
+    public function opname(Warehouse $warehouse)
+    {
         return view('manager.warehouse.warehouseOpname', compact('warehouse'));
     }
 
@@ -156,15 +157,15 @@ class WarehouseController extends Controller
             ]);
 
         if ($itemWarehouse) {
-                $totalStock = DB::table('item_warehouse')
+            $totalStock = DB::table('item_warehouse')
                 ->where('item_id', $request->item_id)
                 ->sum('physical');
 
-                DB::table('items')
-                    ->where('id', $request->item_id)
-                    ->update([
-                        'stock' => $totalStock,
-                        'updated_at' => now()
+            DB::table('items')
+                ->where('id', $request->item_id)
+                ->update([
+                    'stock' => $totalStock,
+                    'updated_at' => now()
                 ]);
         }
 
@@ -215,15 +216,23 @@ class WarehouseController extends Controller
         return response()->json($items);
     }
 
-    public function checkItems($warehouse_id)
+    public function checkItems($slug)
     {
+        $warehouse = DB::table('warehouses')->where('slug', $slug)->first();
+
+        if (!$warehouse) {
+            return response()->json([
+                'items' => [],
+                'error' => 'Warehouse tidak ditemukan',
+            ], 404);
+        }
+
         $items = DB::table('item_warehouse')
-            ->where('warehouse_id', $warehouse_id)
+            ->where('warehouse_id', $warehouse->id)
             ->pluck('item_id');
 
         return response()->json([
             'items' => $items,
         ]);
     }
-
 }

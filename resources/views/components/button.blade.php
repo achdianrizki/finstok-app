@@ -71,7 +71,7 @@
         @endif
     </a>
 @else
-    <button {{ $attributes->merge(['type' => 'submit', 'class' => $classes]) }}>
+    <button {{ $attributes->merge(['type' => 'submit', 'class' => $classes]) }} {{ $disabled ? 'disabled' : '' }}>
         {{ $slot }}
         @if($iconOnly)
             <span class="sr-only">{{ $srText ?? '' }}</span>

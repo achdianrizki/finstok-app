@@ -1,0 +1,4058 @@
+[
+    {
+        "name": "Azarine Sunscreen SPF 45 50 ml Hydrasouthe",
+        "code": "BRG001",
+        "purchase_price": 53153.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Azarine Sunscreen SPF 35 40 ml Cicanide",
+        "code": "BRG002",
+        "purchase_price": 31532.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Azarine Sunscreen SPF 35 40 ml Calm my acne",
+        "code": "BRG003",
+        "purchase_price": 31532.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Azarine Sunscreen SPF 50 40 ml Hydramax",
+        "code": "BRG004",
+        "purchase_price": 53153.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Azarine Brightening Day Moist",
+        "code": "BRG005",
+        "purchase_price": 22523.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Azarine Brightening Night Moist",
+        "code": "BRG006",
+        "purchase_price": 22523.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Azarine Liptinted 01",
+        "code": "BRG007",
+        "purchase_price": 37838.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Azarine Liptinted 02",
+        "code": "BRG008",
+        "purchase_price": 37838.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Azarine Liptinted 03",
+        "code": "BRG009",
+        "purchase_price": 37838.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Azarine Liptinted 09",
+        "code": "BRG010",
+        "purchase_price": 37838.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "AZALEA Shampoo cytrus 170 ml",
+        "code": "BRG013",
+        "purchase_price": 21282.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "AZALEA Shampoo zaitoil ginseng 170 ml",
+        "code": "BRG014",
+        "purchase_price": 21282.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "DD FACIAL [TAMBAHAN]",
+        "code": "BRG015",
+        "purchase_price": 12540.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "BIOTALK COFFEE SCRUB BARSOAP",
+        "code": "BRG018",
+        "purchase_price": 49000.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "BIOTALK NATURAL CALENDULA SALVE 30GR",
+        "code": "BRG019",
+        "purchase_price": 175000.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "BIOTALK KOJIC ACID SOAP",
+        "code": "BRG020",
+        "purchase_price": 49000.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "BIOTALK CHARCOAL BARSOAP",
+        "code": "BRG021",
+        "purchase_price": 49000.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "BIOTALK PREMIUM COFFEE HONEY BARSOAP",
+        "code": "BRG022",
+        "purchase_price": 60000.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "BLINK CHARM sweet classic #1",
+        "code": "BRG025",
+        "purchase_price": 38649.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "BLINK CHARM sweet classic #3",
+        "code": "BRG026",
+        "purchase_price": 38649.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "BLINK CHARM sweet classic #5",
+        "code": "BRG027",
+        "purchase_price": 38649.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "BLINK CHARM sweet classic #8",
+        "code": "BRG028",
+        "purchase_price": 38649.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "BLINK CHARM natural flair #1",
+        "code": "BRG029",
+        "purchase_price": 38649.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "BLINK CHARM natural flair #2",
+        "code": "BRG030",
+        "purchase_price": 38649.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "BLINK CHARM natural flair #3",
+        "code": "BRG031",
+        "purchase_price": 38649.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "BLINK CHARM sexy volume #1",
+        "code": "BRG032",
+        "purchase_price": 38649.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "BLINK CHARM sexy volume #2",
+        "code": "BRG033",
+        "purchase_price": 38649.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "BLINK CHARM sensual curls #1",
+        "code": "BRG034",
+        "purchase_price": 38649.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "BLINK CHARM sensual curls #7",
+        "code": "BRG035",
+        "purchase_price": 38649.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "BLINK CHARM white brush on lash glue 2 ml",
+        "code": "BRG036",
+        "purchase_price": 55856.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "BLINK CHARM last glue daily use 1 ml",
+        "code": "BRG037",
+        "purchase_price": 23333.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "BLINK CHARM sweet classic #3 + lem 1 ml",
+        "code": "BRG038",
+        "purchase_price": 52162.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "BLINK CHARM natural flair #2 + lem 1 ml",
+        "code": "BRG039",
+        "purchase_price": 52162.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Butter fudge coll lip coat choco",
+        "code": "BRG042",
+        "purchase_price": 134234.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Lip Vinyl Dew",
+        "code": "BRG043",
+        "purchase_price": 85586.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Lip Vinyl Blossom",
+        "code": "BRG044",
+        "purchase_price": 85586.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Butter fudge coll lip coat berry",
+        "code": "BRG045",
+        "purchase_price": 134234.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Lip liner Classic beige",
+        "code": "BRG046",
+        "purchase_price": 85586.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Cover Cushion N10 Ivory",
+        "code": "BRG047",
+        "purchase_price": 179279.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Butter fudge coll lip coat butter",
+        "code": "BRG048",
+        "purchase_price": 134234.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "CIARA NATURAL DEODORANT BAUME 50gr",
+        "code": "BRG051",
+        "purchase_price": 100900.9,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "CIARA NATURAL DEODORANT BAUME 30gr",
+        "code": "BRG052",
+        "purchase_price": 73873.87,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "BRIGHTY UNDERARM SCRUB 80gr",
+        "code": "BRG053",
+        "purchase_price": 67567.57,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "BRIGHT SWIPE REMOVAL CREAM 10gr",
+        "code": "BRG054",
+        "purchase_price": 58559.56,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "BRIGHTY POST SHAVING & WAXING GEL 40GR",
+        "code": "BRG055",
+        "purchase_price": 76576.58,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "BRIGHTY MY DAY POME GRANATT BODY SCRUB 200gr",
+        "code": "BRG056",
+        "purchase_price": 67567.57,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "BRIGHTY MY DAY NIACINAMIDL BODY WASH 60 ml",
+        "code": "BRG057",
+        "purchase_price": 22522.52,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "BRIGHTY MY DAY NIACINAMIDL BODY WASH 300 ml",
+        "code": "BRG058",
+        "purchase_price": 58558.56,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "BRIGHTY MY DAY KOJIC BODY SERUM 105 ml",
+        "code": "BRG059",
+        "purchase_price": 79779.2,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "BRIGHTY MULTIPURPOSES EXPLOATING TONER  130 ml",
+        "code": "BRG060",
+        "purchase_price": 79279.28,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "BRIGHTY HAIR REMOVAL WAXING STRIP KIT (ISI 10)",
+        "code": "BRG061",
+        "purchase_price": 76576.58,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "BRIGHTY GLOWING UNDERARM GEL 30 ml",
+        "code": "BRG062",
+        "purchase_price": 89109.19,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "BRIGHTY GLOWING BODY SLIM MASK 170 gr",
+        "code": "BRG063",
+        "purchase_price": 89189.19,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "BRIGHTY GLOWING & MOISTURIZING BODY SERUM 105 gr",
+        "code": "BRG064",
+        "purchase_price": 85585.59,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "BRIGHTY GLOW BRIGHT BAR SOAP 70 gr",
+        "code": "BRG065",
+        "purchase_price": 35135.14,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "BRIGHTY CHARCOAL UNDERARM MASQUF 60 gr",
+        "code": "BRG066",
+        "purchase_price": 67567.57,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "BRIGHTY AHA HERO 35 ml",
+        "code": "BRG067",
+        "purchase_price": 76576.58,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "CIARA STRETCMARK OIL 100 ml",
+        "code": "BRG068",
+        "purchase_price": 62162.16,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "CIARA LIQUID SERUM 30ml ",
+        "code": "BRG069",
+        "purchase_price": 85585.59,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "CIARA HAIR WASH REPAIR TREATMENT 275ml",
+        "code": "BRG070",
+        "purchase_price": 71171.17,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "CIARA HAIR WASH PERFECTOR 275 ml",
+        "code": "BRG071",
+        "purchase_price": 89189.19,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "CIARA HAIR PROTECTOR PROTEIN CREAM 60 gr",
+        "code": "BRG072",
+        "purchase_price": 103603.6,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "CIARA HAIR CONDITIONER REPAIR TREATMENT WITH KERASCALP 275ml",
+        "code": "BRG073",
+        "purchase_price": 71171.17,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "CIARA CHAMOMILK CALMING CREAM 100 ml",
+        "code": "BRG074",
+        "purchase_price": 67567.57,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "CIARA AVOCADO CALMING LIQUID WASH 300 ml",
+        "code": "BRG075",
+        "purchase_price": 107207.21,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Emeron hand body lotion insta bright 200 ml",
+        "code": "BRG078",
+        "purchase_price": 10000.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Emeron hand body lotion natural green tea 200 ml",
+        "code": "BRG079",
+        "purchase_price": 8000.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Emeron hand body lotion natural honey & avocado  200 ml",
+        "code": "BRG080",
+        "purchase_price": 8000.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Emina Daily matte loose fowder 01 light beige 20 g",
+        "code": "BRG083",
+        "purchase_price": 33333.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Emina cheek lit blush stick pink 7 g",
+        "code": "BRG084",
+        "purchase_price": 50000.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Emina cheek lit blush stick peach 7 g",
+        "code": "BRG085",
+        "purchase_price": 50000.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Emina Daily matte loose compact powder 01 light 11 g",
+        "code": "BRG086",
+        "purchase_price": 34234.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Emina Daily matte loose compact powder 02 natural 11 g",
+        "code": "BRG087",
+        "purchase_price": 34234.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Emina Daily matte Bb cream 01 light 16 g",
+        "code": "BRG088",
+        "purchase_price": 27477.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Emina Daily matte Bb cream 02 Natural 16 g",
+        "code": "BRG089",
+        "purchase_price": 27477.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Emina Bright stuff tone up cream 20 ml",
+        "code": "BRG090",
+        "purchase_price": 22972.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Emina Bright stuff tone loose powder 55 ml",
+        "code": "BRG091",
+        "purchase_price": 23423.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Evangeline  sakura black",
+        "code": "BRG094",
+        "purchase_price": 35000.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Evangeline  premium 100 ml baby powder",
+        "code": "BRG095",
+        "purchase_price": 35000.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Evangeline  premium EDP candy world",
+        "code": "BRG096",
+        "purchase_price": 35000.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Evangeline  EDP 100 ml black vanila",
+        "code": "BRG097",
+        "purchase_price": 35000.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Evangeline  EDP 100 ml raw almond",
+        "code": "BRG098",
+        "purchase_price": 35000.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Evangeline  EDP 100 ml sugar biscuit",
+        "code": "BRG099",
+        "purchase_price": 35000.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Evangeline  EDP 100 ml juice pear",
+        "code": "BRG100",
+        "purchase_price": 35000.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Evangeline  EDP 100 ml black musk",
+        "code": "BRG101",
+        "purchase_price": 35000.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Evangeline  EDP 100 ml white musk",
+        "code": "BRG102",
+        "purchase_price": 35000.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Musk edt 70 hitam",
+        "code": "BRG103",
+        "purchase_price": 22000.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Musk edt 70 hijau",
+        "code": "BRG104",
+        "purchase_price": 22000.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Braven sport edp 100 ml popular green",
+        "code": "BRG105",
+        "purchase_price": 33000.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "GOOZER Hair color golden brown 100 ml",
+        "code": "BRG108",
+        "purchase_price": 55000.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "GOOZER Hair color deep golden brown 100 ml",
+        "code": "BRG109",
+        "purchase_price": 55000.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "GOOZER Hair color light golden brown 100 ml",
+        "code": "BRG110",
+        "purchase_price": 55000.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "GOOZER Hair color blonde 100 ml",
+        "code": "BRG111",
+        "purchase_price": 55000.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "GOOZER Hair color brown ash 100 ml",
+        "code": "BRG112",
+        "purchase_price": 55000.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "GOOZER Hair color natural black 100 ml",
+        "code": "BRG113",
+        "purchase_price": 55000.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "GOOZER Hair color dark brown 100 ml",
+        "code": "BRG114",
+        "purchase_price": 55000.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "GOOZER perxide 100 ml cream 6 % 100ml",
+        "code": "BRG115",
+        "purchase_price": 12000.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "GOOZER perxide 100 ml cream 9 % 100ml",
+        "code": "BRG116",
+        "purchase_price": 12000.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "bleanching ice 9 sachet 25 x 20 gr",
+        "code": "BRG117",
+        "purchase_price": 18000.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "PERFECT CUSHION 01",
+        "code": "BRG120",
+        "purchase_price": 0.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "PERFECT CUSHION 02",
+        "code": "BRG121",
+        "purchase_price": 0.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "PERFECT CUSHION 03",
+        "code": "BRG122",
+        "purchase_price": 0.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "CHERRY BLOSSOM BETAINE",
+        "code": "BRG123",
+        "purchase_price": 0.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "POMEGRANATE MOISTURIZE",
+        "code": "BRG124",
+        "purchase_price": 0.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "KIWI 3D ACID ACNE MOISTR",
+        "code": "BRG125",
+        "purchase_price": 0.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "BLUBERRY MOISTURIZER",
+        "code": "BRG126",
+        "purchase_price": 0.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "YUJA SYMWHITE MOISTRZR",
+        "code": "BRG127",
+        "purchase_price": 0.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "PEACH RETINOL MOISTRZR",
+        "code": "BRG128",
+        "purchase_price": 0.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "CENTELLA MOISTRZR 30 G",
+        "code": "BRG129",
+        "purchase_price": 0.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "JEJU TANGERINE VITA C",
+        "code": "BRG130",
+        "purchase_price": 0.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "MILK AMINO CLEANSER",
+        "code": "BRG131",
+        "purchase_price": 0.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "POMEGRANATE 10% SERUM",
+        "code": "BRG132",
+        "purchase_price": 0.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "CENTELA 2% ACNE SERUM",
+        "code": "BRG133",
+        "purchase_price": 0.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "YUJA SYMWHITE 377 SERUM",
+        "code": "BRG134",
+        "purchase_price": 0.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "INTENSIVE PEELING SOLUT",
+        "code": "BRG135",
+        "purchase_price": 0.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "G2G CREAMY BERRY OVERNIGHT 300 G",
+        "code": "BRG136",
+        "purchase_price": 64515.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "G2G TROPICAL VELVET MOISTURIZER 300 G",
+        "code": "BRG137",
+        "purchase_price": 64515.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "MCLR WTR BI-PHASE 50ML EB",
+        "code": "BRG140",
+        "purchase_price": 0.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "GAR MCLR WTR PINK 50ML EB",
+        "code": "BRG141",
+        "purchase_price": 0.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "GCN MCLR WATER BPHSE 125 ML",
+        "code": "BRG142",
+        "purchase_price": 0.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "GAR MCLR PINK 125+ECOPADS",
+        "code": "BRG143",
+        "purchase_price": 0.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "GAR MCLR BRIGHT VIT C 125 ML",
+        "code": "BRG144",
+        "purchase_price": 0.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "BC SERUM CLEANSER 100ML",
+        "code": "BRG145",
+        "purchase_price": 0.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "GAR LC CREAM 20ML",
+        "code": "BRG146",
+        "purchase_price": 0.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "SKR GLOW CERAMIDE GEL 20 ML",
+        "code": "BRG147",
+        "purchase_price": 0.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "GMN ACNO FIGHT FOAM 50ML",
+        "code": "BRG148",
+        "purchase_price": 0.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "TLOC INTENSIVE 3IN1 FM50ML",
+        "code": "BRG149",
+        "purchase_price": 0.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "GMN TLOC FOAM 50 ML",
+        "code": "BRG150",
+        "purchase_price": 0.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "GAR LC FOAM ML",
+        "code": "BRG151",
+        "purchase_price": 0.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "SAKURA WHT FO 50",
+        "code": "BRG152",
+        "purchase_price": 0.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "GC NAT EX 3 SCH (BOX)",
+        "code": "BRG153",
+        "purchase_price": 0.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "GC NAT EX 3.16 SCH (BOX)",
+        "code": "BRG154",
+        "purchase_price": 0.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "ULTSCH MIDN BLU 3.1 (BOX)",
+        "code": "BRG155",
+        "purchase_price": 0.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "GCN ULTRA PSTELS ASH SRP",
+        "code": "BRG156",
+        "purchase_price": 0.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "G74 TROPICAL VELVET 300GR",
+        "code": "BRG157",
+        "purchase_price": 0.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "G75 ROSE SPELL B&G 300GR",
+        "code": "BRG158",
+        "purchase_price": 0.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "GCN AFASH SCH 5.32 (BOX)",
+        "code": "BRG159",
+        "purchase_price": 0.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "ULT SCH GLDN BRWN 7.3 (BOX)",
+        "code": "BRG160",
+        "purchase_price": 0.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "HONOR EDP 50 ML",
+        "code": "BRG163",
+        "purchase_price": 25000.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "VLAGIO EDP 110 ML",
+        "code": "BRG164",
+        "purchase_price": 27000.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": " BOBA HANASUI LIPCREAM / BOBA LIP CREAM EDITION-01 Forest Berry ",
+        "code": "BRG167",
+        "purchase_price": 26489.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": " BOBA HANASUI LIPCREAM / BOBA LIP CREAM EDITION-02 Brown Sugar ",
+        "code": "BRG168",
+        "purchase_price": 26489.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": " BOBA HANASUI LIPCREAM / BOBA LIP CREAM EDITION-03 Salted Caramel ",
+        "code": "BRG169",
+        "purchase_price": 26489.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": " BOBA HANASUI LIPCREAM / BOBA LIP CREAM EDITION-04 Pink Lava ",
+        "code": "BRG170",
+        "purchase_price": 26489.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": " BOBA HANASUI LIPCREAM / BOBA LIP CREAM EDITION-05 Creamy Peach ",
+        "code": "BRG171",
+        "purchase_price": 26489.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": " BOBA HANASUI LIPCREAM / BOBA LIP CREAM EDITION-06 Hazelnut Latte ",
+        "code": "BRG172",
+        "purchase_price": 26489.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": " Hanasui Tintdorable Lip Stain/ Lip Tint-01 - Cherry ",
+        "code": "BRG173",
+        "purchase_price": 19072.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": " Hanasui Tintdorable Lip Stain/ Lip Tint-02 - Peachy ",
+        "code": "BRG174",
+        "purchase_price": 19072.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": " Hanasui Tintdorable Lip Stain/ Lip Tint-03 - Ruby ",
+        "code": "BRG175",
+        "purchase_price": 19072.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": " Hanasui Tintdorable Lip Stain/ Lip Tint-04 - Sweet ",
+        "code": "BRG176",
+        "purchase_price": 19072.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": " Hanasui Tintdorable Lip Stain/ Lip Tint-05 - Coral ",
+        "code": "BRG177",
+        "purchase_price": 19072.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": " Hanasui Tintdorable Lip Stain/ Lip Tint-06 - Bloody ",
+        "code": "BRG178",
+        "purchase_price": 19072.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": " MURAH - HANASUI MATTEDORABLE LIP CREAM  LIP & CHEEK-01 Kiss ",
+        "code": "BRG179",
+        "purchase_price": 26489.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": " MURAH - HANASUI MATTEDORABLE LIP CREAM  LIP & CHEEK-02 Posh ",
+        "code": "BRG180",
+        "purchase_price": 26489.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": " MURAH - HANASUI MATTEDORABLE LIP CREAM  LIP & CHEEK-03 Star ",
+        "code": "BRG181",
+        "purchase_price": 26489.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": " MURAH - HANASUI MATTEDORABLE LIP CREAM  LIP & CHEEK-04 Chic ",
+        "code": "BRG182",
+        "purchase_price": 26489.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": " MURAH - HANASUI MATTEDORABLE LIP CREAM  LIP & CHEEK-05 Classy ",
+        "code": "BRG183",
+        "purchase_price": 26489.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": " MURAH - HANASUI MATTEDORABLE LIP CREAM  LIP & CHEEK-06 Ritz ",
+        "code": "BRG184",
+        "purchase_price": 26489.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": " MURAH - HANASUI MATTEDORABLE LIP CREAM  LIP & CHEEK-07 Spark ",
+        "code": "BRG185",
+        "purchase_price": 26489.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": " MURAH - HANASUI MATTEDORABLE LIP CREAM LIP & CHEEK-08 Fancy ",
+        "code": "BRG186",
+        "purchase_price": 26489.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": " MURAH - HANASUI MATTEDORABLE LIP CREAM  LIP & CHEEK-09 Fame ",
+        "code": "BRG187",
+        "purchase_price": 26489.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": " MURAH - HANASUI MATTEDORABLE LIP CREAM  LIP & CHEEK-10 Allure ",
+        "code": "BRG188",
+        "purchase_price": 26489.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": " MURAH - HANASUI MATTEDORABLE LIP CREAM LIP & CHEEK-11 Brick ",
+        "code": "BRG189",
+        "purchase_price": 26489.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": " MURAH - HANASUI MATTEDORABLE LIP CREAM  LIP & CHEEK-12 Amaze ",
+        "code": "BRG190",
+        "purchase_price": 26489.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": " MURAH - HANASUI MATTEDORABLE LIP CREAM  LIP & CHEEK-13 Adore ",
+        "code": "BRG191",
+        "purchase_price": 26489.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": " MURAH - HANASUI MATTEDORABLE LIP CREAM  LIP & CHEEK-14 Dusty ",
+        "code": "BRG192",
+        "purchase_price": 26489.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": " MURAH - HANASUI MATTEDORABLE LIP CREAM  LIP & CHEEK-15 Flame ",
+        "code": "BRG193",
+        "purchase_price": 26489.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": " MURAH - HANASUI MATTEDORABLE LIP CREAM  LIP & CHEEK-16 Glam ",
+        "code": "BRG194",
+        "purchase_price": 26489.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": " HANASUI Power Serum NEW-P BrightExpert ",
+        "code": "BRG195",
+        "purchase_price": 25000.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": " HANASUI Power Serum NEW-Power Bright ",
+        "code": "BRG196",
+        "purchase_price": 25000.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": " HANASUI Power Serum NEW-Power Peeling ",
+        "code": "BRG197",
+        "purchase_price": 25000.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": " HANASUI Power Serum NEW-Power Barrier ",
+        "code": "BRG198",
+        "purchase_price": 25000.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": " HANASUI Power Serum NEW-P Bakuchiol ",
+        "code": "BRG199",
+        "purchase_price": 25000.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": " Hanasui Mattedorable Lip Cream Matcha Latte Edition-01 Matchalicious ",
+        "code": "BRG200",
+        "purchase_price": 26489.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": " Hanasui Mattedorable Lip Cream Matcha Latte Edition-02 Matchamallow ",
+        "code": "BRG201",
+        "purchase_price": 26489.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": " Hanasui Mattedorable Lip Cream Matcha Latte Edition-03 Matchaciano ",
+        "code": "BRG202",
+        "purchase_price": 26489.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": " Hanasui Mattedorable Lip Cream Matcha Latte Edition-04 Matchalover ",
+        "code": "BRG203",
+        "purchase_price": 26489.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": " Hanasui Mattedorable Lip Cream Matcha Latte Edition-05 Matchablend ",
+        "code": "BRG204",
+        "purchase_price": 26489.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": " Hanasui Mattedorable Lip Cream Matcha Latte Edition-06 Matchachoco ",
+        "code": "BRG205",
+        "purchase_price": 26489.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": " Hanasui Mattedorable Lipstick |  Antigeser | BPOM-101 Superstar ",
+        "code": "BRG206",
+        "purchase_price": 29500.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": " Hanasui Mattedorable Lipstick | Antigeser |  BPOM-103 Sway ",
+        "code": "BRG207",
+        "purchase_price": 29500.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": " Hanasui Mattedorable Lipstick |  Antigeser |- BPOM-105 Noona ",
+        "code": "BRG208",
+        "purchase_price": 29500.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": " Hanasui Mattedorable Lipstick |  Antigeser |  BPOM-107 Pop ",
+        "code": "BRG209",
+        "purchase_price": 29500.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": " Hanasui Mattedorable Lipstick |  Antigeser |  BPOM-110 Cinnamon ",
+        "code": "BRG210",
+        "purchase_price": 29500.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": " Hanasui Mattedorable Lipstick |  Antigeser | BPOM-111 Peony ",
+        "code": "BRG211",
+        "purchase_price": 29500.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": " Hanasui Mattedorable Lipstick |  Antigeser |  BPOM-113 Tropical ",
+        "code": "BRG212",
+        "purchase_price": 29500.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": " Hanasui Mattedorable Lipstick |  Antigeser |  BPOM-115 Sandstone ",
+        "code": "BRG213",
+        "purchase_price": 29500.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": " Hanasui Mattedorable Lipstick |  Antigeser |  BPOM-117 Jazzy ",
+        "code": "BRG214",
+        "purchase_price": 29500.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": " Hanasui Mattedorable Lipstick |  Antigeser |  BPOM-118 Retro ",
+        "code": "BRG215",
+        "purchase_price": 29500.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": " HANASUI Serum Cushion | Serum Cushion SoulMatte 15g-01 Light ",
+        "code": "BRG216",
+        "purchase_price": 70990.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": " HANASUI Serum Cushion | Serum Cushion SoulMatte 15g-02 Natural ",
+        "code": "BRG217",
+        "purchase_price": 70990.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": " HANASUI Serum Cushion | Serum Cushion SoulMatte 15g-03 Medium ",
+        "code": "BRG218",
+        "purchase_price": 70990.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": " HANASUI Serum Cushion | Serum Cushion SoulMatte 15g-04 Pinkish ",
+        "code": "BRG219",
+        "purchase_price": 70990.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": " HANASUI Serum Cushion | Serum Cushion SoulMatte 15g-05 Fairy Pinkish ",
+        "code": "BRG220",
+        "purchase_price": 70990.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": " HANASUI Serum 20ml VitC/Whitening Gold/Anti Acne Anti acne (Pink) ",
+        "code": "BRG221",
+        "purchase_price": 22200.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": " HANASUI Serum 20ml VitC/Whitening Gold/Anti Acne -Vitamin C (Orange) ",
+        "code": "BRG222",
+        "purchase_price": 22200.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": " HANASUI Serum 20ml VitC/Whitening Gold/Anti Acne BPOM-Serum Gold ",
+        "code": "BRG223",
+        "purchase_price": 22200.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": " HANASUI Serum 20ml VitC/Whitening Gold/Anti Acne -Vitamin C colagen ",
+        "code": "BRG224",
+        "purchase_price": 22200.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Implora Urban Lip Cream nude",
+        "code": "BRG227",
+        "purchase_price": 20900.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Implora Urban Lip Cream berry",
+        "code": "BRG228",
+        "purchase_price": 20900.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Implora Urban Lip Cream allure",
+        "code": "BRG229",
+        "purchase_price": 20900.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Implora Urban Lip Cream lumiere",
+        "code": "BRG230",
+        "purchase_price": 20900.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Implora Urban Lip Cream truffle mouve",
+        "code": "BRG231",
+        "purchase_price": 20900.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Implora Urban Lip Cream red been",
+        "code": "BRG232",
+        "purchase_price": 20900.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Implora Urban Lip Cream hazelnude",
+        "code": "BRG233",
+        "purchase_price": 20900.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Implora Urban Lip Cream salmon",
+        "code": "BRG234",
+        "purchase_price": 20900.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Jelly Lint Savvy Red 02",
+        "code": "BRG235",
+        "purchase_price": 20500.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Jelly Lint True Vintage 03",
+        "code": "BRG236",
+        "purchase_price": 20500.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Jelly Lint Rossy Posy 04",
+        "code": "BRG237",
+        "purchase_price": 20500.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Jelly Lint Flaminngo 06",
+        "code": "BRG238",
+        "purchase_price": 20500.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Jelly Lint Sangira 07",
+        "code": "BRG239",
+        "purchase_price": 20500.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Perfect Shield Sunscreen SPF 40",
+        "code": "BRG240",
+        "purchase_price": 33500.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Scrub Unicorn",
+        "code": "BRG243",
+        "purchase_price": 0.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Kojie Bright 909",
+        "code": "BRG244",
+        "purchase_price": 0.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Body Serum Bright 100ml",
+        "code": "BRG245",
+        "purchase_price": 0.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Body Serum Go To Bright 100ml",
+        "code": "BRG246",
+        "purchase_price": 0.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Kelly lemon soap 75 gr",
+        "code": "BRG249",
+        "purchase_price": 20000.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Kelly lemon soap 15 gr",
+        "code": "BRG250",
+        "purchase_price": 15000.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "KOJIE-SAN SKIN BRIGHTENING SOAP WITH KOJIC DIPALMITATE 65GR",
+        "code": "BRG253",
+        "purchase_price": 12625.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "KOJIE-SAN GLOW SKIN SOAP WITH NIACINAMIDE AND GLUTHATIONE 65GR",
+        "code": "BRG254",
+        "purchase_price": 12625.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "KOJIE-SAN SKIN BRIGHTENING SOAP WITH GOATS MILK 65GR",
+        "code": "BRG255",
+        "purchase_price": 12625.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "KOJIE-SAN SKIN BRIGHTENING SOAP WITH KOJIC DIPALMITATE 65GR",
+        "code": "BRG256",
+        "purchase_price": 12625.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "KOJIE-SAN BRIGHT SUNSCREEN SPF50 - 40GR",
+        "code": "BRG257",
+        "purchase_price": 65000.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Kahf Extra dry antiperspirant deodorant roll on 45 ml",
+        "code": "BRG260",
+        "purchase_price": 22072.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Kahf Cooling power antiperpirant deodorant roll on 45 ml",
+        "code": "BRG261",
+        "purchase_price": 19369.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Kahf clean fresh antiperspirant deodorant roll on 45 ml",
+        "code": "BRG262",
+        "purchase_price": 19369.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Kahf oil and acne face wash 50 ml",
+        "code": "BRG263",
+        "purchase_price": 23873.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Kahf skin energizing and brigeteing face wash 50 ml",
+        "code": "BRG264",
+        "purchase_price": 23873.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "MADAME GIE PROTECT ME SPF 30 PA +++ (50ML)",
+        "code": "BRG267",
+        "purchase_price": 38739.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "MADAME GIE PROTECT ME SUN SERUM SPF 30 PA +++ (60ML) (SP)",
+        "code": "BRG268",
+        "purchase_price": 40541.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "MADAME GIE LIP PILL BUTTERSCOTH",
+        "code": "BRG269",
+        "purchase_price": 19300.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "MADAME GIE SHOWER GLOW BODY WASH 02 PURE",
+        "code": "BRG270",
+        "purchase_price": 20725.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Marimar Kutek",
+        "code": "BRG273",
+        "purchase_price": 0.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Hair Color Permanent Natural Black",
+        "code": "BRG276",
+        "purchase_price": 0.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Hair Color Bleaching",
+        "code": "BRG277",
+        "purchase_price": 0.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Hair Color Brown",
+        "code": "BRG278",
+        "purchase_price": 0.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Hair Color Blue Black",
+        "code": "BRG279",
+        "purchase_price": 0.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Hair Color Ash Blonde",
+        "code": "BRG280",
+        "purchase_price": 0.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Hair Color Coffee",
+        "code": "BRG281",
+        "purchase_price": 0.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Hair Color Smokey Ash",
+        "code": "BRG282",
+        "purchase_price": 0.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Hair Color Dark Brown",
+        "code": "BRG283",
+        "purchase_price": 0.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Mamaya Papaya Orange 135ml",
+        "code": "BRG286",
+        "purchase_price": 0.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Mamaya Papaya Hijau 135ml",
+        "code": "BRG287",
+        "purchase_price": 0.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Mamaya anti acne face wash",
+        "code": "BRG288",
+        "purchase_price": 0.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Mamaya Brightening Face Wash",
+        "code": "BRG289",
+        "purchase_price": 0.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "BODY SF BOUQUET KB 135 ML RJ",
+        "code": "BRG292",
+        "purchase_price": 16138.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "BODY S MAWAR 135 ML RJ",
+        "code": "BRG293",
+        "purchase_price": 16138.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "MINYAK ZAITUN 75 ML",
+        "code": "BRG294",
+        "purchase_price": 19177.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "BODY S LIME ZASMINE 135 ML RJ",
+        "code": "BRG295",
+        "purchase_price": 16138.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Marck bedak natural beige 20 gr",
+        "code": "BRG298",
+        "purchase_price": 30000.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Marck bedak natural creme 20 gr",
+        "code": "BRG299",
+        "purchase_price": 30000.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Marina hand body lotion uvw nourish & bright 92 ml",
+        "code": "BRG302",
+        "purchase_price": 6000.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Marina hand body lotion booster serum kakadu",
+        "code": "BRG303",
+        "purchase_price": 10000.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Marina hand body lotion booster serum masqui",
+        "code": "BRG304",
+        "purchase_price": 10000.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "NATUR cond arganoil & oliveoil 160 ml",
+        "code": "BRG307",
+        "purchase_price": 31500.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "NATUR shampoo argan oil  140 ml",
+        "code": "BRG308",
+        "purchase_price": 31302.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "NATUR hair tonic aloevera 90 ml",
+        "code": "BRG309",
+        "purchase_price": 36500.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "NATUR hair tonic ginseng  90 ml",
+        "code": "BRG310",
+        "purchase_price": 36500.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "NATUR shampoo aloe vera 140 ml",
+        "code": "BRG311",
+        "purchase_price": 31302.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "NATUR cond ginseng & aliveoil 160 ml",
+        "code": "BRG312",
+        "purchase_price": 31500.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "NATUR cond oilveoil & aloevera 160 ml",
+        "code": "BRG313",
+        "purchase_price": 31500.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "NATUR shampo ginseng 140 ml",
+        "code": "BRG314",
+        "purchase_price": 31302.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "DD  [TAMBAHAN]",
+        "code": "BRG315",
+        "purchase_price": 7260.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Mascara waterproof long lasting volumizing lengthen Eye lash Makeup",
+        "code": "BRG318",
+        "purchase_price": 49000.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Mascara long lasting 36H",
+        "code": "BRG319",
+        "purchase_price": 69000.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Stamp eyeliner black double head",
+        "code": "BRG320",
+        "purchase_price": 49000.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Makeup blush stick 01",
+        "code": "BRG321",
+        "purchase_price": 69000.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Makeup blush stick 02",
+        "code": "BRG322",
+        "purchase_price": 69000.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Makeup blush stick 03",
+        "code": "BRG323",
+        "purchase_price": 69000.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Makeup blush stick 06",
+        "code": "BRG324",
+        "purchase_price": 69000.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Superstay matte ink liquid longlasting 01",
+        "code": "BRG325",
+        "purchase_price": 59000.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Superstay matte ink liquid longlasting 02",
+        "code": "BRG326",
+        "purchase_price": 59000.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Superstay matte ink liquid longlasting 05",
+        "code": "BRG327",
+        "purchase_price": 59000.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Superstay matte ink liquid longlasting 06",
+        "code": "BRG328",
+        "purchase_price": 59000.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Superstay matte ink liquid longlasting 07",
+        "code": "BRG329",
+        "purchase_price": 59000.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Make up base cream invisible make up primer",
+        "code": "BRG330",
+        "purchase_price": 69000.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Eyeshadow pallete 01",
+        "code": "BRG331",
+        "purchase_price": 119000.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Eyeshadow pallete 02",
+        "code": "BRG332",
+        "purchase_price": 119000.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Waterproof eyebrow cream Gel Coffee",
+        "code": "BRG333",
+        "purchase_price": 49000.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "OMG Oh may glam coverlast two way cake 21w light 12 g",
+        "code": "BRG336",
+        "purchase_price": 20720.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "OMG Oh may glam coverlast two way cake 32N natural 12 g",
+        "code": "BRG337",
+        "purchase_price": 20720.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "OMG Oh may glam lasntention waterfroof mascara 6,5 g",
+        "code": "BRG338",
+        "purchase_price": 26576.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "OMG Oh may glam Mattelast lip cream 01 dreamy 2,9 g",
+        "code": "BRG339",
+        "purchase_price": 20270.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "OMG Oh may glam Mattelast lip cream 12 scarlett 2,9 g",
+        "code": "BRG340",
+        "purchase_price": 20270.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "OMG Oh may glam Mattelast lip cream 20 Blossom 2,9 g",
+        "code": "BRG341",
+        "purchase_price": 20270.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "OMG Oh may glam Mattelast lip cream 21 Fassion 2,9 g",
+        "code": "BRG342",
+        "purchase_price": 20270.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "OMG Oh may glam Mattelast lip cream 22 Crushed 2,9 g",
+        "code": "BRG343",
+        "purchase_price": 20270.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "OMG Oh may glam Mattelast lip cream 23 Rose 2,9 g",
+        "code": "BRG344",
+        "purchase_price": 20270.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "OMG Oh may glam Mattelast lip cream 24 Berry 2,9 g",
+        "code": "BRG345",
+        "purchase_price": 20270.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "OMG Oh may glam Mattelast lip cream 25 Ruby 2,9 g",
+        "code": "BRG346",
+        "purchase_price": 20270.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "OMG Oh may glam Mattelast lip cream 26 Extra 2,9 g",
+        "code": "BRG347",
+        "purchase_price": 20270.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "OMG Oh may glam Mattelast lip cream 27 Strike 2,9 g",
+        "code": "BRG348",
+        "purchase_price": 20270.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "OMG Oh may glam Glassy lip tint 01 crefa 2 g",
+        "code": "BRG349",
+        "purchase_price": 20720.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "OMG Oh may glam Glassy lip tint 02 sienna 2 g",
+        "code": "BRG350",
+        "purchase_price": 20720.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "OMG Oh may glam Glassy lip tint 03 spring 2 g",
+        "code": "BRG351",
+        "purchase_price": 20720.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "OMG Oh may glam Glassy lip tint 04 eurgundy 2 g",
+        "code": "BRG352",
+        "purchase_price": 20720.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "OMG Oh may glam Glassy lip tint 05 caramel 2 g",
+        "code": "BRG353",
+        "purchase_price": 20720.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "OMG Oh may glam bright booster uv barrier sunscreen spf 50 fa 25 ml",
+        "code": "BRG354",
+        "purchase_price": 22522.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "OMG Oh may glam coverlast cushion 13C ivory 15 g",
+        "code": "BRG355",
+        "purchase_price": 58558.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "OMG Oh may glam coverlast cushion 21W light  15 g",
+        "code": "BRG356",
+        "purchase_price": 58558.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "OMG Oh may glam coverlast cushion 31W beige  15 g",
+        "code": "BRG357",
+        "purchase_price": 58558.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Purbasari Colour Matte Lipstick 81-95  BPOM Original-81 Diamond",
+        "code": "BRG360",
+        "purchase_price": 35600.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Purbasari Colour Matte Lipstick 81-95  BPOM Original-82 Mirah",
+        "code": "BRG361",
+        "purchase_price": 35600.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Purbasari Colour Matte Lipstick 81-95  BPOM Original-83 Pirus",
+        "code": "BRG362",
+        "purchase_price": 35600.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Purbasari Colour Matte Lipstick 81-95  BPOM Original-84 Ruby",
+        "code": "BRG363",
+        "purchase_price": 35600.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Purbasari Colour Matte Lipstick 81-95  BPOM Original-85 Safir",
+        "code": "BRG364",
+        "purchase_price": 35600.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Purbasari Colour Matte Lipstick 81-95  BPOM Original-86 Topaz",
+        "code": "BRG365",
+        "purchase_price": 35600.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Purbasari Colour Matte Lipstick 81-95  BPOM Original-87 Zamrud",
+        "code": "BRG366",
+        "purchase_price": 35600.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Purbasari Colour Matte Lipstick 81-95  BPOM Original-88 Amethyst",
+        "code": "BRG367",
+        "purchase_price": 35600.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Purbasari Colour Matte Lipstick 81-95  BPOM Original-89 Jade",
+        "code": "BRG368",
+        "purchase_price": 35600.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Purbasari Colour Matte Lipstick 81-95  BPOM Original-90 Crystal",
+        "code": "BRG369",
+        "purchase_price": 35600.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Purbasari Colour Matte Lipstick 81-95  BPOM Original-91 Opal",
+        "code": "BRG370",
+        "purchase_price": 35600.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Purbasari Colour Matte Lipstick 81-95  BPOM Original-92 Rose",
+        "code": "BRG371",
+        "purchase_price": 35600.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Purbasari Colour Matte Lipstick 81-95  BPOM Original-93 Beryl",
+        "code": "BRG372",
+        "purchase_price": 35600.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Purbasari Colour Matte Lipstick 81-95  BPOM Original-94 Azotic",
+        "code": "BRG373",
+        "purchase_price": 35600.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Purbasari Colour Matte Lipstick 81-95  BPOM Original-95 Amber",
+        "code": "BRG374",
+        "purchase_price": 35600.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Purbasari Lulur Mandi / Aloe Vera-Aloe Vera 200gr",
+        "code": "BRG375",
+        "purchase_price": 12000.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Pigeon teens bright hereos micelar water 100 ml",
+        "code": "BRG378",
+        "purchase_price": 26000.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Pigeon teens bright hereos toner 100 ml",
+        "code": "BRG379",
+        "purchase_price": 31000.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Pigeon teens bright hereos body serum 100 ml",
+        "code": "BRG380",
+        "purchase_price": 30000.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Pigeon teens ff acne care 100 ml",
+        "code": "BRG381",
+        "purchase_price": 27000.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Pigeon teens ff for all skin 100 ml",
+        "code": "BRG382",
+        "purchase_price": 21000.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Pigeon teens ff daily mild cleansing 100 ml",
+        "code": "BRG383",
+        "purchase_price": 23000.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Pigeon teens acne ranger mouisturizer 20 ml",
+        "code": "BRG384",
+        "purchase_price": 16000.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Pigeon teens acne ranger loose powder 12 ml",
+        "code": "BRG385",
+        "purchase_price": 30000.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Pigeon teens compact pwd + uv beige 14 gr",
+        "code": "BRG386",
+        "purchase_price": 37500.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Pigeon teens compact pwd + uv pink 14 gr",
+        "code": "BRG387",
+        "purchase_price": 33000.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Pigeon teens compact pwd + uv natural 14 gr",
+        "code": "BRG388",
+        "purchase_price": 37500.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "PIXY 4 BB cream bright fix 30 ml new-01 ochre renew",
+        "code": "BRG391",
+        "purchase_price": 41000.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "PIXY 4 BB cream bright fix 30 ml new-02 cream renew",
+        "code": "BRG392",
+        "purchase_price": 41000.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "PIXY 4 BB cream bright fix 30 ml new-03 beige",
+        "code": "BRG393",
+        "purchase_price": 41000.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "PIXY 4 BB uv twc -perf.last 9 gr -01 fair ochre",
+        "code": "BRG394",
+        "purchase_price": 38000.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "PIXY 4 BB uv twc -perf.last 9 gr -02 natural buff",
+        "code": "BRG395",
+        "purchase_price": 38000.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "PIXY 4 BB uv twc -perf.last 9 gr -01 sand beige",
+        "code": "BRG396",
+        "purchase_price": 38000.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "PIXY 4 BB uv twc whitening concealing base-9gr-01 natural beige ",
+        "code": "BRG397",
+        "purchase_price": 40000.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "PIXY 4 BB uv twc whitening concealing base-9gr-01 sand beige ",
+        "code": "BRG398",
+        "purchase_price": 40000.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "PIXY 4 BB uv twc whitening concealing base-9gr-01 creme beige ",
+        "code": "BRG399",
+        "purchase_price": 40000.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "PIXY aqua beauty protecting mist 60 ml renewel",
+        "code": "BRG400",
+        "purchase_price": 32000.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "PIXY make it glow beauty skin primer 25 ml - 101 beige",
+        "code": "BRG401",
+        "purchase_price": 58000.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Sunscreen luxury glow up",
+        "code": "BRG404",
+        "purchase_price": 89189.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "perfect glowing & Whitening Serum",
+        "code": "BRG405",
+        "purchase_price": 81081.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Ceramide Expert Toner Hydration",
+        "code": "BRG406",
+        "purchase_price": 86036.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "7x Ceremide Barrier Repair Moist Gel",
+        "code": "BRG407",
+        "purchase_price": 99099.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Advanced Hydration Facial Foam",
+        "code": "BRG408",
+        "purchase_price": 84234.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "New skin Purifing & Cleansing Facial Wash",
+        "code": "BRG409",
+        "purchase_price": 76577.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "New 2in1 Toner & Micellar Water Skin Purifying & Balancing",
+        "code": "BRG410",
+        "purchase_price": 81081.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "New Rejuvenating Intensive Cream",
+        "code": "BRG411",
+        "purchase_price": 81081.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Facial Wash",
+        "code": "BRG414",
+        "purchase_price": 99000.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Serum ",
+        "code": "BRG415",
+        "purchase_price": 128000.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Toner",
+        "code": "BRG416",
+        "purchase_price": 129000.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Moisturizor",
+        "code": "BRG417",
+        "purchase_price": 129000.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Safi Purifiying Cleanser 100 ml ",
+        "code": "BRG420",
+        "purchase_price": 0.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Safi Hydra Glow Water Cleanser 125 ml",
+        "code": "BRG421",
+        "purchase_price": 0.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Safi Bright Repleneshing Night cream 25 gr",
+        "code": "BRG422",
+        "purchase_price": 0.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Safi Age Defi concentraced 20 ml",
+        "code": "BRG423",
+        "purchase_price": 0.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Age Skin Refiner 100 ml",
+        "code": "BRG424",
+        "purchase_price": 0.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Age Defi Gold Essence 30 ml",
+        "code": "BRG425",
+        "purchase_price": 0.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Natural Brightening Cream Mangosteen 20 ml",
+        "code": "BRG426",
+        "purchase_price": 0.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Brigtening Cleanser Mangosteen 100 ml",
+        "code": "BRG427",
+        "purchase_price": 0.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "SALSA BOLD EYELINER",
+        "code": "BRG430",
+        "purchase_price": 16216.21,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "SALSA NAIL POLISH 8ml NUDE 1",
+        "code": "BRG431",
+        "purchase_price": 27477.47,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "SALSA NAIL POLISH 8ml NUDE 2",
+        "code": "BRG432",
+        "purchase_price": 27477.48,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "SALSA NAIL POLISH 8ml GLAMOUR",
+        "code": "BRG433",
+        "purchase_price": 27477.47,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "SALSA KUTEK PEEL POLISH COFFEE",
+        "code": "BRG434",
+        "purchase_price": 19639.63,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "SALSA KUTEK PEEL POLISH SALON",
+        "code": "BRG435",
+        "purchase_price": 19639.63,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "SALSA KUTEK PEEL POLISH FLORIS",
+        "code": "BRG436",
+        "purchase_price": 19639.63,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "SALSA KUTEK PEEL POLISH CANDY",
+        "code": "BRG437",
+        "purchase_price": 19639.63,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "SALSA NAIL POLISH 6ml SET A MATTE ISI 12",
+        "code": "BRG438",
+        "purchase_price": 6000.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "SALSA NAIL POLISH 6ml SET B 2020 ISI 12",
+        "code": "BRG439",
+        "purchase_price": 6000.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "SALSA NAIL POLISH 6ml BENING ISI 12",
+        "code": "BRG440",
+        "purchase_price": 6000.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "SALSA LIPSTIK MATTE No. 1",
+        "code": "BRG441",
+        "purchase_price": 10810.81,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "SALSA LIPSTIK MATTE No. 2",
+        "code": "BRG442",
+        "purchase_price": 10810.81,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "SALSA LIPSTIK MATTE No. 3",
+        "code": "BRG443",
+        "purchase_price": 10810.81,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "SALSA LIPSTIK MATTE No. 4",
+        "code": "BRG444",
+        "purchase_price": 10810.81,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "SALSA LIPSTIK MATTE No. 5",
+        "code": "BRG445",
+        "purchase_price": 10810.81,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "SALSA LIPSTIK MATTE No. 6",
+        "code": "BRG446",
+        "purchase_price": 10810.81,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "SALSA LIPSTIK MATTE No. 7",
+        "code": "BRG447",
+        "purchase_price": 10810.81,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "SALSA LIPSTIK MATTE No. 9",
+        "code": "BRG448",
+        "purchase_price": 10810.81,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "SALSA LIPSTIK MATTE No. 10",
+        "code": "BRG449",
+        "purchase_price": 10810.81,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "SALSA LIPSTIK MATTE No. 11",
+        "code": "BRG450",
+        "purchase_price": 10810.81,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "SALSA LIPSTIK MATTE No. 12",
+        "code": "BRG451",
+        "purchase_price": 10810.81,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "SALSA LIPGLOW SERUM",
+        "code": "BRG452",
+        "purchase_price": 17837.83,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "HANSJEBB GEL SKIN CLEANER 150 gr SWEET TROPICAL",
+        "code": "BRG453",
+        "purchase_price": 20720.72,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "HANSJEBB GEL SKIN CLEANER 150 gr LEMON BREEZE",
+        "code": "BRG454",
+        "purchase_price": 20720.72,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": " HANSJEBB GEL SKIN CLEANER 150 gr STEM CELLS",
+        "code": "BRG455",
+        "purchase_price": 20720.72,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "HANSJEBB GEL SKIN CLEANR 150 gr RICE OAT COLAGN",
+        "code": "BRG456",
+        "purchase_price": 20720.72,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "HANSJEBB GEL SKIN CLEANR 150 gr GRENTEA APPLE",
+        "code": "BRG457",
+        "purchase_price": 20720.72,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "HANSJEBB GEL SKIN CLEANER 150 gr PEACH PLUM",
+        "code": "BRG458",
+        "purchase_price": 20720.72,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "SALSA HANSJEBB 110 gr LEMON BREZEE",
+        "code": "BRG459",
+        "purchase_price": 17837.83,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "SALSA HANSJEBB 110 gr GREEN TEA",
+        "code": "BRG460",
+        "purchase_price": 17837.83,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "SALSA HANSJEBB 110 gr SWEET TROPICAL",
+        "code": "BRG461",
+        "purchase_price": 17837.83,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "SALSA KERATIN HAIR SERUM",
+        "code": "BRG462",
+        "purchase_price": 16216.21,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "SALSA GROWTH HAIR SERUM",
+        "code": "BRG463",
+        "purchase_price": 16216.21,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "SALSA HAIR SERUM ROSE 80 ml",
+        "code": "BRG464",
+        "purchase_price": 16216.21,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "SA LP KP",
+        "code": "BRG467",
+        "purchase_price": 22000.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "SA FOUND KL",
+        "code": "BRG468",
+        "purchase_price": 18500.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "SA MAWAR MOISTURIZER NEW",
+        "code": "BRG469",
+        "purchase_price": 16000.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "SA JERUK MOISTURIZER NEW",
+        "code": "BRG470",
+        "purchase_price": 16000.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "SA TANJUNG BODY COLOGNE 150ML",
+        "code": "BRG471",
+        "purchase_price": 41000.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Dream Setter BB Make Up 30 ml",
+        "code": "BRG474",
+        "purchase_price": 53153.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Dream Setter BB Glowy 30 ml",
+        "code": "BRG475",
+        "purchase_price": 53153.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Dream Setter BB Satin 30 ml",
+        "code": "BRG476",
+        "purchase_price": 53153.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Starlett Brigtening Shower Scrub Coffee",
+        "code": "BRG479",
+        "purchase_price": 55000.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Starlett Brigtening Shower Scrub Manggo",
+        "code": "BRG480",
+        "purchase_price": 55000.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Starlett Brigtening Shower Scrub Charming",
+        "code": "BRG481",
+        "purchase_price": 55000.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Starlett Brigtening Shower Scrub Jolly",
+        "code": "BRG482",
+        "purchase_price": 55000.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Starlett Brigtening Shower Scrub Happy",
+        "code": "BRG483",
+        "purchase_price": 55000.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Starlett Brigtening Shower Scrub Loving",
+        "code": "BRG484",
+        "purchase_price": 55000.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "7 X Ceremide",
+        "code": "BRG485",
+        "purchase_price": 60000.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Fragtance Jolly tube ",
+        "code": "BRG486",
+        "purchase_price": 37000.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Parfume Scarlet La Forest",
+        "code": "BRG487",
+        "purchase_price": 60000.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Parfume Scarlet Euphoria",
+        "code": "BRG488",
+        "purchase_price": 60000.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "CERAMIDE CLEANSER 80 G",
+        "code": "BRG491",
+        "purchase_price": 0.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "CERAMIDE MOIST GEL 30 G",
+        "code": "BRG492",
+        "purchase_price": 0.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "POWDER FOUNDATION 01",
+        "code": "BRG493",
+        "purchase_price": 0.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "POWDER FOUNDATION 02",
+        "code": "BRG494",
+        "purchase_price": 0.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "POWDER FOUNDATION 03",
+        "code": "BRG495",
+        "purchase_price": 0.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "MATTE CUSHION 01",
+        "code": "BRG496",
+        "purchase_price": 0.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "MATTE CUSHION 02",
+        "code": "BRG497",
+        "purchase_price": 0.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "MATTE CUSHION 03",
+        "code": "BRG498",
+        "purchase_price": 0.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "PERFECT CUSHION IVORY",
+        "code": "BRG499",
+        "purchase_price": 0.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "PERFECT CUSHION PETAL",
+        "code": "BRG500",
+        "purchase_price": 0.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "OUTDOOR SUNSPRAY SPF50",
+        "code": "BRG501",
+        "purchase_price": 0.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "TRUFFLE BIOM MOIST 30ML",
+        "code": "BRG502",
+        "purchase_price": 0.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "NIACINAMIDE BRIGHT BOO",
+        "code": "BRG503",
+        "purchase_price": 0.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "MUGWORT ACNE CLAY STICK",
+        "code": "BRG504",
+        "purchase_price": 0.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "ALASKA VOLCANO STICK",
+        "code": "BRG505",
+        "purchase_price": 0.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Eye Brow pensil brush 2in1 black",
+        "code": "BRG508",
+        "purchase_price": 0.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Eye Brow pensil brush 2in1 brown",
+        "code": "BRG509",
+        "purchase_price": 0.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Eyebrow Gel 2in1",
+        "code": "BRG510",
+        "purchase_price": 0.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Eyeshadow Nudes",
+        "code": "BRG511",
+        "purchase_price": 0.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Hihglighter 4 color Eyeshadow",
+        "code": "BRG512",
+        "purchase_price": 0.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Aloevera Liptint 1",
+        "code": "BRG513",
+        "purchase_price": 0.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Aloevera Liptint 2",
+        "code": "BRG514",
+        "purchase_price": 0.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Aloevera Liptint 3",
+        "code": "BRG515",
+        "purchase_price": 0.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Aloevera Liptint 4",
+        "code": "BRG516",
+        "purchase_price": 0.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Aloevera Liptint 5",
+        "code": "BRG517",
+        "purchase_price": 0.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Aloevera Liptint 6",
+        "code": "BRG518",
+        "purchase_price": 0.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Magic Lip oil Serum",
+        "code": "BRG519",
+        "purchase_price": 0.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Lipbalm Strobery",
+        "code": "BRG520",
+        "purchase_price": 0.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Lipbalm Grape",
+        "code": "BRG521",
+        "purchase_price": 0.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Kapas Selection",
+        "code": "BRG522",
+        "purchase_price": 7000.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Tisue Dante",
+        "code": "BRG523",
+        "purchase_price": 4500.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Wardah lightening day cream advanced niacinamide 20 ml",
+        "code": "BRG526",
+        "purchase_price": 28828.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Wardah lightening Night cream advanced niacinamide 20 ml",
+        "code": "BRG527",
+        "purchase_price": 29729.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Wardah lightening micellar gentle wassh 50 ml",
+        "code": "BRG528",
+        "purchase_price": 20720.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Wardah nature daily aloe hydramild facial wash 60 ml",
+        "code": "BRG529",
+        "purchase_price": 18918.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Wardah nature daily aloe hydramild moisturizer cream 60 ml",
+        "code": "BRG530",
+        "purchase_price": 23423.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Wardah nature daily aloe hydramild facial wash 100 ml",
+        "code": "BRG531",
+        "purchase_price": 27927.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Wardah eye liner black 1.14 g",
+        "code": "BRG532",
+        "purchase_price": 38288.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Wardah lightening  face mist 60 ml",
+        "code": "BRG533",
+        "purchase_price": 26126.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Wardah colorfit ultralight matte lipstick 09 romantic namsan 3,6 g",
+        "code": "BRG534",
+        "purchase_price": 42342.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Wardah colorfit ultralight matte lipstick 10 stuning seoul 3,6 g",
+        "code": "BRG535",
+        "purchase_price": 42342.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Wardah colorfit ultralight matte lipstick 11 sunkissed jeju 3,6 g",
+        "code": "BRG536",
+        "purchase_price": 42342.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Wardah colorfit ultralight matte lipstick 12 autumn nami 3,6 g",
+        "code": "BRG537",
+        "purchase_price": 42342.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Wardah lightening serum ampoule 30 ml",
+        "code": "BRG538",
+        "purchase_price": 61261.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Wardah eyexpert eyebrow pencil black 1.14 g (blister)",
+        "code": "BRG539",
+        "purchase_price": 37837.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Wardah eyexpert eyebrow pencil brown 1.14 g (blister)",
+        "code": "BRG540",
+        "purchase_price": 37837.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Wardah eyexpert perfect prescision liner 1 ml",
+        "code": "BRG541",
+        "purchase_price": 50000.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Wardah eyexpert liftlastwaterproof mascara 8 ml",
+        "code": "BRG542",
+        "purchase_price": 55855.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Wardah nature daily aloe multifunctiongel 100ml",
+        "code": "BRG543",
+        "purchase_price": 34684.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Wardah matte lip cream 03 see you latte 4 g",
+        "code": "BRG544",
+        "purchase_price": 59009.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Wardah matte lip cream 07 hello, ruby 4 g",
+        "code": "BRG545",
+        "purchase_price": 59009.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Wardah matte lip cream 08 pinkcredible 4 g",
+        "code": "BRG546",
+        "purchase_price": 59009.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Wardah matte lip cream 09 mauve on 4 g",
+        "code": "BRG547",
+        "purchase_price": 59009.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Wardah matte lip cream 13 fruit punch 4 g",
+        "code": "BRG548",
+        "purchase_price": 59009.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Wardah matte lip cream 22 rouge velvet 4 g",
+        "code": "BRG549",
+        "purchase_price": 59009.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Wardah uv shield aqua fresh sunscreen serum spf 50 pa +++ 30",
+        "code": "BRG550",
+        "purchase_price": 52252.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Wardah uv shield essntial gel sunscreen serum spf 35 pa +++ 40",
+        "code": "BRG551",
+        "purchase_price": 31981.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Wardah nature daily calm & soothe micellar  water 100 ml",
+        "code": "BRG552",
+        "purchase_price": 28378.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Wardah colorfit perfect glow cushion 11C pink fair 15 g",
+        "code": "BRG553",
+        "purchase_price": 110360.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Wardah colorfit perfect glow cushion 22N light ivory 15 g",
+        "code": "BRG554",
+        "purchase_price": 110360.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Wardah colorfit perfect glow cushion 23 warm ivory 15 g",
+        "code": "BRG555",
+        "purchase_price": 110360.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Wardah colorfit perfect glow cushion 32N neutral beige 15 g",
+        "code": "BRG556",
+        "purchase_price": 110360.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Wardah colorfit perfect glow cushion 21W linen 15 g",
+        "code": "BRG557",
+        "purchase_price": 110360.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Wardah lightening liquid foundation 01 neutral fair (12N) 25 ml new",
+        "code": "BRG558",
+        "purchase_price": 47747.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Wardah lightening liquid foundation 02 neutral beige (32N) 25 ml new",
+        "code": "BRG559",
+        "purchase_price": 47747.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Wardah lightening liquid foundation 03 warn beige (32w) 25 ml new",
+        "code": "BRG560",
+        "purchase_price": 47747.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Wardah lightening oil-infused micellar water 55 ml",
+        "code": "BRG561",
+        "purchase_price": 22522.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Xi Xiu Diivine Mascara Black Waterprouf",
+        "code": "BRG564",
+        "purchase_price": 0.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Xi Xiu Ultimate Lashextra Mascara ",
+        "code": "BRG565",
+        "purchase_price": 0.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Xi Xiu Pinsil Alis Brown",
+        "code": "BRG566",
+        "purchase_price": 0.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Xi Xiu Pinsil Alis Black",
+        "code": "BRG567",
+        "purchase_price": 0.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Eye liner Ultimate",
+        "code": "BRG568",
+        "purchase_price": 0.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Lip matte Up 02",
+        "code": "BRG569",
+        "purchase_price": 0.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Lip matte Up 03",
+        "code": "BRG570",
+        "purchase_price": 0.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Lip matte Up 04",
+        "code": "BRG571",
+        "purchase_price": 0.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Lip matte Up 05",
+        "code": "BRG572",
+        "purchase_price": 0.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Lip matte Up 08",
+        "code": "BRG573",
+        "purchase_price": 0.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Lip matte Up 09",
+        "code": "BRG574",
+        "purchase_price": 0.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Lip tint 02",
+        "code": "BRG575",
+        "purchase_price": 0.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Lip tint 03",
+        "code": "BRG576",
+        "purchase_price": 0.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Lip tint 04",
+        "code": "BRG577",
+        "purchase_price": 0.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Lip tint 05",
+        "code": "BRG578",
+        "purchase_price": 0.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Lip tint 06",
+        "code": "BRG579",
+        "purchase_price": 0.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Lip Serum Dewy 01",
+        "code": "BRG580",
+        "purchase_price": 0.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Lip Serum Dewy 02",
+        "code": "BRG581",
+        "purchase_price": 0.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Lip Serum Dewy 03",
+        "code": "BRG582",
+        "purchase_price": 0.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Y.O.U HY! AMINO AC-ATTACK ANTI-ACNE FACIAL WASH",
+        "code": "BRG585",
+        "purchase_price": 42900.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "Y.O.U HY! AMINO GLO-WIN BRIGHTENING FACIAL WASH 50G",
+        "code": "BRG586",
+        "purchase_price": 34900.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "DAZZLE ME GET A GRIP MAKE UP SETTING SPRAY DEWY",
+        "code": "BRG587",
+        "purchase_price": 42900.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "DAZZLE ME GET A GRIP MAKE UP SETTING SPRAY MATTE",
+        "code": "BRG588",
+        "purchase_price": 42900.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "DAZZLE ME GET A GRIP MAKE UP SETTING SPRAY DEWY",
+        "code": "BRG589",
+        "purchase_price": 42900.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "DAZZLE ME INK-LICIOUS LIP TINT 0113 LIKED",
+        "code": "BRG590",
+        "purchase_price": 42900.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "DAZZLE ME INK-LICIOUS LIP TINT 0551 TIPPY TOE",
+        "code": "BRG591",
+        "purchase_price": 42900.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "DAZZLE ME INK-LICIOUS LIP TINT R441 ROSIE",
+        "code": "BRG592",
+        "purchase_price": 42900.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    },
+    {
+        "name": "DAZZLE ME INK-LICIOUS LIP TINT R775 CLICHE",
+        "code": "BRG593",
+        "purchase_price": 42900.0,
+        "unit": "pcs",
+        "stock": 0,
+        "description": ""
+    }
+]

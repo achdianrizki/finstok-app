@@ -12,6 +12,7 @@ use App\Models\Warehouse;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\ReturnPurchase;
+use App\Models\PurchaseCounter;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\StorePurchaseRequest;
 
@@ -31,6 +32,46 @@ class PurchaseController extends Controller
     {
         return response()->json(Item::select('id', 'name', 'price')->get());
     }
+
+    public function getRestoreItems($id)
+    {
+        $purchase = Purchase::withTrashed()->findOrFail($id);
+
+        $items = $purchase->items()->withTrashed()->get()->map(function ($item) {
+            return [
+                'id' => $item->id,
+                'name' => $item->name,
+                'qty' => $item->pivot->qty,
+            ];
+        });
+
+        return response()->json($items);
+    }
+
+    public function deleteRestoreItem($purchase_id, $item_id)
+    {
+        $purchase = Purchase::withTrashed()->findOrFail($purchase_id);
+        $item = Item::withTrashed()->findOrFail($item_id);
+
+        $pivot = $purchase->items()->withTrashed()->where('item_id', $item->id)->first()?->pivot;
+        $qtyToRemove = $pivot ? $pivot->qty : 0;
+        $warehouse_id = $pivot ? $pivot->warehouse_id : null;
+
+        $purchase->items()->detach($item->id);
+
+        if ($warehouse_id) {
+            $item->item_warehouse()->wherePivot('warehouse_id', $warehouse_id)->detach();
+        }
+
+        $purchase->decrement('total_qty', $qtyToRemove);
+
+        if ($qtyToRemove > 0) {
+            $item->decrement('stock', $qtyToRemove);
+        }
+
+        return response()->json(['success' => true]);
+    }
+
 
     public function getPurchaseItem(Request $request)
     {
@@ -106,17 +147,22 @@ class PurchaseController extends Controller
             $total_qty = array_sum($request->qty);
 
             $date = Carbon::parse($request->purchase_date);
-            $year = $date->year;
+            $yearMonth = $date->format('Y-m');
+
+            $counter = PurchaseCounter::firstOrCreate(
+                ['year_month' => $yearMonth],
+                ['last_number' => 0]
+            );
+
+            $newNumber = $counter->last_number + 1;
+
+            $counter->update(['last_number' => $newNumber]);
+
             $month = str_pad($date->month, 2, '0', STR_PAD_LEFT);
-
-            $lastNumber = Purchase::withTrashed()
-                ->whereYear('purchase_date', $year)
-                ->whereMonth('purchase_date', $date->month)
-                ->value('purchase_number');
-
-            $newNumber = $lastNumber ? (int) substr($lastNumber, -7, 3) + 1 : 1;
+            $year = $date->year;
 
             $purchase_number = 'SEVENA/BUY/' . $month . '/' . str_pad($newNumber, 3, '0', STR_PAD_LEFT) . '/' . $year;
+
 
             $purchase_date = \Carbon\Carbon::createFromFormat('d-m-Y', $request->purchase_date)->format('Y-m-d');
 
@@ -322,9 +368,9 @@ class PurchaseController extends Controller
     public function deleteItem(Purchase $purchase, $item_id)
     {
         $item = Item::withTrashed()->findOrFail($item_id);
-        $pivot = $purchase->items()->where('item_id', $item->id)->first()->pivot ?? null;
-        $qtyToRemove = $pivot ? $pivot->qty : 0;
 
+        $pivot = $purchase->items()->withTrashed()->where('item_id', $item->id)->first()->pivot ?? null;
+        $qtyToRemove = $pivot ? $pivot->qty : 0;
         $warehouse_id = $pivot ? $pivot->warehouse_id : null;
 
         $purchase->items()->detach($item->id);
@@ -406,5 +452,16 @@ class PurchaseController extends Controller
 
         toast('Data berhasil dipulihkan', 'success');
         return redirect()->route('manager.purchase.index');
+    }
+
+    /**
+     * Permanently delete the specified resource from storage.
+     */
+    public function forceDelete($id)
+    {
+        $purchase = Purchase::onlyTrashed()->findOrFail($id);
+        $purchase->forceDelete();
+
+        return response()->json(['success' => true]);
     }
 }

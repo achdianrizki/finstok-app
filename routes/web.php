@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\SaleController;
@@ -12,6 +13,7 @@ use App\Http\Controllers\ReportController;
 use App\Http\Controllers\FinanceController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\MutationController;
 use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\SalesmanController;
 use App\Http\Controllers\SupplierController;
@@ -20,7 +22,6 @@ use App\Http\Controllers\ReturnSaleController;
 use App\Http\Controllers\DistributorController;
 use App\Http\Controllers\ReturnPurchaseController;
 use App\Http\Controllers\incomingPaymentController;
-use App\Http\Controllers\MutationController;
 use App\Http\Controllers\OutgoingPaymentController;
 
 /*
@@ -58,7 +59,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/warehouse-opname/{warehouse:slug}', [WarehouseController::class, 'opname'])
             ->middleware('role:manager|admin')->name('warehouses.opname');
         Route::resource('purchase', PurchaseController::class)->middleware('role:manager|admin');
-        
+
 
         Route::resource('sales', SaleController::class)->middleware('role:manager|admin');
         Route::resource('distributors', DistributorController::class)->middleware('role:manager|admin');
@@ -215,15 +216,15 @@ Route::middleware('auth')->group(function () {
             Route::post('/mutation/export/excel', [ReportController::class, 'exportMutationExcel'])->name('mutation.export.excel');
             //MUTATION END
         });
-        
+
         Route::prefix('trash')->name('trash.')->group(function () {
-            
+
             Route::get('/items', [ItemController::class, 'deletedView'])->name('items');
             Route::post('/items/{id}', [ItemController::class, 'restore'])->name('items.restore');
 
             Route::get('/supplier', [SupplierController::class, 'deletedView'])->name('supplier');
             Route::post('/supplier/{id}', [SupplierController::class, 'restore'])->name('supplier.restore');
-            
+
             Route::get('/buyer', [BuyerController::class, 'deletedView'])->name('buyer');
             Route::post('/buyer/{id}', [BuyerController::class, 'restore'])->name('buyer.restore');
 
@@ -238,13 +239,15 @@ Route::middleware('auth')->group(function () {
 
             Route::get('/purchase', [PurchaseController::class, 'deletedView'])->name('purchase');
             Route::post('/purchase/{id}', [PurchaseController::class, 'restore'])->name('purchase.restore');
+            Route::delete('/purchase/forcedelete/{id}', [PurchaseController::class, 'forceDelete'])->name('purchase.forceDelete');
 
             Route::get('/sale', [SaleController::class, 'deletedView'])->name('sale');
             Route::post('/sale/{id}', [SaleController::class, 'restore'])->name('sale.restore');
+            Route::delete('/sale/{id}', [SaleController::class, 'forceDelete'])->name('sale.forceDelete');
+            Route::delete('/sale/forcedelete/{id}', [SaleController::class, 'forceDelete'])->name('sale.forceDelete');
 
             Route::get('/mutation', [MutationController::class, 'deletedView'])->name('mutation');
             Route::post('/mutation/{id}', [MutationController::class, 'restore'])->name('mutation.restore');
-
         });
     });
 
@@ -261,31 +264,62 @@ Route::middleware('auth')->group(function () {
 
 //Fungsi get data ajaxx
 Route::get('/items-data', [ItemController::class, 'getItems']);
+
+// PURCHASE
 Route::get('/get-items', [PurchaseController::class, 'getItemsPurchase']);
+Route::get('/purchases-data', [PurchaseController::class, 'getPurchaseItem']);
+Route::get('/restore/{purchase}/items', [PurchaseController::class, 'getRestoreItems']);
+Route::delete('/purchase/{purchase_id}/item/{item_id}', [PurchaseController::class, 'deleteRestoreItem']);
+
+//CATEGORY
 Route::get('/categories-data', [CategoryController::class, 'getCategories']);
+
+//WAREHOUSE
 Route::get('/warehouses-data', [WarehouseController::class, 'getWarehouses']);
 Route::get('/manager/warehouses/{warehouse:id}/items', [WarehouseController::class, 'getItemsByWarehouse']);
+
+//DISTRIBUTOR
 Route::get('/distributors-data', [DistributorController::class, 'getDistributors']);
-Route::get('/purchases-data', [PurchaseController::class, 'getPurchaseItem']);
+
+//OUTGOING PAYMENT
 Route::get('/outgoingpayment-data', [OutgoingPaymentController::class, 'getPurchaseItem']);
+
+//SALE
 Route::get('/sales-data', [SaleController::class, 'getSaleItem']);
 Route::get('/items-data-sale', [SaleController::class, 'searchItem']);
-Route::get('/users-data', [UserController::class, 'getUsers'])->name('manager.users.data');
-Route::get('/supplier-data', [SupplierController::class, 'getSupplier']);
-Route::get('/sales-data', [SaleController::class, 'getSaleItems']);
 Route::get('/sales-by-salesman-data', [SaleController::class, 'getSaleItemsBySalesman']);
+Route::get('/sales-data', [SaleController::class, 'getSaleItems']);
+Route::get('/restore/sale/{sale}/items', [SaleController::class, 'getRestoreItems']);
+Route::delete('/sale/{sale_id}/item/{item_id}', [SaleController::class, 'deleteRestoreItem']);
+
+//USER
+Route::get('/users-data', [UserController::class, 'getUsers'])->name('manager.users.data');
+
+//SUPPLIER
+Route::get('/supplier-data', [SupplierController::class, 'getSupplier']);
+
+//MUTATION
 Route::get('/mutation-data', [MutationController::class, 'getMutationData'])->name('mutation');
 
+//ASSETS
 Route::get('/assets-data', [AssetController::class, 'getAssets']);
+
+//BUYER
 Route::get('/buyers-data', [BuyerController::class, 'getBuyers']);
+
+//SALESMAN
 Route::get('/salesmans-data', [SalesmanController::class, 'getSalesman']);
 
+//RETURN PURCHASE
 Route::get('/return-purchase-data', [ReturnPurchaseController::class, 'getPurchaseItem']);
+
+//RETURN SALES
 Route::get('/return-sale-data', [ReturnSaleController::class, 'getSaleItem']);
 
+//CHART
 Route::get('/laporan/laba-rugi', [ChartController::class, 'getLabaRugi']);
 
-Route::post('/adjust-stock', [WarehouseController::class, 'adjustStock']);
+
 Route::get('/get-items/{supplier}', [SupplierController::class, 'getItemsBySupplier']);
 
 // PEMBULATAN TOTAL PRICE DI PURCHASE PAYMENT (OUTGOING PAYMENT)
@@ -307,15 +341,15 @@ Route::get('/get-item/{item_id}/{supplier_id}', function ($item_id, $supplier_id
     ]);
 });
 
-Route::get('/buyers-data', [BuyerController::class, 'getBuyers']);
-Route::get('/salesmans-data', [SalesmanController::class, 'getSalesman']);
-Route::get('/laporan/laba-rugi', [ChartController::class, 'getLabaRugi']);
+// Route::get('/buyers-data', [BuyerController::class, 'getBuyers']);
+// Route::get('/salesmans-data', [SalesmanController::class, 'getSalesman']);
+// Route::get('/laporan/laba-rugi', [ChartController::class, 'getLabaRugi']);
 
 Route::post('/get-items/warehouse', [WarehouseController::class, 'getItemsByWarehouses']);
-Route::get('/check-warehouse-items/{warehouse_id}', [WarehouseController::class, 'checkItems']);
+Route::get('/check-warehouse-items/{slug}', [WarehouseController::class, 'checkItems']);
 Route::get('/get-sales-item/{item_id}/{warehouse_id}', function ($item_id, $warehouse_id) {
     $item = \App\Models\Item::find($item_id);
-    $warehouseStock = \DB::table('item_warehouse')
+    $warehouseStock = DB::table('item_warehouse')
         ->where('item_id', $item_id)
         ->where('warehouse_id', $warehouse_id)
         ->value('stock') ?? 0;

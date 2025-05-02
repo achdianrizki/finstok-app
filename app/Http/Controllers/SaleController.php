@@ -12,6 +12,7 @@ use App\Models\Category;
 use App\Models\Salesman;
 use App\Models\Warehouse;
 use App\Models\Distributor;
+use App\Models\SaleCounter;
 use Illuminate\Http\Request;
 use App\Models\IncomingPayment;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -68,6 +69,52 @@ class SaleController extends Controller
             ->paginate(5);
 
         return response()->json($sales);
+    }
+
+    public function getRestoreItems($id)
+    {
+        $sale = Sale::withTrashed()->findOrFail($id);
+
+        $items = $sale->items()->withTrashed()->get()->map(function ($item) {
+            return [
+                'id' => $item->id,
+                'name' => $item->name,
+                'qty_sold' => $item->pivot->qty_sold,
+            ];
+        });
+
+        return response()->json($items);
+    }
+
+    public function deleteRestoreItem($sale_id, $item_id)
+    {
+        $sale = Sale::withTrashed()->findOrFail($sale_id);
+        $item = Item::withTrashed()->findOrFail($item_id);
+
+        $pivot = $sale->items()->withTrashed()->where('item_id', $item->id)->first()?->pivot;
+        $qtyToRemove = $pivot?->qty_sold ?? 0;
+        $adToRemove = $pivot?->ad ?? 0;
+        $warehouse_id = $pivot?->warehouse_id;
+
+        $sale->items()->detach($item->id);
+
+        if ($warehouse_id) {
+            $existing = $item->item_warehouse()->wherePivot('warehouse_id', $warehouse_id)->first();
+            if ($existing) {
+                $item->item_warehouse()->updateExistingPivot($warehouse_id, [
+                    'stock' => $existing->pivot->stock + $qtyToRemove + $adToRemove,
+                ]);
+            }
+        }
+
+        $sale->decrement('qty_sold', $qtyToRemove);
+
+        if ($qtyToRemove > 0) {
+            $item->increment('stock', $qtyToRemove);
+            $item->increment('stock', $adToRemove);
+        }
+
+        return response()->json(['success' => true]);
     }
 
     public function getSaleItems(Request $request)
@@ -149,18 +196,22 @@ class SaleController extends Controller
         // dd($request->all());
         $lastSale = Sale::latest()->first();
 
-        $date = Carbon::parse($request->sale_date);
-        $year = $date->year;
+        $date = Carbon::parse($request->purchase_date);
+        $yearMonth = $date->format('Y-m');
+
+        $counter = SaleCounter::firstOrCreate(
+            ['year_month' => $yearMonth],
+            ['last_number' => 0]
+        );
+
+        $newNumber = $counter->last_number + 1;
+
+        $counter->update(['last_number' => $newNumber]);
+
         $month = str_pad($date->month, 2, '0', STR_PAD_LEFT);
+        $year = $date->year;
 
-        $lastNumber = Sale::whereYear('sale_date', $year)
-            ->whereMonth('sale_date', $date->month)
-            ->latest('sale_number')
-            ->value('sale_number');
-
-        $newNumber = $lastNumber ? (int) substr($lastNumber, -7, 3) + 1 : 1;
-
-        $sale_number = 'SEVENA/SALE/' . $month . '/' . str_pad($newNumber, 4, '0', STR_PAD_LEFT) . '/' . $year;
+        $sale_number = 'SEVENA/SALE/' . $month . '/' . str_pad($newNumber, 3, '0', STR_PAD_LEFT) . '/' . $year;
 
         $qty_sold = array_sum($request->qty_sold);
 
@@ -498,5 +549,13 @@ class SaleController extends Controller
 
         toast('Data berhasil dipulihkan', 'success');
         return redirect()->route('manager.sales.index');
+    }
+
+    public function forceDelete($id)
+    {
+        $sale = Sale::withTrashed()->findOrFail($id);
+        $sale->forceDelete();
+
+        return response()->json(['success' => true]);
     }
 }

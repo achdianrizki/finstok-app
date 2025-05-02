@@ -82,18 +82,20 @@
                             method: 'GET',
                             success: function(response) {
                                 if (response.items.length > 0) {
+                                    console.log(warehouseId);
+
                                     Swal.fire({
                                         title: 'Peringatan!',
-                                        text: 'Gudang masih memiliki item terkait. Terdapat ' + response.items.length + ' item. Anda tidak dapat menghapus gudang ini.',
+                                        text: 'Gudang masih memiliki item terkait. Terdapat ' +
+                                            response.items.length +
+                                            ' item. Anda tidak dapat menghapus gudang ini.',
                                         icon: 'warning',
                                         confirmButtonColor: '#3085d6',
                                         confirmButtonText: 'OK'
-                                    }).then((result) => {
-                                        if (result.isConfirmed) {
-                                            form.submit();
-                                        }
                                     });
                                 } else {
+                                    console.log(warehouseId);
+
                                     Swal.fire({
                                         title: 'Apakah Anda yakin?',
                                         text: "Data yang dihapus tidak dapat dikembalikan!",
@@ -119,6 +121,7 @@
                                 });
                             }
                         });
+
                     });
                 }
             });

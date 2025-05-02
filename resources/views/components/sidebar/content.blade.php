@@ -64,13 +64,14 @@
 
     <x-sidebar.dropdown title="Penjualan" :active="request()->routeIs('manager.sales.*') ||
         request()->routeIs('manager.incomingpayment*') ||
-        request()->routeIs('manager.return.sale*')">
+        request()->routeIs('manager.return.sale*') || 
+        request()->routeIs('manager.trash.sale')">
         <x-slot name="icon">
             <x-icons.sale-tag class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
         </x-slot>
 
         <x-sidebar.sublink title="Penjualan Barang" href="{{ route('manager.sales.index') }}"
-            :active="request()->routeIs('manager.sales.*')" />
+            :active="request()->routeIs('manager.sales.*') || request()->routeIs('manager.trash.sale')" />
 
         <x-sidebar.sublink title="Pelunasan Penjualan" href="{{ route('manager.incomingpayment.index') }}"
             :active="request()->routeIs('manager.incomingpayment*')" />
