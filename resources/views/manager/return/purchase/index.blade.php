@@ -76,7 +76,9 @@
                 <x-heroicon-o-chevron-double-right class="w-4 h-4" aria-hidden="true" />
             </x-button>
         </div>
-
+        
+        <div id="paginationNumbers" class="flex items-center justify-center gap-2 mt-4"></div>
+        
     </div>
 
     @push('scripts')

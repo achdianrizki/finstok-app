@@ -55,22 +55,11 @@
                             Jumlah Retur</th>
                     </tr>
                 </thead>
-                <tbody id="purchaseTable"
+                <tbody id="itemTable"
                     class="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-dark-eval-1">
-                    @foreach ($return as $data)
-                        <tr class="border dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-slate-900">
-                            <td class="px-6 py-4 whitespace-nowrap">{{ $data->purchase_number }}</td>
-                            <td class="px-6 py-4 whitespace-nowrap hidden md:table-cell">{{ \Carbon\Carbon::parse($data->return_date)->format('d-m-Y') }}</td>
-                            <td class="px-6 py-4 whitespace-nowrap hidden md:table-cell">{{ $data->supplier_name }}</td>
-                            <td class="px-6 py-4 whitespace-nowrap hidden md:table-cell">{{ $data->qty }}</td>
-                            {{-- <td class="px-6 py-4 whitespace-nowrap">
-                                <x-button href="{{ route('manager.purchases.show', $data->id) }}" variant="primary"
-                                    class="justify-center max-w-sm gap-2">
-                                    <x-heroicon-o-eye class="w-3 h-3" aria-hidden="true" />
-                                </x-button>
-                            </td> --}}
-                        </tr>
-                    @endforeach
+                    {{-- @foreach ($return as $data)
+                        
+                    @endforeach --}}
                 </tbody>
             </table>
         </div>
@@ -91,9 +80,11 @@
             </x-button>
         </div>
 
+        <div id="paginationNumbers" class="flex items-center justify-center gap-2 mt-4"></div>
+
     </div>
 
-    {{-- @push('scripts')
+    @push('scripts')
         <script>
             function toggleDetails(index) {
                 const detailRow = document.getElementById(`details-${index}`);
@@ -104,7 +95,7 @@
                 }
             }
         </script>
-        @include('components.js.dtReportPurchase')
-    @endpush --}}
+        @include('components.js.dtReportReturnPurchase')
+    @endpush
 
 </x-app-layout>

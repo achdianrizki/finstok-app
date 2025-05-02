@@ -53,10 +53,10 @@
 
         <div class="overflow-x-auto">
             @if (session('success'))
-            <div class="p-4 mb-4 text-sm text-green-700 bg-green-100 rounded-lg dark:bg-green-200 dark:text-green-800"
-                role="alert">
-                {{ session('success') }}
-            </div>
+                <div class="p-4 mb-4 text-sm text-green-700 bg-green-100 rounded-lg dark:bg-green-200 dark:text-green-800"
+                    role="alert">
+                    {{ session('success') }}
+                </div>
             @endif
             <table id="export-table" class="min-w-full rounded-md">
                 <thead>
@@ -101,11 +101,13 @@
             </x-button>
         </div>
 
+        <div id="paginationNumbers" class="flex items-center justify-center gap-2 mt-4"></div>
+
     </div>
 
     @push('scripts')
-    <script>
-        function toggleDetails(index) {
+        <script>
+            function toggleDetails(index) {
                 const detailRow = document.getElementById(`details-${index}`);
                 if (detailRow.classList.contains('hidden')) {
                     detailRow.classList.remove('hidden');
@@ -113,8 +115,8 @@
                     detailRow.classList.add('hidden');
                 }
             }
-    </script>
-    @include('components.js.dtBuyers')
+        </script>
+        @include('components.js.dtBuyers')
     @endpush
 
 </x-app-layout>

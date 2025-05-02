@@ -3,22 +3,22 @@
         let page = 1;
         let lastPage = 1;
         let searchQuery = '';
-  
+
         function fetchitems(page, searchQuery = '') {
-  
+
             function formatRupiah(number) {
                 return new Intl.NumberFormat('id-ID', {
                     style: 'currency',
                     currency: 'IDR'
                 }).format(number);
             }
-  
+
             $.ajax({
                 url: '/return-sale-data?page=' + page + '&search=' + searchQuery,
                 method: 'GET',
                 success: function(response) {
                     let rows = '';
-  
+
                     if (response.data.length === 0) {
                         rows = `
                             <tr>
@@ -59,39 +59,77 @@
                         `;
                         });
                     }
-  
+
                     $('#outpaymentTable').html(rows);
-  
+
                     lastPage = response.last_page;
                     $('#currentPage').text(page);
-  
+
+                    generatePaginationButtons(page, lastPage);
+
                     $('#nextPage').attr('disabled', page >= lastPage);
                     $('#prevPage').attr('disabled', page <= 1);
                 }
             });
         }
-  
+
         fetchitems(page);
-  
+
         $('#nextPage').on('click', function() {
             if (page < lastPage) {
                 page++;
                 fetchitems(page, searchQuery);
             }
         });
-  
+
         $('#prevPage').on('click', function() {
             if (page > 1) {
                 page--;
                 fetchitems(page, searchQuery);
             }
         });
-  
+
         $('#search').on('keyup', function() {
             searchQuery = $(this).val();
             page = 1;
             fetchitems(page, searchQuery);
         });
+
+        function generatePaginationButtons(page, lastPage) {
+            let paginationButtons = '';
+            let maxButtons = window.innerWidth <= 640 ? 5 : 10;
+            let half = Math.floor(maxButtons / 2);
+
+            let startPage = Math.max(1, page - half);
+            let endPage = Math.min(lastPage, page + half);
+
+            if (endPage - startPage + 1 < maxButtons) {
+                if (startPage === 1) {
+                    endPage = Math.min(lastPage, startPage + maxButtons - 1);
+                } else if (endPage === lastPage) {
+                    startPage = Math.max(1, endPage - maxButtons + 1);
+                }
+            }
+
+            for (let i = startPage; i <= endPage; i++) {
+                paginationButtons += `
+            <button class="pagination-btn ${i === page ? 'bg-purple-500 text-white' : 'bg-gray-200 text-gray-700'} px-3 py-1 rounded hover:bg-purple-500 hover:text-white" data-page="${i}">
+                ${i}
+            </button>
+        `;
+            }
+
+            $('#paginationNumbers').html(paginationButtons);
+        }
+
+
+        $(document).on('click', '.pagination-btn', function() {
+            page = parseInt($(this).data('page'));
+            fetchitems(page, searchQuery);
+        });
+
+        $(window).on('resize', function() {
+            generatePaginationButtons(page, lastPage);
+        });
     });
-  </script>
-  
+</script>

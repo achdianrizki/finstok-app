@@ -38,7 +38,7 @@
                             let profitQty = warehouseInfo.pivot.profit;
                             let original_stock = warehouseInfo.pivot.original_stock;
                             // console.log(original_stock);
-                            
+
                             let differenceQty = original_stock - physicalQty;
                             let differenceValue = Math.abs(differenceQty) * purchasePrice;
 
@@ -79,6 +79,9 @@
                     $('#itemsByWarehouse').html(rows);
                     lastPage = response.last_page;
                     $('#currentPage').text(page);
+
+                    generatePaginationButtons(page, lastPage);
+
                     $('#nextPage').attr('disabled', page >= lastPage);
                     $('#prevPage').attr('disabled', page <= 1);
                 }
@@ -107,6 +110,43 @@
             fetchItems(page, searchQuery);
         });
 
+        function generatePaginationButtons(page, lastPage) {
+            let paginationButtons = '';
+            let maxButtons = window.innerWidth <= 640 ? 5 : 10;
+            let half = Math.floor(maxButtons / 2);
+
+            let startPage = Math.max(1, page - half);
+            let endPage = Math.min(lastPage, page + half);
+
+            if (endPage - startPage + 1 < maxButtons) {
+                if (startPage === 1) {
+                    endPage = Math.min(lastPage, startPage + maxButtons - 1);
+                } else if (endPage === lastPage) {
+                    startPage = Math.max(1, endPage - maxButtons + 1);
+                }
+            }
+
+            for (let i = startPage; i <= endPage; i++) {
+                paginationButtons += `
+            <button class="pagination-btn ${i === page ? 'bg-purple-500 text-white' : 'bg-gray-200 text-gray-700'} px-3 py-1 rounded hover:bg-purple-500 hover:text-white" data-page="${i}">
+                ${i}
+            </button>
+        `;
+            }
+
+            $('#paginationNumbers').html(paginationButtons);
+        }
+
+
+        $(document).on('click', '.pagination-btn', function() {
+            page = parseInt($(this).data('page'));
+            fetchItems(page, searchQuery);
+        });
+
+        $(window).on('resize', function() {
+            generatePaginationButtons(page, lastPage);
+        });
+
         $('#warehouseId').on('change', function() {
             warehouseId = $(this).val();
             page = 1;
@@ -114,32 +154,32 @@
         });
 
         $(document).on('input', '.physical-input', function() {
-    let itemId = $(this).data('id');
-    let stock = parseInt($(this).data('stock')) || 0;
-    let originalStock = parseInt($(this).data('original_stock')) || 0;
-    let physical = parseInt($(this).val()) || 0;
-    let purchasePrice = parseInt($(this).data('price')) || 0;
-    
-    // console.log('Original Stock:', originalStock);
-    // console.log('Physical:', physical);
-    
-    let differenceQty = physical - originalStock;
-    // console.log('Difference Quantity:', differenceQty); // Cek nilai differenceQty
-    
-    let differenceValue = differenceQty * purchasePrice;
-    
-    let differenceField = $(`#difference-${itemId}`);
-    let profitField = $(`#profit-${itemId}`);
+            let itemId = $(this).data('id');
+            let stock = parseInt($(this).data('stock')) || 0;
+            let originalStock = parseInt($(this).data('original_stock')) || 0;
+            let physical = parseInt($(this).val()) || 0;
+            let purchasePrice = parseInt($(this).data('price')) || 0;
 
-    let differenceClass = differenceQty === 0 ?
-        'text-green-500 bg-green-100' :
-        (differenceQty < 0 ? 'text-red-500 bg-red-100' : 'text-blue-500 bg-blue-100');
-    
-    profitField.val(differenceQty);
-    differenceField.val(formatRupiah(differenceValue)).removeClass().addClass(
-        `w-full border rounded py-1 px-2 ${differenceClass}`
-    );
-});
+            // console.log('Original Stock:', originalStock);
+            // console.log('Physical:', physical);
+
+            let differenceQty = physical - originalStock;
+            // console.log('Difference Quantity:', differenceQty); // Cek nilai differenceQty
+
+            let differenceValue = differenceQty * purchasePrice;
+
+            let differenceField = $(`#difference-${itemId}`);
+            let profitField = $(`#profit-${itemId}`);
+
+            let differenceClass = differenceQty === 0 ?
+                'text-green-500 bg-green-100' :
+                (differenceQty < 0 ? 'text-red-500 bg-red-100' : 'text-blue-500 bg-blue-100');
+
+            profitField.val(differenceQty);
+            differenceField.val(formatRupiah(differenceValue)).removeClass().addClass(
+                `w-full border rounded py-1 px-2 ${differenceClass}`
+            );
+        });
 
 
 
@@ -151,37 +191,37 @@
                 '.')) || 0;
             let profit = parseInt($(`#profit-${itemId}`).val()) || 0;
 
-                $.ajax({
-                    url: "/adjust-stock",
-                    method: "POST",
-                    data: {
-                        _token: $('meta[name="csrf-token"]').attr('content'),
-                        item_id: itemId,
-                        warehouse_id: warehouseId,
-                        physical: physical,
-                        difference: difference,
-                        profit: profit
-                    },
-                    success: function(response) {
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Success',
-                            text: 'Stock adjusted successfully!',
-                            timer: 2000,
-                            showConfirmButton: false
-                        });
-                        fetchItems(page, searchQuery);
-                    },
-                    error: function(xhr) {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Error',
-                            text: 'Failed to adjust stock!',
-                            timer: 2000,
-                            showConfirmButton: false
-                        });
-                    }
-                });
+            $.ajax({
+                url: "/adjust-stock",
+                method: "POST",
+                data: {
+                    _token: $('meta[name="csrf-token"]').attr('content'),
+                    item_id: itemId,
+                    warehouse_id: warehouseId,
+                    physical: physical,
+                    difference: difference,
+                    profit: profit
+                },
+                success: function(response) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success',
+                        text: 'Stock adjusted successfully!',
+                        timer: 2000,
+                        showConfirmButton: false
+                    });
+                    fetchItems(page, searchQuery);
+                },
+                error: function(xhr) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Failed to adjust stock!',
+                        timer: 2000,
+                        showConfirmButton: false
+                    });
+                }
+            });
         });
     });
 </script>
